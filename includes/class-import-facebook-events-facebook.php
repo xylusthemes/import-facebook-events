@@ -909,50 +909,75 @@ class Import_Facebook_Events_Facebook {
 		if( Empty ( $event ) ){
 			return;
 		}
-		
-		// Add Featured Image to Post
-		$image_name       = $event->post_name . '_image.png';
-		$upload_dir       = wp_upload_dir(); // Set upload folder
-		$image_data       = file_get_contents( $image_url ); // Get image data
-		$unique_file_name = wp_unique_filename( $upload_dir['path'], $image_name ); // Generate unique name
-		$filename         = basename( $unique_file_name ); // Create image file name
-
-		// Check folder permission and define file location
-		if( wp_mkdir_p( $upload_dir['path'] ) ) {
-		    $file = $upload_dir['path'] . '/' . $filename;
-		} else {
-		    $file = $upload_dir['basedir'] . '/' . $filename;
+		$import_origin = get_post_meta( $event_id, 'wpea_event_origin', true );
+		$image_name = '';
+		if( $import_origin != '' ){
+			$image_name .= $import_origin."_";
 		}
-
-		// Create the image  file on the server
-		file_put_contents( $file, $image_data );
-
-		// Check image file type
-		$wp_filetype = wp_check_filetype( $filename, null );
-
-		// Set attachment data
-		$attachment = array(
-		    'post_mime_type' => $wp_filetype['type'],
-		    'post_title'     => sanitize_file_name( $filename ),
-		    'post_content'   => '',
-		    'post_status'    => 'inherit'
+		// Add Featured Image to Post
+		$image_name       .= $event->ID . '_' . $event->post_name . '_image.png';
+		$upload_dir       = wp_upload_dir(); // Set upload folder
+		
+		// Check for event file already Exists or not.
+		$params = array(
+			'numberposts'   => 1,
+			'post_type'     => 'attachment',
+			'meta_query'    => array(
+				array(
+					'key'   => '_wp_attached_file',
+					'value' => trim( $upload_dir['subdir'] . '/' . $image_name, '/' )
+				)
+			)
 		);
 
-		// Create the attachment
-		$attach_id = wp_insert_attachment( $attachment, $file, $event_id );
+		$existing_file = get_posts( $params );
+		if ( file_exists( $upload_dir['path'] . '/' . $image_name ) && isset( $existing_file[0]->ID ) ) {
+			
+			$attach_id = $existing_file[0]->ID;
 
-		// Include image.php
-		require_once(ABSPATH . 'wp-admin/includes/image.php');
+		}else{
 
-		// Define attachment metadata
-		$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+			$image_data       = file_get_contents( $image_url ); // Get image data
+			$unique_file_name = wp_unique_filename( $upload_dir['path'], $image_name ); // Generate unique name
+			$filename         = basename( $unique_file_name ); // Create image file name
 
-		// Assign metadata to attachment
-		wp_update_attachment_metadata( $attach_id, $attach_data );
+			// Check folder permission and define file location
+			if( wp_mkdir_p( $upload_dir['path'] ) ) {
+			    $file = $upload_dir['path'] . '/' . $filename;
+			} else {
+			    $file = $upload_dir['basedir'] . '/' . $filename;
+			}
+		
+			// Create the image  file on the server
+			file_put_contents( $file, $image_data );
+
+			// Check image file type
+			$wp_filetype = wp_check_filetype( $filename, null );
+
+			// Set attachment data
+			$attachment = array(
+			    'post_mime_type' => $wp_filetype['type'],
+			    'post_title'     => sanitize_file_name( $filename ),
+			    'post_content'   => '',
+			    'post_status'    => 'inherit'
+			);
+
+			// Create the attachment
+			$attach_id = wp_insert_attachment( $attachment, $file, $event_id );
+
+			// Include image.php
+			require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+			// Define attachment metadata
+			$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+
+			// Assign metadata to attachment
+			wp_update_attachment_metadata( $attach_id, $attach_data );
+
+		}
 
 		// And finally assign featured image to post
 		set_post_thumbnail( $event_id, $attach_id );
-
 	}
 
 	/**

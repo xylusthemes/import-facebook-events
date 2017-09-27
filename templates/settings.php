@@ -1,8 +1,8 @@
 <?php
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) exit;
-
-$ife_options = !empty( get_option( IFE_OPTIONS ) ) ? get_option( IFE_OPTIONS ) : array();
+$ife_options_temp = get_option( IFE_OPTIONS );
+$ife_options = !empty( $ife_options_temp ) ? $ife_options_temp : array();
 ?>
 <div class="ife_container">
     <div class="ife_row">
