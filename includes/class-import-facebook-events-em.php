@@ -135,12 +135,17 @@ class Import_Facebook_Events_EM {
 				}
 			}
 
+			$location_id = 0;
 			if ( $is_exitsing_event ) {
-				$location_id = $this->get_location_args( $centralize_array['location'], $inserted_event_id );
+				if( isset( $centralize_array['location'] ) ){
+					$location_id = $this->get_location_args( $centralize_array['location'], $inserted_event_id );
+				}
 			}else{
-				$location_id = $this->get_location_args( $centralize_array['location'], false );
+				if( isset( $centralize_array['location'] ) ){
+					$location_id = $this->get_location_args( $centralize_array['location'], false );
+				}
 			}
-
+			
 			$event_status = null;
 			if ( $inserted_event->post_status == 'publish' ) { $event_status = 1;}
 			if ( $inserted_event->post_status == 'pending' ) { $event_status = 0;}

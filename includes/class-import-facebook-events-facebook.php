@@ -44,7 +44,7 @@ class Import_Facebook_Events_Facebook {
 		$options = ife_get_import_options( 'facebook' );
 		$this->fb_app_id = isset( $options['facebook_app_id'] ) ? $options['facebook_app_id'] : '';
 		$this->fb_app_secret = isset( $options['facebook_app_secret'] ) ? $options['facebook_app_secret'] : '';
-		$this->fb_graph_url = 'https://graph.facebook.com/v2.5/';
+		$this->fb_graph_url = 'https://graph.facebook.com/v2.9/';
 
 	}
 
@@ -238,7 +238,7 @@ class Import_Facebook_Events_Facebook {
 	public function get_events_for_facebook_page( $facebook_page_id ) {
 		
 		$args = array(
-			'limit' => 9999,
+			'limit' => 4999,
 			'since' => date( 'Y-m-d' ),
 			'fields' => 'id'
 		);
@@ -283,7 +283,7 @@ class Import_Facebook_Events_Facebook {
 		$start_time = isset( $facebook_event->start_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->start_time ) ) : date( 'Y-m-d H:i:s');
 		$end_time = isset( $facebook_event->end_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->end_time ) ) : $start_time;
 
-		$ticket_uri = isset( $facebook_event->ticket_uri ) ? esc_url( $facebook_event->ticket_uri ) : 'https://www.facebook.com/events/'.$facebook_id;
+		$ticket_uri = isset( $facebook_event->ticket_uri ) ? esc_url( $facebook_event->ticket_uri ) : '';
 		$timezone = $this->get_utc_offset( $facebook_event->start_time );
 		$cover_image = isset( $facebook_event->cover->source ) ? $ife_events->common->clean_url( esc_url( $facebook_event->cover->source ) ) : '';
 

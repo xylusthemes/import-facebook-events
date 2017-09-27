@@ -3,6 +3,8 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 $ife_options = get_option( IFE_OPTIONS );
 $facebook_options = isset( $ife_options )? $ife_options : array();
+$facebook_app_id = isset( $facebook_options['facebook_app_id'] ) ? $facebook_options['facebook_app_id'] : '';
+$facebook_app_secret = isset( $facebook_options['facebook_app_secret'] ) ? $facebook_options['facebook_app_secret'] : '';
 ?>
 <div class="ife_container">
     <div class="ife_row">
@@ -103,5 +105,34 @@ $facebook_options = isset( $ife_options )? $ife_options : array();
                 <input type="submit" class="button-primary xtei_submit_button" style=""  value="<?php esc_attr_e( 'Save Settings', 'import-facebook-events' ); ?>" />
             </div>
             </form>
+
+            <?php 
+            if( $facebook_app_id != '' && $facebook_app_secret != '' ){
+                ?>
+                <h3 class="setting_bar"><?php esc_attr_e( 'Authorize your Facebook Account (Optional)', 'import-facebook-events' ); ?></h3>
+                <div class="fb_authorize">
+                    <table class="form-table">
+                        <tbody>
+                            <tr>
+                                <th scope="row">
+                                    <?php _e( 'Facebook Authorization','import-facebook-events' ); ?> : 
+                                </th>
+                                <td>
+                                    <?php 
+                                    $button_value = __('Authorize', 'import-facebook-events');
+                                    ?>
+                                    <input type="submit" class="button" name="ife_facebook_authorize" value="<?php echo $button_value; ?>" disabled="disabled" />
+                                    <?php do_action( 'ife_render_pro_notice' ); ?>
+                                    <span class="ife_small">
+                                    <?php _e( 'By Authorize your account you are able to import private facebook events which you can see with your profile and import events by group. Authorization is not require if you want to import only public events.','import-facebook-events' ); ?>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <?php
+            }
+            ?>
     </div>
 </div>

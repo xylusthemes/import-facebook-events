@@ -28,7 +28,12 @@ $website = get_post_meta( $event_id, 'ife_event_link', true );
 	    <p><?php echo $start_date_formated; ?></p>
 
 	    <strong><?php esc_html_e( 'Time','import-facebook-events' ); ?>:</strong>
-	    <p><?php echo $start_time . ' - ' . $end_time; ?></p>
+	    <p><?php if( $start_time != $end_time ){ 
+	    		echo $start_time . ' - ' . $end_time;
+	    	}else{
+	    		echo $start_time;
+    		}?>
+		</p>
 		<?php
 	}else{
 		?>

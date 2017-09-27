@@ -19,6 +19,7 @@ global $ife_events;
 					            <select name="facebook_import_by" id="facebook_import_by">
 			                    	<option value="facebook_event_id"><?php esc_attr_e( 'Facebook Event ID','import-facebook-events' ); ?></option>
 			                    	<option value="facebook_organization"><?php esc_attr_e( 'Facebook Organization or Page','import-facebook-events' ); ?></option>
+			                    	<option value="facebook_group"><?php esc_attr_e( 'Facebook Group','import-facebook-events' ); ?></option>
 			                    </select>
 			                    <span class="ife_small">
 			                        <?php _e( 'Select Event source. 1. by Facebook Event ID, 2. Facebook Organization or Page ( import events belonging to a Facebook organization or a Facebook page ).', 'import-facebook-events' ); ?>
@@ -38,7 +39,7 @@ global $ife_events;
 					    	</td>
 					    </tr>
 
-					    <tr class="facebook_page_wrapper">
+					    <tr class="facebook_page_wrapper" style="display: none;">
 					    	<th scope="row">
 					    		<?php esc_attr_e( 'Organization and page username / ID to fetch events from','import-facebook-events' ); ?> : 
 					    	</th>
@@ -46,6 +47,19 @@ global $ife_events;
 					    		<input class="ife_text" name="facebook_page_username" class="facebook_page_username" type="text" disabled="disabled" />
 			                    <span class="ife_small">
 			                        <?php _e( ' Eg. username for https://www.facebook.com/xylusinfo/ is "xylusinfo".', 'import-facebook-events' ); ?>
+			                    </span>
+			                    <?php do_action( 'ife_render_pro_notice' ); ?>
+					    	</td>
+					    </tr>
+
+					    <tr class="facebook_group_wrapper" style="display: none;">
+					    	<th scope="row">
+					    		<?php esc_attr_e( 'Facebook Group URL / Numeric ID to fetch events from','import-facebook-events' ); ?> : 
+					    	</th>
+					    	<td> 
+					    		<input class="ife_text facebook_group" name="" type="text" disabled="disabled" />
+			                    <span class="ife_small">
+			                        <?php _e( ' Eg.Input value for https://www.facebook.com/groups/123456789123456/ <br/>https://www.facebook.com/groups/123456789123456/ OR "123456789123456"', 'import-facebook-events' ); ?>
 			                    </span>
 			                    <?php do_action( 'ife_render_pro_notice' ); ?>
 					    	</td>
