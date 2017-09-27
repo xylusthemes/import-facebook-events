@@ -22,10 +22,14 @@ if( $event_address != '' && $venue_address != '' ){
 	$event_address = $venue_address;
 }
 
-$image_url[] =  "test.jpg";
+$image_url =  array();
 if ( '' !== get_the_post_thumbnail() ){
 	$image_url =  wp_get_attachment_image_src( get_post_thumbnail_id(  get_the_ID() ), 'full' );
+}else{
+	$image_date = date_i18n('F+d', $event_date );
+	$image_url[] =  "http://placehold.it/420x150?text=".$image_date;
 }
+
 ?>
 <a href="<?php echo esc_url( get_permalink() ) ?>">	
 	<div class="<?php echo $css_class; ?> archive-event <?php post_class(); ?>">

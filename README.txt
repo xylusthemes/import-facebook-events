@@ -4,7 +4,7 @@ Donate link: http://xylusthemes.com/
 Tags: facebook,events,import,calendar,facebook event,facebook import,facebook events,the events calendar,event import,events manager,import events,event,import event,my calendar,eventon,all in one event calendar,timely,event organiser,event management,event calendar,event manager
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -83,6 +83,9 @@ You can use `[facebook_events]` for display in-built facebook events list.
 10. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.1.4 =
+* FIXED: some bug fixes.
 
 = 1.1.3 =
 * ADDED: Upcoming Facebook Events Widget (Pro)

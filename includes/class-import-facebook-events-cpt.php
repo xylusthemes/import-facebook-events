@@ -491,6 +491,11 @@ class Import_Facebook_Events_Cpt {
 		$event_end_minute     = isset( $_POST['event_end_minute'] ) ? sanitize_text_field($_POST['event_end_minute']) : '';
 		$event_end_meridian   = isset( $_POST['event_end_meridian'] ) ? sanitize_text_field($_POST['event_end_meridian']) : '';
 
+		$start_time = $event_start_date.' '.$event_start_hour.':'.$event_start_minute.' '.$event_start_meridian;
+		$end_time = $event_end_date.' '.$event_end_hour.':'.$event_end_minute.' '.$event_end_meridian;
+		$start_ts = strtotime( $start_time );
+		$end_ts = strtotime( $end_time );
+
 		// Venue Deatails
 		$venue_name    = isset( $_POST['venue_name'] ) ? sanitize_text_field( $_POST['venue_name'] ) : '';
 		$venue_address = isset( $_POST['venue_address'] ) ? sanitize_text_field( $_POST['venue_address'] ) : '';
@@ -518,6 +523,8 @@ class Import_Facebook_Events_Cpt {
 		update_post_meta( $post_id, 'event_end_hour', $event_end_hour );
 		update_post_meta( $post_id, 'event_end_minute', $event_end_minute );
 		update_post_meta( $post_id, 'event_end_meridian', $event_end_meridian );
+		update_post_meta( $post_id, 'start_ts', $start_ts );
+		update_post_meta( $post_id, 'end_ts', $end_ts );
 
 		// Venue
 		update_post_meta( $post_id, 'venue_name', $venue_name );
@@ -599,6 +606,10 @@ class Import_Facebook_Events_Cpt {
 	public function facebook_events_archive( $atts = array() ){
 		//[facebook_events col='2' posts_per_page='12' category="cat1,cat2"]
 		$current_date = current_time('Y-m-d');
+		$paged = ( get_query_var('paged') ? get_query_var('paged') : 1 );
+		if( is_front_page() ){
+			$paged = ( get_query_var('page') ? get_query_var('page') : 1 );
+		}
 		$eve_args = array(
 		    'post_type' => 'facebook_events',
 		    'post_status' => 'publish',
@@ -612,7 +623,7 @@ class Import_Facebook_Events_Cpt {
 		    'meta_key' => 'event_end_date',
 		    'orderby' => 'meta_value',
 		    'order' => 'ASC',
-		    'paged' => ( get_query_var('paged') ? get_query_var('paged') : 1 ),
+		    'paged' => $paged,
 		);
 
 		if( isset( $atts['category'] ) && $atts['category'] != '' ){

@@ -1,15 +1,10 @@
-/* ==== GRID SYSTEM ==== */
-/*!
- * Bootstrap Grid Only 1.0.0 (v3.3.5 (http://getbootstrap.com))
- * Copyright 2011-2016 Twitter, Inc.
- */
-row_grid * {
+.row_grid * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-row_grid *:before,
-row_grid *:after {
+.row_grid *:before,
+.row_grid *:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
