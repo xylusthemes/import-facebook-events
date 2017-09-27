@@ -798,6 +798,8 @@ class Import_Facebook_Events_Cpt {
 			?>
 		</div>
 		<?php
+		// Allow developers to do something here.
+		do_action( 'ife_after_event_list', $facebook_events );
 		$wp_list_events = ob_get_contents();
 		ob_end_clean();
 		wp_reset_postdata();
