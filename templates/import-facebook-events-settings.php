@@ -62,6 +62,21 @@ $facebook_options = isset( $ife_options )? $ife_options : array();
                             </span>
                         </td>
                     </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <?php _e( 'Disable Facebook events', 'import-facebook-events' ); ?> : 
+                        </th>
+                        <td>
+                            <?php 
+                            $deactive_fbevents = isset( $facebook_options['deactive_fbevents'] ) ? $facebook_options['deactive_fbevents'] : 'no';
+                            ?>
+                            <input type="checkbox" name="facebook[deactive_fbevents]" value="yes" <?php if( $deactive_fbevents == 'yes' ) { echo 'checked="checked"'; } ?> />
+                            <span class="xtei_small">
+                                <?php _e( 'Check to disable inbuilt event management system.', 'import-facebook-events' ); ?>
+                            </span>
+                        </td>
+                    </tr>
                 
                 </tbody>
             </table>

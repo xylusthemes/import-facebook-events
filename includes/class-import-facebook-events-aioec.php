@@ -159,6 +159,16 @@ class Import_Facebook_Events_Aioec {
 			if( $lat != '' && $lon != '' ){
 				$show_map = $show_coordinates = 1;
 			}
+			$full_address = $address;
+			if( $city != '' ){
+				$full_address .= ', '.$city;
+			}
+			if( $state != '' ){
+				$full_address .= ', '.$state;
+			}
+			if( $zip != '' ){
+				$full_address .= ' '.$zip;
+			}
 
 			$organizer = isset( $centralize_array['organizer'] ) ? $centralize_array['organizer'] : '';
 			$org_name  = isset( $organizer['name'] ) ? $organizer['name'] : '';
@@ -175,7 +185,7 @@ class Import_Facebook_Events_Aioec {
 				'instant_event'    => 0,
 				'venue' 	  	   => $location_name,
 				'country' 	  	   => $country,
-				'address' 	  	   => $address,
+				'address' 	  	   => $full_address,
 				'city' 	       	   => $city,
 				'province' 	       => $state,
 				'postal_code' 	   => $zip,
@@ -183,9 +193,9 @@ class Import_Facebook_Events_Aioec {
 				'contact_name' 	   => $org_name,
 				'contact_phone'    => $org_phone,
 				'contact_email'    => $org_email,
-				'contact_url' 	   => $event_uri,			
+				'contact_url' 	   => $org_url,
 				'cost'   		   => '',
-				'ticket_url' 	   => '',
+				'ticket_url' 	   => $event_uri,
 				'ical_uid' 	  	   => $this->get_ical_uid_for_event( $inserted_event_id ),
 				'show_coordinates' => $show_coordinates,
 			);

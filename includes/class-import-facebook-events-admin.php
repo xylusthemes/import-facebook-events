@@ -339,6 +339,7 @@ class Import_Facebook_Events_Admin {
 			'import-eventbrite-events' => esc_html__( 'Import Eventbrite Events', 'import-facebook-events' ),
 			'import-meetup-events' => esc_html__( 'Import Meetup Events', 'import-facebook-events' ),
 			'wp-bulk-delete' => esc_html__( 'WP Bulk Delete', 'import-facebook-events' ),
+			'event-schema' => esc_html__( 'Event Schema / Structured Data', 'import-facebook-events' ),
 		);
 	}
 

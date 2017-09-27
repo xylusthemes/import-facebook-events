@@ -38,17 +38,21 @@ class Import_Facebook_Events_Cpt {
 		$this->event_category = 'facebook_category';
 		$this->event_tag = 'facebook_tag';
 
-		add_action( 'init', array( $this, 'register_event_post_type' ) );
-		add_action( 'init', array( $this, 'register_event_taxonomy' ) );
-		add_action( 'add_meta_boxes', array($this, 'add_event_meta_boxes' ) );
-		add_action( 'save_post', array($this, 'save_event_meta_boxes'), 10, 2);
+		$ife_options = get_option( IFE_OPTIONS );
+		$deactive_fbevents = isset( $ife_options['deactive_fbevents'] ) ? $ife_options['deactive_fbevents'] : 'no';
 		
-		add_filter( 'manage_facebook_events_posts_columns', array( $this, 'facebook_events_columns' ), 10, 1 );
-		add_action( 'manage_posts_custom_column', array( $this, 'facebook_events_columns_data' ), 10, 2 ); 
+		if( $deactive_fbevents == 'no' ){
+			add_action( 'init', array( $this, 'register_event_post_type' ) );
+			add_action( 'init', array( $this, 'register_event_taxonomy' ) );
+			add_action( 'add_meta_boxes', array($this, 'add_event_meta_boxes' ) );
+			add_action( 'save_post', array($this, 'save_event_meta_boxes'), 10, 2);
+			
+			add_filter( 'manage_facebook_events_posts_columns', array( $this, 'facebook_events_columns' ), 10, 1 );
+			add_action( 'manage_posts_custom_column', array( $this, 'facebook_events_columns_data' ), 10, 2 ); 
 
-		add_filter( 'the_content', array( $this, 'facebook_events_meta_before_content' ) ); 
-		add_shortcode('facebook_events', array( $this, 'facebook_events_archive' ) );
- 	
+			add_filter( 'the_content', array( $this, 'facebook_events_meta_before_content' ) ); 
+			add_shortcode('facebook_events', array( $this, 'facebook_events_archive' ) );
+		}
 	}
 
 	/**
@@ -538,7 +542,7 @@ class Import_Facebook_Events_Cpt {
 	 *
 	 */ 
 	function facebook_events_columns( $cols ) {
-		$cols['event_start_date'] = __('Event Date', 'event-list-calendar');
+		$cols['fbevent_start_date'] = __('Event Date', 'event-list-calendar');
 		return $cols;
 	}
 
@@ -548,7 +552,7 @@ class Import_Facebook_Events_Cpt {
 	 */ 
 	function facebook_events_columns_data( $column, $post_id ) {
 		switch ( $column ) {
-			case "event_start_date":
+			case "fbevent_start_date":
 			  $start_date = get_post_meta( $post_id, 'event_start_date', true);
 			  if( $start_date != '' ){
 			  	$start_date = strtotime( $start_date );
@@ -593,7 +597,7 @@ class Import_Facebook_Events_Cpt {
 	 *
 	 */
 	public function facebook_events_archive( $atts = array() ){
-
+		//[facebook_events col='2' posts_per_page='12' category="cat1,cat2"]
 		$current_date = current_time('Y-m-d');
 		$eve_args = array(
 		    'post_type' => 'facebook_events',
@@ -611,9 +615,48 @@ class Import_Facebook_Events_Cpt {
 		    'paged' => ( get_query_var('paged') ? get_query_var('paged') : 1 ),
 		);
 
+		if( isset( $atts['category'] ) && $atts['category'] != '' ){
+			$categories = explode(',', $atts['category'] );
+			if( !empty( $categories ) ){
+				$eve_args['tax_query'] = array(
+					array(
+						'taxonomy' => $this->event_category,
+						'field'    => 'slug',
+						'terms'    => $categories,
+					)
+				);
+			}
+		}
+
 		if( isset( $atts['posts_per_page'] ) && $atts['posts_per_page'] != '' && is_numeric( $atts['posts_per_page'] ) ){
 			$eve_args['posts_per_page'] = $atts['posts_per_page'];
 		}
+		$col = 3;
+		$css_class = 'col-ife-md-4';
+		if( isset( $atts['col'] ) && $atts['col'] != '' && is_numeric( $atts['col'] ) ){
+			$col = $atts['col'];
+			switch ( $col ) {
+				case '1':
+					$css_class = 'col-ife-md-12';
+					break;
+
+				case '2':
+					$css_class = 'col-ife-md-6';
+					break;
+
+				case '3':
+					$css_class = 'col-ife-md-4';
+					break;
+
+				case '4':
+					$css_class = 'col-ife-md-3';
+					break;
+				
+				default:
+					$css_class = 'col-ife-md-4';
+					break;
+			}
+		}		
 
 		$facebook_events = new WP_Query( $eve_args );
 

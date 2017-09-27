@@ -1,10 +1,10 @@
 === Import Facebook Events ===
 Contributors: xylus
 Donate link: http://xylusthemes.com/
-Tags: facebook, facebook event, facebook events, import, facebook import, the events calendar, event import,events manager, import events, events, calendar, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager
+Tags: facebook,events,import,calendar,facebook event,facebook import,facebook events,the events calendar,event import,events manager,import events,event,import event,my calendar,eventon,all in one event calendar,timely,event organiser,event management,event calendar,event manager
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,15 +70,20 @@ You can use `[facebook_events]` for display in-built facebook events list.
 
 == Screenshots ==
 
-1. Import Facebook events by Event IDs.
-2. Import Facebook events by Organization/Page ID (Pro).
-3. Scheduled Facebook Imports (Pro).
-4. Import History
-5. Settings
-6. Events page using '[facebook_events posts_per_page="12"]' shortcode
-7. Single Event page (Twenty Sixteen Theme).
+1. Events page using '[facebook_events posts_per_page="12"]' shortcode
+2. Single Event page (Twenty Sixteen Theme).
+3. Import Facebook events by Event IDs.
+4. Import Facebook events by Organization/Page ID (Pro).
+5. Scheduled Facebook Imports (Pro).
+6. Import History
+7. Settings
 
 == Changelog ==
+
+= 1.1.2 =
+* ADDED: option for disable inbuilt event management
+* ADDED: option in shortcode for eventlist "category,col"
+* FIXED: some bug fixes in ai1ec events import.
 
 = 1.1.1 =
 * FIXED: some bug fixes in events manage.
