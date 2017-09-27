@@ -1,22 +1,25 @@
 === Import Facebook Events ===
 Contributors: xylus
 Donate link: http://xylusthemes.com/
-Tags: facebook,events,import,calendar,facebook event,facebook import,facebook events,the events calendar,event import,events manager,import events,event,import event,my calendar,eventon,all in one event calendar,timely,event organiser,event management,event calendar,event manager
+Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager
 Requires at least: 4.0
-Tested up to: 4.7
-Stable tag: 1.1.4
+Tested up to: 4.8
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Import Facebook Events allows you to import Facebook (facebook.com) events into your WordPress site.
+Import Facebook events into your WordPress website and/or Event Calendar. Nice Display with shortcode & Event widget.
+
 
 == Description ==
+<h3>Import Facebook Events into WordPress :</h3>
 
-This plugin allows you to import events from [facebook.com](https://www.facebook.com/) into The Events Calendar and Events Manager. You can schedule event import so it will be imported automatacally [Pro]
+Import Facebook Events allows you to import facebook events into your WordPress site automatically. Automate your Event Marketing using Import Facebook Events plug-in. Import Events from Facebook Page, Facebook Event or Facebook Organizations page.
+You can schedule event import so it will be imported/syncronized automatically [Pro]
 
-This Plugin is works as a stand alone as well as add-on plugin for below listed Events plugins, which allows you to run imports from facebook right from your dashboard. As a stand alone plugin this plugin work independently for event import and Event Management.
+Using This plugin you can import facebook event into below listed leading Event Management Plug-ins, which allows you to run imports from facebook right from your dashboard.  Import Facebook Events bridges the gap between your website and your Facebook events making event management easier.
 
-**Import Events into**
+<h3>Import Facebook Events into</h3>
 
 * [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/)
 * [Events manager](https://wordpress.org/plugins/events-manager/)
@@ -28,12 +31,15 @@ This Plugin is works as a stand alone as well as add-on plugin for below listed 
 
 You can use `[facebook_events]` for display in-built facebook events list.
 
-**Additional [PRO Version](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=wprepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=wprepo-readme) Features**
+<strong>Full short-code example:</strong> 
+`[facebook_events col="2" posts_per_page="12" category="cat1,cat2" past_events="yes" order="desc" orderby="post_title" start_date="2017-12-25" end_date="2018-12-25" ]`
+
+** Additional [PRO Version](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=wprepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=wprepo-readme) Features **
 
 * Scheduled import events.
 * Import events from facebook page 
 * Import events from facebook Event
-* Sync events with facebook automatacally
+* Sync events with facebook automatically
 * Import multiple events easily
 * Show events from facebook page into WordPress
 * Upcoming Events widget
@@ -83,6 +89,15 @@ You can use `[facebook_events]` for display in-built facebook events list.
 10. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.1.5 =
+* ADDED: more options in shortcode full shortcode is now like. [facebook_events col="2" posts_per_page="12" category="cat1,cat2" past_events="yes" order="desc" orderby="post_title" start_date="2017-12-25" end_date="2018-12-25" ]
+* ADDED: Past Events display by add 'past_events="yes"' into shortcode.
+* ADDED: Option for delete data on plugin uninstall
+* IMPROVEMENTS: City, State and Country fields mapping to new version of EventON.
+* FIXED: jQuery UI css conflict some plugin
+* FIXED: TimeZone issue in “All in one Event Calendar” sometime imports wrong eventtime
+* FIXED: some bug fixes
 
 = 1.1.4 =
 * FIXED: some bug fixes.

@@ -180,7 +180,7 @@ class Import_Facebook_Events_Aioec {
 				'post_id' 		   => $inserted_event_id,
 				'start'            => $start_time,
 				'end' 	  		   => $end_time,
-				'timezone_name'    => '',
+				'timezone_name'    => 'UTC',
 				'allday' 	  	   => 0,
 				'instant_event'    => 0,
 				'venue' 	  	   => $location_name,

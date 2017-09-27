@@ -127,11 +127,13 @@ class Import_Facebook_Events_EventON {
 			if( $event_image != '' ){
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
 			}
-			$address = $centralize_array['location']['address_1'];
-			if(  $centralize_array['location']['full_address'] != '' ){
-				$address = $centralize_array['location']['full_address'];
-			}
-			
+			$address = isset( $centralize_array['location']['address_1'] ) ? sanitize_text_field( $centralize_array['location']['address_1'] ) : '';
+			$full_address = isset( $centralize_array['location']['full_address'] ) ? sanitize_text_field( $centralize_array['location']['full_address'] ) : '';
+			if(  $full_address != '' ){	$address = $full_address; }
+			$city = isset( $centralize_array['location']['city'] ) ? sanitize_text_field($centralize_array['location']['city']) : '';
+			$state = isset( $centralize_array['location']['state'] ) ? sanitize_text_field($centralize_array['location']['state']) : '';
+			$country = isset( $centralize_array['location']['country'] ) ? sanitize_text_field($centralize_array['location']['country']) : '';
+						
 			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', $centralize_array['url'] );
@@ -139,15 +141,16 @@ class Import_Facebook_Events_EventON {
 			update_post_meta( $inserted_event_id, 'evcal_erow', $end_time );
 			update_post_meta( $inserted_event_id, 'evcal_lmlink', $centralize_array['url'] );
 
-			if( $centralize_array['location']['name'] != '' ){
-				$loc_term = term_exists( $centralize_array['location']['name'], $this->location_taxonomy );
+			$location_name = isset( $centralize_array['location']['name'] ) ? sanitize_text_field( $centralize_array['location']['name'] ) : '';
+			if( $location_name != '' ){
+				$loc_term = term_exists( $location_name, $this->location_taxonomy );
 				if ($loc_term !== 0 && $loc_term !== null) {
 				  if( is_array( $loc_term ) ){
 				  	$loc_term_id = (int)$loc_term['term_id'];
 				  }
 				}else{
 					$new_loc_term = wp_insert_term(
-					  $centralize_array['location']['name'], 
+					  $location_name, 
 					  $this->location_taxonomy
 					);
 					if( !is_wp_error( $new_loc_term ) ){
@@ -161,8 +164,15 @@ class Import_Facebook_Events_EventON {
 				$loc_term_meta['location_lat'] = (!empty($centralize_array['location']['lat']))? $centralize_array['location']['lat']: null;
 				$loc_term_meta['evcal_location_link'] = (isset($centralize_array['location']['url']))?$centralize_array['location']['url']:null;
 				$loc_term_meta['location_address'] = $address;
+				$loc_term_meta['location_city'] = $city;
+				$loc_term_meta['location_state'] = $state;
+				$loc_term_meta['location_country'] = $country;
 				$loc_term_meta['evo_loc_img'] = (isset($centralize_array['location']['image_url']))?$centralize_array['location']['image_url']:null;
 				update_option("taxonomy_".$loc_term_id, $loc_term_meta);
+
+				if( function_exists( 'evo_save_term_metas' ) ){
+					evo_save_term_metas( $this->location_taxonomy, $loc_term_id, $loc_term_meta);
+				}
 
 				$term_loc_ids = wp_set_object_terms( $inserted_event_id, $loc_term_id, $this->location_taxonomy );
 				update_post_meta( $inserted_event_id, 'evo_location_tax_id', $loc_term_id );
@@ -206,6 +216,10 @@ class Import_Facebook_Events_EventON {
 
 				update_option("taxonomy_".$org_term_id, $org_term_meta);
 
+				if( function_exists( 'evo_save_term_metas' ) ){
+					evo_save_term_metas( $this->organizer_taxonomy, $org_term_id, $org_term_meta);
+				}
+				
 				$term_org_ids = wp_set_object_terms( $inserted_event_id, $org_term_id, $this->organizer_taxonomy );
 				update_post_meta( $inserted_event_id, 'evo_organizer_tax_id', $org_term_id );
 				update_post_meta( $inserted_event_id, 'evcal_organizer', $centralize_array['organizer']['name'] );

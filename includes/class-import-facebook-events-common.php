@@ -255,7 +255,7 @@ class Import_Facebook_Events_Common {
 	 */
 	public function display_import_success_message( $import_data = array(),$import_args = array(), $schedule_post = '' ) {
 		global $ife_success_msg, $ife_errors;
-		if( empty( $import_data ) || !empty( $ife_errors ) ){
+		if( empty( $import_data ) ){
 			return;
 		}
 

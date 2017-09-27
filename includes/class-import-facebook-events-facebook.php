@@ -28,6 +28,11 @@ class Import_Facebook_Events_Facebook {
 	*/
 	public $fb_graph_url;
 
+	/*
+	*	Facebook Access Token
+	*/
+	private $fb_access_token;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -68,7 +73,10 @@ class Import_Facebook_Events_Facebook {
 		if( !empty( $facebook_event_ids ) ){
 			foreach ($facebook_event_ids as $facebook_event_id ) {
 				if( $facebook_event_id != '' ){
-					$imported_events[] = $this->import_event_by_event_id( $facebook_event_id, $event_data );
+					$imported_event = $this->import_event_by_event_id( $facebook_event_id, $event_data );
+					if( !empty( $imported_event ) ){
+						$imported_events[] = $imported_event;
+					}
 				}		
 			}
 		}
@@ -96,14 +104,16 @@ class Import_Facebook_Events_Facebook {
 			return false;
 		}
 
-		/*$is_exitsing_event = $this->get_event_by_event_id( $facebook_event_id );
-		if ( $is_exitsing_event && $update_events == 'no' ) {
-			$ife_errors[] = __( 'Facebook event is already exists.', 'import-facebook-events');
-			return;
-		}*/
+		if( $facebook_event_id == '' || !is_numeric( $facebook_event_id ) ){
+			$ife_errors[] = sprintf( esc_html__( 'Please provide valid Facebook event ID: %s.', 'import-facebook-events' ), $facebook_event_id ) ;
+			return false;
+		}
 
 		$facebook_event_object = $this->get_facebook_event_by_event_id( $facebook_event_id );
-
+		if( isset( $facebook_event_object->error ) ){
+			$ife_errors[] = sprintf( esc_html__( 'We are not able to access Facebook event: %s. Possible reasons: - App Credentials are wrong - Facebook event is not public or some restrictions are there like age,country etc.', 'import-facebook-events' ), $facebook_event_id ) ;
+			return false;
+		}
 		return $this->save_facebook_event( $facebook_event_object, $event_data );
 
 	}
@@ -132,20 +142,26 @@ class Import_Facebook_Events_Facebook {
 	 * @since 1.0.0
 	 */
 	public function get_access_token(){
-		$args = array(
-			'grant_type' => 'client_credentials', 
-			'client_id'  => $this->fb_app_id,
-			'client_secret' => $this->fb_app_secret
-			);
-		$access_token_url = add_query_arg( $args, $this->fb_graph_url . 'oauth/access_token' );
-		$access_token_response = wp_remote_get( $access_token_url );
-		
-		$access_token_response_body = wp_remote_retrieve_body( $access_token_response );
-		$access_token_data = json_decode( $access_token_response_body );
 
-		$access_token = ! empty( $access_token_data->access_token ) ? $access_token_data->access_token : null;
-		
-		return $access_token;
+		if( $this->fb_access_token != '' ){
+
+			return $this->fb_access_token;
+
+		}else{
+			$args = array(
+				'grant_type' => 'client_credentials', 
+				'client_id'  => $this->fb_app_id,
+				'client_secret' => $this->fb_app_secret
+				);
+			$access_token_url = add_query_arg( $args, $this->fb_graph_url . 'oauth/access_token' );
+			$access_token_response = wp_remote_get( $access_token_url );
+			$access_token_response_body = wp_remote_retrieve_body( $access_token_response );
+			$access_token_data = json_decode( $access_token_response_body );
+			$access_token = ! empty( $access_token_data->access_token ) ? $access_token_data->access_token : null;
+			$this->fb_access_token = $access_token;
+			return $access_token;
+		}		
+
 	}
 	
 	/**

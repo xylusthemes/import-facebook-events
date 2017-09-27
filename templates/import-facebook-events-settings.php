@@ -77,6 +77,21 @@ $facebook_options = isset( $ife_options )? $ife_options : array();
                             </span>
                         </td>
                     </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <?php _e( 'Delete Import Facebook Events data on Uninstall', 'import-facebook-events' ); ?> : 
+                        </th>
+                        <td>
+                            <?php 
+                            $delete_ifedata = isset( $facebook_options['delete_ifedata'] ) ? $facebook_options['delete_ifedata'] : 'no';
+                            ?>
+                            <input type="checkbox" name="facebook[delete_ifedata]" value="yes" <?php if( $delete_ifedata == 'yes' ) { echo 'checked="checked"'; } ?> />
+                            <span class="xtei_small">
+                                <?php _e( 'Delete Import Facebook Events data like settings, scheduled imports, import history on Uninstall', 'import-facebook-events' ); ?>
+                            </span>
+                        </td>
+                    </tr>
                 
                 </tbody>
             </table>

@@ -124,7 +124,7 @@ class Import_Facebook_Events_Manage_Import {
 		if ( isset( $_GET['action'] ) && $_GET['action'] == 'delete' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'bulk-fb_scheduled_imports') ) {
 			$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'scheduled';
 			$wp_redirect = get_site_url() . urldecode( $_REQUEST['_wp_http_referer'] );
-        	$delete_ids = $_REQUEST['xt_scheduled_import'];
+        	$delete_ids = $_REQUEST['fb_scheduled_import'];
         	if( !empty( $delete_ids ) ){
         		foreach ($delete_ids as $delete_id ) {
         			wp_delete_post( $delete_id, true );
