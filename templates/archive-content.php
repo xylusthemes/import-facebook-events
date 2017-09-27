@@ -14,7 +14,13 @@ $event_date = get_post_meta( get_the_ID(), 'event_start_date', true );
 if( $event_date != '' ){
 	$event_date = strtotime( $event_date );	
 }
-$event_address = get_post_meta( get_the_ID(), 'venue_address', true );
+$event_address = get_post_meta( get_the_ID(), 'venue_name', true );
+$venue_address = get_post_meta( get_the_ID(), 'venue_address', true );
+if( $event_address != '' && $venue_address != '' ){
+	$event_address .= ' - '.$venue_address;
+}elseif( $venue_address != '' ){
+	$event_address = $venue_address;
+}
 
 $image_url[] =  "test.jpg";
 if ( '' !== get_the_post_thumbnail() ){
@@ -23,12 +29,12 @@ if ( '' !== get_the_post_thumbnail() ){
 ?>
 <a href="<?php echo esc_url( get_permalink() ) ?>">	
 	<div class="<?php echo $css_class; ?> archive-event <?php post_class(); ?>">
-		<div class="wepa_event" >
+		<div class="ife_event" >
 			<div class="img_placeholder" style=" background: url('<?php echo $image_url[0]; ?>') no-repeat left top;"></div>
 			<div class="event_details">
 				<div class="event_date">
-					<span class="month"><?php echo date('M', $event_date) ; ?></span>
-					<span class="date"> <?php echo date('d', $event_date) ; ?> </span>
+					<span class="month"><?php echo date_i18n('M', $event_date) ; ?></span>
+					<span class="date"> <?php echo date_i18n('d', $event_date) ; ?> </span>
 				</div>
 				<div class="event_desc">
 					<a href="<?php echo esc_url( get_permalink() ) ?>" rel="bookmark">

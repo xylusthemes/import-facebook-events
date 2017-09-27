@@ -4,7 +4,7 @@ Donate link: http://xylusthemes.com/
 Tags: facebook,events,import,calendar,facebook event,facebook import,facebook events,the events calendar,event import,events manager,import events,event,import event,my calendar,eventon,all in one event calendar,timely,event organiser,event management,event calendar,event manager
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,7 @@ You can use `[facebook_events]` for display in-built facebook events list.
 * Sync events with facebook automatacally
 * Import multiple events easily
 * Show events from facebook page into WordPress
+* Upcoming Events widget
 
 ><strong>New All in one Event Import Tool!</strong><br>
 >We’ve developed bulk event imports tool. This add-on service for The Events Calendar allows you import events from your favorite sources like Facebook, Meetup, Eventbrite, iCalendar, and ICS.
@@ -77,8 +78,17 @@ You can use `[facebook_events]` for display in-built facebook events list.
 5. Scheduled Facebook Imports (Pro).
 6. Import History
 7. Settings
+8. Upcoming Facebook Events widget in backend (Pro)
+9. Upcoming Facebook Events widget in front-end with Event image(Pro)
+10. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.1.3 =
+* ADDED: Upcoming Facebook Events Widget (Pro)
+* IMPROVEMENTS: make date multilingual
+* IMPROVEMENTS: in event archive and single event details page.
+* FIXED: some bug fixes.
 
 = 1.1.2 =
 * ADDED: option for disable inbuilt event management

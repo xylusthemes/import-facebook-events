@@ -183,9 +183,10 @@ class Import_Facebook_Events_Common {
 	 * @since    1.0.0
 	 * @param int $event_id event id.
 	 * @param int $image_url Image URL
-	 * @return void
+	 * @return attachment_id
 	 */
 	public function setup_featured_image_to_event( $event_id, $image_url = '' ) {
+
 		if ( $image_url == '' ) {
 			return;
 		}
@@ -193,75 +194,56 @@ class Import_Facebook_Events_Common {
 		if( Empty ( $event ) ){
 			return;
 		}
-		$import_origin = get_post_meta( $event_id, 'ife_event_origin', true );
-		$image_name = '';
-		if( $import_origin != '' ){
-			$image_name .= $import_origin."_";
-		}
-		// Add Featured Image to Post
-		$image_name       .= $event->ID . '_' . $event->post_name . '_image.png';
-		$upload_dir       = wp_upload_dir(); // Set upload folder
 		
-		// Check for event file already Exists or not.
-		$params = array(
-			'numberposts'   => 1,
-			'post_type'     => 'attachment',
-			'meta_query'    => array(
-				array(
-					'key'   => '_wp_attached_file',
-					'value' => trim( $upload_dir['subdir'] . '/' . $image_name, '/' )
-				)
-			)
-		);
+		require_once(ABSPATH . 'wp-admin/includes/media.php');
+		require_once(ABSPATH . 'wp-admin/includes/file.php');
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
 
-		$existing_file = get_posts( $params );
-		if ( file_exists( $upload_dir['path'] . '/' . $image_name ) && isset( $existing_file[0]->ID ) ) {
-			
-			$attach_id = $existing_file[0]->ID;
+		$event_title = $event->post_title;
+		//$image = media_sideload_image( $image_url, $event_id, $event_title );
+		if ( ! empty( $image_url ) ) {
 
-		}else{
-
-			$image_data       = file_get_contents( $image_url ); // Get image data
-			$unique_file_name = wp_unique_filename( $upload_dir['path'], $image_name ); // Generate unique name
-			$filename         = basename( $unique_file_name ); // Create image file name
-
-			// Check folder permission and define file location
-			if( wp_mkdir_p( $upload_dir['path'] ) ) {
-			    $file = $upload_dir['path'] . '/' . $filename;
-			} else {
-			    $file = $upload_dir['basedir'] . '/' . $filename;
+			// Set variables for storage, fix file filename for query strings.
+			preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $image_url, $matches );
+			if ( ! $matches ) {
+				return new WP_Error( 'image_sideload_failed', __( 'Invalid image URL' ) );
 			}
-		
-			// Create the image  file on the server
-			file_put_contents( $file, $image_data );
 
-			// Check image file type
-			$wp_filetype = wp_check_filetype( $filename, null );
+			$file_array = array();
+			$file_array['name'] = $event->ID . '_image_'.basename( $matches[0] );
+			
+			if( has_post_thumbnail( $event_id ) ){
+				$attachment_id = get_post_thumbnail_id( $event_id );
+				$attach_filename = basename( get_attached_file( $attachment_id ) );
+				if( $attach_filename == $file_array['name'] ){
+					return false;
+				}
+			}
 
-			// Set attachment data
-			$attachment = array(
-			    'post_mime_type' => $wp_filetype['type'],
-			    'post_title'     => sanitize_file_name( $filename ),
-			    'post_content'   => '',
-			    'post_status'    => 'inherit'
-			);
+			// Download file to temp location.
+			$file_array['tmp_name'] = download_url( $image_url );
 
-			// Create the attachment
-			$attach_id = wp_insert_attachment( $attachment, $file, $event_id );
+			// If error storing temporarily, return the error.
+			if ( is_wp_error( $file_array['tmp_name'] ) ) {
+				return $file_array['tmp_name'];
+			}
 
-			// Include image.php
-			require_once(ABSPATH . 'wp-admin/includes/image.php');
+			// Do the validation and storage stuff.
+			$att_id = media_handle_sideload( $file_array, $event_id, $event_title );
 
-			// Define attachment metadata
-			$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+			// If error storing permanently, unlink.
+			if ( is_wp_error( $att_id ) ) {
+				@unlink( $file_array['tmp_name'] );
+				return $att_id;
+			}
 
-			// Assign metadata to attachment
-			wp_update_attachment_metadata( $attach_id, $attach_data );
+			if ($att_id) {
+				set_post_thumbnail($event_id, $att_id);
+			}
 
+			return $att_id;
 		}
 
-		// And finally assign featured image to post
-		set_post_thumbnail( $event_id, $attach_id );
 	}
 
 	/**
