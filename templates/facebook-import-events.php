@@ -1,11 +1,11 @@
 <?php
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) exit;
-global $importfbevents;
+global $ife_events;
 ?>
 <div class="ife_container">
     <div class="ife_row">
-    	<div class="wpea-column ife_well">
+    	<div class="ife-column ife_well">
             <h3><?php esc_attr_e( 'Facebook Import', 'import-facebook-events' ); ?></h3>
             <form method="post" id="ife_facebook_form">
            	
@@ -47,7 +47,7 @@ global $importfbevents;
 			                    <span class="ife_small">
 			                        <?php _e( ' Eg. username for https://www.facebook.com/xylusinfo/ is "xylusinfo".', 'import-facebook-events' ); ?>
 			                    </span>
-			                    <?php do_action( 'ife_render_pro_notice'); ?>
+			                    <?php do_action( 'ife_render_pro_notice' ); ?>
 					    	</td>
 					    </tr>
 
@@ -56,20 +56,21 @@ global $importfbevents;
 					    		<?php esc_attr_e( 'Import type','import-facebook-events' ); ?> : 
 					    	</th>
 					    	<td>
-						    	<?php ife_render_import_type(); ?>
+						    	<?php $ife_events->common->render_import_type(); ?>
 					    	</td>
 					    </tr>
 
 					    <?php 
-					    ife_render_eventstatus_input();
-					    ife_render_em_category_input();
+					    $ife_events->common->render_import_into_and_taxonomy();
+					    $ife_events->common->render_eventstatus_input();
 					    ?>
+
 
 					</tbody>
 		        </table>
                 
                 <div class="ife_element">
-                	<input type="hidden" name="import_origin" value="facebook_em" />
+                	<input type="hidden" name="import_origin" value="facebook" />
                     <input type="hidden" name="ife_action" value="ife_import_submit" />
                     <?php wp_nonce_field( 'ife_import_form_nonce_action', 'ife_import_form_nonce' ); ?>
                     <input type="submit" class="button-primary ife_submit_button" style=""  value="<?php esc_attr_e( 'Import Event', 'import-facebook-events' ); ?>" />

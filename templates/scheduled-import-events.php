@@ -1,7 +1,7 @@
 <?php
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) exit;
-global $importfbevents;
+global $ife_events;
 ?>
 <div class="ife_container">
     <div class="ife_row">

@@ -1,22 +1,30 @@
 === Import Facebook Events ===
 Contributors: xylus
 Donate link: http://xylusthemes.com/
-Tags: facebook, facebook event, facebook events, import, facebook import, the events calendar, event import,events manager, import events, events, calendar, event, import event
+Tags: facebook, facebook event, facebook events, import, facebook import, the events calendar, event import,events manager, import events, events, calendar, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Import Facebook Events allows you to import Facebook (facebook.com) events into The Events Calendar or Events Manager.
+Import Facebook Events allows you to import Facebook (facebook.com) events into your WordPress site.
 
 == Description ==
 
 This plugin allows you to import events from [facebook.com](https://www.facebook.com/) into The Events Calendar and Events Manager. You can schedule event import so it will be imported automatacally [Pro]
 
+This Plugin is works as a stand alone as well as add-on plugin for below listed Events plugins, which allows you to run imports from facebook right from your dashboard. As a stand alone plugin this plugin work independently for event import and Event Management.
 
-This is add-on plugin for [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/ "The Events Calendar") and [Events Manager](https://wordpress.org/plugins/events-manager/ "Events Manager"), which allows you to import events from [facebook.com](https://www.facebook.com/) into The Events Calendar and Events Calendar. As an add-on plugin this plugin need The Events Calendar or Events Manager Installed and activated.
+**Import Events into**
 
+* [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/)
+* [Events manager](https://wordpress.org/plugins/events-manager/)
+* [All-in-One Event Calendar](https://wordpress.org/plugins/all-in-one-event-calendar/)
+* [Event Organiser](https://wordpress.org/plugins/event-organiser/)
+* [EventON](https://codecanyon.net/item/eventon-wordpress-event-calendar-plugin/1211017)
+* [My Calendar](https://wordpress.org/plugins/my-calendar/)
+* In-built Events
 
 **Additional [PRO Version](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=wprepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=wprepo-readme) Features**
 
@@ -42,7 +50,6 @@ This is add-on plugin for [The Events Calendar](https://wordpress.org/plugins/th
 * [WP Bulk Delete](https://wordpress.org/plugins/wp-bulk-delete/)
 >
 
-
 == Installation ==
 
 = This plugin can be installed directly from your site. =
@@ -64,9 +71,23 @@ This is add-on plugin for [The Events Calendar](https://wordpress.org/plugins/th
 1. Import Facebook events by Event IDs.
 2. Import Facebook events by Organization/Page ID (Pro).
 3. Scheduled Facebook Imports (Pro).
-4. Settings
+4. Import History
+5. Settings
+6. Events page using '[facebook_events posts_per_page="12"]' shortcode
+7. Single Event page (Twenty Sixteen Theme).
 
 == Changelog ==
+
+= 1.1.0 =
+* Added: in-built Event management system.
+* Added: Import into My Calendar
+* Added: Import into eventON
+* Added: import into All-in-One Event Calendar
+* Added: import into Event Organizer
+* Added: Import history
+* Added: support links.
+* Improvements in scheduled imports
+* Fixes: some bug fixes
 
 = 1.0.1 =
 * FIXED: some bug fixes

@@ -1,13 +1,14 @@
 <?php
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) exit;
-$ife_options_temp = get_option( IFE_OPTIONS );
-$ife_options = !empty( $ife_options_temp ) ? $ife_options_temp : array();
+$ife_options = get_option( IFE_OPTIONS );
+$facebook_options = isset( $ife_options )? $ife_options : array();
 ?>
 <div class="ife_container">
     <div class="ife_row">
     	
     	<form method="post" id="ife_setting_form">                
+
             <h3 class="setting_bar"><?php esc_attr_e( 'Facebook Settings', 'import-facebook-events' ); ?></h3>
             <p><?php _e( 'You need a Facebook App ID and App Secret to import your events from Facebook.','import-facebook-events' ); ?> </p>
             
@@ -18,7 +19,7 @@ $ife_options = !empty( $ife_options_temp ) ? $ife_options_temp : array();
                             <?php _e( 'Facebook App ID','import-facebook-events' ); ?> : 
                         </th>
                         <td>
-                            <input class="facebook_app_id" name="facebook[facebook_app_id]" type="text" value="<?php if ( isset( $ife_options['facebook_app_id'] ) ) { echo $ife_options['facebook_app_id']; } ?>" />
+                            <input class="facebook_app_id" name="facebook[facebook_app_id]" type="text" value="<?php if ( isset( $facebook_options['facebook_app_id'] ) ) { echo $facebook_options['facebook_app_id']; } ?>" />
                             <span class="xtei_small">
                                 <?php
                                 printf( '%s <a href="https://developers.facebook.com/apps" target="_blank">%s</a>', 
@@ -35,7 +36,7 @@ $ife_options = !empty( $ife_options_temp ) ? $ife_options_temp : array();
                             <?php _e( 'Facebook App secret','import-facebook-events' ); ?> : 
                         </th>
                         <td>
-                            <input class="facebook_app_secret" name="facebook[facebook_app_secret]" type="text" value="<?php if ( isset( $ife_options['facebook_app_secret'] ) ) { echo $ife_options['facebook_app_secret']; } ?>" />
+                            <input class="facebook_app_secret" name="facebook[facebook_app_secret]" type="text" value="<?php if ( isset( $facebook_options['facebook_app_secret'] ) ) { echo $facebook_options['facebook_app_secret']; } ?>" />
                             <span class="xtei_small">
                                 <?php
                                 printf( '%s <a href="https://developers.facebook.com/apps" target="_blank">%s</a>', 
@@ -53,7 +54,7 @@ $ife_options = !empty( $ife_options_temp ) ? $ife_options_temp : array();
                         </th>
                         <td>
                             <?php 
-                            $update_facebook_events = isset( $ife_options['update_events'] ) ? $ife_options['update_events'] : 'no';
+                            $update_facebook_events = isset( $facebook_options['update_events'] ) ? $facebook_options['update_events'] : 'no';
                             ?>
                             <input type="checkbox" name="facebook[update_events]" value="yes" <?php if( $update_facebook_events == 'yes' ) { echo 'checked="checked"'; } ?> />
                             <span class="xtei_small">

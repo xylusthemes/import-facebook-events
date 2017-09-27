@@ -3,13 +3,16 @@
  * Plugin Name:       Import Facebook Events
  * Plugin URI:        http://xylusthemes.com/plugins/import-facebook-events/
  * Description:       Import Facebook Events allows you to import Facebook ( facebook.com ) events into your WordPress site.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            Xylus Themes
  * Author URI:        http://xylusthemes.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       import-facebook-events
  * Domain Path:       /languages
+ *
+ * @package     Import_Facebook_Events
+ * @author      Dharmesh Patel <dspatel44@gmail.com>
  */
 
 // If this file is called directly, abort.
@@ -39,8 +42,8 @@ class Import_Facebook_Events{
      * @uses Import_Facebook_Events::setup_constants() Setup the constants needed.
      * @uses Import_Facebook_Events::includes() Include the required files.
      * @uses Import_Facebook_Events::laod_textdomain() load the language files.
-     * @see run_wp_event_aggregator()
-     * @return object| WP Event Aggregator the one true WP Event Aggregator.
+     * @see run_import_facebook_events()
+     * @return object| Import Facebook Events the one true Import Facebook Events.
      */
 	public static function instance() {
 		if( ! isset( self::$instance ) && ! (self::$instance instanceof Import_Facebook_Events ) ) {
@@ -48,12 +51,23 @@ class Import_Facebook_Events{
 			self::$instance->setup_constants();
 
 			add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
+			add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_style' ) );
+			add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_script' ) );
 
 			self::$instance->includes();
+			self::$instance->common = new Import_Facebook_Events_Common();
+			self::$instance->cpt    = new Import_Facebook_Events_Cpt();
+			self::$instance->facebook = new Import_Facebook_Events_Facebook();
 			self::$instance->admin = new Import_Facebook_Events_Admin();
 			self::$instance->manage_import = new Import_Facebook_Events_Manage_Import();
-			self::$instance->facebook = new Import_Facebook_Events_Facebook();
-
+			self::$instance->ife    = new Import_Facebook_Events_IFE();
+			self::$instance->tec = new Import_Facebook_Events_TEC();
+			self::$instance->em = new Import_Facebook_Events_EM();
+			self::$instance->eventon = new Import_Facebook_Events_EventON();
+			self::$instance->event_organizer = new Import_Facebook_Events_Event_Organizer();
+			self::$instance->aioec = new Import_Facebook_Events_Aioec();
+			self::$instance->my_calendar = new Import_Facebook_Events_My_Calendar();
+			
 		}
 		return self::$instance;	
 	}
@@ -65,7 +79,7 @@ class Import_Facebook_Events{
 	 *
 	 * @since 1.0.0
 	 * @see Import_Facebook_Events::instance()
-	 * @see run_wp_event_aggregator()
+	 * @see run_import_facebook_events()
 	 */
 	private function __construct() { /* Do nothing here */ }
 
@@ -95,7 +109,7 @@ class Import_Facebook_Events{
 
 		// Plugin version.
 		if( ! defined( 'IFE_VERSION' ) ){
-			define( 'IFE_VERSION', '1.0.0' );
+			define( 'IFE_VERSION', '1.1.0' );
 		}
 
 		// Plugin folder Path.
@@ -118,44 +132,9 @@ class Import_Facebook_Events{
 			define( 'IFE_OPTIONS', 'ife_facebook_options' );
 		}
 
-		define( 'IFE_TEC_TAXONOMY', 'tribe_events_cat' );
-		if ( class_exists( 'Tribe__Events__Main' ) ) {
-			define( 'IFE_TEC_POSTTYPE', Tribe__Events__Main::POSTTYPE );
-		}else{
-			define( 'IFE_TEC_POSTTYPE', 'tribe_events' );
-		}
-
-		if ( class_exists( 'Tribe__Events__Organizer' ) ) {
-			define( 'IFE_TEC_ORGANIZER_POSTTYPE', Tribe__Events__Organizer::POSTTYPE );
-		}else{
-			define( 'IFE_TEC_ORGANIZER_POSTTYPE', 'tribe_organizer' );
-		}
-
-		if ( class_exists( 'Tribe__Events__Venue' ) ) {
-			define( 'IFE_TEC_VENUE_POSTTYPE', Tribe__Events__Venue::POSTTYPE );
-		}else{
-			define( 'IFE_TEC_VENUE_POSTTYPE', 'tribe_venue' );
-		}
-
-		if ( defined( 'EM_POST_TYPE_EVENT' ) ) {
-			define( 'IFE_EM_POSTTYPE', EM_POST_TYPE_EVENT );
-		} else {
-			define( 'IFE_EM_POSTTYPE', 'event' );
-		}
-		if ( defined( 'EM_TAXONOMY_CATEGORY' ) ) {
-			define( 'IFE_EM_TAXONOMY',EM_TAXONOMY_CATEGORY );
-		} else {
-			define( 'IFE_EM_TAXONOMY','event-categories' );
-		}
-		if ( defined( 'EM_POST_TYPE_LOCATION' ) ) {
-			define( 'IFE_LOCATION_POSTTYPE',EM_POST_TYPE_LOCATION );
-		} else {
-			define( 'IFE_LOCATION_POSTTYPE','location' );
-		}
-
 		// Pro plugin Buy now Link.
 		if( ! defined( 'IFE_PLUGIN_BUY_NOW_URL' ) ){
-			define( 'IFE_PLUGIN_BUY_NOW_URL', 'https://xylusthemes.com/plugins/import-facebook-events/?utm_source=insideplugin&utm_medium=web&utm_content=sidebar&utm_campaign=freeplugin' );
+			define( 'IFE_PLUGIN_BUY_NOW_URL', 'http://xylusthemes.com/plugins/import-facebook-events/?utm_source=insideplugin&utm_medium=web&utm_content=sidebar&utm_campaign=freeplugin' );
 		}
 	}
 
@@ -168,11 +147,20 @@ class Import_Facebook_Events{
 	 */
 	private function includes() {
 
-		require_once IFE_PLUGIN_DIR . 'includes/common-functions.php';
-		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-facebook.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-common.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-list-table.php';
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-admin.php';
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-manage-import.php';
-	
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-cpt.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-facebook.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ife.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-tec.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-em.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-eventon.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-event_organizer.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-aioec.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-my-calendar.php';
+
 	}
 
 	/**
@@ -192,6 +180,31 @@ class Import_Facebook_Events{
 	
 	}
 	
+	/**
+	 * enqueue style front-end
+	 * 
+	 * @access public
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function ife_enqueue_style() {
+
+		$css_dir = IFE_PLUGIN_URL . 'assets/css/';
+	 	wp_enqueue_style('import-facebook-events-front', $css_dir . 'import-facebook-events.css', false, "" );		
+	}
+
+	/**
+	 * enqueue script front-end
+	 * 
+	 * @access public
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function ife_enqueue_script() {
+		
+		// enqueue script here.
+	}
+
 }
 
 endif; // End If class exists check.
@@ -205,7 +218,7 @@ endif; // End If class exists check.
  * Use this function like you would a global variable, except without needing
  * to declare the global.
  *
- * Example: <?php $importfbevents = run_import_facebook_events(); ?>
+ * Example: <?php $ife_events = run_import_facebook_events(); ?>
  *
  * @since 1.0.0
  * @return object|Import_Facebook_Events The one true Import_Facebook_Events Instance.
@@ -214,8 +227,23 @@ function run_import_facebook_events() {
 	return Import_Facebook_Events::instance();
 }
 
+/**
+ * Get Import events setting options
+ *
+ * @since 1.0
+ * @return array
+ */
+function ife_get_import_options( $type = '' ) {
+
+	$ife_options = get_option( IFE_OPTIONS );
+	if ( $type != '' && $type == 'facebook' ) {
+		return $ife_options;
+		//$ife_options = isset( $ife_options[ $type ] ) ? $ife_options[ $type ] : array();
+	}
+	return $ife_options;
+}
+
 // Get Import_Facebook_Events Running.
-global $importfbevents, $fb_errors, $fb_success_msg, $fb_warnings, $fb_info_msg;
-$importfbevents = run_import_facebook_events();
-$importfbevents->admin->check_requirements( plugin_basename( __FILE__ ) );
-$fb_errors = $fb_warnings = $fb_success_msg = $fb_info_msg = array();
+global $ife_events, $ife_errors, $ife_success_msg, $ife_warnings, $ife_info_msg;
+$ife_events = run_import_facebook_events();
+$ife_errors = $ife_warnings = $ife_success_msg = $ife_info_msg = array();

@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 <div class="upgrade_to_pro">
 	<h2><?php esc_html_e( 'Upgrade to Pro', 'import-facebook-events' ); ?></h2>
-	<p><?php esc_html_e( 'Unlock more power to Facebook events import operation, enable scheduled imports today, Upgrade today!!','import-facebook-events'); ?></p>
+	<p><?php esc_html_e( 'Unlock more power to events import operation, enable scheduled imports today, Upgrade today!!','import-facebook-events'); ?></p>
 	<a class="button button-primary upgrade_button" href="<?php echo esc_url( IFE_PLUGIN_BUY_NOW_URL ); ?>" target="_blank">
 		<?php esc_html_e( 'Upgrade to Pro','import-facebook-events'); ?>
 	</a>
