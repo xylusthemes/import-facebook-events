@@ -4,7 +4,7 @@ Donate link: http://xylusthemes.com/
 Tags: facebook, facebook event, facebook events, import, facebook import, the events calendar, event import,events manager, import events, events, calendar, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,8 @@ This Plugin is works as a stand alone as well as add-on plugin for below listed 
 * [EventON](https://codecanyon.net/item/eventon-wordpress-event-calendar-plugin/1211017)
 * [My Calendar](https://wordpress.org/plugins/my-calendar/)
 * In-built Events
+
+You can use `[facebook_events]` for display in-built facebook events list.
 
 **Additional [PRO Version](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=wprepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=wprepo-readme) Features**
 
@@ -77,6 +79,9 @@ This Plugin is works as a stand alone as well as add-on plugin for below listed 
 7. Single Event page (Twenty Sixteen Theme).
 
 == Changelog ==
+
+= 1.1.1 =
+* FIXED: some bug fixes in events manage.
 
 = 1.1.0 =
 * Added: in-built Event management system.
