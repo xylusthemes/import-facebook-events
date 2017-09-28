@@ -175,7 +175,7 @@ class Import_Facebook_Events{
 		load_plugin_textdomain(
 			'import-facebook-events',
 			false,
-			IFE_PLUGIN_DIR . '/languages/'
+			basename( dirname( __FILE__ ) ) . '/languages'
 		);
 	
 	}
