@@ -121,7 +121,9 @@ class Import_Facebook_Events_Manage_Import {
 			}
 		}
 
-		if ( isset( $_GET['action'] ) && $_GET['action'] == 'delete' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'bulk-fb_scheduled_imports') ) {
+		$is_bulk_delete = ( ( isset( $_GET['action'] ) && $_GET['action'] == 'delete' ) || ( isset( $_GET['action2'] ) && $_GET['action2'] == 'delete' ) );
+		
+		if ( $is_bulk_delete && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'bulk-fb_scheduled_imports') ) {
 			$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'scheduled';
 			$wp_redirect = get_site_url() . urldecode( $_REQUEST['_wp_http_referer'] );
         	$delete_ids = $_REQUEST['fb_scheduled_import'];
@@ -135,7 +137,7 @@ class Import_Facebook_Events_Manage_Import {
 			exit;
 		}
 
-		if ( isset( $_GET['action'] ) && $_GET['action'] == 'delete' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'bulk-fb_import_histories') ) {
+		if ( $is_bulk_delete && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'bulk-fb_import_histories') ) {
 			$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'history';
 			$wp_redirect = get_site_url() . urldecode( $_REQUEST['_wp_http_referer'] );
         	$delete_ids = $_REQUEST['import_history'];
