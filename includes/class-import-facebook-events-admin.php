@@ -78,10 +78,13 @@ class Import_Facebook_Events_Admin {
 	 * @return void
 	 */
 	function enqueue_admin_styles( $hook ) {
-
-	  	$css_dir = IFE_PLUGIN_URL . 'assets/css/';
-	 	wp_enqueue_style('jquery-ui', $css_dir . 'jquery-ui.css', false, "1.12.0" );
-	 	wp_enqueue_style('import-facebook-events', $css_dir . 'import-facebook-events-admin.css', false, "" );
+		global $pagenow;
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
+		if( 'facebook_import' == $page || $pagenow == 'widgets.php' || 'post.php' == $pagenow || 'post-new.php' == $pagenow ){
+		  	$css_dir = IFE_PLUGIN_URL . 'assets/css/';
+		 	wp_enqueue_style('jquery-ui', $css_dir . 'jquery-ui.css', false, "1.12.0" );
+		 	wp_enqueue_style('import-facebook-events', $css_dir . 'import-facebook-events-admin.css', false, "" );
+		}
 	}
 
 	/**
