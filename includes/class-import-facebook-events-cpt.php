@@ -769,7 +769,12 @@ class Import_Facebook_Events_Cpt {
 
 		$wp_list_events = '';
 		/* Start the Loop */
-		
+		if( is_front_page() ){
+			$curr_paged = $paged;
+			global $paged;
+			$temp_paged = $paged;
+			$paged = $curr_paged;
+		}
 		ob_start();
 		?>
 		<div class="row_grid">
@@ -803,6 +808,10 @@ class Import_Facebook_Events_Cpt {
 		$wp_list_events = ob_get_contents();
 		ob_end_clean();
 		wp_reset_postdata();
+		if( is_front_page() ){
+			global $paged;
+			$paged = $temp_paged;
+		}
 		return $wp_list_events;
 
 	}
