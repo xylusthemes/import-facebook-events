@@ -64,7 +64,10 @@ class Import_Facebook_Events_IFE {
 			$options = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
 			if ( 'yes' != $update_events ) {
-				return array( 'status'=> 'skipped' );
+				return array(
+					'status'=> 'skipped',
+					'id' 	=> $is_exitsing_event
+				);
 			}
 		}
 

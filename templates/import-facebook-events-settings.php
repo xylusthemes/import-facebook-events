@@ -67,6 +67,19 @@ $facebook_app_secret = isset( $facebook_options['facebook_app_secret'] ) ? $face
 
                     <tr>
                         <th scope="row">
+                            <?php _e( 'Advanced Synchronization', 'import-facebook-events' ); ?> : 
+                        </th>
+                        <td>
+                            <input type="checkbox" disabled="disabled" />
+                            <span>
+                                <?php _e( 'Check to enable advanced synchronization, this will delete events which are removed from Facebook. Also, it deletes passed events.', 'import-facebook-events' ); ?>
+                            </span>
+                            <?php do_action( 'ife_render_pro_notice' ); ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">
                             <?php _e( 'Disable Facebook events', 'import-facebook-events' ); ?> : 
                         </th>
                         <td>

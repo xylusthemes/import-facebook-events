@@ -92,7 +92,10 @@ class Import_Facebook_Events_TEC {
 			if ( 'yes' == $update_events ) {
 				return $this->update_event( $is_exitsing_event, $centralize_array, $formated_args, $event_args );
 			}else{
-				return array( 'status'=> 'skipped' );
+				return array(
+					'status'=> 'skipped',
+					'id' 	=> $is_exitsing_event
+				);
 			}
 		} else {
 			return $this->create_event( $centralize_array, $formated_args, $event_args );
