@@ -108,6 +108,10 @@ class Import_Facebook_Events_Common {
 			case 'my_calendar':
 				$event_taxonomy = $ife_events->my_calendar->get_taxonomy();
 				break;
+
+			case 'ee4':
+				$event_taxonomy = $ife_events->ee4->get_taxonomy();
+				break;
 			
 			default:
 				break;
@@ -172,7 +176,13 @@ class Import_Facebook_Events_Common {
 		// check My Calendar
 		if ( is_plugin_active( 'my-calendar/my-calendar.php' ) ) {
 			$supported_plugins['my_calendar'] = __( 'My Calendar', 'import-facebook-events' );
-		}		
+		}
+
+		// check Event Espresso (EE4)
+		if ( defined( 'EVENT_ESPRESSO_VERSION' ) &&  defined( 'EVENT_ESPRESSO_MAIN_FILE' ) ) {
+			$supported_plugins['ee4'] = __( 'Event Espresso (EE4)', 'import-facebook-events' );
+		}
+
 		$supported_plugins['ife'] = __( 'Facebook Events', 'import-facebook-events' );
 		return $supported_plugins;
 	}
@@ -367,6 +377,10 @@ class Import_Facebook_Events_Common {
 
 			case 'my_calendar':
 				$import_result = $ife_events->my_calendar->import_event( $centralize_array, $event_args );
+				break;
+
+			case 'ee4':
+				$import_result = $ife_events->ee4->import_event( $centralize_array, $event_args );
 				break;
 		
 			default:

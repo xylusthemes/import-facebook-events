@@ -67,6 +67,7 @@ class Import_Facebook_Events{
 			self::$instance->event_organizer = new Import_Facebook_Events_Event_Organizer();
 			self::$instance->aioec = new Import_Facebook_Events_Aioec();
 			self::$instance->my_calendar = new Import_Facebook_Events_My_Calendar();
+			self::$instance->ee4 = new Import_Facebook_Events_EE4();
 			
 		}
 		return self::$instance;	
@@ -160,6 +161,7 @@ class Import_Facebook_Events{
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-event_organizer.php';
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-aioec.php';
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-my-calendar.php';
+		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ee4.php';
 
 	}
 
