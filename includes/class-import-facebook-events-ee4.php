@@ -65,7 +65,7 @@ class Import_Facebook_Events_EE4 {
 			return false;
 		}
 
-		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array );
+		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array['ID'] );
 		
 		if ( $is_exitsing_event ) {
 			// Update event or not?
