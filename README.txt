@@ -1,10 +1,10 @@
 === Import Facebook Events ===
-Contributors: xylus
+Contributors: xylus,dharm1025
 Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
 Requires at least: 4.0
-Tested up to: 4.8
-Stable tag: 1.2.0
+Tested up to: 4.9
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,7 @@ Using This plugin you can import facebook event into below listed leading Event 
 * [Event Organiser](https://wordpress.org/plugins/event-organiser/)
 * [EventON](https://codecanyon.net/item/eventon-wordpress-event-calendar-plugin/1211017)
 * [My Calendar](https://wordpress.org/plugins/my-calendar/)
+* [Event Espresso 4 (EE4)](https://wordpress.org/plugins/event-espresso-decaf/)
 * In-built Events
 
 You can use `[facebook_events]` for display in-built facebook events list.
@@ -90,6 +91,13 @@ You can use `[facebook_events]` for display in-built facebook events list.
 10. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.3.0 =
+* ADDED: Import into Event Espresso 4 support.
+* ADDED: Advanced Sync for Facebook (Pro).
+* ADDED: Functionality for Edit Scheduled import (Pro).
+* ADDED: Select tags fuctionality for TEC,EM and IFE (Pro).
+* FIXED: some bug fixes.
 
 = 1.2.0 =
 * ADDED: Support import events from Facebook group (Pro).
