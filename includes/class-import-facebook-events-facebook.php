@@ -67,7 +67,6 @@ class Import_Facebook_Events_Facebook {
 		}			
 
 		$import_by = isset( $event_data['import_by'] ) ? esc_attr( $event_data['import_by'] ) : '';
-
 		$facebook_event_ids = isset( $event_data['event_ids'] ) ? $event_data['event_ids'] : array();
 		
 		if( !empty( $facebook_event_ids ) ){
@@ -75,7 +74,9 @@ class Import_Facebook_Events_Facebook {
 				if( $facebook_event_id != '' ){
 					$imported_event = $this->import_event_by_event_id( $facebook_event_id, $event_data );
 					if( !empty( $imported_event ) ){
-						$imported_events[] = $imported_event;
+						foreach ($imported_event as $imported_event0 ) {
+							$imported_events[] = $imported_event0;
+						}
 					}
 				}		
 			}
@@ -131,8 +132,14 @@ class Import_Facebook_Events_Facebook {
 		$import_result = '';
 
 		if ( ! empty( $facebook_event_object ) && isset( $facebook_event_object->id ) ) {
-			$centralize_array = $this->generate_centralize_array( $facebook_event_object );
-			return $ife_events->common->import_events_into( $centralize_array, $event_args );
+			$centralize_arrays = $this->generate_centralize_array( $facebook_event_object );
+			$saved_events = array();
+			if( !empty( $centralize_arrays ) ){
+				foreach ($centralize_arrays as $centralize_array ) {
+					$saved_events[] = $ife_events->common->import_events_into( $centralize_array, $event_args );
+				}
+			}
+			return $saved_events;
 		}
 	}
 
@@ -205,6 +212,7 @@ class Import_Facebook_Events_Facebook {
 						'description',
 						'start_time',
 						'end_time',
+						'event_times',
 						'updated_time',
 						'cover',
 						'ticket_uri',
@@ -276,7 +284,7 @@ class Import_Facebook_Events_Facebook {
 		$end_time = $end_time_utc = time();
 		$utc_offset = '';
 
-		$facebook_id = $facebook_event->id;
+		$facebook_id = (int)$facebook_event->id;
 		$post_title = isset( $facebook_event->name ) ? $facebook_event->name : '';
 		$post_description = isset( $facebook_event->description ) ? $facebook_event->description : '';
 		
@@ -286,6 +294,22 @@ class Import_Facebook_Events_Facebook {
 		$ticket_uri = isset( $facebook_event->ticket_uri ) ? esc_url( $facebook_event->ticket_uri ) : '';
 		$timezone = $this->get_utc_offset( $facebook_event->start_time );
 		$cover_image = isset( $facebook_event->cover->source ) ? $ife_events->common->clean_url( esc_url( $facebook_event->cover->source ) ) : '';
+
+		$event_times_obj = isset( $facebook_event->event_times ) ? $facebook_event->event_times : array();
+		$event_times = array();
+		if( !empty( $event_times_obj ) ){
+			foreach ($event_times_obj as $event_time ) {
+				if( isset( $event_time->start_time ) && isset( $event_time->end_time ) ){
+					$et_temp = array();
+					$et_temp['ID'] = (int)$event_time->id;				
+					$et_temp['start_time'] = strtotime( $ife_events->common->convert_datetime_to_db_datetime( $event_time->start_time ) );
+					$et_temp['end_time'] = strtotime( $ife_events->common->convert_datetime_to_db_datetime( $event_time->end_time ) );
+					if( $et_temp['end_time'] > time() ){
+						$event_times[] = $et_temp;
+					}					
+				}
+			}
+		}
 
 		$xt_event = array(
 			'origin'          => 'facebook',
@@ -312,8 +336,18 @@ class Import_Facebook_Events_Facebook {
 			$xt_event['location'] = $this->get_location( $facebook_event );
 		}
 
-		return $xt_event;
-		
+		$xt_events = array();
+		if( empty( $event_times ) ){
+			$xt_events[] = $xt_event;
+		}else{
+			foreach ($event_times as $event_time ) {
+				$xt_event['ID'] = $event_time['ID'];
+				$xt_event['starttime_local'] = $event_time['start_time'];
+				$xt_event['endtime_local'] = $event_time['end_time'];
+				$xt_events[] = $xt_event;
+			}
+		}
+		return $xt_events;
 	}
 
 	/**
