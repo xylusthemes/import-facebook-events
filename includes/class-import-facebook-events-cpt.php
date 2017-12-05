@@ -804,6 +804,8 @@ class Import_Facebook_Events_Cpt {
 						</nav>
 					</div>
 				<?php endif;
+			else:
+				echo apply_filters( 'ife_no_events_found_message', __( "No Events are found.", 'import-facebook-events' ) );
 			endif;
 
 			?>
