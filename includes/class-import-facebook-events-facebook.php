@@ -284,7 +284,7 @@ class Import_Facebook_Events_Facebook {
 		$end_time = $end_time_utc = time();
 		$utc_offset = '';
 
-		$facebook_id = (int)$facebook_event->id;
+		$facebook_id = $facebook_event->id;
 		$post_title = isset( $facebook_event->name ) ? $facebook_event->name : '';
 		$post_description = isset( $facebook_event->description ) ? $facebook_event->description : '';
 		
@@ -301,7 +301,7 @@ class Import_Facebook_Events_Facebook {
 			foreach ($event_times_obj as $event_time ) {
 				if( isset( $event_time->start_time ) && isset( $event_time->end_time ) ){
 					$et_temp = array();
-					$et_temp['ID'] = (int)$event_time->id;				
+					$et_temp['ID'] = $event_time->id;
 					$et_temp['start_time'] = strtotime( $ife_events->common->convert_datetime_to_db_datetime( $event_time->start_time ) );
 					$et_temp['end_time'] = strtotime( $ife_events->common->convert_datetime_to_db_datetime( $event_time->end_time ) );
 					if( $et_temp['end_time'] > time() ){
