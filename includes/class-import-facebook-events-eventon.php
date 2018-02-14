@@ -103,11 +103,11 @@ class Import_Facebook_Events_EventON {
 		if( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ){
 			$evon_eventdata['post_status'] = $event_args['event_status'];
 		}
-		/*echo "<pre>";
-		print_r( $centralize_array );
-		print_r( $evon_eventdata );
-		exit();
-		*/
+
+		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('status') ) {
+			$evon_eventdata['post_status'] = get_post_status( $is_exitsing_event );
+		}
+
 		$inserted_event_id = wp_insert_post( $evon_eventdata, true );
 
 		if ( ! is_wp_error( $inserted_event_id ) ) {
@@ -122,7 +122,9 @@ class Import_Facebook_Events_EventON {
 				}
 			}
 			if ( ! empty( $ife_cats ) ) {
-				wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
+				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+					wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
+				}
 			}
 
 			// Assign Featured images
@@ -136,7 +138,7 @@ class Import_Facebook_Events_EventON {
 			$city = isset( $centralize_array['location']['city'] ) ? sanitize_text_field($centralize_array['location']['city']) : '';
 			$state = isset( $centralize_array['location']['state'] ) ? sanitize_text_field($centralize_array['location']['state']) : '';
 			$country = isset( $centralize_array['location']['country'] ) ? sanitize_text_field($centralize_array['location']['country']) : '';
-						
+			
 			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', $centralize_array['url'] );
@@ -222,7 +224,7 @@ class Import_Facebook_Events_EventON {
 				if( function_exists( 'evo_save_term_metas' ) ){
 					evo_save_term_metas( $this->organizer_taxonomy, $org_term_id, $org_term_meta);
 				}
-				
+
 				$term_org_ids = wp_set_object_terms( $inserted_event_id, $org_term_id, $this->organizer_taxonomy );
 				update_post_meta( $inserted_event_id, 'evo_organizer_tax_id', $org_term_id );
 				update_post_meta( $inserted_event_id, 'evcal_organizer', $centralize_array['organizer']['name'] );

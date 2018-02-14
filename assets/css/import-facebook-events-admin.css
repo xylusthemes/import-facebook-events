@@ -259,3 +259,7 @@ table.ife_form_table tr td:nth-child(1) {
     margin-top: -10px;
     background: #ddd;
 }
+
+.vc_ui-panel .ife_datepicker .ui-datepicker-inline {
+    display: none !important;
+}

@@ -13,13 +13,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Import_Facebook_Events_EM {
 
-	// The Events Calendar Event Taxonomy
+	// Events manager Event Taxonomy
 	protected $taxonomy;
 
-	// The Events Calendar Event Posttype
+	// Event tag Taxonomy
+	protected $tag_taxonomy;
+
+	// Events manager Event Posttype
 	protected $event_posttype;
 
-	// The Events Calendar Venue Posttype
+	// Events manager Venue Posttype
 	protected $venue_posttype;
 
 	/**
@@ -39,11 +42,17 @@ class Import_Facebook_Events_EM {
 		} else {
 			$this->taxonomy = 'event-categories';
 		}
+		if ( defined( 'EM_TAXONOMY_TAG' ) ) {
+			$this->tag_taxonomy = EM_TAXONOMY_TAG;
+		} else {
+			$this->tag_taxonomy = 'event-tags';
+		}
 		if ( defined( 'EM_POST_TYPE_LOCATION' ) ) {
 			$this->venue_posttype = EM_POST_TYPE_LOCATION;
 		} else {
 			$this->venue_posttype = 'location';
 		}
+		
 
 	}
 
@@ -61,6 +70,9 @@ class Import_Facebook_Events_EM {
 	}
 	public function get_taxonomy(){
 		return $this->taxonomy;
+	}
+	public function get_tag_taxonomy(){
+		return $this->tag_taxonomy;
 	}
 
 	/**
@@ -111,6 +123,11 @@ class Import_Facebook_Events_EM {
 			$emeventdata['post_status'] = $event_args['event_status'];
 		}
 
+		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('status') ) {
+			$emeventdata['post_status'] = get_post_status( $is_exitsing_event );
+			$event_args['event_status'] = get_post_status( $is_exitsing_event );
+		}
+
 		$inserted_event_id = wp_insert_post( $emeventdata, true );
 
 		if ( ! is_wp_error( $inserted_event_id ) ) {
@@ -125,7 +142,22 @@ class Import_Facebook_Events_EM {
 				}
 			}
 			if ( ! empty( $ife_cats ) ) {
-				wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
+				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+					wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
+				}
+			}
+
+			// Asign event tag.
+			$ife_tags = isset( $event_args['event_tags'] ) ? $event_args['event_tags'] : array();
+			if ( ! empty( $ife_tags ) ) {
+				foreach ( $ife_tags as $ife_tagk => $ife_tagv ) {
+					$ife_tags[ $ife_tagk ] = (int) $ife_tagv;
+				}
+			}
+			if ( ! empty( $ife_tags ) ) {
+				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+					wp_set_object_terms( $inserted_event_id, $ife_tags, $this->tag_taxonomy );
+				}
 			}
 
 			// Assign Featured images
@@ -148,7 +180,7 @@ class Import_Facebook_Events_EM {
 					$location_id = $this->get_location_args( $centralize_array['location'], false );
 				}
 			}
-			
+
 			$event_status = null;
 			if ( $inserted_event->post_status == 'publish' ) { $event_status = 1;}
 			if ( $inserted_event->post_status == 'pending' ) { $event_status = 0;}
@@ -198,7 +230,7 @@ class Import_Facebook_Events_EM {
 			if( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ){
 				$status_changed = $wpdb->update( $wpdb->posts, array( 'post_status' => sanitize_text_field( $event_args['event_status'] ) ), array( 'ID' => $inserted_event_id ) );
 			}
-			
+
 			if ( $is_exitsing_event ) {
 				do_action( 'ife_after_update_em_'.$centralize_array["origin"].'_event', $inserted_event_id, $centralize_array );
 				return array(

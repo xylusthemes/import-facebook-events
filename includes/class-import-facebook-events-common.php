@@ -20,7 +20,8 @@ class Import_Facebook_Events_Common {
 	 */
 	public function __construct() {
 		add_action( 'wp_ajax_ife_render_terms_by_plugin', array( $this, 'ife_render_terms_by_plugin' ) );
-		add_action( 'ife_render_pro_notice', array( $this, 'render_pro_notice') );
+		add_action( 'admin_init', array( $this, 'ife_check_if_access_token_invalidated' ) );
+		add_action( 'ife_render_pro_notice', array( $this, 'render_pro_notice' ) );
 	}
 
 	/**
@@ -30,7 +31,7 @@ class Import_Facebook_Events_Common {
 	 * @param array $eventbrite_event Eventbrite event.
 	 * @return array
 	 */
-	public function render_import_into_and_taxonomy() {
+	public function render_import_into_and_taxonomy( $selected = '', $taxonomy_terms = array() ) {
 
 		$active_plugins = $this->get_active_supported_event_plugins();
 		?>	
@@ -44,7 +45,7 @@ class Import_Facebook_Events_Common {
 					if( !empty( $active_plugins ) ){
 						foreach ($active_plugins as $slug => $name ) {
 							?>
-							<option value="<?php echo $slug;?>"><?php echo $name; ?></option>
+							<option value="<?php echo $slug;?>" <?php selected( $selected, $slug ); ?> ><?php echo $name; ?></option>
 							<?php
 						}
 					}
@@ -58,8 +59,18 @@ class Import_Facebook_Events_Common {
 				<?php esc_attr_e( 'Event Categories for Event Import','import-facebook-events' ); ?> : 
 			</th>
 			<td>
+				<?php 
+				$taxo_cats = $taxo_tags = '';
+				if( !empty( $taxonomy_terms ) && isset( $taxonomy_terms['cats'] ) ){
+					$taxo_cats = implode(',', $taxonomy_terms['cats'] );
+				}
+				if( !empty( $taxonomy_terms ) && isset( $taxonomy_terms['tags'] ) ){
+					$taxo_tags = implode(',', $taxonomy_terms['tags'] );
+				}
+				?>
+				<input type="hidden" id="ife_taxo_cats" value="<?php echo $taxo_cats;?>">
+				<input type="hidden" id="ife_taxo_tags" value="<?php echo $taxo_tags;?>">
 				<div class="event_taxo_terms_wraper">
-
 				</div>
 				<span class="ife_small">
 		            <?php esc_attr_e( 'These categories are assign to imported event.', 'import-facebook-events' ); ?>
@@ -79,18 +90,28 @@ class Import_Facebook_Events_Common {
 	function ife_render_terms_by_plugin() {
 		global $ife_events;
 		$event_plugin  = esc_attr( $_REQUEST['event_plugin'] );
-		$event_taxonomy = '';
+		$taxo_cats = $taxo_tags = array();
+		if( isset( $_REQUEST['taxo_cats'] ) ){
+			$taxo_cats = explode(',', $_REQUEST['taxo_cats'] );
+		}
+		if( isset( $_REQUEST['taxo_tags'] ) ){
+			$taxo_tags = explode(',', $_REQUEST['taxo_tags'] );	
+		}
+		$event_taxonomy = $event_tag_taxonomy = '';
 		switch ( $event_plugin ) {
 			case 'ife':
 				$event_taxonomy = $ife_events->ife->get_taxonomy();
+				$event_tag_taxonomy = $ife_events->ife->get_tag_taxonomy();
 				break;
 
 			case 'tec':
 				$event_taxonomy = $ife_events->tec->get_taxonomy();
+				$event_tag_taxonomy = $ife_events->tec->get_tag_taxonomy();
 				break;
 
 			case 'em':
 				$event_taxonomy = $ife_events->em->get_taxonomy();
+				$event_tag_taxonomy = $ife_events->em->get_tag_taxonomy();
 				break;
 
 			case 'eventon':
@@ -116,7 +137,8 @@ class Import_Facebook_Events_Common {
 			default:
 				break;
 		}
-		
+		$tag_supported_plugins = array('ife', 'em', 'tec' );
+		// Event Taxonomy
 		$terms = array();
 		if ( $event_taxonomy != '' ) {
 			if( taxonomy_exists( $event_taxonomy ) ){
@@ -124,12 +146,41 @@ class Import_Facebook_Events_Common {
 			}
 		}
 		if( ! empty( $terms ) ){ ?>
+			<?php if( in_array( $event_plugin, $tag_supported_plugins ) && ife_is_pro() ){ ?>
+				<strong style="display: block;margin: 5px 0px;">
+					<?php _e( 'Event Categories:', 'import-facebook-events' );?>
+				</strong>
+			<?php } ?>
 			<select name="event_cats[]" multiple="multiple">
 		        <?php foreach ($terms as $term ) { ?>
-					<option value="<?php echo $term->term_id; ?>">
+					<option value="<?php echo $term->term_id; ?>" <?php if( in_array( $term->term_id, $taxo_cats ) ){ echo 'selected="selected"'; } ?> >
 	                	<?php echo $term->name; ?>                                	
 	                </option>
 				<?php } ?> 
+			</select>
+			<?php
+		}
+
+		// Event Tag Taxonomy
+		$tag_terms = array();
+		if ( $event_tag_taxonomy != '' ) {
+			if( taxonomy_exists( $event_tag_taxonomy ) ){
+				$tag_terms = get_terms( $event_tag_taxonomy, array( 'hide_empty' => false ) );
+			}
+		}
+
+		if( ! empty( $tag_terms ) && ife_is_pro() ){ ?>
+			<?php if( in_array( $event_plugin, $tag_supported_plugins ) ){ ?>
+				<strong style="display: block;margin: 5px 0px;">
+					<?php _e( 'Event Tags:', 'import-facebook-events' );?>
+				</strong>
+			<?php } ?>
+			<select name="event_tags[]" multiple="multiple">
+		        <?php foreach ($tag_terms as $tag_term ) { ?>
+					<option value="<?php echo $tag_term->term_id; ?>" <?php if( in_array( $tag_term->term_id, $taxo_tags ) ){ echo 'selected="selected"'; } ?>>
+	                	<?php echo $tag_term->name; ?>                               	
+	                </option>
+				<?php } ?>
 			</select>
 			<?php
 		}
@@ -395,22 +446,22 @@ class Import_Facebook_Events_Common {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	function render_import_frequency(){
+	function render_import_frequency( $selected = 'daily' ){
 		?>
-		<select name="import_frequency" class="import_frequency" disabled="disabled" >
-	        <option value='hourly'>
+		<select name="import_frequency" class="import_frequency" <?php if( !ife_is_pro()){ echo 'disabled="disabled"'; } ?> >
+	        <option value='hourly' <?php selected( $selected, 'hourly' ); ?>>
 	            <?php esc_html_e( 'Once Hourly','import-facebook-events' ); ?>
 	        </option>
-	        <option value='twicedaily'>
+	        <option value='twicedaily' <?php selected( $selected, 'twicedaily' ); ?>>
 	            <?php esc_html_e( 'Twice Daily','import-facebook-events' ); ?>
 	        </option>
-	        <option value="daily" selected="selected">
+	        <option value="daily" <?php selected( $selected, 'daily' ); ?> >
 	            <?php esc_html_e( 'Once Daily','import-facebook-events' ); ?>
 	        </option>
-	        <option value="weekly" >
+	        <option value="weekly" <?php selected( $selected, 'weekly' ); ?>>
 	            <?php esc_html_e( 'Once Weekly','import-facebook-events' ); ?>
 	        </option>
-	        <option value="monthly">
+	        <option value="monthly" <?php selected( $selected, 'monthly' ); ?>>
 	            <?php esc_html_e( 'Once a Month','import-facebook-events' ); ?>
 	        </option>
 	    </select>
@@ -425,9 +476,9 @@ class Import_Facebook_Events_Common {
 	 */
 	function render_import_type(){
 		?>
-		<select name="import_type" id="import_type" disabled="disabled">
-	    	<option value="onetime" disabled="disabled" ><?php esc_attr_e( 'One-time Import','import-facebook-events' ); ?></option>
-	    	<option value="scheduled" disabled="disabled" selected="selected" ><?php esc_attr_e( 'Scheduled Import','import-facebook-events' ); ?></option>
+		<select name="import_type" id="import_type"  <?php if( !ife_is_pro()){ echo 'disabled="disabled"'; } ?> >
+	    	<option value="onetime" ><?php esc_attr_e( 'One-time Import','import-facebook-events' ); ?></option>
+	    	<option value="scheduled"  <?php if( !ife_is_pro()){ echo 'disabled="disabled"  selected="selected"'; } ?> ><?php esc_attr_e( 'Scheduled Import','import-facebook-events' ); ?></option>
 	    </select>
 	    <span class="hide_frequency">
 	    	<?php $this->render_import_frequency(); ?>
@@ -477,7 +528,7 @@ class Import_Facebook_Events_Common {
 	 * @since 1.0
 	 * @return void
 	 */
-	function render_eventstatus_input() {
+	function render_eventstatus_input( $selected = 'publish' ) {
 		?>
 		<tr class="event_status_wrapper">
 			<th scope="row">
@@ -485,13 +536,13 @@ class Import_Facebook_Events_Common {
 			</th>
 			<td>
 				<select name="event_status" >
-	                <option value="publish">
+	                <option value="publish" <?php selected( $selected, 'publish' ); ?>>
 	                    <?php esc_html_e( 'Published','import-facebook-events' ); ?>
 	                </option>
-	                <option value="pending">
+	                <option value="pending" <?php selected( $selected, 'pending' ); ?>>
 	                    <?php esc_html_e( 'Pending','import-facebook-events' ); ?>
 	                </option>
-	                <option value="draft">
+	                <option value="draft" <?php selected( $selected, 'draft' ); ?>>
 	                    <?php esc_html_e( 'Draft','import-facebook-events' ); ?>
 	                </option>
 	            </select>
@@ -549,16 +600,70 @@ class Import_Facebook_Events_Common {
 	}
 
 	/**
+	 * Check for user have Authorized user Token
+	 *
+	 * @since    1.2
+	 * @return /boolean
+	 */
+	public function has_authorized_user_token() {
+		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
+		if( !empty( $ife_user_token_options ) ){
+			$authorize_status =	isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
+			$access_token = isset( $ife_user_token_options['access_token'] ) ? $ife_user_token_options['access_token'] : '';
+			if( 1 == $authorize_status && $access_token != '' ){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if user access token has beed invalidated.
+	 *
+	 * @since    1.2
+	 * @return /boolean
+	 */
+	public function ife_check_if_access_token_invalidated() {
+		global $ife_warnings;
+		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
+		if( !empty( $ife_user_token_options ) ){
+			$authorize_status =	isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
+			if( 0 == $authorize_status ){
+				$ife_warnings[] = __( 'The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong>Settings</strong>.', 'import-facebook-events');
+			}
+		}
+	}
+	
+	/**
+	 * Get do not update data fields
+	 *
+	 * @since  1.0.0
+	 * @return array
+	 */
+	public function ife_is_updatable( $field = '' ) {
+		if( '' == $field ){ return true; }
+		$ife_options = get_option( IFE_OPTIONS, array() );
+		$update_fevents = isset( $ife_options['update_events'] ) ? $ife_options['update_events'] : 'no';
+		$dontupdate = isset( $ife_options['dont_update'] ) ? $ife_options['dont_update'] : array();
+		if( 'yes' == $update_fevents && isset( $dontupdate[$field] ) &&  'yes' == $dontupdate[$field] ){
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Display upgrade to pro notice in form.
 	 *
 	 * @since 1.0.0
 	 */
 	public function render_pro_notice(){
-		?>
-		<span class="ife_small">
-	        <?php printf( '<span style="color: red">%s</span> <a href="' . IFE_PLUGIN_BUY_NOW_URL. '" target="_blank" >%s</a>', __( 'Available in Pro version.', 'import-facebook-events' ), __( 'Upgrade to PRO', 'import-facebook-events' ) ); ?>
-	    </span>
-		<?php
+		if( !ife_is_pro() ){
+			?>
+			<span class="ife_small">
+		        <?php printf( '<span style="color: red">%s</span> <a href="' . IFE_PLUGIN_BUY_NOW_URL. '" target="_blank" >%s</a>', __( 'Available in Pro version.', 'import-facebook-events' ), __( 'Upgrade to PRO', 'import-facebook-events' ) ); ?>
+		    </span>
+			<?php
+		}
 	}
 
 	/**
@@ -820,5 +925,104 @@ class Import_Facebook_Events_Common {
 			}
 		}
 		return $country;
+	}
+}
+
+/**
+ * Check is pro active or not.
+ *
+ * @since  1.5.0
+ * @return boolean
+ */
+function ife_is_pro(){
+	if( !function_exists( 'is_plugin_active' ) ){
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	}
+	if ( is_plugin_active( 'import-facebook-events-pro/import-facebook-events-pro.php' ) ) {
+		return true;
+	}
+	return false;
+}
+
+
+/**
+ * Template Functions
+ *
+ * Template functions specifically created for Event Listings
+ *
+ * @author 		Dharmesh Patel
+ * @version     1.5.0
+ */
+
+/**
+ * Gets and includes template files.
+ *
+ * @since 1.5.0
+ * @param mixed  $template_name
+ * @param array  $args (default: array())
+ * @param string $template_path (default: '')
+ * @param string $default_path (default: '')
+ */
+function get_ife_template( $template_name, $args = array(), $template_path = 'import-facebook-events', $default_path = '' ) {
+	if ( $args && is_array( $args ) ) {
+		extract( $args );
+	}
+	include( locate_ife_template( $template_name, $template_path, $default_path ) );
+}
+
+/**
+ * Locates a template and return the path for inclusion.
+ *
+ * This is the load order:
+ *
+ *		yourtheme		/	$template_path	/	$template_name
+ *		yourtheme		/	$template_name
+ *		$default_path	/	$template_name
+ *
+ * @since 1.5.0
+ * @param string      $template_name
+ * @param string      $template_path (default: 'import-facebook-events')
+ * @param string|bool $default_path (default: '') False to not load a default
+ * @return string
+ */
+function locate_ife_template( $template_name, $template_path = 'import-facebook-events', $default_path = '' ) {
+	// Look within passed path within the theme - this is priority
+	$template = locate_template(
+		array(
+			trailingslashit( $template_path ) . $template_name,
+			$template_name
+		)
+	);
+	// Get default template
+	if ( ! $template && $default_path !== false ) {
+		$default_path = $default_path ? $default_path : IFE_PLUGIN_DIR . '/templates/';
+		if ( file_exists( trailingslashit( $default_path ) . $template_name ) ) {
+			$template = trailingslashit( $default_path ) . $template_name;
+		}
+	}
+	// Return what we found
+	return apply_filters( 'ife_locate_template', $template, $template_name, $template_path );
+}
+
+/**
+ * Gets template part (for templates in loops).
+ *
+ * @since 1.0.0
+ * @param string      $slug
+ * @param string      $name (default: '')
+ * @param string      $template_path (default: 'import-facebook-events')
+ * @param string|bool $default_path (default: '') False to not load a default
+ */
+function get_ife_template_part( $slug, $name = '', $template_path = 'import-facebook-events', $default_path = '' ) {
+	$template = '';
+	if ( $name ) {
+		$template = locate_ife_template( "{$slug}-{$name}.php", $template_path, $default_path );
+	}
+	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/import-facebook-events/slug.php
+	if ( ! $template ) {
+		$template = locate_ife_template( "{$slug}.php", $template_path, $default_path );
+	}
+	if ( $template ) {
+		load_template( $template, false );
 	}
 }

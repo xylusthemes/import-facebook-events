@@ -16,6 +16,9 @@ class Import_Facebook_Events_IFE {
 	// Event Taxonomy
 	protected $taxonomy;
 
+	// Event tag Taxonomy
+	protected $tag_taxonomy;
+
 	// Event Posttype
 	protected $event_posttype;
 
@@ -28,6 +31,7 @@ class Import_Facebook_Events_IFE {
 
 		$this->event_posttype = 'facebook_events';
 		$this->taxonomy = 'facebook_category';
+		$this->tag_taxonomy = 'facebook_tag';
 
 	}
 
@@ -38,9 +42,14 @@ class Import_Facebook_Events_IFE {
 	 */
 	public function get_event_posttype(){
 		return $this->event_posttype;
-	}	
+	}
+
 	public function get_taxonomy(){
 		return $this->taxonomy;
+	}
+
+	public function get_tag_taxonomy(){
+		return $this->tag_taxonomy;
 	}
 
 	/**
@@ -91,6 +100,10 @@ class Import_Facebook_Events_IFE {
 			$emeventdata['post_status'] = $event_args['event_status'];
 		}
 
+		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('status') ) {
+			$emeventdata['post_status'] = get_post_status( $is_exitsing_event );
+		}
+
 		$inserted_event_id = wp_insert_post( $emeventdata, true );
 
 		if ( ! is_wp_error( $inserted_event_id ) ) {
@@ -99,13 +112,31 @@ class Import_Facebook_Events_IFE {
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
+
+			// Event Categories
 			if ( ! empty( $ife_cats ) ) {
 				foreach ( $ife_cats as $ife_catk => $ife_catv ) {
 					$ife_cats[ $ife_catk ] = (int) $ife_catv;
 				}
 			}
 			if ( ! empty( $ife_cats ) ) {
-				wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
+				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+					wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
+				}
+				
+			}
+
+			// Event Tags
+			$ife_tags = isset( $event_args['event_tags'] ) ? $event_args['event_tags'] : array();
+			if ( ! empty( $ife_tags ) ) {
+				foreach ( $ife_tags as $ife_tagk => $ife_tagv ) {
+					$ife_tags[ $ife_tagk ] = (int) $ife_tagv;
+				}
+			}
+			if ( ! empty( $ife_tags ) ) {
+				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+					wp_set_object_terms( $inserted_event_id, $ife_tags, $this->tag_taxonomy );
+				}
 			}
 
 			// Assign Featured images

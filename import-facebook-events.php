@@ -59,7 +59,11 @@ class Import_Facebook_Events{
 			self::$instance->cpt    = new Import_Facebook_Events_Cpt();
 			self::$instance->facebook = new Import_Facebook_Events_Facebook();
 			self::$instance->admin = new Import_Facebook_Events_Admin();
-			self::$instance->manage_import = new Import_Facebook_Events_Manage_Import();
+			if( ife_is_pro() ){
+				self::$instance->manage_import = new Import_Facebook_Events_Pro_Manage_Import();
+			}else{
+				self::$instance->manage_import = new Import_Facebook_Events_Manage_Import();
+			}
 			self::$instance->ife    = new Import_Facebook_Events_IFE();
 			self::$instance->tec = new Import_Facebook_Events_TEC();
 			self::$instance->em = new Import_Facebook_Events_EM();
@@ -151,7 +155,12 @@ class Import_Facebook_Events{
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-common.php';
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-list-table.php';
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-admin.php';
-		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-manage-import.php';
+		if( ife_is_pro() ){
+			require_once IFEPRO_PLUGIN_DIR . 'includes/class-import-facebook-events-manage-import.php';
+		}else{
+			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-manage-import.php';
+		}
+		
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-cpt.php';
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-facebook.php';
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ife.php';
@@ -192,7 +201,8 @@ class Import_Facebook_Events{
 	public function ife_enqueue_style() {
 
 		$css_dir = IFE_PLUGIN_URL . 'assets/css/';
-	 	wp_enqueue_style('import-facebook-events-front', $css_dir . 'import-facebook-events.css', false, "" );		
+		wp_enqueue_style('font-awesome', $css_dir . 'font-awesome.min.css', false, "" );
+	 	wp_enqueue_style('import-facebook-events-front', $css_dir . 'import-facebook-events.css', false, "" );
 	}
 
 	/**
