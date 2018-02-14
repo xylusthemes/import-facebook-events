@@ -29,6 +29,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
            
             <table class="form-table">
                 <tbody>
+                    <?php do_action( 'ife_before_settings_section' ); ?>
                     <tr>
                         <th scope="row">
                             <?php _e( 'Facebook App ID','import-facebook-events' ); ?> : 
@@ -62,6 +63,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                             </span>
                         </td>
                     </tr>
+                    <?php do_action( 'ife_after_app_settings' ); ?>
 
                     <tr>
                         <th scope="row">
@@ -87,10 +89,11 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                             <?php 
                             $advanced_sync = isset( $facebook_options['advanced_sync'] ) ? $facebook_options['advanced_sync'] : 'no';
                             ?>
-                            <input type="checkbox" name="facebook[advanced_sync]" value="yes" <?php if( $advanced_sync == 'yes' ) { echo 'checked="checked"'; } ?> />
+                            <input type="checkbox" name="facebook[advanced_sync]" value="yes" <?php if( $advanced_sync == 'yes' ) { echo 'checked="checked"'; } ?> <?php if( !ife_is_pro() ){ echo 'disabled="disabled"'; } ?>/>
                             <span>
                                 <?php _e( 'Check to enable advanced synchronization, this will delete events which are removed from Facebook. Also, it deletes passed events.', 'import-facebook-events' ); ?>
                             </span>
+                            <?php do_action( 'ife_render_pro_notice' ); ?>
                         </td>
                     </tr>
 
@@ -123,6 +126,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                             </span>
                         </td>
                     </tr>
+                    <?php do_action( 'ife_after_settings_section' ); ?>
                 
                 </tbody>
             </table>
