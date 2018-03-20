@@ -44,7 +44,7 @@ class Import_Facebook_Events_Facebook {
 		$options = ife_get_import_options( 'facebook' );
 		$this->fb_app_id = isset( $options['facebook_app_id'] ) ? $options['facebook_app_id'] : '';
 		$this->fb_app_secret = isset( $options['facebook_app_secret'] ) ? $options['facebook_app_secret'] : '';
-		$this->fb_graph_url = 'https://graph.facebook.com/v2.9/';
+		$this->fb_graph_url = 'https://graph.facebook.com/v2.11/';
 
 	}
 
@@ -57,7 +57,7 @@ class Import_Facebook_Events_Facebook {
 	 */
 	public function import_events( $event_data = array() ){
 
-		global $ife_errors;
+		global $ife_errors, $ife_events;
 		$imported_events = array();
 		$facebook_event_ids = array();
 
@@ -67,7 +67,28 @@ class Import_Facebook_Events_Facebook {
 		}			
 
 		$import_by = isset( $event_data['import_by'] ) ? esc_attr( $event_data['import_by'] ) : '';
-		$facebook_event_ids = isset( $event_data['event_ids'] ) ? $event_data['event_ids'] : array();
+
+		if( 'facebook_organization' == $import_by ){
+			$page_username = isset( $event_data['page_username'] ) ? $event_data['page_username'] : '';
+			if( $page_username == '' ){
+				$ife_errors[] = __( 'Please insert valid Facebook page username.', 'import-facebook-events');
+				return false;
+			}
+			$facebook_event_ids = $ife_events->facebook_pro->get_events_for_facebook_page( $page_username, 'page' );
+
+		} elseif ( 'facebook_group' == $import_by ){
+				
+			$facebook_group_id = isset( $event_data['facebook_group_id'] ) ? $event_data['facebook_group_id'] : '';
+			if( $facebook_group_id == '' ){
+				$ife_errors[] = __( 'Please insert valid Facebook Group URL or ID.', 'import-facebook-events');
+				return false;
+			}
+			$facebook_event_ids = $ife_events->facebook_pro->get_events_for_facebook_page( $facebook_group_id, 'group' );
+			
+		} elseif ( 'facebook_event_id' == $import_by ){
+				
+			$facebook_event_ids = isset( $event_data['event_ids'] ) ? $event_data['event_ids'] : array();
+		}
 		
 		if( !empty( $facebook_event_ids ) ){
 			foreach ($facebook_event_ids as $facebook_event_id ) {
@@ -76,9 +97,9 @@ class Import_Facebook_Events_Facebook {
 					if( !empty( $imported_event ) ){
 						foreach ($imported_event as $imported_event0 ) {
 							$imported_events[] = $imported_event0;
-						}
-					}
-				}		
+						}					
+					}			
+				}
 			}
 		}
 		return $imported_events;
@@ -104,7 +125,6 @@ class Import_Facebook_Events_Facebook {
 			}
 			return false;
 		}
-
 		if( $facebook_event_id == '' || !is_numeric( $facebook_event_id ) ){
 			$ife_errors[] = sprintf( esc_html__( 'Please provide valid Facebook event ID: %s.', 'import-facebook-events' ), $facebook_event_id ) ;
 			return false;
@@ -116,7 +136,6 @@ class Import_Facebook_Events_Facebook {
 			return false;
 		}
 		return $this->save_facebook_event( $facebook_event_object, $event_data );
-
 	}
 
 	/**
@@ -155,6 +174,7 @@ class Import_Facebook_Events_Facebook {
 			return $this->fb_access_token;
 
 		}else{
+
 			$args = array(
 				'grant_type' => 'client_credentials', 
 				'client_id'  => $this->fb_app_id,
@@ -165,10 +185,10 @@ class Import_Facebook_Events_Facebook {
 			$access_token_response_body = wp_remote_retrieve_body( $access_token_response );
 			$access_token_data = json_decode( $access_token_response_body );
 			$access_token = ! empty( $access_token_data->access_token ) ? $access_token_data->access_token : null;
-			$this->fb_access_token = $access_token;
-			return $access_token;
-		}		
 
+			$this->fb_access_token = apply_filters( 'ife_facebook_access_token', $access_token );
+			return $this->fb_access_token;
+		}		
 	}
 	
 	/**
@@ -238,36 +258,6 @@ class Import_Facebook_Events_Facebook {
 	}
 
 	/**
-	 * get all events for facebook page or organizer
-	 *
-	 * @since 1.0.0
-	 * @return array the events
-	 */
-	public function get_events_for_facebook_page( $facebook_page_id ) {
-		
-		$args = array(
-			'limit' => 4999,
-			'since' => date( 'Y-m-d' ),
-			'fields' => 'id'
-		);
-
-		$url = $this->generate_facebook_api_url( $facebook_page_id . '/events', $args );
-
-		$response = $this->get_json_response_from_url( $url );
-		$response_data = !empty( $response->data ) ? (array) $response->data : array();
-
-		if ( empty( $response_data ) || empty( $response_data[0] ) ) {	
-			return false;
-		}
-
-		$event_ids = array();		
-		foreach ( $response_data as $event ) {
-			$event_ids[] = $event->id;
-		}
-		return array_reverse( $event_ids );
-	}
-
-	/**
 	 * Format events arguments as per TEC
 	 *
 	 * @since    1.0.0
@@ -291,7 +281,7 @@ class Import_Facebook_Events_Facebook {
 		$start_time = isset( $facebook_event->start_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->start_time ) ) : date( 'Y-m-d H:i:s');
 		$end_time = isset( $facebook_event->end_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->end_time ) ) : $start_time;
 
-		$ticket_uri = isset( $facebook_event->ticket_uri ) ? esc_url( $facebook_event->ticket_uri ) : '';
+		$ticket_uri = isset( $facebook_event->ticket_uri ) ? esc_url( $facebook_event->ticket_uri ) : 'https://www.facebook.com/events/'.$facebook_id;
 		$timezone = $this->get_utc_offset( $facebook_event->start_time );
 		$cover_image = isset( $facebook_event->cover->source ) ? $ife_events->common->clean_url( esc_url( $facebook_event->cover->source ) ) : '';
 
@@ -348,6 +338,7 @@ class Import_Facebook_Events_Facebook {
 			}
 		}
 		return $xt_events;
+		
 	}
 
 	/**
@@ -435,14 +426,18 @@ class Import_Facebook_Events_Facebook {
 	 * @return array
 	 */
 	public function get_organizer_name_by_id( $organizer_id ) {
-		
+		global $ife_errors;
 		if( !$organizer_id || $organizer_id == '' ){
 			return;
 		}
 
 		$organizer_raw_data = $this->get_facebook_response_data( $organizer_id, array() );
+		if( isset( $organizer_raw_data->error->message ) ){
+			$ife_errors[] = $organizer_raw_data->error->message;
+		}
+		
 		if( ! isset( $organizer_raw_data->name ) ){
-			return '';
+			return false;
 		}
 		
 		$oraganizer_name = isset( $organizer_raw_data->name ) ? $organizer_raw_data->name : '';

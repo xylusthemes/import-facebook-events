@@ -107,7 +107,11 @@ class Import_Facebook_Events_Admin {
 		        <div id="post-body" class="metabox-holder columns-2">
 
 		            <div id="postbox-container-1" class="postbox-container">
-		            	<?php require_once IFE_PLUGIN_DIR . '/templates/admin-sidebar.php'; ?>
+		            	<?php 
+		            	if( !ife_is_pro() ){
+		            		require_once IFE_PLUGIN_DIR . '/templates/admin/admin-sidebar.php';
+		            	}		            	
+		            	?>
 		            </div>
 		            <div id="postbox-container-2" class="postbox-container">
 
@@ -139,23 +143,26 @@ class Import_Facebook_Events_Admin {
 		                	<?php
 		                	if ( $tab == 'facebook' ) {
 
-		                		require_once IFE_PLUGIN_DIR . '/templates/facebook-import-events.php';
+		                		require_once IFE_PLUGIN_DIR . '/templates/admin/facebook-import-events.php';
 
 		                	} elseif ( $tab == 'settings' ) {
 
-		                		require_once IFE_PLUGIN_DIR . '/templates/import-facebook-events-settings.php';
+		                		require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-settings.php';
 
 		                	} elseif ( $tab == 'scheduled' ) {
-
-		                		require_once IFE_PLUGIN_DIR . '/templates/scheduled-import-events.php';
+		                		if( ife_is_pro() ){
+		                			require_once IFEPRO_PLUGIN_DIR . '/templates/admin/scheduled-import-events.php';	
+		                		}else{
+		                			do_action( 'ife_render_pro_notice' );
+		                		}		                		
 
 		                	}elseif ( $tab == 'history' ) {
 
-		                		require_once IFE_PLUGIN_DIR . '/templates/import-facebook-events-history.php';
+		                		require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-history.php';
 
 		                	} elseif ( $tab == 'support' ) {
 
-		                		require_once IFE_PLUGIN_DIR . '/templates/import-facebook-events-support.php';
+		                		require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-support.php';
 
 		                	}
 			                ?>

@@ -40,7 +40,7 @@ class Import_Facebook_Events_Cpt {
 
 		$ife_options = get_option( IFE_OPTIONS );
 		$deactive_fbevents = isset( $ife_options['deactive_fbevents'] ) ? $ife_options['deactive_fbevents'] : 'no';
-		
+
 		if( $deactive_fbevents == 'no' ){
 			add_action( 'init', array( $this, 'register_event_post_type' ) );
 			add_action( 'init', array( $this, 'register_event_taxonomy' ) );
@@ -52,7 +52,7 @@ class Import_Facebook_Events_Cpt {
 
 			add_filter( 'the_content', array( $this, 'facebook_events_meta_before_content' ) ); 
 			add_shortcode('facebook_events', array( $this, 'facebook_events_archive' ) );
-		}
+		} 	
 	}
 
 	/**
@@ -262,7 +262,7 @@ class Import_Facebook_Events_Cpt {
 			<tr>
 				<td><?php _e('Start Date & Time', 'import-facebook-events'); ?>:</td>
 				<td>
-				<input type="text" name="event_start_date" class="xt_datepicker" id="event_start_date" value="<?php echo get_post_meta($post->ID, 'event_start_date', true); ?>" /> @ 
+				<input type="text" name="event_start_date" class="ife_datepicker" id="event_start_date" value="<?php echo get_post_meta($post->ID, 'event_start_date', true); ?>" /> @ 
 				<?php
 				$this->generate_dropdown( 'event_start', 'hour', $start_hour );
 				$this->generate_dropdown( 'event_start', 'minute', $start_minute );
@@ -273,7 +273,7 @@ class Import_Facebook_Events_Cpt {
 			<tr>
 				<td><?php _e('End Date & Time', 'import-facebook-events'); ?>:</td>
 				<td>
-					<input type="text" name="event_end_date" class="xt_datepicker" id="event_end_date" value="<?php echo get_post_meta($post->ID, 'event_end_date', true); ?>" /> @ 
+					<input type="text" name="event_end_date" class="ife_datepicker" id="event_end_date" value="<?php echo get_post_meta($post->ID, 'event_end_date', true); ?>" /> @ 
 					<?php
 					$this->generate_dropdown( 'event_end', 'hour', $end_hour );
 					$this->generate_dropdown( 'event_end', 'minute', $end_minute );
@@ -579,7 +579,12 @@ class Import_Facebook_Events_Cpt {
 	function facebook_events_meta_before_content( $content ) { 
 	    if ( is_singular( $this->event_posttype ) ) {
 			$event_details = $this->facebook_events_get_event_meta( get_the_ID() );
-			$content = $event_details . $content;
+			$is_before = apply_filters( 'ife_events_information_before', true );
+			if( $is_before ){
+				$content = $event_details . $content;
+			}else{
+				$content = $content . $event_details;
+			}			
 		}
 	    return $content;
 	}
@@ -592,7 +597,7 @@ class Import_Facebook_Events_Cpt {
 
 		ob_start();
 			
-			include IFE_PLUGIN_DIR . '/templates/event-meta.php';
+			get_ife_template( 'ife-event-meta.php' );
 
 		$event_meta_details = ob_get_contents();
 		ob_end_clean();
@@ -743,7 +748,7 @@ class Import_Facebook_Events_Cpt {
 				$eve_args['order'] = 'ASC';
 			}
 		}
-		
+
 		$col = 3;
 		$css_class = 'col-ife-md-4';
 		if( isset( $atts['col'] ) && $atts['col'] != '' && is_numeric( $atts['col'] ) ){
@@ -769,7 +774,7 @@ class Import_Facebook_Events_Cpt {
 					$css_class = 'col-ife-md-4';
 					break;
 			}
-		}		
+		}
 
 		$facebook_events = new WP_Query( $eve_args );
 
@@ -785,10 +790,12 @@ class Import_Facebook_Events_Cpt {
 		?>
 		<div class="row_grid">
 			<?php
+			$template_args = array();
+			$template_args['css_class'] = $css_class;
 			if( $facebook_events->have_posts() ):
 				while ( $facebook_events->have_posts() ) : $facebook_events->the_post();
 					
-					include IFE_PLUGIN_DIR . '/templates/archive-content.php';
+					get_ife_template( 'ife-archive-content.php', $template_args );
 					
 				endwhile; // End of the loop.
 

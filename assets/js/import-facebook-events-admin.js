@@ -2,10 +2,22 @@
 	'use strict';
 
 	jQuery(document).ready(function(){
-		jQuery('.xt_datepicker').datepicker({
-			changeMonth: true,
-			changeYear: true,
-			dateFormat: 'yy-mm-dd'
+		jQuery(document).on("click", ".ife_datepicker", function(){
+		    jQuery(this).datepicker({
+				changeMonth: true,
+				changeYear: true,
+				dateFormat: 'yy-mm-dd',
+				showOn:'focus'
+			}).focus();
+		});
+
+		jQuery(document).on("click", ".vc_ui-panel .ife_datepicker input[type='text']", function(){
+		    jQuery(this).datepicker({
+				changeMonth: true,
+				changeYear: true,
+				dateFormat: 'yy-mm-dd',
+				showOn:'focus'
+			}).focus();
 		});
 	});
 	
@@ -20,6 +32,7 @@
 
 		jQuery("#import_type").trigger('change');
 	});	
+
 
 	jQuery(document).ready(function(){
 		jQuery('#facebook_import_by').live('change', function(){
@@ -68,14 +81,19 @@
 		jQuery("#facebook_import_by").trigger('change');
 	});	
 
+
 	// Render Dynamic Terms.
 	jQuery(document).ready(function() {
 	    jQuery('.fb_event_plugin').on( 'change', function() {
 
 	    	var event_plugin = jQuery(this).val();
+	    	var taxo_cats = jQuery('#ife_taxo_cats').val();
+	    	var taxo_tags = jQuery('#ife_taxo_tags').val();
 	    	var data = {
 	            'action': 'ife_render_terms_by_plugin',
-	            'event_plugin': event_plugin
+	            'event_plugin': event_plugin,
+	            'taxo_cats': taxo_cats,
+	            'taxo_tags': taxo_tags
 	        };
 
 	        var terms_space = jQuery('.event_taxo_terms_wraper');
@@ -93,3 +111,19 @@
 	});
 
 })( jQuery );
+
+jQuery(document).ready(function(){
+	jQuery("#update_events").on( "change", function(){
+		ife_check_dontupdate_data();
+	});
+	ife_check_dontupdate_data();
+});
+
+function ife_check_dontupdate_data(){
+	if( jQuery("#update_events").prop("checked") == true){
+		jQuery(".dont_update_wrap").show();
+	}else{
+		jQuery(".dont_update_wrap").hide();
+		jQuery(".dont_update_wrap input[type='checkbox']").prop("checked", false );
+	}
+}

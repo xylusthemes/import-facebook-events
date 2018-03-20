@@ -61,8 +61,17 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 			'ife_action' => 'ife_simport_delete',
 			'import_id'  => absint( $item['ID'] ),
 		);
+
+		$page = isset($_GET['page'] ) ? $_GET['page'] : 'facebook_import';
+		$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'scheduled';
+		$wp_redirect = admin_url( 'admin.php?page='.$page );
+		$ife_url_edit_args = array(
+			'tab'    =>  wp_unslash( $tab ),
+			'edit'  => absint( $item['ID'] ),
+		);
 		// Build row actions.
 		$actions = array(
+			'edit' => sprintf( '<a href="%1$s">%2$s</a>',esc_url( add_query_arg( $ife_url_edit_args, $wp_redirect ) ), esc_html__( 'Edit', 'import-facebook-events' ) ),
 		    'delete' => sprintf( '<a href="%1$s" onclick="return confirm(\'Warning!! Are you sure to Delete this scheduled import? Scheduled import will be permanatly deleted.\')">%2$s</a>',esc_url( wp_nonce_url( add_query_arg( $ife_url_delete_args ), 'ife_delete_import_nonce' ) ), esc_html__( 'Delete', 'import-facebook-events' ) ),
 		);
 
@@ -195,6 +204,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 				$importdata_query->the_post();
 
 				$import_id = get_the_ID();
+				$import_title = get_the_title();
 				$import_data = get_post_meta( $import_id, 'import_eventdata', true );
 				$import_origin = get_post_meta( $import_id, 'import_origin', true );
 				$import_plugin = isset( $import_data['import_into'] ) ? $import_data['import_into'] : '';
@@ -235,7 +245,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 							$get_term = get_term( $term, $ife_events->ife->get_taxonomy() );	
 						}elseif( $import_plugin == 'ee4' ){
 
-							$get_term = get_term( $term, $ife_events->ee4->get_taxonomy() );
+							$get_term = get_term( $term, $ife_events->ee4->get_taxonomy() );	
 						}else{
 							$get_term = get_term( $term, $ife_events->tec->get_taxonomy() );
 						}
@@ -267,7 +277,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 
 				$scheduled_import_data['import_data'][] = array(
 					'ID' => $import_id,
-					'title' => get_the_title(),
+					'title' 			=> $import_title,
 					'import_status'   => ucfirst( $import_status ),
 					'import_category' => implode( ', ', $term_names ),
 					'import_frequency'=> isset( $import_data['import_frequency'] ) ? ucfirst( $import_data['import_frequency'] ) : '',

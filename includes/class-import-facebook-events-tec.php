@@ -16,6 +16,9 @@ class Import_Facebook_Events_TEC {
 	// The Events Calendar Event Taxonomy
 	protected $taxonomy;
 
+	// Event tag Taxonomy
+	protected $tag_taxonomy;
+
 	// The Events Calendar Event Posttype
 	protected $event_posttype;
 
@@ -33,6 +36,7 @@ class Import_Facebook_Events_TEC {
 	public function __construct() {
 		
 		$this->taxonomy = 'tribe_events_cat';
+		$this->tag_taxonomy = 'post_tag';
 		if ( class_exists( 'Tribe__Events__Main' ) ) {
 			$this->event_posttype = Tribe__Events__Main::POSTTYPE;
 		}else{
@@ -69,6 +73,9 @@ class Import_Facebook_Events_TEC {
 	public function get_taxonomy(){
 		return $this->taxonomy;
 	}
+	public function get_tag_taxonomy(){
+		return $this->tag_taxonomy;
+	}
 
 	/**
 	 * import event into TEC
@@ -87,6 +94,10 @@ class Import_Facebook_Events_TEC {
 		}
 
 		if ( $is_exitsing_event && is_numeric( $is_exitsing_event ) && $is_exitsing_event > 0 ) {
+			if ( ! $ife_events->common->ife_is_updatable('status') ) {
+				$formated_args['post_status'] = get_post_status( $is_exitsing_event );
+			}
+
 			$options = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
 			if ( 'yes' == $update_events ) {
@@ -130,6 +141,17 @@ class Import_Facebook_Events_TEC {
 			}
 			if ( ! empty( $ife_cats ) ) {
 				wp_set_object_terms( $new_event_id, $ife_cats, $this->taxonomy );
+			}
+
+			// Asign event tag.
+			$ife_tags = isset( $event_args['event_tags'] ) ? $event_args['event_tags'] : array();
+			if ( ! empty( $ife_tags ) ) {
+				foreach ( $ife_tags as $ife_tagk => $ife_tagv ) {
+					$ife_tags[ $ife_tagk ] = (int) $ife_tagv;
+				}
+			}
+			if ( ! empty( $ife_tags ) ) {
+				wp_set_object_terms( $new_event_id, $ife_tags, $this->tag_taxonomy );
 			}
 
 			$event_featured_image  = $centralize_array['image_url'];
@@ -177,7 +199,22 @@ class Import_Facebook_Events_TEC {
 				}
 			}
 			if ( ! empty( $ife_cats ) ) {
-				wp_set_object_terms( $update_event_id, $ife_cats, $this->taxonomy );
+				if ( $ife_events->common->ife_is_updatable('category') ){
+					wp_set_object_terms( $update_event_id, $ife_cats, $this->taxonomy );
+				}
+			}
+			
+			// Asign event tag.
+			$ife_tags = isset( $event_args['event_tags'] ) ? $event_args['event_tags'] : array();
+			if ( ! empty( $ife_tags ) ) {
+				foreach ( $ife_tags as $ife_tagk => $ife_tagv ) {
+					$ife_tags[ $ife_tagk ] = (int) $ife_tagv;
+				}
+			}
+			if ( ! empty( $ife_tags ) ) {
+				if ( $ife_events->common->ife_is_updatable('category') ){
+					wp_set_object_terms( $update_event_id, $ife_tags, $this->tag_taxonomy );
+				}
 			}
 
 			$event_featured_image  = $centralize_array['image_url'];

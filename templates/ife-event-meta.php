@@ -28,6 +28,7 @@ $website = get_post_meta( $event_id, 'ife_event_link', true );
 	    <p><?php echo $start_date_formated; ?></p>
 
 	    <strong><?php esc_html_e( 'Time','import-facebook-events' ); ?>:</strong>
+
 	    <p><?php if( $start_time != $end_time ){ 
 	    		echo $start_time . ' - ' . $end_time;
 	    	}else{
@@ -76,8 +77,10 @@ $website = get_post_meta( $event_id, 'ife_event_link', true );
 	?>
 
     <?php if( $website != '' ){ ?>
-    	<strong><?php esc_html_e( 'Website','import-facebook-events' ); ?>:</strong>
-    	<a href="<?php echo esc_url( $website ); ?>"><?php echo $website; ?></a>
+    	<div class="website_wrap">
+	    	<strong><?php esc_html_e( 'Website','import-facebook-events' ); ?>:</strong><br/>
+	    	<a href="<?php echo esc_url( $website ); ?>"><?php _e( "Event Website", 'import-facebook-events' ); ?></a>
+	    </div>
     <?php } ?>
 
   </div>
@@ -96,16 +99,16 @@ $website = get_post_meta( $event_id, 'ife_event_link', true );
 				<p><?php echo $org_name; ?></p>
 			</div>
 			<?php if( $org_email != '' ){ ?>
-		    	<strong><?php esc_html_e( 'Email','import-facebook-events' ); ?>:</strong>
+		    	<strong style="display: block;"><?php esc_html_e( 'Email','import-facebook-events' ); ?>:</strong>
 		    	<a href="<?php echo 'mailto:'.$org_email; ?>"><?php echo $org_email; ?></a>
 		    <?php } ?>
 		    <?php if( $org_phone != '' ){ ?>
-		    	<strong><?php esc_html_e( 'Phone','import-facebook-events' ); ?>:</strong>
+		    	<strong style="display: block;"><?php esc_html_e( 'Phone','import-facebook-events' ); ?>:</strong>
 		    	<a href="<?php echo 'tel:'.$org_phone; ?>"><?php echo $org_phone; ?></a>
 		    <?php } ?>
 		    <?php if( $website != '' ){ ?>
-		    	<strong><?php esc_html_e( 'Website','import-facebook-events' ); ?>:</strong>
-		    	<a href="<?php echo esc_url( $org_url ); ?>"><?php echo $org_url; ?></a>
+		    	<strong style="display: block;"><?php esc_html_e( 'Website','import-facebook-events' ); ?>:</strong>
+		    	<a href="<?php echo esc_url( $org_url ); ?>"><?php _e( "Organizer's Website", 'import-facebook-events' ); ?></a>
 		    <?php }
 		}
     ?>

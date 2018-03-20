@@ -3,8 +3,9 @@ Contributors: xylus,dharm1025
 Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
 Requires at least: 4.0
+Requires PHP: 5.3
 Tested up to: 4.9
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,7 +36,7 @@ You can use `[facebook_events]` for display in-built facebook events list.
 <strong>Full short-code example:</strong> 
 `[facebook_events col="2" posts_per_page="12" category="cat1,cat2" past_events="yes" order="desc" orderby="post_title" start_date="2017-12-25" end_date="2018-12-25" ]`
 
-** Additional [PRO Version](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=wprepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=wprepo-readme) Features **
+**Additional [PRO Add-on](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=wprepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=wprepo-readme) Features**
 
 * Scheduled import events.
 * Import events from facebook page 
@@ -45,6 +46,7 @@ You can use `[facebook_events]` for display in-built facebook events list.
 * Import multiple events easily
 * Show events from facebook page into WordPress
 * Upcoming Events widget
+* Works with Visual Composer ( WPBackery Page Builder ). Support for more page builders is on the way :)
 
 ><strong>New All in one Event Import Tool!</strong><br>
 >We’ve developed bulk event imports tool. This add-on service for The Events Calendar allows you import events from your favorite sources like Facebook, Meetup, Eventbrite, iCalendar, and ICS.
@@ -91,6 +93,13 @@ You can use `[facebook_events]` for display in-built facebook events list.
 10. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.5.0 =
+* ADDED: Element for Visual Composer ( WPBackery Page Builder)
+* ADDED: Template Overrides from Theme
+* ADDED: Merged Pro & Free codebase, Introduced Pro as an add-on
+* IMPROVEMENT: Some Improvements
+* FIXED: some bug fixes.
 
 = 1.4.0 =
 * ADDED: Support for recurring facebook events

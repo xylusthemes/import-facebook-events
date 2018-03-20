@@ -88,6 +88,9 @@ class Import_Facebook_Events_My_Calendar {
 		if( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ){
 			$mc_eventdata['post_status'] = $event_args['event_status'];
 		}
+		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('status') ) {
+			$mc_eventdata['post_status'] = get_post_status( $is_exitsing_event );
+		}
 		$inserted_event_id = wp_insert_post( $mc_eventdata, true );
 
 		if ( ! is_wp_error( $inserted_event_id ) ) {
@@ -102,7 +105,9 @@ class Import_Facebook_Events_My_Calendar {
 				}
 			}
 			if ( ! empty( $ife_cats ) ) {
-				wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
+				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+					wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
+				}
 			}
 
 			// Assign Featured images
@@ -137,6 +142,7 @@ class Import_Facebook_Events_My_Calendar {
 					$event_category = $temp_event_cat;
 				}
 			}			
+			
 			// Location Args for.
 			$venue 	 = isset( $centralize_array['location'] ) ? $centralize_array['location'] : array();
 			
@@ -145,7 +151,10 @@ class Import_Facebook_Events_My_Calendar {
 
 			if( !empty( $venue ) ){
 				$event_label 	= isset( $venue['name'] ) ? $venue['name'] : '';
-				$event_street 	= isset( $venue['full_address'] ) ? $venue['full_address'] : $venue['address_1'];
+				$event_street 	= isset( $venue['full_address'] ) ? $venue['full_address'] : '';
+				if( $event_street == '' && isset( $venue['address_1'] ) ){
+					$event_street = $venue['address_1'];
+				}
 				$event_street2	= isset( $venue['address_2'] ) ? $venue['address_2'] : '';
 				$address 		= isset( $venue['address_2'] ) ? $venue['address_2'] : '';
 				$event_city 	= isset( $venue['city'] ) ? $venue['city'] : '';
@@ -159,7 +168,6 @@ class Import_Facebook_Events_My_Calendar {
 				$event_phone    = '';
 				$event_phone2   = '';
 				$event_zoom     = 16;
-
 
 				$location_data = array(
 					'location_label'     => $event_label,
@@ -304,11 +312,18 @@ class Import_Facebook_Events_My_Calendar {
 				'%f',
 				'%f'
 			);
-
+			
 			$db_event_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_id` FROM ".my_calendar_table()." WHERE `event_title` = %s AND `event_post`= %d LIMIT 1", sanitize_text_field( $inserted_event->post_title ), $inserted_event_id ) );
 			
 			if( $db_event_id > 0 && is_numeric( $db_event_id ) && !empty( $db_event_id ) ){
 				
+				if ( !$ife_events->common->ife_is_updatable('category') ){
+					$cat_id = $wpdb->get_var( "SELECT `event_category` FROM ".my_calendar_table()." WHERE `event_id`=". absint( $db_event_id ) );
+					if( $cat_id ){
+						$event_data['event_category'] = $cat_id;
+					}
+				}
+
 				$event_where = array( 'event_id' => absint( $db_event_id ) );
 				$wpdb->update( my_calendar_table(), $event_data, $event_where, $event_formats );	
 			}else{
