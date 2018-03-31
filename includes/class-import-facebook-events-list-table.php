@@ -216,38 +216,8 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 				if ( $import_terms && ! empty( $import_terms ) ) {
 					foreach ( $import_terms as $term ) {
 						$get_term = '';
-						if( $import_plugin == 'tec' ){
-
-							$get_term = get_term( $term, $ife_events->tec->get_taxonomy() );	
-
-						}elseif( $import_plugin == 'em' ){
-
-							$get_term = get_term( $term, $ife_events->em->get_taxonomy() );	
-
-						}elseif( $import_plugin == 'eventon' ){
-
-							$get_term = get_term( $term, $ife_events->eventon->get_taxonomy() );
-
-						}elseif( $import_plugin == 'event_organizer' ){
-
-							$get_term = get_term( $term, $ife_events->event_organizer->get_taxonomy() );
-
-						}elseif( $import_plugin == 'aioec' ){
-
-							$get_term = get_term( $term, $ife_events->aioec->get_taxonomy() );	
-
-						}elseif( $import_plugin == 'my_calendar' ){
-
-							$get_term = get_term( $term, $ife_events->my_calendar->get_taxonomy() );
-								
-						}elseif( $import_plugin == 'ife' ){
-
-							$get_term = get_term( $term, $ife_events->ife->get_taxonomy() );	
-						}elseif( $import_plugin == 'ee4' ){
-
-							$get_term = get_term( $term, $ife_events->ee4->get_taxonomy() );	
-						}else{
-							$get_term = get_term( $term, $ife_events->tec->get_taxonomy() );
+						if( $import_plugin != '' ){
+							$get_term = get_term( $term, $ife_events->$import_plugin->get_taxonomy() );
 						}
 
 						if( !is_wp_error( $get_term ) && !empty( $get_term ) ){
@@ -488,40 +458,8 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 				if ( $import_terms && ! empty( $import_terms ) ) {
 					foreach ( $import_terms as $term ) {
 						$get_term = '';
-						if( $import_plugin == 'tec' ){
-
-							$get_term = get_term( $term, $ife_events->tec->get_taxonomy() );	
-
-						}elseif( $import_plugin == 'em' ){
-
-							$get_term = get_term( $term, $ife_events->em->get_taxonomy() );	
-
-						}elseif( $import_plugin == 'eventon' ){
-
-							$get_term = get_term( $term, $ife_events->eventon->get_taxonomy() );
-
-						}elseif( $import_plugin == 'event_organizer' ){
-
-							$get_term = get_term( $term, $ife_events->event_organizer->get_taxonomy() );
-
-						}elseif( $import_plugin == 'aioec' ){
-
-							$get_term = get_term( $term, $ife_events->aioec->get_taxonomy() );	
-
-						}elseif( $import_plugin == 'my_calendar' ){
-
-							$get_term = get_term( $term, $ife_events->my_calendar->get_taxonomy() );
-								
-						}elseif( $import_plugin == 'ife' ){
-
-							$get_term = get_term( $term, $ife_events->ife->get_taxonomy() );	
-						}elseif( $import_plugin == 'ee4' ){
-
-							$get_term = get_term( $term, $ife_events->ee4->get_taxonomy() );	
-						}else{
-							
-							$get_term = get_term( $term, $ife_events->tec->get_taxonomy() );
-
+						if( $import_plugin != '' ){
+							$get_term = get_term( $term, $ife_events->$import_plugin->get_taxonomy() );
 						}
 						
 						if( !is_wp_error( $get_term ) && !empty( $get_term ) ){

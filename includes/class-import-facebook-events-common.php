@@ -98,46 +98,18 @@ class Import_Facebook_Events_Common {
 			$taxo_tags = explode(',', $_REQUEST['taxo_tags'] );	
 		}
 		$event_taxonomy = $event_tag_taxonomy = '';
-		switch ( $event_plugin ) {
-			case 'ife':
-				$event_taxonomy = $ife_events->ife->get_taxonomy();
-				$event_tag_taxonomy = $ife_events->ife->get_tag_taxonomy();
-				break;
-
-			case 'tec':
-				$event_taxonomy = $ife_events->tec->get_taxonomy();
-				$event_tag_taxonomy = $ife_events->tec->get_tag_taxonomy();
-				break;
-
-			case 'em':
-				$event_taxonomy = $ife_events->em->get_taxonomy();
-				$event_tag_taxonomy = $ife_events->em->get_tag_taxonomy();
-				break;
-
-			case 'eventon':
-				$event_taxonomy = $ife_events->eventon->get_taxonomy();
-				break;
-
-			case 'event_organizer':
-				$event_taxonomy = $ife_events->event_organizer->get_taxonomy();
-				break;
-
-			case 'aioec':
-				$event_taxonomy = $ife_events->aioec->get_taxonomy();
-				break;
-
-			case 'my_calendar':
-				$event_taxonomy = $ife_events->my_calendar->get_taxonomy();
-				break;
-
-			case 'ee4':
-				$event_taxonomy = $ife_events->ee4->get_taxonomy();
-				break;
-			
-			default:
-				break;
+		if( !empty( $event_plugin ) ){
+			$event_taxonomy = $ife_events->$event_plugin->get_taxonomy();
 		}
-		$tag_supported_plugins = array('ife', 'em', 'tec' );
+
+		/**
+		 * Import into tag Supported plugins.
+		 */
+		$tag_supported_plugins = apply_filters( 'ife_tag_supported_plugins', array('ife', 'em', 'tec' ) );
+		if( in_array( $event_plugin, $tag_supported_plugins ) ){
+			$event_tag_taxonomy = $ife_events->$event_plugin->get_tag_taxonomy();
+		}
+
 		// Event Taxonomy
 		$terms = array();
 		if ( $event_taxonomy != '' ) {
@@ -235,6 +207,7 @@ class Import_Facebook_Events_Common {
 		}
 
 		$supported_plugins['ife'] = __( 'Facebook Events', 'import-facebook-events' );
+		$supported_plugins = apply_filters( 'ife_supported_plugins', $supported_plugins );
 		return $supported_plugins;
 	}
 
@@ -277,7 +250,7 @@ class Import_Facebook_Events_Common {
 				$attachment_id = get_post_thumbnail_id( $event_id );
 				$attach_filename = basename( get_attached_file( $attachment_id ) );
 				if( $attach_filename == $file_array['name'] ){
-					return false;
+					return $attachment_id;
 				}
 			}
 
@@ -401,42 +374,10 @@ class Import_Facebook_Events_Common {
 			}
 		}
 
-		switch ( $event_import_into ) {
-			case 'ife':
-				$import_result = $ife_events->ife->import_event( $centralize_array, $event_args );
-				break;
-
-			case 'tec':
-				$import_result = $ife_events->tec->import_event( $centralize_array, $event_args );
-				break;
-
-			case 'em':
-				$import_result = $ife_events->em->import_event( $centralize_array, $event_args );
-				break;
-
-			case 'eventon':
-				$import_result = $ife_events->eventon->import_event( $centralize_array, $event_args );
-				break;
-
-			case 'event_organizer':
-				$import_result = $ife_events->event_organizer->import_event( $centralize_array, $event_args );
-				break;
-
-			case 'aioec':
-				$import_result = $ife_events->aioec->import_event( $centralize_array, $event_args );
-				break;
-
-			case 'my_calendar':
-				$import_result = $ife_events->my_calendar->import_event( $centralize_array, $event_args );
-				break;
-
-			case 'ee4':
-				$import_result = $ife_events->ee4->import_event( $centralize_array, $event_args );
-				break;
-		
-			default:
-				break;
+		if( !empty( $event_import_into ) ){
+			$import_result = $ife_events->$event_import_into->import_event( $centralize_array, $event_args );
 		}
+
 		return $import_result;
 	}
 
