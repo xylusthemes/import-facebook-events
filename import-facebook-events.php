@@ -3,7 +3,7 @@
  * Plugin Name:       Import Facebook Events
  * Plugin URI:        http://xylusthemes.com/plugins/import-facebook-events/
  * Description:       Import Facebook Events allows you to import Facebook ( facebook.com ) events into your WordPress site.
- * Version:           1.5.1
+ * Version:           1.5.2
  * Author:            Xylus Themes
  * Author URI:        http://xylusthemes.com
  * License:           GPL-2.0+
@@ -93,14 +93,14 @@ class Import_Facebook_Events{
 	 *
 	 * @since 1.0.0
 	 */
-	public function __clone() { _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.5.1' ); }
+	public function __clone() { _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.5.2' ); }
 
 	/**
 	 * A dummy magic method to prevent Import_Facebook_Events from being unserialized.
 	 *
 	 * @since 1.0.0
 	 */
-	public function __wakeup() { _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.5.1' ); }
+	public function __wakeup() { _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.5.2' ); }
 
 
 	/**
@@ -114,7 +114,7 @@ class Import_Facebook_Events{
 
 		// Plugin version.
 		if( ! defined( 'IFE_VERSION' ) ){
-			define( 'IFE_VERSION', '1.5.1' );
+			define( 'IFE_VERSION', '1.5.2' );
 		}
 
 		// Plugin folder Path.
