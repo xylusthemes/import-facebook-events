@@ -217,7 +217,9 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 					foreach ( $import_terms as $term ) {
 						$get_term = '';
 						if( $import_plugin != '' ){
-							$get_term = get_term( $term, $ife_events->$import_plugin->get_taxonomy() );
+							if( !empty( $ife_events->$import_plugin ) ){
+								$get_term = get_term( $term, $ife_events->$import_plugin->get_taxonomy() );
+							}
 						}
 
 						if( !is_wp_error( $get_term ) && !empty( $get_term ) ){

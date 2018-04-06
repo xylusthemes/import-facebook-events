@@ -74,7 +74,22 @@ class Import_Facebook_Events_Facebook {
 				$ife_errors[] = __( 'Please insert valid Facebook page username.', 'import-facebook-events');
 				return false;
 			}
-			$facebook_event_ids = $ife_events->facebook_pro->get_events_for_facebook_page( $page_username, 'page' );
+			if ( version_compare( IFEPRO_VERSION, '1.5.0', '<=' ) ) {
+				$facebook_event_ids = $ife_events->facebook_pro->get_events_for_facebook_page( $page_username, 'page' );
+			} else {
+				$facebook_events = $ife_events->facebook_pro->get_events_for_facebook_page( $page_username, 'page' );
+				if( !empty( $facebook_events ) ){
+					foreach ( $facebook_events as $facebook_event ){
+						$imported_event = $this->save_facebook_event( $facebook_event, $event_data );
+						if( !empty( $imported_event ) ){
+							foreach ($imported_event as $imported_event0 ) {
+								$imported_events[] = $imported_event0;
+							}
+						}
+					}
+					return $imported_events;
+				}
+			}
 
 		} elseif ( 'facebook_group' == $import_by ){
 				
@@ -83,7 +98,23 @@ class Import_Facebook_Events_Facebook {
 				$ife_errors[] = __( 'Please insert valid Facebook Group URL or ID.', 'import-facebook-events');
 				return false;
 			}
-			$facebook_event_ids = $ife_events->facebook_pro->get_events_for_facebook_page( $facebook_group_id, 'group' );
+
+			if ( version_compare( IFEPRO_VERSION, '1.5.0', '<=' ) ) {
+				$facebook_event_ids = $ife_events->facebook_pro->get_events_for_facebook_page( $facebook_group_id, 'group' );
+			} else {
+				$facebook_events = $ife_events->facebook_pro->get_events_for_facebook_page( $facebook_group_id, 'group' );
+				if( !empty( $facebook_events ) ){
+					foreach ( $facebook_events as $facebook_event ){
+						$imported_event = $this->save_facebook_event( $facebook_event, $event_data );
+						if( !empty( $imported_event ) ){
+							foreach ($imported_event as $imported_event0 ) {
+								$imported_events[] = $imported_event0;
+							}
+						}
+					}
+					return $imported_events;
+				}
+			}
 			
 		} elseif ( 'facebook_event_id' == $import_by ){
 				
