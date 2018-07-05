@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event, facebook import, faceb
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.9
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,17 @@ Import Facebook events into your WordPress website and/or Event Calendar. Nice D
 
 
 == Description ==
+
+<h3>NOTICE:</h3>
+>**Plugin is not working currently due Facebook API changes**
+>
+>**Facebook has restricted access of Events in API from 4th April due to recent Privacy issue. They have new policy & rules to get Event data and restricted events data over API, So You are not able to import events from Facebook for now.**
+>
+>**Facebook is making changes in their Plateform and they will fix these issues soon**
+>
+>**[Here](https://developers.facebook.com/blog/post/2018/04/04/facebook-api-platform-product-changes/) is post from facebook about same.**
+>
+
 <h3>Import Facebook Events into WordPress :</h3>
 
 Import Facebook Events allows you to import facebook events into your WordPress site automatically. Automate your Event Marketing using Import Facebook Events plug-in. Import Events from Facebook Page, Facebook Event or Facebook Organizations page.
@@ -93,6 +104,10 @@ You can use `[facebook_events]` for display in-built facebook events list.
 10. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.5.3 =
+* IMPROVEMENT: Some Improvements
+* FIXED: some bug fixes.
 
 = 1.5.2 =
 * IMPROVEMENT: Import by Page now working after Facebook's API restriction and Some other Improvements
