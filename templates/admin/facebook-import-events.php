@@ -22,12 +22,17 @@ global $ife_events;
 			                    	<option value="facebook_organization"><?php esc_attr_e( 'Facebook Page','import-facebook-events' ); ?></option>
 			                    	
 			                    	<?php if( $ife_events->common->has_authorized_user_token() ){ ?>
-			                    	<option value="facebook_group"><?php esc_attr_e( 'Facebook Group','import-facebook-events' ); ?></option>
+			                    		<option value="facebook_group"><?php esc_attr_e( 'Facebook Group','import-facebook-events' ); ?></option>
+			                    		<option value="my_events"><?php esc_attr_e( 'My Events','import-facebook-events' ); ?></option>
 			                    	<?php } ?>
 
 			                    </select>
 			                    <span class="ife_small">
-			                        <?php _e( 'Select Event source. 1. by Facebook Event ID, 2. Facebook Organization or Page ( import events belonging to a Facebook organization or a Facebook page ).', 'import-facebook-events' ); ?>
+			                        <?php _e( 'Select Event source. <strong>1. by Facebook Event ID</strong>, <strong>2. Facebook Organization or Page</strong> ( import events belonging to a Facebook organization or a Facebook page ).', 'import-facebook-events' ); ?><br/>
+			                        <?php
+			                        if( $ife_events->common->has_authorized_user_token() ){
+			                        	_e( '<strong>3. Facebook Group</strong> (Import events from facebook group), <strong>4. My Events</strong> (Import events which you have marked intrested or going on facebook, this also include your events on facebook)', 'import-facebook-events' );
+			                        } ?>
 			                    </span>
 					        </td>
 					    </tr>
