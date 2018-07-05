@@ -225,7 +225,7 @@ class Import_Facebook_Events_Common {
 			return;
 		}
 		$event = get_post( $event_id );
-		if( Empty ( $event ) ){
+		if( empty ( $event ) ){
 			return;
 		}
 		
@@ -241,6 +241,27 @@ class Import_Facebook_Events_Common {
 			preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $image_url, $matches );
 			if ( ! $matches ) {
 				return new WP_Error( 'image_sideload_failed', __( 'Invalid image URL' ) );
+			}
+
+			$args = array(
+				'post_type'   => 'attachment',
+				'post_status' => 'any',
+				'fields'      => 'ids',
+				'meta_query'  => array( // @codingStandardsIgnoreLine.
+					array(
+						'value' => $image_url,
+						'key'   => '_ife_attachment_source',
+					),
+				),
+			);
+			$id = 0;
+			$ids = get_posts( $args ); // @codingStandardsIgnoreLine.
+			if ( $ids ) {
+				$id = current( $ids );
+			}
+			if( $id && $id > 0 ){
+				set_post_thumbnail( $event_id, $id );
+				return $id;
 			}
 
 			$file_array = array();
@@ -274,6 +295,9 @@ class Import_Facebook_Events_Common {
 			if ($att_id) {
 				set_post_thumbnail($event_id, $att_id);
 			}
+
+			// Save attachment source for future reference.
+			update_post_meta( $att_id, '_ife_attachment_source', $image_url );
 
 			return $att_id;
 		}
