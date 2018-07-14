@@ -142,7 +142,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
             <?php 
             if( $facebook_app_id != '' && $facebook_app_secret != '' ){
                 ?>
-                <h3 class="setting_bar"><?php esc_attr_e( 'Authorize your Facebook Account (Optional)', 'import-facebook-events' ); ?></h3>
+                <h3 class="setting_bar"><?php esc_attr_e( 'Authorize your Facebook Account', 'import-facebook-events' ); ?></h3>
                 <div class="fb_authorize">
                     <table class="form-table">
                         <tbody>
@@ -183,7 +183,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                                     }
                                     ?>
                                     <span class="ife_small">
-                                        <?php _e( 'By Authorize your account you are able to import private facebook events which you can see with your profile and import events by group. Authorization is not require if you want to import only public events.','import-facebook-events' ); ?>
+                                        <?php _e( 'Please authorize your facebook account for import facebook events.','import-facebook-events' ); ?>
                                     </span>
                                 </td>
                             </tr>

@@ -44,7 +44,7 @@ class Import_Facebook_Events_Facebook {
 		$options = ife_get_import_options( 'facebook' );
 		$this->fb_app_id = isset( $options['facebook_app_id'] ) ? $options['facebook_app_id'] : '';
 		$this->fb_app_secret = isset( $options['facebook_app_secret'] ) ? $options['facebook_app_secret'] : '';
-		$this->fb_graph_url = 'https://graph.facebook.com/v2.11/';
+		$this->fb_graph_url = 'https://graph.facebook.com/v3.0/';
 
 	}
 
@@ -252,25 +252,29 @@ class Import_Facebook_Events_Facebook {
 	 * @since 1.0.0
 	 */
 	public function get_facebook_event_by_event_id( $event_id ) {
+		$fields = array(
+					'id',
+					'name',
+					'description',
+					'start_time',
+					'end_time',
+					'event_times',
+					'cover',
+					'ticket_uri',
+					'timezone',
+					'place',
+				);
+		$include_owner = apply_filters( 'ife_import_owner', false );
+		if( $include_owner ){
+			$fields[] = 'owner';
+		}
+
 		return $this->get_facebook_response_data(
 			$event_id,
 			array(
 				'fields' => implode(
 					',',
-					array(
-						'id',
-						'name',
-						'description',
-						'start_time',
-						'end_time',
-						'event_times',
-						'updated_time',
-						'cover',
-						'ticket_uri',
-						'timezone',
-						'owner',
-						'place',
-					)
+					$fields
 				),
 			)
 		);
