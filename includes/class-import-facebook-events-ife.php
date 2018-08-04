@@ -144,7 +144,7 @@ class Import_Facebook_Events_IFE {
 			if( $event_image != '' ){
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
 			}else{
-				if( $is_exitsing_event ){
+				if( $is_exitsing_event && $event_args['import_origin'] != 'ical' ){
 					delete_post_thumbnail( $inserted_event_id );
 				}
 			}

@@ -452,7 +452,10 @@ class Import_Facebook_Events_Ical_Parser {
 			$current_dt_start = $ical_event->getProperty( 'X-CURRENT-DTSTART' );
 			$recurrence_id    = isset( $current_dt_start[1] ) ? $current_dt_start[1] : false;
 		}
-		return $ical_event->getProperty( 'UID' ) . $recurrence_id;
+		$event_id = $ical_event->getProperty( 'UID' ) . $recurrence_id;
+		$event_id = explode( '@facebook', $event_id );
+		$ical_event_id = str_replace('e', '', $event_id[0]);
+		return $ical_event_id;
 	}
 
 	/**
