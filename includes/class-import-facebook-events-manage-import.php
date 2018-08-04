@@ -36,6 +36,11 @@ class Import_Facebook_Events_Manage_Import {
 
 		if ( isset( $_POST['ife_action'] ) && $_POST['ife_action'] == 'ife_import_submit' &&  check_admin_referer( 'ife_import_form_nonce_action', 'ife_import_form_nonce' ) ) {
 
+			$event_origin = isset( $_POST['import_origin'] ) ? sanitize_text_field( $_POST['import_origin'] ) : '';
+			if( empty( $event_origin ) ){
+				$event_origin = 'facebook';
+			}
+
 			$event_data['import_into'] = isset( $_POST['event_plugin'] ) ? sanitize_text_field( $_POST['event_plugin']) : '';
 			if( $event_data['import_into'] == '' ){
 				$ife_errors[] = esc_html__( 'Please provide Import into plugin for Event import.', 'import-facebook-events' );
@@ -46,7 +51,11 @@ class Import_Facebook_Events_Manage_Import {
 			$event_data['event_status'] = isset( $_POST['event_status'] ) ? sanitize_text_field( $_POST['event_status']) : 'pending';
 			$event_data['event_cats'] = isset( $_POST['event_cats'] ) ? $_POST['event_cats'] : array();
 
-			$this->handle_facebook_import_form_submit( $event_data );
+			if( 'ical' === $event_origin ){
+				$this->handle_ical_import_form_submit( $event_data );
+			} else {
+				$this->handle_facebook_import_form_submit( $event_data );
+			}
 		}
 	}
 
@@ -178,6 +187,43 @@ class Import_Facebook_Events_Manage_Import {
 		$import_events = $ife_events->facebook->import_events( $event_data );
 		if ( $import_events && ! empty( $import_events ) ) {
 			$ife_events->common->display_import_success_message( $import_events, $event_data );
+		}
+	}
+
+	/**
+	 * Handle iCal import form submit.
+	 *
+	 * @since    1.0.0
+	 */
+	public function handle_ical_import_form_submit( $event_data ){
+		global $ife_errors, $ife_success_msg, $ife_events;
+
+		$event_data['import_origin'] = 'ical';
+		$event_data['import_by'] = 'ics_file';
+		$event_data['ical_url'] = '';
+		$event_data['start_date'] = isset( $_POST['start_date'] ) ? $_POST['start_date'] : '';
+		$event_data['end_date'] = isset( $_POST['end_date'] ) ? $_POST['end_date'] : '';
+
+		if( $event_data['import_by'] == 'ics_file' ){
+
+			$file_ext = pathinfo( $_FILES['ics_file']['name'], PATHINFO_EXTENSION );
+			$file_type = $_FILES['ics_file']['type'];
+
+			if( $file_type != 'text/calendar' && $file_ext != 'ics' ){
+				$ife_errors[] = esc_html__( 'Please upload .ics file', 'import-facebook-events');
+				return;
+			}
+
+			$ics_content =  file_get_contents( $_FILES['ics_file']['tmp_name'] );
+			$import_events = $ife_events->ical->import_events_from_ics_content( $event_data, $ics_content );
+
+			if( $import_events && !empty( $import_events ) ){
+				$ife_events->common->display_import_success_message( $import_events, $event_data );
+			}else{
+				if( empty( $ife_errors ) ){
+					$ife_success_msg[] = esc_html__( 'Nothing to import.', 'import-facebook-events' );
+				}
+			}
 		}
 	}
 
