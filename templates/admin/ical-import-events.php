@@ -5,9 +5,13 @@ global $ife_events;
 ?>
 <div class="ife_container">
     <div class="ife_row">
-
+    	<div class="widefat" style="width: 100%;background-color: #FFFBCC;border: 1px solid #e5e5e5;
+-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);box-shadow: 0 1px 1px rgba(0,0,0,.04);padding: 10px;">
+			<?php 
+			printf( '%s <a href="http://docs.xylusthemes.com/docs/import-facebook-events/how-to-import-facebook-event-using-ical-url/" target="_blank">%s</a>', esc_attr__( 'You can check documentation for how to get iCal URL or download .ics file from Facebook at', 'import-facebook-events' ), esc_attr__( 'Here.', 'import-facebook-events' ) ); ?>
+		</div>
         <div class="ife-column ife_well">
-            <h3><?php esc_attr_e( 'iCal / .ics Import', 'import-facebook-events' ); ?></h3>
+            <h3><?php esc_attr_e( 'Facebook iCal/.ics Import', 'import-facebook-events' ); ?></h3>
             <form method="post" enctype="multipart/form-data" id="ife_ics_form">
 
 				<table class="form-table">

@@ -5,10 +5,14 @@ global $ife_events;
 ?>
 <div class="ife_container">
     <div class="ife_row">
+    	<div class="widefat" style="width: 100%;background-color: #FFFBCC;border: 1px solid #e5e5e5;
+-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);box-shadow: 0 1px 1px rgba(0,0,0,.04);padding: 10px;">
+			<?php esc_attr_e( 'Facebook Event Importing using API is not working as it required approved app to access API. Our app is in approval process till then you can Import facebook Events using Facebook .ICS file import or Event iCal URL.', 'import-facebook-events' ); ?><br/><br/>
+			<?php esc_attr_e( 'You can also schedule auto import on regular basis in Pro version.', 'import-facebook-events' ); ?>
+		</div>
     	<div class="ife-column ife_well">
             <h3><?php esc_attr_e( 'Facebook Import', 'import-facebook-events' ); ?></h3>
             <form method="post" id="ife_facebook_form">
-           	
                	<table class="form-table">
 		            <tbody>
 		                <tr>

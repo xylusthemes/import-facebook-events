@@ -15,13 +15,9 @@ Import Facebook events into your WordPress website and/or Event Calendar. Nice D
 == Description ==
 
 <h3>NOTICE:</h3>
->**Plugin is not working currently due Facebook API changes**
+>**Facebook Event Importing using API is not working as it required approved app to access API. Our app is in approval process till then you can Import facebook Events using Facebook .ICS file import or Event iCal URL.**
 >
->**Facebook has restricted access of Events in API from 4th April due to recent Privacy issue. They have new policy & rules to get Event data and restricted events data over API, So You are not able to import events from Facebook for now.**
->
->**Facebook is making changes in their Plateform and they will fix these issues soon**
->
->**[Here](https://developers.facebook.com/blog/post/2018/04/04/facebook-api-platform-product-changes/) is post from facebook about same.**
+>**You can check documentation for how to get iCal URL or download .ics file from Facebook at [Here](http://docs.xylusthemes.com/docs/import-facebook-events/how-to-import-facebook-event-using-ical-url/)**
 >
 
 <h3>Import Facebook Events into WordPress :</h3>
@@ -96,12 +92,13 @@ You can use `[facebook_events]` for display in-built facebook events list.
 2. Single Event page (Twenty Sixteen Theme).
 3. Import Facebook events by Event IDs.
 4. Import Facebook events by Organization/Page ID (Pro).
-5. Scheduled Facebook Imports (Pro).
-6. Import History
-7. Settings
-8. Upcoming Facebook Events widget in backend (Pro)
-9. Upcoming Facebook Events widget in front-end with Event image(Pro)
-10. Upcoming Facebook Events widget in front-end without Event image(Pro)
+5. Import Facebook events by .ics File.
+6. Scheduled Facebook Imports (Pro).
+7. Import History
+8. Settings
+9. Upcoming Facebook Events widget in backend (Pro)
+10. Upcoming Facebook Events widget in front-end with Event image(Pro)
+11. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
 
