@@ -122,7 +122,7 @@ class Import_Facebook_Events_Admin {
 		                    </a>
 
 		                    <a href="<?php echo esc_url( add_query_arg( 'tab', 'ics', $this->adminpage_url ) ); ?>" class="nav-tab <?php if ( $tab == 'ics' ) { echo 'nav-tab-active'; } ?>">
-		                        <?php esc_html_e( '.ics Import', 'import-facebook-events' ); ?>
+		                        <?php esc_html_e( 'Facebook .ics Import', 'import-facebook-events' ); ?>
 		                    </a>
 
 		                    <a href="<?php echo esc_url( add_query_arg( 'tab', 'scheduled', $this->adminpage_url ) ); ?>" class="nav-tab <?php if ( $tab == 'scheduled' ) { echo 'nav-tab-active'; } ?>">
