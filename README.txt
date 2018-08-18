@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event, facebook import, faceb
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.9
-Stable tag: 1.5.5
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,17 +15,21 @@ Import Facebook events into your WordPress website and/or Event Calendar. Nice D
 == Description ==
 
 <h3>NOTICE:</h3>
->**Facebook Event Importing using API is not working as it required approved app to access API. Our app is in approval process till then you can Import facebook Events using Facebook .ICS file import or Event iCal URL.**
+>**You need below things to work Facebook Event Importing using API.**
 >
->**You can check documentation for how to get iCal URL or download .ics file from Facebook at [Here](http://docs.xylusthemes.com/docs/import-facebook-events/how-to-import-facebook-event-using-ical-url/)**
+>* Facebook app ([Here](http://docs.xylusthemes.com/docs/import-facebook-events/creating-facebook-application/) is how to create FB app)
+>* Your site need to HTTPS (SSL certificate)
+>* You need to mark events as interested or going on facebook to get imported
+>
+>**You can also import Facebook events using our plugin with facebook ICS URL. You can check the documentation for how to get iCal URL or download .ics file from Facebook at [Here](http://docs.xylusthemes.com/docs/import-facebook-events/how-to-import-facebook-event-using-ical-url/)**
 >
 
 <h3>Import Facebook Events into WordPress :</h3>
 
-Import Facebook Events allows you to import facebook events into your WordPress site automatically. Automate your Event Marketing using Import Facebook Events plug-in. Import Events from Facebook Page, Facebook Event or Facebook Organizations page.
-You can schedule event import so it will be imported/syncronized automatically [Pro]
+Import Facebook Events allows you to import Facebook events into your WordPress site automatically. Automate your Event Marketing using Import Facebook Events plug-in. Import Events from Facebook Page, Facebook Event or Facebook Organizations page.
+You can schedule event import so it will be imported/synchronized automatically [Pro]
 
-Using This plugin you can import facebook event into below listed leading Event Management Plug-ins, which allows you to run imports from facebook right from your dashboard.  Import Facebook Events bridges the gap between your website and your Facebook events making event management easier and it is one of the leading facebook events importer.
+Using This plugin you can import facebook event into below listed leading Event Management Plug-ins, which allows you to run imports from facebook right from your dashboard.  Import Facebook Events bridges the gap between your website and your Facebook events making event management easier and it is one of the leading facebook events importers.
 
 <h3>Import Facebook Events into</h3>
 
@@ -46,9 +50,9 @@ You can use `[facebook_events]` for display in-built facebook events list.
 **Additional [PRO Add-on](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=wprepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=wprepo-readme) Features**
 
 * Scheduled import events.
-* Import events from facebook page 
-* Import events from facebook group
-* Import events from facebook Event
+* Import events from the facebook page 
+* Import events from the facebook group
+* Import events from Facebook Event
 * Sync events with facebook automatically
 * Import multiple events easily
 * Show events from facebook page into WordPress
@@ -96,14 +100,19 @@ You can use `[facebook_events]` for display in-built facebook events list.
 6. Scheduled Facebook Imports (Pro).
 7. Import History
 8. Settings
-9. Upcoming Facebook Events widget in backend (Pro)
+9. Upcoming Facebook Events widget in the backend (Pro)
 10. Upcoming Facebook Events widget in front-end with Event image(Pro)
 11. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
 
+= 1.6.0 =
+* ADDED: Facebook Authorization, so import by facebook event ID possible now (event need to marked as interested or going is mandatory)
+* IMPROVEMENT: Some Improvements
+* FIXED: some bug fixes.
+
 = 1.5.5 =
-* ADDED: Import by .ics support (Facebook has functionality to export your events to ics file so you can import your facebook event using this)
+* ADDED: Import by .ics support (Facebook has the functionality to export your events to ics file so you can import your facebook event using this)
 * FIXED: some bug fixes.
 
 = 1.5.4 =
@@ -137,12 +146,12 @@ You can use `[facebook_events]` for display in-built facebook events list.
 * ADDED: Import into Event Espresso 4 support.
 * ADDED: Advanced Sync for Facebook (Pro).
 * ADDED: Functionality for Edit Scheduled import (Pro).
-* ADDED: Select tags fuctionality for TEC,EM and IFE (Pro).
+* ADDED: Select tags functionality for TEC, EM and IFE (Pro).
 * FIXED: some bug fixes.
 
 = 1.2.0 =
-* ADDED: Support import events from Facebook group (Pro).
-* ADDED: Now user can import events which are accesible from user’s profile (Pro).
+* ADDED: Support import events from the Facebook group (Pro).
+* ADDED: Now user can import events which are accessible from user’s profile (Pro).
 * ADDED: Authorization option for import group events (Pro).
 * FIXED: some bug fixes
 
@@ -161,7 +170,7 @@ You can use `[facebook_events]` for display in-built facebook events list.
 = 1.1.3 =
 * ADDED: Upcoming Facebook Events Widget (Pro)
 * IMPROVEMENTS: make date multilingual
-* IMPROVEMENTS: in event archive and single event details page.
+* IMPROVEMENTS: in the event archive and single event details page.
 * FIXED: some bug fixes.
 
 = 1.1.2 =
@@ -170,7 +179,7 @@ You can use `[facebook_events]` for display in-built facebook events list.
 * FIXED: some bug fixes in ai1ec events import.
 
 = 1.1.1 =
-* FIXED: some bug fixes in events manage.
+* FIXED: some bug fixes in events management.
 
 = 1.1.0 =
 * Added: in-built Event management system.
