@@ -11,22 +11,73 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
 ?>
 <div class="ife_container">
     <div class="ife_row">
-        
-        <form method="post" id="ife_setting_form">                
+        <h3 class="setting_bar"><?php esc_attr_e( 'Facebook Settings', 'import-facebook-events' ); ?></h3>
+        <?php
+        $site_url = get_home_url();
+        if( !isset( $_SERVER['HTTPS'] ) && false === stripos( $site_url, 'https' ) ) {
+            ?>
+            <div class="widefat ife_settings_error">
+                <?php printf( '%1$s <b><a href="https://developers.facebook.com/blog/post/2018/06/08/enforce-https-facebook-login/" target="_blank">%2$s</a></b> %3$s', __( "It looks like you don't have HTTPS enabled on your website. Please enable it. HTTPS is required for authorize your facebook account.","import-facebook-events" ), __( 'Click here','import-facebook-events' ), __( 'for more information.','import-facebook-events' ) ); ?>
+            </div>
+        <?php
+        } ?>
+        <div class="widefat ife_settings_notice">
+            <?php printf( '<b>%1$s</b> %2$s <b><a href="https://developers.facebook.com/apps" target="_blank">%3$s</a></b> %4$s',  __( 'Note : ','import-facebook-events' ), __( 'You have to create a Facebook application before filling the following details.','import-facebook-events' ), __( 'Click here','import-facebook-events' ),  __( 'to create new Facebook application.','import-facebook-events' ) ); ?>
+            <br/>
+            <?php _e( 'For detailed step by step instructions ', 'import-facebook-events' ); ?>
+            <strong><a href="http://docs.xylusthemes.com/docs/import-facebook-events/creating-facebook-application/" target="_blank"><?php _e( 'Click here', 'import-facebook-events' ); ?></a></strong>.
+            <br/>
+            <?php _e( '<strong>Set the site url as : </strong>', 'import-facebook-events' ); ?>
+            <span style="color: green;"><?php echo get_site_url(); ?></span>
+            <br/>
+            <?php _e( '<strong>Set Valid OAuth redirect URI : </strong>', 'import-facebook-events' ); ?>
+            <span style="color: green;"><?php echo admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' ); ?></span>
+        </div>
 
-            <h3 class="setting_bar"><?php esc_attr_e( 'Facebook Settings', 'import-facebook-events' ); ?></h3>
-            
-            <div class="widefat" style="width: 100%;background-color: #FFFBCC;border: 1px solid #e5e5e5;
--webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);box-shadow: 0 1px 1px rgba(0,0,0,.04);padding: 10px;">
-                <?php printf( '<b>%1$s</b> %2$s <b><a href="https://developers.facebook.com/apps" target="_blank">%3$s</a></b> %4$s',  __( 'Note : ','import-facebook-events' ), __( 'You have to create a Facebook application before filling the following details.','import-facebook-events' ), __( 'Click here','import-facebook-events' ),  __( 'to create new Facebook application.','import-facebook-events' ) ); ?>
-                <br/>
-                <?php _e( 'In the application page in facebook, navigate to <b>Apps &gt; Settings &gt; Edit settings &gt; Website &gt; Site URL</b>. Set the site url as : ', 'import-facebook-events' ); ?>
-                <span style="color: green;"><?php echo get_site_url(); ?></span>
+        <?php
+        if( $facebook_app_id != '' && $facebook_app_secret != '' ){
+            ?>
+            <h4 class="setting_bar"><?php esc_attr_e( 'Authorize your Facebook Account', 'import-facebook-events' ); ?></h4>
+            <div class="fb_authorize">
+                <table class="form-table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">
+                                <?php _e( 'Facebook Authorization','import-facebook-events' ); ?> :
+                            </th>
+                            <td>
+                                <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
+                                    <input type="hidden" name="action" value="ife_facebook_authorize_action"/>
+                                    <?php wp_nonce_field('ife_facebook_authorize_action', 'ife_facebook_authorize_nonce'); ?>
+                                    <?php
+                                    $button_value = __('Authorize', 'import-facebook-events');
+                                    if( isset( $ife_user_token_options['authorize_status'] ) && $ife_user_token_options['authorize_status'] == 1 && isset(  $ife_user_token_options['access_token'] ) &&  $ife_user_token_options['access_token'] != '' ){
+                                        $button_value = __('Reauthorize', 'import-facebook-events');
+                                    }
+                                    ?>
+                                    <input type="submit" class="button" name="ife_facebook_authorize" value="<?php echo $button_value; ?>" />
+                                    <?php
+                                    if( !empty( $ife_fb_authorize_user ) && isset( $ife_fb_authorize_user['name'] ) && $ife_events->common->has_authorized_user_token() ){
+                                        $fbauthname = sanitize_text_field( $ife_fb_authorize_user['name'] );
+                                        if( $fbauthname != '' ){
+                                           printf( __(' ( Authorized as: %s )', 'import-facebook-events'), '<b>'.$fbauthname.'</b>' );
+                                        }
+                                    }
+                                    ?>
+                                </form>
 
-                <br><?php _e( 'For detailed step by step instructions ', 'import-facebook-events' ); ?>
-                <b><a href="http://docs.xylusthemes.com/docs/import-facebook-events/creating-facebook-application/" target="_blank"><?php _e( 'Click here', 'import-facebook-events' ); ?></a></b>.
-            </div>                        
-           
+                                <span class="ife_small">
+                                    <?php _e( 'Please authorize your facebook account for import facebook events. Please authorize with account which you have used for create an facebook app.','import-facebook-events' ); ?>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <?php
+        }
+        ?>
+        <form method="post" id="ife_setting_form">
             <table class="form-table">
                 <tbody>
                     <?php do_action( 'ife_before_settings_section' ); ?>
@@ -138,60 +189,5 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                 <input type="submit" class="button-primary xtei_submit_button" style=""  value="<?php esc_attr_e( 'Save Settings', 'import-facebook-events' ); ?>" />
             </div>
             </form>
-
-            <?php 
-            if( $facebook_app_id != '' && $facebook_app_secret != '' ){
-                ?>
-                <h3 class="setting_bar"><?php esc_attr_e( 'Authorize your Facebook Account', 'import-facebook-events' ); ?></h3>
-                <div class="fb_authorize">
-                    <table class="form-table">
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <?php _e( 'Facebook Authorization','import-facebook-events' ); ?> : 
-                                </th>
-                                <td>
-                                    <?php
-                                    if( ife_is_pro() ){
-                                        ?>
-                                        <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">                                        
-                                            <input type="hidden" name="action" value="ife_facebook_authorize_action"/>
-                                            <?php wp_nonce_field('ife_facebook_authorize_action', 'ife_facebook_authorize_nonce'); ?>
-                                            <?php 
-                                            $button_value = __('Authorize', 'import-facebook-events');
-                                            if( isset( $ife_user_token_options['authorize_status'] ) && $ife_user_token_options['authorize_status'] == 1 && isset(  $ife_user_token_options['access_token'] ) &&  $ife_user_token_options['access_token'] != '' ){
-                                                $button_value = __('Reauthorize', 'import-facebook-events');
-                                            }
-                                            ?>
-                                            <input type="submit" class="button" name="ife_facebook_authorize" value="<?php echo $button_value; ?>" />
-                                            <?php 
-                                            if( !empty( $ife_fb_authorize_user ) && isset( $ife_fb_authorize_user['name'] ) && $ife_events->common->has_authorized_user_token() ){
-                                                $fbauthname = sanitize_text_field( $ife_fb_authorize_user['name'] );
-                                                if( $fbauthname != '' ){
-                                                   printf( __(' ( Authorized as: %s )', 'import-facebook-events'), '<b>'.$fbauthname.'</b>' );
-                                                }
-                                            }
-                                            ?>
-                                        </form>
-                                        <?php
-                                    }else{
-                                        $button_value = __('Authorize', 'import-facebook-events');
-                                        ?>
-                                        <input type="submit" class="button" name="" value="<?php echo $button_value; ?>" disabled="disabled" />
-                                        <?php 
-                                        do_action( 'ife_render_pro_notice' );
-                                    }
-                                    ?>
-                                    <span class="ife_small">
-                                        <?php _e( 'Please authorize your facebook account for import facebook events.','import-facebook-events' ); ?>
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <?php
-            }
-            ?>
     </div>
 </div>

@@ -21,6 +21,7 @@ class Import_Facebook_Events_Common {
 	public function __construct() {
 		add_action( 'wp_ajax_ife_render_terms_by_plugin', array( $this, 'ife_render_terms_by_plugin' ) );
 		add_action( 'admin_init', array( $this, 'ife_check_if_access_token_invalidated' ) );
+		add_action( 'admin_init', array( $this, 'ife_check_for_minimum_pro_version' ) );
 		add_action( 'ife_render_pro_notice', array( $this, 'render_pro_notice' ) );
 	}
 
@@ -580,6 +581,21 @@ class Import_Facebook_Events_Common {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Check if user has minimum pro version.
+	 *
+	 * @since    1.6
+	 * @return /boolean
+	 */
+	public function ife_check_for_minimum_pro_version(){
+		if( defined('IFEPRO_VERSION') ){
+			if ( version_compare( IFEPRO_VERSION, IFE_MIN_PRO_VERSION, '<' ) ) {
+				global $ife_warnings;
+				$ife_warnings[] = __( 'Your current "Import Facebok Event Pro" add-on is not competible with Free plugin. Please Upgrade Pro latest to work event importing Flawlessly.', 'import-facebook-events' );
+			}
+		}
 	}
 
 	/**

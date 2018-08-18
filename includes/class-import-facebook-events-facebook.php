@@ -468,7 +468,8 @@ class Import_Facebook_Events_Facebook {
 
 		$organizer_raw_data = $this->get_facebook_response_data( $organizer_id, array() );
 		if( isset( $organizer_raw_data->error->message ) ){
-			$ife_errors[] = $organizer_raw_data->error->message;
+			return false;
+			// $ife_errors[] = $organizer_raw_data->error->message;
 		}
 		
 		if( ! isset( $organizer_raw_data->name ) ){

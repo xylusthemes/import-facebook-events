@@ -51,6 +51,7 @@ class Import_Facebook_Events{
 			self::$instance->setup_constants();
 
 			add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
+			add_action( 'plugins_loaded', array( self::$instance, 'load_authorize_class' ), 20 );
 			add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_style' ) );
 			add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_script' ) );
 
@@ -117,6 +118,11 @@ class Import_Facebook_Events{
 		// Plugin version.
 		if( ! defined( 'IFE_VERSION' ) ){
 			define( 'IFE_VERSION', '1.5.5' );
+		}
+
+		// Minimum Pro plugin version.
+		if( ! defined( 'IFE_MIN_PRO_VERSION' ) ){
+			define( 'IFE_MIN_PRO_VERSION', '1.6.0' );
 		}
 
 		// Plugin folder Path.
@@ -196,6 +202,24 @@ class Import_Facebook_Events{
 			basename( dirname( __FILE__ ) ) . '/languages'
 		);
 	
+	}
+
+	/**
+	 * Loads the facebook authorize class
+	 *
+	 * @access public
+	 * @since 1.5
+	 * @return void
+	 */
+	public function load_authorize_class(){
+
+		if( !class_exists( 'Import_Facebook_Events_Pro_FB_Authorize', false ) ){
+			include_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-fb-authorize.php';
+			global $ife_events;
+			if( class_exists('Import_Facebook_Events_FB_Authorize', false ) && !empty( $ife_events ) ){
+				$ife_events->fb_authorize = new Import_Facebook_Events_FB_Authorize();
+			}
+		}
 	}
 	
 	/**
