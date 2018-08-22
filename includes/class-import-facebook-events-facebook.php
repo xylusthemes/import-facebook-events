@@ -217,6 +217,29 @@ class Import_Facebook_Events_Facebook {
 			$access_token_data = json_decode( $access_token_response_body );
 			$access_token = ! empty( $access_token_data->access_token ) ? $access_token_data->access_token : null;
 
+			$ife_user_token_options = get_option( 'ife_user_token_options', array() );
+			if( !empty( $ife_user_token_options ) && $access_token != '' ){
+				$authorize_status =	isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
+				$user_access_token = isset( $ife_user_token_options['access_token'] ) ? $ife_user_token_options['access_token'] : '';
+				if( 1 == $authorize_status && $user_access_token != '' ){
+
+					$args = array(
+						'input_token' => $user_access_token,
+						'access_token'  => $access_token,
+						);
+					$access_token_url = add_query_arg( $args, $this->fb_graph_url . 'debug_token' );
+					$access_token_response = wp_remote_get( $access_token_url );
+					$access_token_response_body = wp_remote_retrieve_body( $access_token_response );
+					$access_token_data = json_decode( $access_token_response_body );
+					if( !isset( $access_token_data->error ) && $access_token_data->data->is_valid == 1 ){
+						$access_token = $user_access_token;
+					}else{
+						$ife_user_token_options['authorize_status'] = 0;
+						update_option( 'ife_user_token_options', $ife_user_token_options );
+					}
+				}
+			}
+
 			$this->fb_access_token = apply_filters( 'ife_facebook_access_token', $access_token );
 			return $this->fb_access_token;
 		}		
