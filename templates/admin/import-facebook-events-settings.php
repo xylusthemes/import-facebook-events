@@ -90,7 +90,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                             <span class="xtei_small">
                                 <?php
                                 printf( '%s <a href="https://developers.facebook.com/apps" target="_blank">%s</a>', 
-                                    __('You can veiw or create your Facebook Apps', 'import-facebook-events'),
+                                    __('You can view or create your Facebook Apps', 'import-facebook-events'),
                                     __('from here', 'import-facebook-events')
                                  );
                                 ?>
@@ -107,7 +107,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                             <span class="xtei_small">
                                 <?php
                                 printf( '%s <a href="https://developers.facebook.com/apps" target="_blank">%s</a>', 
-                                    __('You can veiw or create your Facebook Apps', 'import-facebook-events'),
+                                    __('You can view or create your Facebook Apps', 'import-facebook-events'),
                                     __('from here', 'import-facebook-events')
                                  );
                                 ?>
