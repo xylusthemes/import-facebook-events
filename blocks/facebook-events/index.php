@@ -21,9 +21,10 @@ function ife_register_gutenberg_block() {
 	global $ife_events;
 	if ( function_exists( 'register_block_type' ) ) {
 		// Register block editor script.
+		$js_dir = IFE_PLUGIN_URL . 'assets/js/';
 		wp_register_script(
 			'ife-facebook-events-block',
-			plugins_url( 'index.js', __FILE__ ),
+			$js_dir . 'gutenberg.blocks.js',
 			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
 			IFE_VERSION
 		);

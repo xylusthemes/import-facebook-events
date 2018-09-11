@@ -185,7 +185,7 @@ class Import_Facebook_Events{
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-my-calendar.php';
 		require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ee4.php';
 		// Gutenberg Block
-		require_once IFE_PLUGIN_DIR . 'includes/blocks/facebook-events/index.php';
+		require_once IFE_PLUGIN_DIR . 'blocks/facebook-events/index.php';
 	}
 
 	/**
