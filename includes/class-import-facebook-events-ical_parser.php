@@ -448,6 +448,9 @@ class Import_Facebook_Events_Ical_Parser {
 	public function generate_uid_for_ical_event( $ical_event ) {
 
 		$recurrence_id = $ical_event->getProperty( 'RECURRENCE-ID' );
+		if ( is_array( $recurrence_id) ) {
+			$recurrence_id = implode('-', $recurrence_id);
+		}
 		if ( false === $recurrence_id && false !== $ical_event->getProperty( 'X-RECURRENCE' ) ) {
 			$current_dt_start = $ical_event->getProperty( 'X-CURRENT-DTSTART' );
 			$recurrence_id    = isset( $current_dt_start[1] ) ? $current_dt_start[1] : false;
