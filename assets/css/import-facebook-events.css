@@ -853,3 +853,9 @@
   color: #039ED7;
   line-height: 1.3em;
 }
+.ife-start-date__dialog .components-popover__content, .ife-end-date__dialog .components-popover__content {
+  padding: 10px;
+}
+.components-panel__row.ife-start-date.ife_hidden, .components-panel__row.ife-end-date.ife_hidden{
+  display: none;
+}
