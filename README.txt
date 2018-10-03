@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event, facebook import, faceb
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.9
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,17 +94,22 @@ You can use `[facebook_events]` for display in-built facebook events list.
 
 1. Events page using '[facebook_events posts_per_page="12"]' shortcode
 2. Single Event page (Twenty Sixteen Theme).
-3. Import Facebook events by Event IDs.
-4. Import Facebook events by Organization/Page ID (Pro).
-5. Import Facebook events by .ics File.
-6. Scheduled Facebook Imports (Pro).
-7. Import History
-8. Settings
-9. Upcoming Facebook Events widget in the backend (Pro)
-10. Upcoming Facebook Events widget in front-end with Event image(Pro)
-11. Upcoming Facebook Events widget in front-end without Event image(Pro)
+3. Facebook Events Gutenberg Block
+4. Import Facebook events by Event IDs.
+5. Import Facebook events by Organization/Page ID (Pro).
+6. Import Facebook events by .ics File.
+7. Scheduled Facebook Imports (Pro).
+8. Import History
+9. Settings
+10. Upcoming Facebook Events widget in the backend (Pro)
+11. Upcoming Facebook Events widget in front-end with Event image(Pro)
+12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.6.2 =
+* ADDED: Facebook Events Gutenberg block.
+* IMPROVEMENT: Some Improvements
 
 = 1.6.1 =
 * FIXED: bug in get facebook user access_token
