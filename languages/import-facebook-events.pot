@@ -929,7 +929,7 @@ msgstr ""
 
 #: templates/admin/ical-import-events.php:64
 msgid ""
-"Select date range from which you want to import events. Default startdate is "
+"Select date range from which you want to import events. Default start date is"
 "Today"
 msgstr ""
 
