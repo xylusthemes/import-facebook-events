@@ -211,7 +211,7 @@ msgid "Event Categories for Event Import"
 msgstr ""
 
 #: includes/class-import-facebook-events-common.php:77
-msgid "These categories are assign to imported event."
+msgid "These categories are assigned to imported event."
 msgstr ""
 
 #: includes/class-import-facebook-events-common.php:124
