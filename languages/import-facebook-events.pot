@@ -648,7 +648,7 @@ msgstr ""
 msgid ""
 "We are not able to access Facebook event: %s. Possible reasons: - App "
 "Credentials are wrong - Facebook event is not public or some restrictions "
-"are there like age,country etc."
+"are there like age, country, etc."
 msgstr ""
 
 #: includes/class-import-facebook-events-fb-authorize.php:49
