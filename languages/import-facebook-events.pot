@@ -1069,7 +1069,7 @@ msgstr ""
 
 #: templates/admin/import-facebook-events-support.php:17
 msgid ""
-"Thanks you for using Import Facebook Events, We are sincerely appreciate "
+"Thanks you for using Import Facebook Events. We sincerely appreciate "
 "your support and we’re excited to see you using our plugins."
 msgstr ""
 
