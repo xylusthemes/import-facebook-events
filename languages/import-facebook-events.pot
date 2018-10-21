@@ -1001,7 +1001,7 @@ msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:70
 msgid ""
-"Please authorize your facebook account for import facebook events. Please "
+"Please authorize your Facebook account to import Facebook events. Please "
 "authorize with account which you have used for create an facebook app."
 msgstr ""
 
