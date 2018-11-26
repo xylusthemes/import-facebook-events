@@ -2,6 +2,7 @@
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) exit;
 global $ife_events;
+$user_fb_pages = get_option('ife_fb_user_pages', array() );
 ?>
 <div class="ife_container">
     <div class="ife_row">
@@ -23,11 +24,17 @@ global $ife_events;
 			                    	<?php if( $ife_events->common->has_authorized_user_token() ){ ?>
 			                    		<option value="facebook_group"><?php esc_attr_e( 'Facebook Group','import-facebook-events' ); ?></option>
 			                    		<option value="my_events"><?php esc_attr_e( 'My Events','import-facebook-events' ); ?></option>
-			                    	<?php } ?>
+									<?php }
+									if( !empty( $user_fb_pages ) ){
+										?>
+										<option value="my_pages"><?php esc_attr_e( 'My Pages','import-facebook-events' ); ?></option>
+										<?php
+									}
+									?>
 
 			                    </select>
 			                    <span class="ife_small">
-			                        <?php _e( 'Select Event source. <strong>1. by Facebook Event ID</strong>, <strong>2. Facebook Organization or Page</strong> ( import events belonging to a Facebook organization or a Facebook page ).', 'import-facebook-events' ); ?><br/>
+									<?php _e( 'Select Event source. <strong>1. by Facebook Event ID</strong>, <strong>2. Facebook Organization or Page</strong> ( import events belonging to a Facebook organization or a Facebook page ).', 'import-facebook-events' ); ?><br/>
 			                        <?php
 			                        if( $ife_events->common->has_authorized_user_token() ){
 			                        	_e( '<strong>3. Facebook Group</strong> (Import events from facebook group), <strong>4. My Events</strong> (Import events which you have marked intrested or going on facebook, this also include your events on facebook)', 'import-facebook-events' );
@@ -72,6 +79,26 @@ global $ife_events;
 			                    </span>
 			                    <?php do_action( 'ife_render_pro_notice' ); ?>
 					    	</td>
+					    </tr>
+
+					    <tr class="facebook_account_wrapper" style="display: none;">
+							<th scope="row">
+								<?php esc_attr_e( 'My Pages','import-facebook-events' ); ?> :
+							</th>
+							<td>
+								<?php if( !empty( $user_fb_pages ) ){ ?>
+									<select name="my_page" required="required" <?php if( !ife_is_pro() ){ echo 'disabled="disabled"'; } ?>>
+										<option value=""><?php esc_attr_e( 'Select Page','import-facebook-events' ); ?></option>
+										<?php foreach ($user_fb_pages as $pkey => $pvalue) {
+											echo '<option value="'.$pkey.'">'.$pvalue['name'].'</option>';
+										} ?>
+									</select>
+								<?php } ?>
+								<span class="ife_small">
+			                        <?php _e( 'Select Page for import events from it.', 'import-facebook-events' ); ?>
+								</span>
+								<?php do_action( 'ife_render_pro_notice' ); ?>
+							</td>
 					    </tr>
 
 					    <tr class="import_type_wrapper">

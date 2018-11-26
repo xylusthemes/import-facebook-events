@@ -87,8 +87,6 @@ class Import_Facebook_Events_FB_Authorize {
 					    $ife_user_token_options['access_token'] = sanitize_text_field($access_token);
 					    update_option('ife_user_token_options', $ife_user_token_options);
 
-						$accounts_call= wp_remote_get("https://graph.facebook.com/".$api_version."/me/accounts?access_token=$access_token&limit=100&offset=0");
-
 						$profile_call= wp_remote_get("https://graph.facebook.com/".$api_version."/me?fields=id,name,picture&access_token=$access_token");
 						$profile = wp_remote_retrieve_body( $profile_call );
 						$profile = json_decode( $profile );
@@ -99,8 +97,25 @@ class Import_Facebook_Events_FB_Authorize {
 								$ife_fb_authorize_user['avtar'] = esc_url_raw( $profile->picture->data->url );	
 							}
 						}
-
 						update_option('ife_fb_authorize_user', $ife_fb_authorize_user );
+
+						$args = array( 'timeout' => 15 );
+						$accounts_call= wp_remote_get("https://graph.facebook.com/".$api_version."/me/accounts?access_token=$access_token&limit=100&offset=0", $args );
+						$accounts = wp_remote_retrieve_body( $accounts_call );
+						$accounts = json_decode( $accounts );
+						$accounts = isset( $accounts->data ) ? $accounts->data : array();
+						if( !empty( $accounts ) ){
+							$pages = array();
+							foreach ($accounts as $account) {
+								$pages[$account->id] = array(
+									'id' => $account->id,
+									'name' => $account->name,
+									'access_token' => $account->access_token
+								);
+							}
+							update_option('ife_fb_user_pages', $pages );
+						}
+
 						$redirect_url = admin_url('admin.php?page=facebook_import&tab=settings&authorize=1');
 					    wp_redirect($redirect_url);
 					    exit();
