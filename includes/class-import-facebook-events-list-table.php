@@ -66,7 +66,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 		$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'scheduled';
 		$wp_redirect = admin_url( 'admin.php?page='.$page );
 		$ife_url_edit_args = array(
-			'tab'    =>  wp_unslash( $tab ),
+			'tab'   => wp_unslash( $tab ),
 			'edit'  => absint( $item['ID'] ),
 		);
 		// Build row actions.
@@ -75,12 +75,24 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 		    'delete' => sprintf( '<a href="%1$s" onclick="return confirm(\'Warning!! Are you sure to Delete this scheduled import? Scheduled import will be permanatly deleted.\')">%2$s</a>',esc_url( wp_nonce_url( add_query_arg( $ife_url_delete_args ), 'ife_delete_import_nonce' ) ), esc_html__( 'Delete', 'import-facebook-events' ) ),
 		);
 
+		if( isset($item['facebook_id']) && 'me' === $item['facebook_id'] ){
+			$item['import_by'] = $item['facebook_id'] = __('My Events', 'import-facebook-events' );
+		}
+
 		// Return the title contents.
-		return sprintf('<strong>%1$s</strong><span>%4$s</span> <span style="color:silver">(id:%2$s)</span>%3$s',
-		    $item['title'],
-		    $item['ID'],
-		    $this->row_actions( $actions ),
-		    __('Origin', 'import-facebook-events') . ': <b>' . ucfirst( $item["import_origin"] ) . '</b>'
+		return sprintf( '<strong>%1$s</strong>
+			<span>%2$s</span></br>
+			<span>%3$s</span></br>
+			<span>%4$s</span></br>
+			<span>%5$s</span></br>
+			<span style="color:silver">(id:%6$s)</span>%7$s',
+			$item['title'],
+			__('Origin', 'import-facebook-events') . ': <b>' . ucfirst( $item["import_origin"] ) . '</b>',
+			__('Import By', 'import-facebook-events') . ': <b>' . $item["import_by"] . '</b>',
+			__('Facebook ID', 'import-facebook-events') . ': <b>' . $item["facebook_id"] . '</b>',
+			__('Import Into', 'import-facebook-events') . ': <b>' . $item["import_into"] . '</b>',
+			$item['ID'],
+			$this->row_actions( $actions )
 		);
 	}
 
@@ -185,12 +197,17 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 		$scheduled_import_data = array( 'total_records' => 0, 'import_data' => array() );
 		$per_page = 10;
 		$current_page = $this->get_pagenum();
+		$import_plugins = $ife_events->common->get_active_supported_event_plugins();
 
 		$query_args = array(
 			'post_type' => 'fb_scheduled_imports',
 			'posts_per_page' => $per_page,
 			'paged' => $current_page,
 		);
+
+		if( isset( $_REQUEST['s'] ) ){
+			$query_args['s'] = sanitize_text_field($_REQUEST['s']);
+		}
 
 		if( $origin != '' ){
 			$query_args['meta_key'] = 'import_origin';
@@ -209,6 +226,8 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 				$import_origin = get_post_meta( $import_id, 'import_origin', true );
 				$import_plugin = isset( $import_data['import_into'] ) ? $import_data['import_into'] : '';
 				$import_status = isset( $import_data['event_status'] ) ? $import_data['event_status'] : '';
+				$facebook_id = ('facebook_organization' === $import_data['import_by'] ) ? (isset($import_data['page_username']) ? $import_data['page_username']:'') : (isset($import_data['facebook_group_id']) ? $import_data['facebook_group_id'] : '');
+				$import_into = isset( $import_plugins[$import_plugin]) ? $import_plugins[$import_plugin] : $import_plugin;
 				
 				$term_names = array();
 				$import_terms = isset( $import_data['event_cats'] ) ? $import_data['event_cats'] : array(); 
@@ -234,8 +253,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 					'post_status' => 'publish',
 					'posts_per_page' => 1,
 					'meta_key'   => 'schedule_import_id',
-					'meta_value' => $import_id,
-
+					'meta_value' => $import_id
 				);
 
 				$history = new WP_Query( $history_args );
@@ -248,12 +266,15 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 				wp_reset_postdata();
 
 				$scheduled_import_data['import_data'][] = array(
-					'ID' => $import_id,
-					'title' 			=> $import_title,
+					'ID' 			  => $import_id,
+					'title' 		  => $import_title,
 					'import_status'   => ucfirst( $import_status ),
 					'import_category' => implode( ', ', $term_names ),
 					'import_frequency'=> isset( $import_data['import_frequency'] ) ? ucfirst( $import_data['import_frequency'] ) : '',
 					'import_origin'   => $import_origin,
+					'import_into'	  => $import_into,
+					'facebook_id'	  => $facebook_id,
+					'import_by'		  => ('facebook_organization' === $import_data['import_by'] ) ? __( 'Facebook Page', 'import-facebook-events' ) : __( 'Facebook Group', 'import-facebook-events' ),
 					'last_import'     => $last_import_history_date,
 				);
 			}
