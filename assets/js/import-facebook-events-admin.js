@@ -171,19 +171,3 @@
 	});
 
 })( jQuery );
-
-jQuery(document).ready(function(){
-	jQuery("#update_events").on( "change", function(){
-		ife_check_dontupdate_data();
-	});
-	ife_check_dontupdate_data();
-});
-
-function ife_check_dontupdate_data(){
-	if( jQuery("#update_events").prop("checked") == true){
-		jQuery(".dont_update_wrap").show();
-	}else{
-		jQuery(".dont_update_wrap").hide();
-		jQuery(".dont_update_wrap input[type='checkbox']").prop("checked", false );
-	}
-}

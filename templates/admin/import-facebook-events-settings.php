@@ -128,7 +128,6 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                             <span class="xtei_small">
                                 <?php _e( 'Check to updates existing events.', 'import-facebook-events' ); ?>
                             </span>
-                            <?php do_action( 'ife_dont_update_settings_section' ); ?>
                         </td>
                     </tr>
 
