@@ -112,10 +112,11 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 		);
 
 		// Return the title contents.
-		return sprintf( '<a class="button-primary" href="%1$s">%2$s</a><br/>%3$s',
+		return sprintf( '<a class="button-primary" href="%1$s">%2$s</a><br/>%3$s<br/>%4$s',
 			esc_url( wp_nonce_url( add_query_arg( $xtmi_run_import_args ), 'ife_run_import_nonce' ) ),
 			esc_html__( 'Import Now', 'import-facebook-events' ),
-			$item['last_import']
+			$item['last_import'],
+			$item['stats']
 		);
 	}
 
@@ -247,23 +248,36 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 					}
 				}	
 
-				$last_import_history_date = '';
+				$stats = $last_import_history_date = '';
 				$history_args = array(
 					'post_type'   => 'ife_import_history',
 					'post_status' => 'publish',
-					'posts_per_page' => 1,
-					'meta_key'   => 'schedule_import_id',
-					'meta_value' => $import_id
+					'numberposts' => 1,
+					'meta_key'    => 'schedule_import_id',
+					'meta_value'  => $import_id,
+					'fields'      => 'ids'
 				);
+				$history = get_posts( $history_args );
+				if( !empty( $history ) ){
+					$last_import_history_date = sprintf( __( 'Last Import: %s ago', 'import-facebook-events' ), human_time_diff( get_the_date( 'U', $history[0] ), current_time( 'timestamp' ) ) );
 
-				$history = new WP_Query( $history_args );
-				if ( $history->have_posts() ) {
-					while ( $history->have_posts() ) {
-						$history->the_post();
-						$last_import_history_date = sprintf( __( 'Last Import: %s ago', 'import-facebook-events' ), human_time_diff( get_the_date( 'U' ), current_time( 'timestamp' ) ) );
+					$created = get_post_meta( $history[0], 'created', true );
+					$updated = get_post_meta( $history[0], 'updated', true );
+					$skipped = get_post_meta( $history[0], 'skipped', true );
+					$stats = array();
+					if( $created > 0 ){
+						$stats[] = sprintf( __( '%d Created', 'import-facebook-events' ), $created );
+					}
+					if( $updated > 0 ){
+						$stats[] = sprintf( __( '%d Updated', 'import-facebook-events' ), $updated );
+					}
+					if( $skipped > 0 ){
+						$stats[] = sprintf( __( '%d Skipped', 'import-facebook-events' ), $skipped );
+					}
+					if( !empty( $stats ) ){
+						$stats = esc_html__( 'Import Stats: ', 'import-facebook-events' ).'<span style="color: silver">'.implode(', ', $stats).'</span>';
 					}
 				}
-				wp_reset_postdata();
 
 				$scheduled_import_data['import_data'][] = array(
 					'ID' 			  => $import_id,
@@ -276,6 +290,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 					'facebook_id'	  => $facebook_id,
 					'import_by'		  => ('facebook_organization' === $import_data['import_by'] ) ? __( 'Facebook Page', 'import-facebook-events' ) : __( 'Facebook Group', 'import-facebook-events' ),
 					'last_import'     => $last_import_history_date,
+					'stats'			  => $stats
 				);
 			}
 		}
