@@ -84,8 +84,13 @@ class Import_Facebook_Events_Aioec {
 		$origin_event_id = $centralize_array['ID'];
 		$post_title = isset( $centralize_array['name'] ) ? $centralize_array['name'] : '';
 		$post_description = isset( $centralize_array['description'] ) ? $centralize_array['description'] : '';
-		$start_time = $centralize_array['starttime_local'];
-		$end_time = $centralize_array['endtime_local'];
+		$timezone_name = 'UTC';
+		if( isset( $centralize_array['timezone_name'] ) && !empty( $centralize_array['timezone_name'] ) ){
+			$timezone_name = $centralize_array['timezone_name'];
+		}
+
+		$start_time = strtotime( $this->convert_datetime_to_local_datetime( $centralize_array['startime_utc'], $timezone_name ) );
+		$end_time = strtotime( $this->convert_datetime_to_local_datetime( $centralize_array['endtime_utc'], $timezone_name ) );
 		$event_uri = $centralize_array['url'];
 
 		$eo_eventdata = array(
@@ -192,7 +197,7 @@ class Import_Facebook_Events_Aioec {
 				'post_id' 		   => $inserted_event_id,
 				'start'            => $start_time,
 				'end' 	  		   => $end_time,
-				'timezone_name'    => 'UTC',
+				'timezone_name'    => $timezone_name,
 				'allday' 	  	   => 0,
 				'instant_event'    => 0,
 				'venue' 	  	   => $location_name,
@@ -290,5 +295,21 @@ class Import_Facebook_Events_Aioec {
 			$format .= $site_url['path'];
 		}
 		return sprintf( $format, $event_id );
+	}
+
+	/**
+	 * remove query string from URL.
+	 *
+	 * @since 1.0.0
+	 */
+	function convert_datetime_to_local_datetime( $datetime, $local_timezone ) {
+		try {
+			$datetime2 = new DateTime( date('Y-m-d H:i:s', $datetime), new DateTimeZone( $local_timezone ) );
+			$datetime2->setTimezone(new DateTimeZone( 'UTC' ) );
+			return $datetime2->format( 'Y-m-d H:i:s' );
+		}
+		catch ( Exception $e ) {
+			return $datetime;
+		}
 	}
 }

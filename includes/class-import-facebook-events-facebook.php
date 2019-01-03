@@ -226,7 +226,7 @@ class Import_Facebook_Events_Facebook {
 					$args = array(
 						'input_token' => $user_access_token,
 						'access_token'  => $access_token,
-						);
+					);
 					$access_token_url = add_query_arg( $args, $this->fb_graph_url . 'debug_token' );
 					$access_token_response = wp_remote_get( $access_token_url );
 					$access_token_response_body = wp_remote_retrieve_body( $access_token_response );
@@ -242,9 +242,9 @@ class Import_Facebook_Events_Facebook {
 
 			$this->fb_access_token = apply_filters( 'ife_facebook_access_token', $access_token );
 			return $this->fb_access_token;
-		}		
+		}
 	}
-	
+
 	/**
 	 * Generate Facebook api URL for grab Event.
 	 *
@@ -252,7 +252,7 @@ class Import_Facebook_Events_Facebook {
 	 */
 	public function generate_facebook_api_url( $path = '', $query_args = array() ) {
 		$query_args = array_merge( $query_args, array( 'access_token' => $this->get_access_token() ) );
-		
+
 		$url = add_query_arg( $query_args, $this->fb_graph_url . $path );
 
 		return $url;
@@ -341,6 +341,7 @@ class Import_Facebook_Events_Facebook {
 
 		$ticket_uri = isset( $facebook_event->ticket_uri ) ? esc_url( $facebook_event->ticket_uri ) : 'https://www.facebook.com/events/'.$facebook_id;
 		$timezone = $this->get_utc_offset( $facebook_event->start_time );
+		$timezone_name = isset( $facebook_event->timezone ) ? $facebook_event->timezone : $timezone;
 		$cover_image = isset( $facebook_event->cover->source ) ? $ife_events->common->clean_url( esc_url( $facebook_event->cover->source ) ) : '';
 
 		$event_times_obj = isset( $facebook_event->event_times ) ? $facebook_event->event_times : array();
@@ -366,9 +367,10 @@ class Import_Facebook_Events_Facebook {
 			'description'     => $post_description,
 			'starttime_local' => $start_time,
 			'endtime_local'   => $end_time,
-			'startime_utc'    => '',
-			'endtime_utc'     => '',
+			'startime_utc'    => $start_time,
+			'endtime_utc'     => $end_time,
 			'timezone'        => $timezone,
+			'timezone_name'   => $timezone_name,
 			'utc_offset'      => '',
 			'event_duration'  => '',
 			'is_all_day'      => '',
