@@ -42,7 +42,7 @@ class Import_Facebook_Events_FB_Authorize {
 
 				$dialog_url = "https://www.facebook.com/" . $api_version . "/dialog/oauth?client_id="
 				        . $app_id . "&redirect_uri=" . $param_url . "&state="
-				        . $ife_session_state . "&scope=groups_access_member_info,user_events";
+				        . $ife_session_state . "&scope=groups_access_member_info,user_events,pages_show_list";
 				header("Location: " . $dialog_url);
 
 			}else{
