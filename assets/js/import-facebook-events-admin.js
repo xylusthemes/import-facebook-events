@@ -47,6 +47,9 @@
 				jQuery('.facebook_group_wrapper').hide();
 				jQuery('.facebook_group_wrapper .facebook_group').removeAttr( 'required' );
 
+				jQuery('.facebook_account_wrapper').hide();
+				jQuery('.facebook_account_wrapper .my_page').removeAttr( 'required' );
+
 				jQuery('.facebook_eventid_wrapper').show();
 				jQuery('.facebook_eventid_wrapper .facebook_event_ids').attr('required', 'required');
 

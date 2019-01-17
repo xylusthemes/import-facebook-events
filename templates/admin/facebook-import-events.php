@@ -87,7 +87,7 @@ $user_fb_pages = get_option('ife_fb_user_pages', array() );
 							</th>
 							<td>
 								<?php if( !empty( $user_fb_pages ) ){ ?>
-									<select name="my_page" required="required" <?php if( !ife_is_pro() ){ echo 'disabled="disabled"'; } ?>>
+									<select name="my_page" class="my_page" required="required" <?php if( !ife_is_pro() ){ echo 'disabled="disabled"'; } ?>>
 										<option value=""><?php esc_attr_e( 'Select Page','import-facebook-events' ); ?></option>
 										<?php foreach ($user_fb_pages as $pkey => $pvalue) {
 											echo '<option value="'.$pkey.'">'.$pvalue['name'].'</option>';
