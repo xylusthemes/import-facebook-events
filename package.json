@@ -1,6 +1,6 @@
 {
   "name": "import-facebook-events",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "license": "GPL-2.0+",
   "main": "blocks/index.js",
   "scripts": {
