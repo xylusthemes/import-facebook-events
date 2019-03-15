@@ -109,6 +109,10 @@ class Import_Facebook_Events_EM {
 		$start_time = $centralize_array['starttime_local'];
 		$end_time = $centralize_array['endtime_local'];
 		$ticket_uri = $centralize_array['url'];
+		$timezone_name = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : '';
+		if( empty($timezone_name)){
+			$timezone_name = isset( $centralize_array['timezone'] ) ? $centralize_array['timezone'] : 'UTC';
+		}
 
 		$emeventdata = array(
 			'post_title'  => $post_title,
@@ -190,7 +194,7 @@ class Import_Facebook_Events_EM {
 			update_post_meta( $inserted_event_id, '_event_all_day', 0 );
 			update_post_meta( $inserted_event_id, '_event_start_date', date( 'Y-m-d', $start_time ) );
 			update_post_meta( $inserted_event_id, '_event_end_date', date( 'Y-m-d', $end_time ) );
-			update_post_meta( $inserted_event_id, '_event_timezone', 'UTC' );
+			update_post_meta( $inserted_event_id, '_event_timezone', $timezone_name );
 			update_post_meta( $inserted_event_id, '_event_start', date( 'Y-m-d H:i:s', $start_time ) );
 			update_post_meta( $inserted_event_id, '_event_end', date( 'Y-m-d H:i:s', $end_time ) );
 			update_post_meta( $inserted_event_id, '_event_start_local', date( 'Y-m-d H:i:s', $start_time ) );
@@ -216,7 +220,7 @@ class Import_Facebook_Events_EM {
 				'event_all_day'    	=> 0,
 				'event_start'		=> date( 'Y-m-d H:i:s', $start_time ),
 				'event_end'		   	=> date( 'Y-m-d H:i:s', $end_time ),
-				'event_timezone'	=> 'UTC',
+				'event_timezone'	=> $timezone_name,
 				'event_start_date' 	=> date( 'Y-m-d', $start_time ),
 				'event_end_date'   	=> date( 'Y-m-d', $end_time ),
 				'post_content' 	   	=> $inserted_event->post_content,
