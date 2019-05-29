@@ -111,12 +111,35 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 			'import_id'  => $item['ID'],
 		);
 
+		$current_import = '';
+		if(isset($item['current_import'])){
+			$cimport = '<strong>'.esc_html__( 'Import is running in Background', 'import-facebook-events' ).'</strong>';
+			if(!empty($item['current_import'])){
+				$stats = array();
+				if( $item['current_import']['created'] > 0 ){
+					$stats[] = sprintf( __( '%d Created', 'import-facebook-events' ), $item['current_import']['created']);
+				}
+				if( $item['current_import']['updated'] > 0 ){
+					$stats[] = sprintf( __( '%d Updated', 'import-facebook-events' ), $item['current_import']['updated'] );
+				}
+				if( $item['current_import']['skipped'] > 0 ){
+					$stats[] = sprintf( __( '%d Skipped', 'import-facebook-events' ), $item['current_import']['skipped'] );
+				}
+				if( !empty( $stats ) ){
+					$stats = esc_html__( 'Stats: ', 'import-facebook-events' ).'<span style="color: silver">'.implode(', ', $stats).'</span>';
+					$cimport .= '<br/>'.$stats;
+				}
+			}
+			$current_import = '<div class="ife_inprogress_import">'.$cimport.'</div>';
+		}
+
 		// Return the title contents.
-		return sprintf( '<a class="button-primary" href="%1$s">%2$s</a><br/>%3$s<br/>%4$s',
+		return sprintf( '<a class="button-primary" href="%1$s">%2$s</a><br/>%3$s<br/>%4$s<br/><br/>%5$s',
 			esc_url( wp_nonce_url( add_query_arg( $xtmi_run_import_args ), 'ife_run_import_nonce' ) ),
 			esc_html__( 'Import Now', 'import-facebook-events' ),
 			$item['last_import'],
-			$item['stats']
+			$item['stats'],
+			$current_import
 		);
 	}
 
@@ -194,6 +217,38 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 	 */
 	function get_scheduled_import_data( $origin = '' ) {
 		global $ife_events;
+
+		// Check Running Imports.
+		$current_imports = array();
+		$batches = ife_get_inprogress_import();
+		if(!empty($batches)){
+			foreach ($batches as $batch) {
+				if ( is_multisite() ) {
+					$batch = isset( $batch->meta_value ) ? maybe_unserialize( $batch->meta_value ) : array();
+				}else{
+				    $batch = isset( $batch->option_value ) ? maybe_unserialize( $batch->option_value ) : array();
+				}
+				if( !empty( $batch ) && is_array( $batch ) ){
+					$batch = current( $batch );
+					$import_data = isset( $batch['imported_events'] ) ? $batch['imported_events'] : array(); 
+					$import_status = array(
+						'created' => 0,
+						'updated' => 0,
+						'skipped' => 0
+					);
+					foreach ( $import_data as $key => $value ) {
+						if ( $value['status'] == 'created' ) {
+							$import_status['created'] += 1;
+						} elseif ( $value['status'] == 'updated' ) {
+							$import_status['updated'] += 1;
+						} elseif ( $value['status'] == 'skipped' ) {
+							$import_status['skipped'] += 1;
+						}
+					}	
+					$current_imports[$batch['import_id']] = $import_status;
+				}
+			}
+		}
 
 		$scheduled_import_data = array( 'total_records' => 0, 'import_data' => array() );
 		$per_page = 10;
@@ -275,11 +330,18 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 						$stats[] = sprintf( __( '%d Skipped', 'import-facebook-events' ), $skipped );
 					}
 					if( !empty( $stats ) ){
-						$stats = esc_html__( 'Import Stats: ', 'import-facebook-events' ).'<span style="color: silver">'.implode(', ', $stats).'</span>';
+						$stats = esc_html__( 'Last Import Stats: ', 'import-facebook-events' ).'<span style="color: silver">'.implode(', ', $stats).'</span>';
+					}else{
+						$nothing_to_import = get_post_meta( $history[0], 'nothing_to_import', true );
+						if( $nothing_to_import ){
+							$stats = '<span style="color: silver">'.__( 'No events are imported.', 'import-facebook-events' ).'</span>';	
+						}else{
+							$stats = '';
+						}
 					}
 				}
 
-				$scheduled_import_data['import_data'][] = array(
+				$scheduled_import = array(
 					'ID' 			  => $import_id,
 					'title' 		  => $import_title,
 					'import_status'   => ucfirst( $import_status ),
@@ -292,6 +354,10 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 					'last_import'     => $last_import_history_date,
 					'stats'			  => $stats
 				);
+				if( isset( $current_imports[$import_id] ) ){
+					$scheduled_import['current_import'] = $current_imports[$import_id];
+				}
+				$scheduled_import_data['import_data'][] = $scheduled_import;
 			}
 		}
 		// Restore original Post Data.
@@ -361,7 +427,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Setup output for Action column.
+	 * Setup output for Stats column.
 	 *
 	 * @since    1.0.0
 	 * @param array $item Items.
@@ -372,6 +438,8 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 		$created = get_post_meta( $item['ID'], 'created', true );
 		$updated = get_post_meta( $item['ID'], 'updated', true );
 		$skipped = get_post_meta( $item['ID'], 'skipped', true );
+		$nothing_to_import = get_post_meta( $item['ID'], 'nothing_to_import', true );
+
 
 		$success_message = '<span style="color: silver"><strong>';
 		if( $created > 0 ){
@@ -383,10 +451,41 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 		if( $skipped > 0 ){
 			$success_message .= sprintf( __( '%d Skipped', 'import-facebook-events' ), $skipped ) ."<br>";
 		}
+		if( $nothing_to_import ){
+			$success_message .= __( 'No events are imported.', 'import-facebook-events' ) . '<br>';	
+		}
 		$success_message .= "</strong></span>";
 
 		// Return the title contents.
 		return $success_message;
+	}
+
+	/**
+	 * Setup output for Action column.
+	 *
+	 * @param array $item Items.
+	 * @return array
+	 */
+	function column_action( $item ) {
+		$url = add_query_arg( array(
+		    'action'    => 'ife_view_import_history',
+		    'history'   => $item['ID'],
+		    'TB_iframe' => 'true',
+		    'width'     => '800',
+		    'height'    => '500'
+		), admin_url( 'admin.php' ) );
+
+		$imported_data = get_post_meta($item['ID'], 'imported_data', true);
+	    if(!empty($imported_data)){
+			return sprintf(
+				'<a href="%1$s" title="%2$s" class="open-history-details-modal button button-primary thickbox">%3$s</a>',
+				$url,
+				$item['title'],
+				__( 'View Imported Events', 'import-facebook-events' )
+			);
+		}else{
+			return '-';
+		}
 	}
 
 	function column_cb($item){
@@ -409,6 +508,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 		 'import_category' => __( 'Import Category', 'import-facebook-events' ),
 		 'import_date'  => __( 'Import Date', 'import-facebook-events' ),
 		 'stats' => __( 'Import Stats', 'import-facebook-events' ),
+		 'action' => __( 'Action', 'import-facebook-events' ),
 		);
 		return $columns;
 	}

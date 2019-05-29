@@ -314,25 +314,32 @@ class Import_Facebook_Events_Common {
 	 */
 	public function display_import_success_message( $import_data = array(),$import_args = array(), $schedule_post = '' ) {
 		global $ife_success_msg, $ife_errors;
+		if ( !empty( $ife_errors ) ) {
+			return;
+		}
+
 		if( empty( $import_data ) ){
 			return;
 		}
 
 		$import_status = $import_ids = array();
-		foreach ($import_data as $key => $value) {
-			if( $value['status'] == 'created'){
-				$import_status['created'][] = $value;
-			}elseif( $value['status'] == 'updated'){
-				$import_status['updated'][] = $value;
-			}elseif( $value['status'] == 'skipped'){
-				$import_status['skipped'][] = $value;
-			}else{
+		if( !empty( $import_data ) ){
+			foreach ($import_data as $key => $value) {
+				if( $value['status'] == 'created'){
+					$import_status['created'][] = $value;
+				}elseif( $value['status'] == 'updated'){
+					$import_status['updated'][] = $value;
+				}elseif( $value['status'] == 'skipped'){
+					$import_status['skipped'][] = $value;
+				}else{
 
-			}
-			if( isset( $value['id'] ) ){
-				$import_ids[] = $value['id'];
+				}
+				if( isset( $value['id'] ) ){
+					$import_ids[] = $value['id'];
+				}
 			}
 		}
+
 		$created = $updated = $skipped = 0;
 		$created = isset( $import_status['created'] ) ? count( $import_status['created'] ) : 0;
 		$updated = isset( $import_status['updated'] ) ? count( $import_status['updated'] ) : 0;
@@ -355,8 +362,12 @@ class Import_Facebook_Events_Common {
 		}else{
 			$temp_title = 'Manual Import';
 		}
+		$nothing_to_import = false;
+		if($created == 0 && $updated == 0 && $skipped == 0 ){
+			$nothing_to_import = true;
+		}
 		
-		if( $created > 0 || $updated > 0 || $skipped >0 ){
+		if( $created > 0 || $updated > 0 || $skipped >0 || $nothing_to_import) {
 			$insert_args = array(
 				'post_type'   => 'ife_import_history',
 				'post_status' => 'publish',
@@ -369,6 +380,8 @@ class Import_Facebook_Events_Common {
 				update_post_meta( $insert, 'created', $created );
 				update_post_meta( $insert, 'updated', $updated );
 				update_post_meta( $insert, 'skipped', $skipped );
+				update_post_meta( $insert, 'nothing_to_import', $nothing_to_import );
+				update_post_meta( $insert, 'imported_data', $import_data );
 				update_post_meta( $insert, 'import_data', $import_args );
 				if( $schedule_post != '' && $schedule_post > 0 ){
 					update_post_meta( $insert, 'schedule_import_id', $schedule_post );
@@ -1000,4 +1013,19 @@ function get_ife_template_part( $slug, $name = '', $template_path = 'import-face
 	if ( $template ) {
 		load_template( $template, false );
 	}
+}
+
+/**
+ * Get Batch of in-progress background imports.
+ *
+ * @return array $batches
+ */
+function ife_get_inprogress_import(){
+	global $wpdb;
+	$batch_query = "SELECT * FROM {$wpdb->options} WHERE option_name LIKE '%ife_import_batch_%' ORDER BY option_id ASC";
+	if ( is_multisite() ) {
+		$batch_query = "SELECT * FROM {$wpdb->sitemeta} WHERE meta_key LIKE '%ife_import_batch_%' ORDER BY meta_id ASC";
+	}
+	$batches = $wpdb->get_results( $batch_query );
+	return $batches;
 }
