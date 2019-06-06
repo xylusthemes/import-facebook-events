@@ -70,12 +70,12 @@ $user_fb_pages = get_option('ife_fb_user_pages', array() );
 
 					    <tr class="facebook_group_wrapper" style="display: none;">
 					    	<th scope="row">
-					    		<?php esc_attr_e( 'Facebook Group URL / Numeric ID to fetch events from','import-facebook-events' ); ?> : 
+					    		<?php esc_attr_e( 'Facebook Group Numeric ID to fetch events from','import-facebook-events' ); ?> : 
 					    	</th>
 					    	<td> 
 					    		<input class="ife_text facebook_group" name="facebook_group_id" type="text" <?php if( !ife_is_pro() ){ echo 'disabled="disabled"'; } ?> />
 			                    <span class="ife_small">
-			                        <?php _e( ' Eg.Input value for https://www.facebook.com/groups/123456789123456/ <br/>https://www.facebook.com/groups/123456789123456/ OR "123456789123456"', 'import-facebook-events' ); ?>
+			                        <?php _e( ' Eg.Input value for group https://www.facebook.com/groups/123456789123456/ is "123456789123456"', 'import-facebook-events' ); ?>
 			                    </span>
 			                    <?php do_action( 'ife_render_pro_notice' ); ?>
 					    	</td>
