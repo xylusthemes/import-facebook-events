@@ -87,7 +87,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                         </th>
                         <td>
                             <input class="facebook_app_id" name="facebook[facebook_app_id]" type="text" value="<?php if ( $facebook_app_id != '' ) { echo $facebook_app_id; } ?>" />
-                            <span class="xtei_small">
+                            <span class="ife_small">
                                 <?php
                                 printf( '%s <a href="https://developers.facebook.com/apps" target="_blank">%s</a>', 
                                     __('You can view or create your Facebook Apps', 'import-facebook-events'),
@@ -104,7 +104,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                         </th>
                         <td>
                             <input class="facebook_app_secret" name="facebook[facebook_app_secret]" type="text" value="<?php if ( $facebook_app_secret != '' ) { echo $facebook_app_secret; } ?>" />
-                            <span class="xtei_small">
+                            <span class="ife_small">
                                 <?php
                                 printf( '%s <a href="https://developers.facebook.com/apps" target="_blank">%s</a>', 
                                     __('You can view or create your Facebook Apps', 'import-facebook-events'),
@@ -125,7 +125,7 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                             $update_facebook_events = isset( $facebook_options['update_events'] ) ? $facebook_options['update_events'] : 'no';
                             ?>
                             <input type="checkbox" id="update_events" name="facebook[update_events]" value="yes" <?php if( $update_facebook_events == 'yes' ) { echo 'checked="checked"'; } ?> />
-                            <span class="xtei_small">
+                            <span class="ife_small">
                                 <?php _e( 'Check to updates existing events.', 'import-facebook-events' ); ?>
                             </span>
                         </td>
@@ -156,9 +156,24 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                             $deactive_fbevents = isset( $facebook_options['deactive_fbevents'] ) ? $facebook_options['deactive_fbevents'] : 'no';
                             ?>
                             <input type="checkbox" name="facebook[deactive_fbevents]" value="yes" <?php if( $deactive_fbevents == 'yes' ) { echo 'checked="checked"'; } ?> />
-                            <span class="xtei_small">
+                            <span class="ife_small">
                                 <?php _e( 'Check to disable inbuilt event management system.', 'import-facebook-events' ); ?>
                             </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <?php _e( 'Accent Color', 'import-facebook-events' ); ?> : 
+                        </th>
+                        <td>
+                        <?php 
+                        $accent_color = isset( $facebook_options['accent_color'] ) ? $facebook_options['accent_color'] : '#039ED7';
+                        ?>
+                        <input class="ife_color_field" type="text" name="facebook[accent_color]" value="<?php esc_attr_e( $accent_color ); ?>"/>
+                        <span class="ife_small">
+                            <?php _e( 'Choose accent color for front-end event grid and event widget.', 'import-facebook-events', 'import-facebook-events' ); ?>
+                        </span>
                         </td>
                     </tr>
 
@@ -171,8 +186,8 @@ $ife_fb_authorize_user = get_option( 'ife_fb_authorize_user', array() );
                             $delete_ifedata = isset( $facebook_options['delete_ifedata'] ) ? $facebook_options['delete_ifedata'] : 'no';
                             ?>
                             <input type="checkbox" name="facebook[delete_ifedata]" value="yes" <?php if( $delete_ifedata == 'yes' ) { echo 'checked="checked"'; } ?> />
-                            <span class="xtei_small">
-                                <?php _e( 'Delete Import Facebook Events data like settings, scheduled imports, import history on Uninstall', 'import-facebook-events' ); ?>
+                            <span class="ife_small">
+                                <?php _e( 'Delete Import Facebook Events data like settings, scheduled imports, import history on Uninstall.', 'import-facebook-events' ); ?>
                             </span>
                         </td>
                     </tr>

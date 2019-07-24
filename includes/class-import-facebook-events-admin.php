@@ -64,7 +64,7 @@ class Import_Facebook_Events_Admin {
 	function enqueue_admin_scripts( $hook ) {
 
 		$js_dir  = IFE_PLUGIN_URL . 'assets/js/';
-		wp_register_script( 'import-facebook-events', $js_dir . 'import-facebook-events-admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), IFE_VERSION );
+		wp_register_script( 'import-facebook-events', $js_dir . 'import-facebook-events-admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'wp-color-picker'), IFE_VERSION );
 		wp_enqueue_script( 'import-facebook-events' );
 		
 	}
@@ -85,6 +85,7 @@ class Import_Facebook_Events_Admin {
 		  	$css_dir = IFE_PLUGIN_URL . 'assets/css/';
 		 	wp_enqueue_style('jquery-ui', $css_dir . 'jquery-ui.css', false, "1.12.0" );
 		 	wp_enqueue_style('import-facebook-events', $css_dir . 'import-facebook-events-admin.css', false, IFE_VERSION );
+		 	wp_enqueue_style('wp-color-picker');
 		}
 	}
 

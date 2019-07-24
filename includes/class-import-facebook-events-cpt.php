@@ -786,6 +786,8 @@ class Import_Facebook_Events_Cpt {
 			$temp_paged = $paged;
 			$paged = $curr_paged;
 		}
+		$ife_options = get_option( IFE_OPTIONS );
+		$accent_color = isset( $ife_options['accent_color'] ) ? $ife_options['accent_color'] : '#039ED7';
 		ob_start();
 		?>
 		<div class="row_grid">
@@ -817,6 +819,14 @@ class Import_Facebook_Events_Cpt {
 
 			?>
 		</div>
+		<style type="text/css">
+			.ife_event .event_date{
+			    background-color: <?php echo $accent_color;?>;
+			}
+			.ife_event .event_desc .event_title{
+			    color: <?php echo $accent_color;?>;
+			}
+		</style>
 		<?php
 		// Allow developers to do something here.
 		do_action( 'ife_after_event_list', $facebook_events );

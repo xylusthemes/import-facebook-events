@@ -150,4 +150,11 @@
 	    jQuery(".fb_event_plugin").trigger('change');                  
 	});
 
+	// Color Picker
+	jQuery(document).ready(function($){
+		$('.ife_color_field').each(function(){
+			$(this).wpColorPicker();
+		});
+	});
+
 })( jQuery );
