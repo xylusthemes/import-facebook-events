@@ -396,6 +396,8 @@ class Import_Facebook_Events_Facebook {
 				$xt_event['ID'] = $event_time['ID'];
 				$xt_event['starttime_local'] = $event_time['start_time'];
 				$xt_event['endtime_local'] = $event_time['end_time'];
+				$xt_event['startime_utc'] = $event_time['start_time'];
+				$xt_event['endtime_utc'] = $event_time['end_time'];
 				$xt_events[] = $xt_event;
 			}
 		}
