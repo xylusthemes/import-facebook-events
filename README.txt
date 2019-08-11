@@ -1,11 +1,11 @@
-=== Import Social Events: Easy way to import Social events ===
+=== Import Social Events ===
 Contributors: xylus,dharm1025
 Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 5.2
-Stable tag: 1.6.5
+Stable tag: 1.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,7 +108,13 @@ You can use `[facebook_events]` for display in-built facebook events list.
 
 == Changelog ==
 
-= 1.6.4 =
+= 1.6.6 =
+* ADDED: Renamed Plugin
+* ADDED: Accent Color Functionality
+* IMPROVEMENT: Some Security Improvements.
+* FIXED: some bug fixes.
+
+= 1.6.5 =
 * ADDED: Background import process for scheduled import
 * IMPROVEMENT: Some Improvements.
 * FIXED: some bug fixes.
