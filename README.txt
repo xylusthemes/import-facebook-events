@@ -1,4 +1,4 @@
-=== Import Facebook Events ===
+=== Import Social Events: Easy way to import Social events ===
 Contributors: xylus,dharm1025
 Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
@@ -21,12 +21,12 @@ Import Facebook events into your WordPress website and/or Event Calendar. Nice D
 >* Your site need to HTTPS (SSL certificate)
 >* You need to mark events as interested or going on facebook to get imported
 >
->**You can also import Facebook events using our plugin with facebook ICS URL. You can check the documentation for how to get iCal URL or download .ics file from Facebook at [Here](http://docs.xylusthemes.com/docs/import-facebook-events/how-to-import-facebook-event-using-ical-url/)**
->
+
 
 <h3>Import Facebook Events into WordPress :</h3>
 
-Import Facebook Events allows you to import Facebook events into your WordPress site automatically. Automate your Event Marketing using Import Facebook Events plug-in. Import Events from Facebook Page, Facebook Event or Facebook Organizations page.
+Import Social Events allows you to import Facebook events into your WordPress site automatically. Automate your Event Marketing using Import Social Events plug-in. Import Events from Facebook Page, Facebook Event and all your events marked as Interested/Going.
+
 You can schedule event import so it will be imported/synchronized automatically [Pro]
 
 Using This plugin you can import facebook event into below listed leading Event Management Plug-ins, which allows you to run imports from facebook right from your dashboard.  Import Facebook Events bridges the gap between your website and your Facebook events making event management easier and it is one of the leading facebook events importers.
@@ -53,6 +53,7 @@ You can use `[facebook_events]` for display in-built facebook events list.
 * Import events from the facebook page 
 * Import events from the facebook group
 * Import events from Facebook Event
+* Import My Events will import all events you marked as Interested/Going 
 * Sync events with facebook automatically
 * Import multiple events easily
 * Show events from facebook page into WordPress
@@ -79,16 +80,16 @@ You can use `[facebook_events]` for display in-built facebook events list.
 = This plugin can be installed directly from your site. =
 
 1. Log in and navigate to Plugins & Add New.
-2. Type "Import Facebook Events" into the Search input and click the "Search" button.
-3. Locate the "Import Facebook Events" in the list of search results and click "Install Now".
+2. Type "Import Social Events" into the Search input and click the "Search" button.
+3. Locate the "Import Social Events" in the list of search results and click "Install Now".
 4. Click the "Activate Plugin" link at the bottom of the install screen.
 
 = It can also be installed manually. =
 
-1. Download the "Import Facebook Events" plugin from WordPress.org.
+1. Download the "Import Social Events" plugin from WordPress.org.
 2. Unzip the package and move to your plugins directory.
 3. Log into WordPress and navigate to the "Plugins" screen.
-4. Locate "Import Facebook Events" in the list and click the "Activate" link.
+4. Locate "Import Social Events" in the list and click the "Activate" link.
 
 == Screenshots ==
 

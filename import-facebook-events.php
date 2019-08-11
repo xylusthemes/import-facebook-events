@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Import Facebook Events
+ * Plugin Name:       Import Social Events 
  * Plugin URI:        http://xylusthemes.com/plugins/import-facebook-events/
  * Description:       Import Facebook Events allows you to import Facebook ( facebook.com ) events into your WordPress site.
  * Version:           1.6.5
