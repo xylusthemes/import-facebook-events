@@ -59,7 +59,7 @@ class Import_Facebook_Events_FB_Authorize {
 	*/
     function ife_facebook_authorize_user_callback() {
 		global $ife_success_msg;
-		if ( isset( $_COOKIE['ife_session_state'] ) && isset($_REQUEST['state']) && ( $_COOKIE['ife_session_state'] === $_REQUEST['state'] ) ) {
+		if ( isset( $_COOKIE['ife_session_state'] ) && isset($_REQUEST['state']) && ( $_COOKIE['ife_session_state'] === sanitize_text_field( $_REQUEST['state'] ) ) ) {
 
 				$code = sanitize_text_field($_GET['code']);
 				$ife_options = get_option( IFE_OPTIONS , array() );

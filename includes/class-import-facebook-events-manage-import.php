@@ -34,7 +34,7 @@ class Import_Facebook_Events_Manage_Import {
 		global $ife_errors;
 		$event_data = array();
 
-		if ( isset( $_POST['ife_action'] ) && $_POST['ife_action'] == 'ife_import_submit' &&  check_admin_referer( 'ife_import_form_nonce_action', 'ife_import_form_nonce' ) ) {
+		if ( isset( $_POST['ife_action'] ) && sanitize_text_field( $_POST['ife_action'] ) == 'ife_import_submit' &&  check_admin_referer( 'ife_import_form_nonce_action', 'ife_import_form_nonce' ) ) {
 
 			$event_origin = isset( $_POST['import_origin'] ) ? sanitize_text_field( $_POST['import_origin'] ) : '';
 			if( empty( $event_origin ) ){
@@ -49,7 +49,8 @@ class Import_Facebook_Events_Manage_Import {
 			$event_data['import_type'] = 'onetime';
 			$event_data['import_frequency'] = '';
 			$event_data['event_status'] = isset( $_POST['event_status'] ) ? sanitize_text_field( $_POST['event_status']) : 'pending';
-			$event_data['event_cats'] = isset( $_POST['event_cats'] ) ? $_POST['event_cats'] : array();
+			$event_data['event_cats'] = isset( $_POST['event_cats'] ) ? (array)$_POST['event_cats'] : array();
+			$event_data['event_cats'] = array_map( 'sanitize_text_field', $event_data['event_cats'] );
 
 			$this->handle_facebook_import_form_submit( $event_data );
 		}
@@ -62,10 +63,11 @@ class Import_Facebook_Events_Manage_Import {
 	 */
 	public function handle_import_settings_submit() {
 		global $ife_errors, $ife_success_msg;
-		if ( isset( $_POST['ife_action'] ) && $_POST['ife_action'] == 'ife_save_settings' &&  check_admin_referer( 'ife_setting_form_nonce_action', 'ife_setting_form_nonce' ) ) {
+		if ( isset( $_POST['ife_action'] ) && sanitize_text_field( $_POST['ife_action'] ) == 'ife_save_settings' &&  check_admin_referer( 'ife_setting_form_nonce_action', 'ife_setting_form_nonce' ) ) {
 				
 			$ife_options = array();
-			$ife_options['facebook'] = isset( $_POST['facebook'] ) ? $_POST['facebook'] : array();
+			$ife_options['facebook'] = isset( $_POST['facebook'] ) ? (array)$_POST['facebook'] : array();
+			$ife_options['facebook'] = array_map( 'sanitize_text_field', $ife_options['facebook'] );
 			
 			$is_update = update_option( IFE_OPTIONS, $ife_options['facebook'] );
 			if( $is_update ){
@@ -84,10 +86,10 @@ class Import_Facebook_Events_Manage_Import {
 	public function handle_listtable_oprations() {
 
 		global $ife_success_msg;
-		if ( isset( $_GET['ife_action'] ) && $_GET['ife_action'] == 'ife_simport_delete' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ife_delete_import_nonce') ) {
-			$import_id = $_GET['import_id'];
-			$page = isset($_GET['page'] ) ? $_GET['page'] : 'facebook_import';
-			$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'scheduled';
+		if ( isset( $_GET['ife_action'] ) && sanitize_text_field( $_GET['ife_action'] ) == 'ife_simport_delete' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ife_delete_import_nonce') ) {
+			$import_id = absint( $_GET['import_id'] );
+			$page = isset($_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
+			$tab = isset($_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'scheduled';
 			$wp_redirect = admin_url( 'admin.php?page='.$page );
 			if ( $import_id > 0 ) {
 				$post_type = get_post_type( $import_id );
@@ -100,10 +102,10 @@ class Import_Facebook_Events_Manage_Import {
 			}
 		}
 
-		if ( isset( $_GET['ife_action'] ) && $_GET['ife_action'] == 'ife_history_delete' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ife_delete_history_nonce' ) ) {
-			$history_id = (int)$_GET['history_id'];
-			$page = isset($_GET['page'] ) ? $_GET['page'] : 'facebook_import';
-			$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'history';
+		if ( isset( $_GET['ife_action'] ) && sanitize_text_field( $_GET['ife_action'] ) == 'ife_history_delete' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ife_delete_history_nonce' ) ) {
+			$history_id = absint( $_GET['history_id'] );
+			$page = isset($_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
+			$tab = isset($_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'history';
 			$wp_redirect = admin_url( 'admin.php?page='.$page );
 			if ( $history_id > 0 ) {
 				wp_delete_post( $history_id, true );
@@ -113,10 +115,10 @@ class Import_Facebook_Events_Manage_Import {
 			}
 		}
 
-		if ( isset( $_GET['ife_action'] ) && $_GET['ife_action'] == 'ife_run_import' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ife_run_import_nonce') ) {
-			$import_id = (int)$_GET['import_id'];
-			$page = isset($_GET['page'] ) ? $_GET['page'] : 'facebook_import';
-			$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'scheduled';
+		if ( isset( $_GET['ife_action'] ) && sanitize_text_field( $_GET['ife_action'] ) == 'ife_run_import' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ife_run_import_nonce') ) {
+			$import_id = absint( $_GET['import_id'] );
+			$page = isset($_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
+			$tab = isset($_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'scheduled';
 			$wp_redirect = admin_url( 'admin.php?page='.$page );
 			if ( $import_id > 0 ) {
 				do_action( 'xt_run_fb_scheduled_import', $import_id );
@@ -126,12 +128,13 @@ class Import_Facebook_Events_Manage_Import {
 			}
 		}
 
-		$is_bulk_delete = ( ( isset( $_GET['action'] ) && $_GET['action'] == 'delete' ) || ( isset( $_GET['action2'] ) && $_GET['action2'] == 'delete' ) );
+		$is_bulk_delete = ( ( isset( $_GET['action'] ) && sanitize_text_field( $_GET['action'] ) == 'delete' ) || ( isset( $_GET['action2'] ) && sanitize_text_field( $_GET['action2'] ) == 'delete' ) );
 		
 		if ( $is_bulk_delete && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'bulk-fb_scheduled_imports') ) {
-			$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'scheduled';
-			$wp_redirect = get_site_url() . urldecode( $_REQUEST['_wp_http_referer'] );
-        	$delete_ids = $_REQUEST['fb_scheduled_import'];
+			$tab = isset($_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'scheduled';
+			$wp_redirect = get_site_url() . urldecode( sanitize_text_field( wp_unslash( $_REQUEST['_wp_http_referer'] ) ) );
+        	$delete_ids = (array)$_REQUEST['fb_scheduled_import'];
+        	$delete_ids = array_map( 'sanitize_text_field', $delete_ids );
         	if( !empty( $delete_ids ) ){
         		foreach ($delete_ids as $delete_id ) {
         			wp_delete_post( $delete_id, true );
@@ -143,9 +146,10 @@ class Import_Facebook_Events_Manage_Import {
 		}
 
 		if ( $is_bulk_delete && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'bulk-fb_import_histories') ) {
-			$tab = isset($_GET['tab'] ) ? $_GET['tab'] : 'history';
-			$wp_redirect = get_site_url() . urldecode( $_REQUEST['_wp_http_referer'] );
-        	$delete_ids = $_REQUEST['import_history'];
+			$tab = isset($_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'history';
+			$wp_redirect = get_site_url() . urldecode( sanitize_text_field( wp_unslash( $_REQUEST['_wp_http_referer'] ) ) );
+        	$delete_ids = (array)$_REQUEST['import_history'];
+        	$delete_ids = array_map( 'sanitize_text_field', $delete_ids );
         	if( !empty( $delete_ids ) ){
         		foreach ($delete_ids as $delete_id ) {
         			wp_delete_post( $delete_id, true );

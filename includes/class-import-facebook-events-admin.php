@@ -102,8 +102,8 @@ class Import_Facebook_Events_Admin {
 		    <h2><?php esc_html_e( 'Import Facebook Events', 'import-facebook-events' ); ?></h2>
 		    <?php
 		    // Set Default Tab to Import.
-		    $tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'facebook';
-		    $ntab = isset( $_GET[ 'ntab' ] ) ? $_GET[ 'ntab' ] : 'import';
+		    $tab = isset( $_GET[ 'tab' ] ) ? sanitize_text_field( $_GET[ 'tab' ] ) : 'facebook';
+		    $ntab = isset( $_GET[ 'ntab' ] ) ? sanitize_text_field( $_GET[ 'ntab' ] ) : 'import';
 		    ?>
 		    <div id="poststuff">
 		        <div id="post-body" class="metabox-holder columns-2">
