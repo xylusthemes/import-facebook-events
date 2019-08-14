@@ -88,7 +88,7 @@ class Import_Facebook_Events_Manage_Import {
 		global $ife_success_msg;
 		if ( isset( $_GET['ife_action'] ) && sanitize_text_field( $_GET['ife_action'] ) == 'ife_simport_delete' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ife_delete_import_nonce') ) {
 			$import_id = absint( $_GET['import_id'] );
-			$page = isset($_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
+			$page = 'facebook_import';
 			$tab = isset($_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'scheduled';
 			$wp_redirect = admin_url( 'admin.php?page='.$page );
 			if ( $import_id > 0 ) {
@@ -104,7 +104,7 @@ class Import_Facebook_Events_Manage_Import {
 
 		if ( isset( $_GET['ife_action'] ) && sanitize_text_field( $_GET['ife_action'] ) == 'ife_history_delete' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ife_delete_history_nonce' ) ) {
 			$history_id = absint( $_GET['history_id'] );
-			$page = isset($_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
+			$page = 'facebook_import';
 			$tab = isset($_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'history';
 			$wp_redirect = admin_url( 'admin.php?page='.$page );
 			if ( $history_id > 0 ) {
@@ -117,7 +117,7 @@ class Import_Facebook_Events_Manage_Import {
 
 		if ( isset( $_GET['ife_action'] ) && sanitize_text_field( $_GET['ife_action'] ) == 'ife_run_import' && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ife_run_import_nonce') ) {
 			$import_id = absint( $_GET['import_id'] );
-			$page = isset($_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
+			$page = 'facebook_import';
 			$tab = isset($_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'scheduled';
 			$wp_redirect = admin_url( 'admin.php?page='.$page );
 			if ( $import_id > 0 ) {

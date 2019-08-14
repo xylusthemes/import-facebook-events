@@ -57,12 +57,12 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 	function column_title( $item ) {
 
 		$ife_url_delete_args = array(
-			'page'   => sanitize_text_field(wp_unslash( $_REQUEST['page'] )),
+			'page'       => 'facebook_import',
 			'ife_action' => 'ife_simport_delete',
 			'import_id'  => absint( $item['ID'] ),
 		);
 
-		$page = isset($_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
+		$page = 'facebook_import';
 		$tab = isset($_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'scheduled';
 		$wp_redirect = admin_url( 'admin.php?page='.$page );
 		$ife_url_edit_args = array(
@@ -106,7 +106,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 	function column_action( $item ) {
 
 		$xtmi_run_import_args = array(
-			'page'       => sanitize_text_field(wp_unslash( $_REQUEST['page'] )),
+			'page'       => 'facebook_import',
 			'ife_action' => 'ife_run_import',
 			'import_id'  => $item['ID'],
 		);
@@ -408,8 +408,8 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 	function column_title( $item ) {
 
 		$ife_url_delete_args = array(
-			'page'       => sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ),
-			'tab'        => sanitize_text_field( wp_unslash( $_REQUEST['tab'] ) ),
+			'page'       => 'facebook_import',
+			'tab'        => 'history',
 			'ife_action' => 'ife_history_delete',
 			'history_id' => absint( $item['ID'] ),
 		);

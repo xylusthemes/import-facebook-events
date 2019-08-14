@@ -1,6 +1,6 @@
 <?php
 /**
- * class for Facebook User Authorization
+ * Class for Facebook User Authorization
  *
  * @link       http://xylusthemes.com/
  * @since      1.0.0
@@ -8,6 +8,7 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
+
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
