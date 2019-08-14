@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Import Facebook Events package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Import Social Events 1.6.6\n"
+"Project-Id-Version: Import Social Events 1.6.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/import-facebook-"
 "events\n"
 "POT-Creation-Date: 2019-06-06 16:50:30+00:00\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#. #-#-#-#-#  import-facebook-events.pot (Import Social Events 1.6.6)  #-#-#-#-#
+#. #-#-#-#-#  import-facebook-events.pot (Import Social Events 1.6.7)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/class-import-facebook-events-admin.php:52
 #: includes/class-import-facebook-events-admin.php:101
