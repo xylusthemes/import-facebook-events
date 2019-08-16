@@ -93,10 +93,10 @@ class Import_Facebook_Events_Common {
 		$event_plugin  = esc_attr( $_REQUEST['event_plugin'] );
 		$taxo_cats = $taxo_tags = array();
 		if( isset( $_REQUEST['taxo_cats'] ) ){
-			$taxo_cats = explode(',', $_REQUEST['taxo_cats'] );
+			$taxo_cats = explode(',', sanitize_text_field($_REQUEST['taxo_cats']) );
 		}
 		if( isset( $_REQUEST['taxo_tags'] ) ){
-			$taxo_tags = explode(',', $_REQUEST['taxo_tags'] );	
+			$taxo_tags = explode(',', sanitize_text_field($_REQUEST['taxo_tags']) );
 		}
 		$event_taxonomy = $event_tag_taxonomy = '';
 		if( !empty( $event_plugin ) ){
