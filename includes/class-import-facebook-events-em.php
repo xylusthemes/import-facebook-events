@@ -9,7 +9,9 @@
  * @subpackage Import_Facebook_Events/includes
  */
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Import_Facebook_Events_EM {
 
@@ -31,7 +33,7 @@ class Import_Facebook_Events_EM {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		
+
 		if ( defined( 'EM_POST_TYPE_EVENT' ) ) {
 			$this->event_posttype = EM_POST_TYPE_EVENT;
 		} else {
@@ -52,7 +54,6 @@ class Import_Facebook_Events_EM {
 		} else {
 			$this->venue_posttype = 'location';
 		}
-		
 
 	}
 
@@ -62,16 +63,16 @@ class Import_Facebook_Events_EM {
 	 *
 	 * @return string
 	 */
-	public function get_event_posttype(){
+	public function get_event_posttype() {
 		return $this->event_posttype;
-	}	
-	public function get_venue_posttype(){
+	}
+	public function get_venue_posttype() {
 		return $this->venue_posttype;
 	}
-	public function get_taxonomy(){
+	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
-	public function get_tag_taxonomy(){
+	public function get_tag_taxonomy() {
 		return $this->tag_taxonomy;
 	}
 
@@ -82,52 +83,52 @@ class Import_Facebook_Events_EM {
 	 * @param  array $centralize event array.
 	 * @return array
 	 */
-	public function import_event( $centralize_array, $event_args ){
+	public function import_event( $centralize_array, $event_args ) {
 		global $wpdb, $ife_events;
 
-		if( empty( $centralize_array ) || !isset( $centralize_array['ID'] ) ){
+		if ( empty( $centralize_array ) || ! isset( $centralize_array['ID'] ) ) {
 			return false;
 		}
 
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array['ID'] );
-				
+
 		if ( $is_exitsing_event ) {
 			// Update event or not?
-			$options = ife_get_import_options( $centralize_array['origin'] );
+			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
 			if ( 'yes' != $update_events ) {
 				return array(
-					'status'=> 'skipped',
-					'id' 	=> $is_exitsing_event
+					'status' => 'skipped',
+					'id'     => $is_exitsing_event,
 				);
 			}
 		}
 
-		$origin_event_id = $centralize_array['ID'];
-		$post_title = isset( $centralize_array['name'] ) ? $centralize_array['name'] : '';
+		$origin_event_id  = $centralize_array['ID'];
+		$post_title       = isset( $centralize_array['name'] ) ? $centralize_array['name'] : '';
 		$post_description = isset( $centralize_array['description'] ) ? $centralize_array['description'] : '';
-		$start_time = $centralize_array['starttime_local'];
-		$end_time = $centralize_array['endtime_local'];
-		$ticket_uri = $centralize_array['url'];
-		$timezone_name = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : '';
-		if( empty($timezone_name)){
+		$start_time       = $centralize_array['starttime_local'];
+		$end_time         = $centralize_array['endtime_local'];
+		$ticket_uri       = $centralize_array['url'];
+		$timezone_name    = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : '';
+		if ( empty( $timezone_name ) ) {
 			$timezone_name = isset( $centralize_array['timezone'] ) ? $centralize_array['timezone'] : 'UTC';
 		}
 
 		$emeventdata = array(
-			'post_title'  => $post_title,
+			'post_title'   => $post_title,
 			'post_content' => $post_description,
-			'post_type'   => $this->event_posttype,
-			'post_status' => 'pending',
+			'post_type'    => $this->event_posttype,
+			'post_status'  => 'pending',
 		);
 		if ( $is_exitsing_event ) {
 			$emeventdata['ID'] = $is_exitsing_event;
 		}
-		if( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ){
+		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
 			$emeventdata['post_status'] = $event_args['event_status'];
 		}
 
-		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('status') ) {
+		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable( 'status' ) ) {
 			$emeventdata['post_status'] = get_post_status( $is_exitsing_event );
 			$event_args['event_status'] = get_post_status( $is_exitsing_event );
 		}
@@ -136,7 +137,8 @@ class Import_Facebook_Events_EM {
 
 		if ( ! is_wp_error( $inserted_event_id ) ) {
 			$inserted_event = get_post( $inserted_event_id );
-			if ( empty( $inserted_event ) ) { return '';}
+			if ( empty( $inserted_event ) ) {
+				return '';}
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
@@ -146,7 +148,7 @@ class Import_Facebook_Events_EM {
 				}
 			}
 			if ( ! empty( $ife_cats ) ) {
-				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+				if ( ! ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable( 'category' ) ) ) {
 					wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
 				}
 			}
@@ -159,35 +161,37 @@ class Import_Facebook_Events_EM {
 				}
 			}
 			if ( ! empty( $ife_tags ) ) {
-				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+				if ( ! ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable( 'category' ) ) ) {
 					wp_set_object_terms( $inserted_event_id, $ife_tags, $this->tag_taxonomy );
 				}
 			}
 
 			// Assign Featured images
 			$event_image = $centralize_array['image_url'];
-			if( $event_image != '' ){
+			if ( $event_image != '' ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
-			}else{
-				if( $is_exitsing_event ){
+			} else {
+				if ( $is_exitsing_event ) {
 					delete_post_thumbnail( $inserted_event_id );
 				}
 			}
 
 			$location_id = 0;
 			if ( $is_exitsing_event ) {
-				if( isset( $centralize_array['location'] ) ){
+				if ( isset( $centralize_array['location'] ) ) {
 					$location_id = $this->get_location_args( $centralize_array['location'], $inserted_event_id );
 				}
-			}else{
-				if( isset( $centralize_array['location'] ) ){
+			} else {
+				if ( isset( $centralize_array['location'] ) ) {
 					$location_id = $this->get_location_args( $centralize_array['location'], false );
 				}
 			}
 
 			$event_status = null;
-			if ( $inserted_event->post_status == 'publish' ) { $event_status = 1;}
-			if ( $inserted_event->post_status == 'pending' ) { $event_status = 0;}
+			if ( $inserted_event->post_status == 'publish' ) {
+				$event_status = 1;}
+			if ( $inserted_event->post_status == 'pending' ) {
+				$event_status = 0;}
 			// Save Meta.
 			update_post_meta( $inserted_event_id, '_event_start_time', date( 'H:i:s', $start_time ) );
 			update_post_meta( $inserted_event_id, '_event_end_time', date( 'H:i:s', $end_time ) );
@@ -203,63 +207,65 @@ class Import_Facebook_Events_EM {
 			update_post_meta( $inserted_event_id, '_location_id', $location_id );
 			update_post_meta( $inserted_event_id, '_event_status', $event_status );
 			update_post_meta( $inserted_event_id, '_event_private', 0 );
-			update_post_meta( $inserted_event_id, '_start_ts', str_pad( $start_time, 10, 0, STR_PAD_LEFT));
-			update_post_meta( $inserted_event_id, '_end_ts', str_pad( $end_time, 10, 0, STR_PAD_LEFT));
+			update_post_meta( $inserted_event_id, '_start_ts', str_pad( $start_time, 10, 0, STR_PAD_LEFT ) );
+			update_post_meta( $inserted_event_id, '_end_ts', str_pad( $end_time, 10, 0, STR_PAD_LEFT ) );
 			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $ticket_uri ) );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
-			
+
 			// Custom table Details
 			$event_array = array(
-				'post_id' 		   	=> $inserted_event_id,
-				'event_slug' 	   	=> $inserted_event->post_name,
-				'event_owner' 	   	=> $inserted_event->post_author,
-				'event_name'       	=> $inserted_event->post_title,
-				'event_start_time' 	=> date( 'H:i:s', $start_time ),
-				'event_end_time'   	=> date( 'H:i:s', $end_time ),
-				'event_all_day'    	=> 0,
-				'event_start'		=> date( 'Y-m-d H:i:s', $start_time ),
-				'event_end'		   	=> date( 'Y-m-d H:i:s', $end_time ),
-				'event_timezone'	=> $timezone_name,
-				'event_start_date' 	=> date( 'Y-m-d', $start_time ),
-				'event_end_date'   	=> date( 'Y-m-d', $end_time ),
-				'post_content' 	   	=> $inserted_event->post_content,
-				'location_id' 	   	=> $location_id,
-				'event_status' 	   	=> $event_status,
-				'event_date_created'=> $inserted_event->post_date,
+				'post_id'            => $inserted_event_id,
+				'event_slug'         => $inserted_event->post_name,
+				'event_owner'        => $inserted_event->post_author,
+				'event_name'         => $inserted_event->post_title,
+				'event_start_time'   => date( 'H:i:s', $start_time ),
+				'event_end_time'     => date( 'H:i:s', $end_time ),
+				'event_all_day'      => 0,
+				'event_start'        => date( 'Y-m-d H:i:s', $start_time ),
+				'event_end'          => date( 'Y-m-d H:i:s', $end_time ),
+				'event_timezone'     => $timezone_name,
+				'event_start_date'   => date( 'Y-m-d', $start_time ),
+				'event_end_date'     => date( 'Y-m-d', $end_time ),
+				'post_content'       => $inserted_event->post_content,
+				'location_id'        => $location_id,
+				'event_status'       => $event_status,
+				'event_date_created' => $inserted_event->post_date,
 			);
 
 			$event_table = ( defined( 'EM_EVENTS_TABLE' ) ? EM_EVENTS_TABLE : $wpdb->prefix . 'em_events' );
 			if ( $is_exitsing_event ) {
 				$eve_id = get_post_meta( $inserted_event_id, '_event_id', true );
-				$where = array( 'event_id' => $eve_id );
-				$wpdb->update( $event_table , $event_array, $where );
-			}else{
-				if ( $wpdb->insert( $event_table , $event_array ) ) {
+				$where  = array( 'event_id' => $eve_id );
+				$wpdb->update( $event_table, $event_array, $where );
+			} else {
+				if ( $wpdb->insert( $event_table, $event_array ) ) {
 					update_post_meta( $inserted_event_id, '_event_id', $wpdb->insert_id );
 				}
 			}
 
-			if( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ){
+			if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
 				$status_changed = $wpdb->update( $wpdb->posts, array( 'post_status' => sanitize_text_field( $event_args['event_status'] ) ), array( 'ID' => $inserted_event_id ) );
 			}
 
 			if ( $is_exitsing_event ) {
-				do_action( 'ife_after_update_em_'.$centralize_array["origin"].'_event', $inserted_event_id, $centralize_array );
+				do_action( 'ife_after_update_em_' . $centralize_array['origin'] . '_event', $inserted_event_id, $centralize_array );
 				return array(
 					'status' => 'updated',
-					'id' 	 => $inserted_event_id
+					'id'     => $inserted_event_id,
 				);
-			}else{
-				do_action( 'ife_after_create_em_'.$centralize_array["origin"].'_event', $inserted_event_id, $centralize_array );
+			} else {
+				do_action( 'ife_after_create_em_' . $centralize_array['origin'] . '_event', $inserted_event_id, $centralize_array );
 				return array(
 					'status' => 'created',
-					'id' 	 => $inserted_event_id
+					'id'     => $inserted_event_id,
 				);
 			}
-
-		}else{
-			return array( 'status'=> 0, 'message'=> 'Something went wrong, please try again.' );
+		} else {
+			return array(
+				'status'  => 0,
+				'message' => 'Something went wrong, please try again.',
+			);
 		}
 	}
 
@@ -273,15 +279,15 @@ class Import_Facebook_Events_EM {
 	public function get_location_args( $venue, $event_id = false ) {
 		global $wpdb, $ife_events;
 
-		if ( !isset( $venue['ID'] ) ) {
+		if ( ! isset( $venue['ID'] ) ) {
 			return null;
 		}
 		$existing_venue = $this->get_venue_by_id( $venue['ID'] );
-		
-		if ( $existing_venue && is_numeric( $existing_venue ) && $existing_venue > 0 && !$event_id ) {
+
+		if ( $existing_venue && is_numeric( $existing_venue ) && $existing_venue > 0 && ! $event_id ) {
 			return get_post_meta( $existing_venue, '_location_id', true );
 		}
-		
+
 		$locationdata = array(
 			'post_title'   => isset( $venue['name'] ) ? $venue['name'] : 'Untitled - Location',
 			'post_content' => '',
@@ -300,15 +306,16 @@ class Import_Facebook_Events_EM {
 				$blog_id = get_current_blog_id();
 			}
 			$location = get_post( $location_id );
-			if ( empty( $location ) ) { return null;}
+			if ( empty( $location ) ) {
+				return null;}
 
 			// Location information.
 			$country = isset( $venue['country'] ) ? $venue['country'] : '';
-			if( strlen( $country ) > 2 && $country != '' ){
+			if ( strlen( $country ) > 2 && $country != '' ) {
 				$country = $ife_events->common->ife_get_country_code( $country );
 			}
 			$address = isset( $venue['full_address'] ) ? $venue['full_address'] : $venue['address_1'];
-			$city 	 = isset( $venue['city'] ) ? $venue['city'] : '';
+			$city    = isset( $venue['city'] ) ? $venue['city'] : '';
 			$state   = isset( $venue['state'] ) ? $venue['state'] : '';
 			$zip     = isset( $venue['zip'] ) ? $venue['zip'] : '';
 			$lat     = isset( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
@@ -320,7 +327,7 @@ class Import_Facebook_Events_EM {
 			update_post_meta( $location_id, '_location_town', $city );
 			update_post_meta( $location_id, '_location_state', $state );
 			update_post_meta( $location_id, '_location_postcode', $zip );
-			update_post_meta( $location_id, '_location_region','' );
+			update_post_meta( $location_id, '_location_region', '' );
 			update_post_meta( $location_id, '_location_country', $country );
 			update_post_meta( $location_id, '_location_latitude', $lat );
 			update_post_meta( $location_id, '_location_longitude', $lon );
@@ -328,53 +335,51 @@ class Import_Facebook_Events_EM {
 			update_post_meta( $location_id, 'ife_event_venue_id', $venue['ID'] );
 
 			global $wpdb;
-			$location_array = array(
-				'post_id' => $location_id,
-				'blog_id' => $blog_id,
-				'location_slug' => $location->post_name,
-				'location_name' => $location->post_title,
-				'location_owner' => $location->post_author,
-				'location_address' => $address,
-				'location_town' => $city,
-				'location_state' => $state,
-				'location_postcode' => $zip,
-				'location_region' => $state,
-				'location_country' => $country,
-				'location_latitude' => $lat,
+			$location_array  = array(
+				'post_id'            => $location_id,
+				'blog_id'            => $blog_id,
+				'location_slug'      => $location->post_name,
+				'location_name'      => $location->post_title,
+				'location_owner'     => $location->post_author,
+				'location_address'   => $address,
+				'location_town'      => $city,
+				'location_state'     => $state,
+				'location_postcode'  => $zip,
+				'location_region'    => $state,
+				'location_country'   => $country,
+				'location_latitude'  => $lat,
 				'location_longitude' => $lon,
-				'post_content' => $location->post_content,
-				'location_status' => 1,
-				'location_private' => 0,
+				'post_content'       => $location->post_content,
+				'location_status'    => 1,
+				'location_private'   => 0,
 			);
 			$location_format = array( '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%d', '%d' );
-			$where_format = array( '%d' );
+			$where_format    = array( '%d' );
 
-			if( defined( 'EM_LOCATIONS_TABLE' ) ){
+			if ( defined( 'EM_LOCATIONS_TABLE' ) ) {
 				$event_location_table = EM_LOCATIONS_TABLE;
-			}else{
+			} else {
 				$event_location_table = $wpdb->prefix . 'em_locations';
 			}
 
-			if( $event_id && is_numeric( $event_id ) && $event_id > 0 ){
+			if ( $event_id && is_numeric( $event_id ) && $event_id > 0 ) {
 				$loc_id = get_post_meta( $event_id, '_location_id', true );
-				if( $loc_id != '' ){
-					$where = array( 'location_id' => $loc_id );	
+				if ( $loc_id != '' ) {
+					$where     = array( 'location_id' => $loc_id );
 					$is_update = $wpdb->update( $event_location_table, $location_array, $where, $location_format, $where_format );
 					if ( false !== $is_update ) {
-						return $loc_id;    
+						return $loc_id;
 					}
-
-				}else{
-					$is_insert = $wpdb->insert( $event_location_table , $location_array, $location_format );
+				} else {
+					$is_insert = $wpdb->insert( $event_location_table, $location_array, $location_format );
 					if ( false !== $is_insert ) {
 						$insert_loc_id = $wpdb->insert_id;
 						update_post_meta( $location_id, '_location_id', $insert_loc_id );
 						return $insert_loc_id;
 					}
-				}				
-				
-			}else{
-				$is_insert = $wpdb->insert( $event_location_table , $location_array, $location_format );
+				}
+			} else {
+				$is_insert = $wpdb->insert( $event_location_table, $location_array, $location_format );
 				if ( false !== $is_insert ) {
 					$insert_loc_id = $wpdb->insert_id;
 					update_post_meta( $location_id, '_location_id', $insert_loc_id );
@@ -393,13 +398,15 @@ class Import_Facebook_Events_EM {
 	 * @return int/boolean
 	 */
 	public function get_venue_by_id( $venue_id ) {
-		$existing_venue = get_posts( array(
-			'posts_per_page' => 1,
-			'post_type' => $this->venue_posttype,
-			'meta_key' => 'ife_event_venue_id',
-			'meta_value' => $venue_id,
-			'suppress_filters' => false,
-		) );
+		$existing_venue = get_posts(
+			array(
+				'posts_per_page'   => 1,
+				'post_type'        => $this->venue_posttype,
+				'meta_key'         => 'ife_event_venue_id',
+				'meta_value'       => $venue_id,
+				'suppress_filters' => false,
+			)
+		);
 
 		if ( is_array( $existing_venue ) && ! empty( $existing_venue ) ) {
 			return $existing_venue[0]->ID;

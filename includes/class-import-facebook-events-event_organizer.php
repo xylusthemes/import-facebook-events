@@ -9,7 +9,9 @@
  * @subpackage Import_Facebook_Events/includes
  */
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Import_Facebook_Events_Event_Organizer {
 
@@ -34,10 +36,10 @@ class Import_Facebook_Events_Event_Organizer {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		
+
 		global $wpdb;
 		$this->event_posttype = 'event';
-		$this->taxonomy = 'event-category';
+		$this->taxonomy       = 'event-category';
 		$this->venue_taxonomy = 'event-venue';
 		$this->venue_db_table = "{$wpdb->prefix}eo_venuemeta";
 		$this->event_db_table = "{$wpdb->prefix}eo_events";
@@ -49,13 +51,13 @@ class Import_Facebook_Events_Event_Organizer {
 	 *
 	 * @return string
 	 */
-	public function get_event_posttype(){
+	public function get_event_posttype() {
 		return $this->event_posttype;
-	}	
-	public function get_venue_taxonomy(){
+	}
+	public function get_venue_taxonomy() {
 		return $this->venue_taxonomy;
 	}
-	public function get_taxonomy(){
+	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
 
@@ -66,10 +68,10 @@ class Import_Facebook_Events_Event_Organizer {
 	 * @param  array $centralize event array.
 	 * @return array
 	 */
-	public function import_event( $centralize_array, $event_args ){
+	public function import_event( $centralize_array, $event_args ) {
 		global $wpdb, $ife_events;
 
-		if( empty( $centralize_array ) || !isset( $centralize_array['ID'] ) ){
+		if ( empty( $centralize_array ) || ! isset( $centralize_array['ID'] ) ) {
 			return false;
 		}
 
@@ -77,22 +79,22 @@ class Import_Facebook_Events_Event_Organizer {
 
 		if ( $is_exitsing_event ) {
 			// Update event or not?
-			$options = ife_get_import_options( $centralize_array['origin'] );
+			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
 			if ( 'yes' != $update_events ) {
 				return array(
-					'status'=> 'skipped',
-					'id' 	=> $is_exitsing_event
+					'status' => 'skipped',
+					'id'     => $is_exitsing_event,
 				);
 			}
 		}
 
-		$origin_event_id = $centralize_array['ID'];
-		$post_title = isset( $centralize_array['name'] ) ? $centralize_array['name'] : '';
+		$origin_event_id  = $centralize_array['ID'];
+		$post_title       = isset( $centralize_array['name'] ) ? $centralize_array['name'] : '';
 		$post_description = isset( $centralize_array['description'] ) ? $centralize_array['description'] : '';
-		$start_time = $centralize_array['starttime_local'];
-		$end_time = $centralize_array['endtime_local'];
-		$ticket_uri = $centralize_array['url'];
+		$start_time       = $centralize_array['starttime_local'];
+		$end_time         = $centralize_array['endtime_local'];
+		$ticket_uri       = $centralize_array['url'];
 
 		$eo_eventdata = array(
 			'post_title'   => $post_title,
@@ -104,11 +106,11 @@ class Import_Facebook_Events_Event_Organizer {
 			$eo_eventdata['ID'] = $is_exitsing_event;
 		}
 
-		if( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ){
+		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
 			$eo_eventdata['post_status'] = $event_args['event_status'];
 		}
 
-		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('status') ) {
+		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable( 'status' ) ) {
 			$eo_eventdata['post_status'] = get_post_status( $is_exitsing_event );
 		}
 
@@ -116,7 +118,8 @@ class Import_Facebook_Events_Event_Organizer {
 
 		if ( ! is_wp_error( $inserted_event_id ) ) {
 			$inserted_event = get_post( $inserted_event_id );
-			if ( empty( $inserted_event ) ) { return '';}
+			if ( empty( $inserted_event ) ) {
+				return '';}
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
@@ -126,17 +129,17 @@ class Import_Facebook_Events_Event_Organizer {
 				}
 			}
 			if ( ! empty( $ife_cats ) ) {
-				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+				if ( ! ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable( 'category' ) ) ) {
 					wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
 				}
 			}
 
 			// Assign Featured images
 			$event_image = $centralize_array['image_url'];
-			if( $event_image != '' ){
+			if ( $event_image != '' ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
-			}else{
-				if( $is_exitsing_event ){
+			} else {
+				if ( $is_exitsing_event ) {
 					delete_post_thumbnail( $inserted_event_id );
 				}
 			}
@@ -150,117 +153,122 @@ class Import_Facebook_Events_Event_Organizer {
 			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $ticket_uri ) );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
-			
+
 			// Custom table Details
 			$event_array = array(
-				'post_id' 		   => $inserted_event_id,
-				'StartDate' 	   => date( 'Y-m-d', $start_time ),
-				'EndDate' 	       => date( 'Y-m-d', $end_time ),
+				'post_id'          => $inserted_event_id,
+				'StartDate'        => date( 'Y-m-d', $start_time ),
+				'EndDate'          => date( 'Y-m-d', $end_time ),
 				'StartTime'        => date( 'H:i:s', $start_time ),
-				'FinishTime' 	   => date( 'H:i:s', $end_time ),
+				'FinishTime'       => date( 'H:i:s', $end_time ),
 				'event_occurrence' => 0,
 			);
 
-			$event_count = $wpdb->get_var( "SELECT COUNT(*) FROM $this->event_db_table WHERE `post_id` = ".absint( $inserted_event_id ) );
-			if( $event_count > 0 && is_numeric( $event_count ) ){
+			$event_count = $wpdb->get_var( "SELECT COUNT(*) FROM $this->event_db_table WHERE `post_id` = " . absint( $inserted_event_id ) );
+			if ( $event_count > 0 && is_numeric( $event_count ) ) {
 				$where = array( 'post_id' => absint( $inserted_event_id ) );
-				$wpdb->update( $this->event_db_table , $event_array, $where );	
-			}else{
-				$wpdb->insert( $this->event_db_table , $event_array );
+				$wpdb->update( $this->event_db_table, $event_array, $where );
+			} else {
+				$wpdb->insert( $this->event_db_table, $event_array );
 			}
 
 			// Save location Data
-			if( isset( $centralize_array['location']['name'] ) && $centralize_array['location']['name'] != '' ){
+			if ( isset( $centralize_array['location']['name'] ) && $centralize_array['location']['name'] != '' ) {
 				$loc_term = term_exists( $centralize_array['location']['name'], $this->venue_taxonomy );
-				if ($loc_term !== 0 && $loc_term !== null) {
-				  if( is_array( $loc_term ) ){
-				  	$loc_term_id = (int)$loc_term['term_id'];
-				  }
-				}else{
+				if ( $loc_term !== 0 && $loc_term !== null ) {
+					if ( is_array( $loc_term ) ) {
+						$loc_term_id = (int) $loc_term['term_id'];
+					}
+				} else {
 					$new_loc_term = wp_insert_term(
-					  $centralize_array['location']['name'], 
-					  $this->venue_taxonomy
+						$centralize_array['location']['name'],
+						$this->venue_taxonomy
 					);
-					if( !is_wp_error( $new_loc_term ) ){
-						$loc_term_id = (int)$new_loc_term['term_id'];
+					if ( ! is_wp_error( $new_loc_term ) ) {
+						$loc_term_id = (int) $new_loc_term['term_id'];
 					}
 				}
 				$term_loc_ids = wp_set_object_terms( $inserted_event_id, $loc_term_id, $this->venue_taxonomy );
-				$venue = $centralize_array['location'];
-				$address = isset( $venue['full_address'] ) ? $venue['full_address'] : $venue['address_1'];
-				$city 	 = isset( $venue['city'] ) ? $venue['city'] : '';
-				$state   = isset( $venue['state'] ) ? $venue['state'] : '';
-				$zip     = isset( $venue['zip'] ) ? $venue['zip'] : '';
-				$lat     = isset( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
-				$lon     = isset( $venue['long'] ) ? round( $venue['long'], 6 ) : 0.000000;
-				$country = isset( $venue['country'] ) ? $venue['country'] : '';
+				$venue        = $centralize_array['location'];
+				$address      = isset( $venue['full_address'] ) ? $venue['full_address'] : $venue['address_1'];
+				$city         = isset( $venue['city'] ) ? $venue['city'] : '';
+				$state        = isset( $venue['state'] ) ? $venue['state'] : '';
+				$zip          = isset( $venue['zip'] ) ? $venue['zip'] : '';
+				$lat          = isset( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
+				$lon          = isset( $venue['long'] ) ? round( $venue['long'], 6 ) : 0.000000;
+				$country      = isset( $venue['country'] ) ? $venue['country'] : '';
 
-				$loc_term_meta = array();
+				$loc_term_meta   = array();
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key' 	  => '_address',
+					'meta_key'    => '_address',
 					'meta_value'  => $address,
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key' 	  => '_city',
+					'meta_key'    => '_city',
 					'meta_value'  => $city,
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key' 	  => '_state',
+					'meta_key'    => '_state',
 					'meta_value'  => $state,
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key' 	  => '_postcode',
+					'meta_key'    => '_postcode',
 					'meta_value'  => $zip,
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key' 	  => '_country',
+					'meta_key'    => '_country',
 					'meta_value'  => $country,
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key' 	  => '_lat',
+					'meta_key'    => '_lat',
 					'meta_value'  => $lat,
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key' 	  => '_lng',
+					'meta_key'    => '_lng',
 					'meta_value'  => $lon,
-				);	
+				);
 
-				if( !empty( $loc_term_meta ) ){
-					$meta_keys = $wpdb->get_col( "SELECT `meta_key` FROM {$wpdb->prefix}eo_venuemeta WHERE `eo_venue_id` = ".$loc_term_id );
-					foreach ($loc_term_meta as $loc_value) {
-						if( in_array( $loc_value['meta_key'], $meta_keys) ){
-							$where = array( 'eo_venue_id' => absint( $loc_term_id ), 'meta_key' => $loc_value['meta_key'] );
-							$wpdb->update( $this->venue_db_table , $loc_value, $where );	
-						}else{
-							$wpdb->insert( $this->venue_db_table , $loc_value );
-						}			
+				if ( ! empty( $loc_term_meta ) ) {
+					$meta_keys = $wpdb->get_col( "SELECT `meta_key` FROM {$wpdb->prefix}eo_venuemeta WHERE `eo_venue_id` = " . $loc_term_id );
+					foreach ( $loc_term_meta as $loc_value ) {
+						if ( in_array( $loc_value['meta_key'], $meta_keys ) ) {
+							$where = array(
+								'eo_venue_id' => absint( $loc_term_id ),
+								'meta_key'    => $loc_value['meta_key'],
+							);
+							$wpdb->update( $this->venue_db_table, $loc_value, $where );
+						} else {
+							$wpdb->insert( $this->venue_db_table, $loc_value );
+						}
 					}
 				}
 			}
 
 			if ( $is_exitsing_event ) {
-				do_action( 'ife_after_update_event_organizer_'.$centralize_array["origin"].'_event', $inserted_event_id, $centralize_array );
+				do_action( 'ife_after_update_event_organizer_' . $centralize_array['origin'] . '_event', $inserted_event_id, $centralize_array );
 				return array(
 					'status' => 'updated',
-					'id' 	 => $inserted_event_id
+					'id'     => $inserted_event_id,
 				);
-			}else{
-				do_action( 'ife_after_create_event_organizer_'.$centralize_array["origin"].'_event', $inserted_event_id, $centralize_array );
+			} else {
+				do_action( 'ife_after_create_event_organizer_' . $centralize_array['origin'] . '_event', $inserted_event_id, $centralize_array );
 				return array(
 					'status' => 'created',
-					'id' 	 => $inserted_event_id
+					'id'     => $inserted_event_id,
 				);
 			}
-
-		}else{
-			return array( 'status'=> 0, 'message'=> 'Something went wrong, please try again.' );
+		} else {
+			return array(
+				'status'  => 0,
+				'message' => 'Something went wrong, please try again.',
+			);
 		}
 	}
 }

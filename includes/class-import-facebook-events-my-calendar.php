@@ -9,7 +9,9 @@
  * @subpackage Import_Facebook_Events/includes
  */
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Import_Facebook_Events_My_Calendar {
 
@@ -26,7 +28,7 @@ class Import_Facebook_Events_My_Calendar {
 	 */
 	public function __construct() {
 		$this->event_posttype = 'mc-events';
-		$this->taxonomy = 'mc-event-category';
+		$this->taxonomy       = 'mc-event-category';
 	}
 
 
@@ -35,10 +37,10 @@ class Import_Facebook_Events_My_Calendar {
 	 *
 	 * @return string
 	 */
-	public function get_event_posttype(){
+	public function get_event_posttype() {
 		return $this->event_posttype;
-	}	
-	public function get_taxonomy(){
+	}
+	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
 
@@ -49,53 +51,54 @@ class Import_Facebook_Events_My_Calendar {
 	 * @param  array $centralize event array.
 	 * @return array
 	 */
-	public function import_event( $centralize_array, $event_args ){
+	public function import_event( $centralize_array, $event_args ) {
 		global $wpdb, $ife_events;
 
-		if( empty( $centralize_array ) || !isset( $centralize_array['ID'] ) ){
+		if ( empty( $centralize_array ) || ! isset( $centralize_array['ID'] ) ) {
 			return false;
 		}
 
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array['ID'] );
 		if ( $is_exitsing_event ) {
 			// Update event or not?
-			$options = ife_get_import_options( $centralize_array['origin'] );
+			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
 			if ( 'yes' != $update_events ) {
 				return array(
-					'status'=> 'skipped',
-					'id' 	=> $is_exitsing_event
+					'status' => 'skipped',
+					'id'     => $is_exitsing_event,
 				);
 			}
 		}
 
-		$origin_event_id = $centralize_array['ID'];
-		$post_title = isset( $centralize_array['name'] ) ? $centralize_array['name'] : '';
+		$origin_event_id  = $centralize_array['ID'];
+		$post_title       = isset( $centralize_array['name'] ) ? $centralize_array['name'] : '';
 		$post_description = isset( $centralize_array['description'] ) ? $centralize_array['description'] : '';
-		$start_time = $centralize_array['starttime_local'];
-		$end_time = $centralize_array['endtime_local'];
-		$event_uri = $centralize_array['url'];
+		$start_time       = $centralize_array['starttime_local'];
+		$end_time         = $centralize_array['endtime_local'];
+		$event_uri        = $centralize_array['url'];
 
 		$mc_eventdata = array(
-			'post_title'  => $post_title,
+			'post_title'   => $post_title,
 			'post_content' => $post_description,
-			'post_type'   => $this->event_posttype,
-			'post_status' => 'pending',
+			'post_type'    => $this->event_posttype,
+			'post_status'  => 'pending',
 		);
 		if ( $is_exitsing_event ) {
 			$mc_eventdata['ID'] = $is_exitsing_event;
 		}
-		if( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ){
+		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
 			$mc_eventdata['post_status'] = $event_args['event_status'];
 		}
-		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('status') ) {
+		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable( 'status' ) ) {
 			$mc_eventdata['post_status'] = get_post_status( $is_exitsing_event );
 		}
 		$inserted_event_id = wp_insert_post( $mc_eventdata, true );
 
 		if ( ! is_wp_error( $inserted_event_id ) ) {
 			$inserted_event = get_post( $inserted_event_id );
-			if ( empty( $inserted_event ) ) { return '';}
+			if ( empty( $inserted_event ) ) {
+				return '';}
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
@@ -105,17 +108,17 @@ class Import_Facebook_Events_My_Calendar {
 				}
 			}
 			if ( ! empty( $ife_cats ) ) {
-				if (!($is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') )) {
+				if ( ! ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable( 'category' ) ) ) {
 					wp_set_object_terms( $inserted_event_id, $ife_cats, $this->taxonomy );
 				}
 			}
 
 			// Assign Featured images
 			$event_image = $centralize_array['image_url'];
-			if( $event_image != '' ){
+			if ( $event_image != '' ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
-			}else{
-				if( $is_exitsing_event ){
+			} else {
+				if ( $is_exitsing_event ) {
 					delete_post_thumbnail( $inserted_event_id );
 				}
 			}
@@ -125,49 +128,49 @@ class Import_Facebook_Events_My_Calendar {
 			update_post_meta( $inserted_event_id, 'ife_event_link', $centralize_array['url'] );
 
 			// Setup Variables for insert into table.
-			$begin     = date( 'Y-m-d', $start_time );
-			$end       = date( 'Y-m-d', $end_time );
-			$time      = date( 'H:i:s', $start_time  );
-			$endtime   = date( 'H:i:s', $end_time );
+			$begin   = date( 'Y-m-d', $start_time );
+			$end     = date( 'Y-m-d', $end_time );
+			$time    = date( 'H:i:s', $start_time );
+			$endtime = date( 'H:i:s', $end_time );
 
 			$event_author = $host = 0;
-			if( is_user_logged_in() ){
+			if ( is_user_logged_in() ) {
 				$event_author = $host = get_current_user_id();
 			}
 			$event_category = 1;
 			if ( ! empty( $ife_cats ) ) {
-				$event_cat = $ife_cats[0];
-				$temp_event_cat = $wpdb->get_var( "SELECT `category_id` FROM " . my_calendar_categories_table() . " WHERE `category_term` = ". (int)$event_cat ." LIMIT 1"  );
-				if( $temp_event_cat > 0 && is_numeric( $temp_event_cat ) && !empty( $temp_event_cat ) ){
+				$event_cat      = $ife_cats[0];
+				$temp_event_cat = $wpdb->get_var( 'SELECT `category_id` FROM ' . my_calendar_categories_table() . ' WHERE `category_term` = ' . (int) $event_cat . ' LIMIT 1' );
+				if ( $temp_event_cat > 0 && is_numeric( $temp_event_cat ) && ! empty( $temp_event_cat ) ) {
 					$event_category = $temp_event_cat;
 				}
-			}			
-			
+			}
+
 			// Location Args for.
-			$venue 	 = isset( $centralize_array['location'] ) ? $centralize_array['location'] : array();
-			
+			$venue = isset( $centralize_array['location'] ) ? $centralize_array['location'] : array();
+
 			$event_label = $event_street = $event_street2 = $address = $event_city = $event_state = $event_postcode = $event_region = $event_latitude = $event_longitude = $event_country = $event_url = $event_phone = $event_phone2 = $event_zoom = '';
 			$location_id = 0;
 
-			if( !empty( $venue ) ){
-				$event_label 	= isset( $venue['name'] ) ? $venue['name'] : '';
-				$event_street 	= isset( $venue['full_address'] ) ? $venue['full_address'] : '';
-				if( $event_street == '' && isset( $venue['address_1'] ) ){
+			if ( ! empty( $venue ) ) {
+				$event_label  = isset( $venue['name'] ) ? $venue['name'] : '';
+				$event_street = isset( $venue['full_address'] ) ? $venue['full_address'] : '';
+				if ( $event_street == '' && isset( $venue['address_1'] ) ) {
 					$event_street = $venue['address_1'];
 				}
-				$event_street2	= isset( $venue['address_2'] ) ? $venue['address_2'] : '';
-				$address 		= isset( $venue['address_2'] ) ? $venue['address_2'] : '';
-				$event_city 	= isset( $venue['city'] ) ? $venue['city'] : '';
-				$event_state    = isset( $venue['state'] ) ? $venue['state'] : '';
-				$event_postcode = isset( $venue['zip'] ) ? $venue['zip'] : '';
-				$event_region   = isset( $venue['state'] ) ? $venue['state'] : '';
-				$event_latitude = isset( $venue['lat'] ) ? $venue['lat'] : 0.000000;
-				$event_longitude= isset( $venue['long'] ) ? $venue['long'] : 0.000000;
-				$event_country  = isset( $venue['country'] ) ? $venue['country'] : '';
-				$event_url      = isset( $venue['url'] ) ? $venue['url'] : '';
-				$event_phone    = '';
-				$event_phone2   = '';
-				$event_zoom     = 16;
+				$event_street2   = isset( $venue['address_2'] ) ? $venue['address_2'] : '';
+				$address         = isset( $venue['address_2'] ) ? $venue['address_2'] : '';
+				$event_city      = isset( $venue['city'] ) ? $venue['city'] : '';
+				$event_state     = isset( $venue['state'] ) ? $venue['state'] : '';
+				$event_postcode  = isset( $venue['zip'] ) ? $venue['zip'] : '';
+				$event_region    = isset( $venue['state'] ) ? $venue['state'] : '';
+				$event_latitude  = isset( $venue['lat'] ) ? $venue['lat'] : 0.000000;
+				$event_longitude = isset( $venue['long'] ) ? $venue['long'] : 0.000000;
+				$event_country   = isset( $venue['country'] ) ? $venue['country'] : '';
+				$event_url       = isset( $venue['url'] ) ? $venue['url'] : '';
+				$event_phone     = '';
+				$event_phone2    = '';
+				$event_zoom      = 16;
 
 				$location_data = array(
 					'location_label'     => $event_label,
@@ -184,10 +187,10 @@ class Import_Facebook_Events_My_Calendar {
 					'location_zoom'      => $event_zoom,
 					'location_phone'     => $event_phone,
 					'location_phone2'    => $event_phone2,
-					'location_access'    => ''
-				);			
-				$add_loc = array_map( 'mc_kses_post', $location_data );
-								
+					'location_access'    => '',
+				);
+				$add_loc       = array_map( 'mc_kses_post', $location_data );
+
 				$loc_formats = array(
 					'%s',
 					'%s',
@@ -203,17 +206,17 @@ class Import_Facebook_Events_My_Calendar {
 					'%d',
 					'%s',
 					'%s',
-					'%s'
+					'%s',
 				);
 
-				$location_id = $wpdb->get_var( "SELECT `location_id` FROM ".my_calendar_locations_table()." WHERE `location_label` = '". esc_sql( $event_label ) ."'"  );
-				if( $location_id > 0 && is_numeric( $location_id ) && !empty( $location_id ) ){
-					
-					$where = array( 'location_id' => (int)$location_id );
+				$location_id = $wpdb->get_var( 'SELECT `location_id` FROM ' . my_calendar_locations_table() . " WHERE `location_label` = '" . esc_sql( $event_label ) . "'" );
+				if ( $location_id > 0 && is_numeric( $location_id ) && ! empty( $location_id ) ) {
+
+					$where            = array( 'location_id' => (int) $location_id );
 					$loc_where_format = array( '%d' );
-					$wpdb->update( my_calendar_locations_table() , $location_data, $where, $loc_formats, $loc_where_format );	
-				}else{
-					$wpdb->insert( my_calendar_locations_table() , $location_data, $loc_formats );
+					$wpdb->update( my_calendar_locations_table(), $location_data, $where, $loc_formats, $loc_where_format );
+				} else {
+					$wpdb->insert( my_calendar_locations_table(), $location_data, $loc_formats );
 					$location_id = $wpdb->insert_id;
 				}
 			}
@@ -243,10 +246,9 @@ class Import_Facebook_Events_My_Calendar {
 				'event_phone2'       => $event_phone2,
 				'event_access'       => '',
 				'event_tickets'      => '',
-				'event_registration' => '',			
-				// integers
-				'event_post'		 => $inserted_event_id,
-				'event_location'	 => isset( $location_id ) ? $location_id : 0,
+				'event_registration' => '',                 // integers
+				'event_post'         => $inserted_event_id,
+				'event_location'     => isset( $location_id ) ? $location_id : 0,
 				'event_repeats'      => 0,
 				'event_author'       => $event_author,
 				'event_category'     => $event_category,
@@ -261,7 +263,7 @@ class Import_Facebook_Events_My_Calendar {
 				'event_hide_end'     => 0,
 				// floats
 				'event_longitude'    => $event_longitude,
-				'event_latitude'     => $event_latitude
+				'event_latitude'     => $event_latitude,
 			);
 
 			$event_formats = array(
@@ -304,75 +306,77 @@ class Import_Facebook_Events_My_Calendar {
 				'%d',
 				'%d',
 				'%f',
-				'%f'
+				'%f',
 			);
-			
-			$db_event_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_id` FROM ".my_calendar_table()." WHERE `event_title` = %s AND `event_post`= %d LIMIT 1", sanitize_text_field( $inserted_event->post_title ), $inserted_event_id ) );
-			
-			if( $db_event_id > 0 && is_numeric( $db_event_id ) && !empty( $db_event_id ) ){
-				
-				if ( !$ife_events->common->ife_is_updatable('category') ){
-					$cat_id = $wpdb->get_var( "SELECT `event_category` FROM ".my_calendar_table()." WHERE `event_id`=". absint( $db_event_id ) );
-					if( $cat_id ){
+
+			$db_event_id = $wpdb->get_var( $wpdb->prepare( 'SELECT `event_id` FROM ' . my_calendar_table() . ' WHERE `event_title` = %s AND `event_post`= %d LIMIT 1', sanitize_text_field( $inserted_event->post_title ), $inserted_event_id ) );
+
+			if ( $db_event_id > 0 && is_numeric( $db_event_id ) && ! empty( $db_event_id ) ) {
+
+				if ( ! $ife_events->common->ife_is_updatable( 'category' ) ) {
+					$cat_id = $wpdb->get_var( 'SELECT `event_category` FROM ' . my_calendar_table() . ' WHERE `event_id`=' . absint( $db_event_id ) );
+					if ( $cat_id ) {
 						$event_data['event_category'] = $cat_id;
 					}
 				}
 
 				$event_where = array( 'event_id' => absint( $db_event_id ) );
-				$wpdb->update( my_calendar_table(), $event_data, $event_where, $event_formats );	
-			}else{
+				$wpdb->update( my_calendar_table(), $event_data, $event_where, $event_formats );
+			} else {
 				$wpdb->insert( my_calendar_table(), $event_data, $event_formats );
 				$db_event_id = $wpdb->insert_id;
 			}
 
-			if( isset( $db_event_id ) && $db_event_id != '' ){
+			if ( isset( $db_event_id ) && $db_event_id != '' ) {
 
-				$occur_data  = array(
+				$occur_data = array(
 					'occur_event_id' => $db_event_id,
 					'occur_begin'    => date( 'Y-m-d H:i:s', $start_time ),
 					'occur_end'      => date( 'Y-m-d H:i:s', $end_time ),
-					'occur_group_id' => 0
+					'occur_group_id' => 0,
 				);
 
-				$occur_id = $wpdb->get_var( "SELECT `occur_id` FROM ".my_calendar_event_table()." WHERE `occur_event_id`=". absint( $db_event_id ) );
-				$occur_format   = array( '%d', '%s', '%s', '%d' );
-				if( $occur_id > 0 && is_numeric( $occur_id ) && !empty( $occur_id ) ){
-					
+				$occur_id     = $wpdb->get_var( 'SELECT `occur_id` FROM ' . my_calendar_event_table() . ' WHERE `occur_event_id`=' . absint( $db_event_id ) );
+				$occur_format = array( '%d', '%s', '%s', '%d' );
+				if ( $occur_id > 0 && is_numeric( $occur_id ) && ! empty( $occur_id ) ) {
+
 					$occur_where = array( 'occur_id' => absint( $occur_id ) );
-					$wpdb->update( my_calendar_event_table(), $occur_data, $occur_where, $occur_format );	
-				}else{
-					$wpdb->insert( my_calendar_event_table(), $occur_data, $occur_format);
+					$wpdb->update( my_calendar_event_table(), $occur_data, $occur_where, $occur_format );
+				} else {
+					$wpdb->insert( my_calendar_event_table(), $occur_data, $occur_format );
 					$occur_id = $wpdb->insert_id;
 				}
 			}
 
-			if( isset( $db_event_id ) && $db_event_id != '' ){
-				update_post_meta( $inserted_event_id, '_mc_event_shortcode', "[my_calendar_event event='".$db_event_id."' template='details' list='']" );
+			if ( isset( $db_event_id ) && $db_event_id != '' ) {
+				update_post_meta( $inserted_event_id, '_mc_event_shortcode', "[my_calendar_event event='" . $db_event_id . "' template='details' list='']" );
 				update_post_meta( $inserted_event_id, '_mc_event_id', $db_event_id );
 			}
-			update_post_meta( $inserted_event_id, '_mc_event_access', array( 'notes' =>'') );
+			update_post_meta( $inserted_event_id, '_mc_event_access', array( 'notes' => '' ) );
 			update_post_meta( $inserted_event_id, '_mc_event_desc', $inserted_event->post_content );
 			update_post_meta( $inserted_event_id, '_mc_event_image', '' );
-			if( isset( $location_id ) && $location_id != '' ){
-				update_post_meta( $inserted_event_id, '_mc_event_location', $location_id );	
+			if ( isset( $location_id ) && $location_id != '' ) {
+				update_post_meta( $inserted_event_id, '_mc_event_location', $location_id );
 			}
 
 			if ( $is_exitsing_event ) {
-				do_action( 'ife_after_update_my_calendar_'.$centralize_array["origin"].'_event', $inserted_event_id, $centralize_array );
+				do_action( 'ife_after_update_my_calendar_' . $centralize_array['origin'] . '_event', $inserted_event_id, $centralize_array );
 				return array(
 					'status' => 'updated',
-					'id' 	 => $inserted_event_id
+					'id'     => $inserted_event_id,
 				);
-			}else{
-				do_action( 'ife_after_create_my_calendar_'.$centralize_array["origin"].'_event', $inserted_event_id, $centralize_array );
+			} else {
+				do_action( 'ife_after_create_my_calendar_' . $centralize_array['origin'] . '_event', $inserted_event_id, $centralize_array );
 				return array(
 					'status' => 'created',
-					'id' 	 => $inserted_event_id
+					'id'     => $inserted_event_id,
 				);
 			}
-
-		}else{
-			return array( 'status'=> 0, 'message'=> 'Something went wrong, please try again.' );
+		} else {
+			return array(
+				'status'  => 0,
+				'message' => 'Something went wrong, please try again.',
+			);
 		}
 	}
 }
