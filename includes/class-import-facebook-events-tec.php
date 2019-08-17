@@ -8,26 +8,50 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Import_Facebook_Events_TEC Class
+ */
 class Import_Facebook_Events_TEC {
 
-	// The Events Calendar Event Taxonomy
+	/**
+	 * $taxonomy The Events Calendar Event Taxonomy
+	 *
+	 * @var string
+	 */
 	protected $taxonomy;
 
-	// Event tag Taxonomy
+	/**
+	 * $tag_taxonomy Event tag Taxonomy.
+	 *
+	 * @var string
+	 */
 	protected $tag_taxonomy;
 
-	// The Events Calendar Event Posttype
+	/**
+	 * $event_posttype The Events Calendar Event Posttype
+	 *
+	 * @var string
+	 */
 	protected $event_posttype;
 
-	// The Events Calendar Venue Posttype
+	/**
+	 * $venue_posttype The Events Calendar Venue Posttype
+	 *
+	 * @var string
+	 */
 	protected $venue_posttype;
 
-	// The Events Calendar Oraganizer Posttype
+	/**
+	 * $oraganizer_posttype The Events Calendar Oraganizer Posttype
+	 *
+	 * @var string
+	 */
 	protected $oraganizer_posttype;
 
 	/**
@@ -58,32 +82,59 @@ class Import_Facebook_Events_TEC {
 		}
 
 	}
+
 	/**
-	 * Get Posttype and Taxonomy Functions
+	 * Get Event Posttype
 	 *
 	 * @return string
 	 */
 	public function get_event_posttype() {
 		return $this->event_posttype;
 	}
+
+	/**
+	 * Get Organizer Posttype
+	 *
+	 * @return string
+	 */
 	public function get_oraganizer_posttype() {
 		return $this->oraganizer_posttype;
 	}
+
+	/**
+	 * Get Venue Posttype
+	 *
+	 * @return string
+	 */
 	public function get_venue_posttype() {
 		return $this->venue_posttype;
 	}
+
+	/**
+	 * Get Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
+
+	/**
+	 * Get Tag Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_tag_taxonomy() {
 		return $this->tag_taxonomy;
 	}
 
 	/**
-	 * import event into TEC
+	 * Import event into TEC
 	 *
 	 * @since    1.0.0
-	 * @param  array $centralize event array.
+	 * @param  array $centralize_array event array.
+	 * @param  array $event_args event arguments.
+	 *
 	 * @return array
 	 */
 	public function import_event( $centralize_array, $event_args ) {
@@ -91,7 +142,7 @@ class Import_Facebook_Events_TEC {
 
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array['ID'] );
 		$formated_args     = $this->format_event_args_for_tec( $centralize_array );
-		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
+		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$formated_args['post_status'] = $event_args['event_status'];
 		}
 
@@ -102,7 +153,7 @@ class Import_Facebook_Events_TEC {
 
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
-			if ( 'yes' == $update_events ) {
+			if ( 'yes' === $update_events ) {
 				return $this->update_event( $is_exitsing_event, $centralize_array, $formated_args, $event_args );
 			} else {
 				return array(
@@ -120,10 +171,10 @@ class Import_Facebook_Events_TEC {
 	 * Create New TEC event.
 	 *
 	 * @since    1.0.0
-	 * @param array $eventbrite_event Eventbrite event.
+	 * @param array $centralize_array event array.
 	 * @param array $formated_args Formated arguments for eventbrite event.
-	 * @param int   $post_id Post id.
-	 * @return void
+	 * @param array $event_args event arguments.
+	 * @return array
 	 */
 	public function create_event( $centralize_array = array(), $formated_args = array(), $event_args = array() ) {
 		// Create event using TEC advanced functions.
@@ -157,7 +208,7 @@ class Import_Facebook_Events_TEC {
 			}
 
 			$event_featured_image = $centralize_array['image_url'];
-			if ( $event_featured_image != '' ) {
+			if ( ! empty( $event_featured_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $new_event_id, $event_featured_image );
 			}
 
@@ -178,10 +229,11 @@ class Import_Facebook_Events_TEC {
 	 * Update eventbrite event.
 	 *
 	 * @since 1.0.0
+	 * @param int   $event_id Event id.
 	 * @param array $centralize_array Eventbrite event.
 	 * @param array $formated_args Formated arguments for eventbrite event.
-	 * @param int   $post_id Post id.
-	 * @return void
+	 * @param array $event_args event arguments.
+	 * @return array
 	 */
 	public function update_event( $event_id, $centralize_array, $formated_args = array(), $event_args = array() ) {
 		// Update event using TEC advanced functions.
@@ -220,7 +272,7 @@ class Import_Facebook_Events_TEC {
 			}
 
 			$event_featured_image = $centralize_array['image_url'];
-			if ( $event_featured_image != '' ) {
+			if ( ! empty( $event_featured_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $update_event_id, $event_featured_image );
 			} else {
 				delete_post_thumbnail( $update_event_id );
@@ -341,7 +393,7 @@ class Import_Facebook_Events_TEC {
 		}
 
 		$country = isset( $venue['country'] ) ? $venue['country'] : '';
-		if ( strlen( $country ) > 2 && $country != '' ) {
+		if ( strlen( $country ) > 2 && ! empty( $country ) ) {
 			$country = $ife_events->common->ife_get_country_code( $country );
 		}
 		$create_venue = tribe_create_venue(
