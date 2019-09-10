@@ -8,11 +8,19 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Common functionality of the plugin.
+ *
+ * @package     Import_Facebook_Events
+ * @subpackage  Import_Facebook_Events/admin
+ * @author     Dharmesh Patel <dspatel44@gmail.com>
+ */
 class Import_Facebook_Events_Common {
 
 	/**
@@ -31,13 +39,14 @@ class Import_Facebook_Events_Common {
 	 * Format events arguments as per TEC
 	 *
 	 * @since    1.0.0
-	 * @param array $eventbrite_event Eventbrite event.
-	 * @return array
+	 * @param string $selected Selected plugin.
+	 * @param array  $taxonomy_terms Taxonomy Terms.
+	 * @return void
 	 */
 	public function render_import_into_and_taxonomy( $selected = '', $taxonomy_terms = array() ) {
 
 		$active_plugins = $this->get_active_supported_event_plugins();
-		?>	
+		?>
 		<tr class="event_plugis_wrapper">
 			<th scope="row">
 				<?php esc_attr_e( 'Import into', 'import-facebook-events' ); ?> :
@@ -48,7 +57,7 @@ class Import_Facebook_Events_Common {
 					if ( ! empty( $active_plugins ) ) {
 						foreach ( $active_plugins as $slug => $name ) {
 							?>
-							<option value="<?php echo $slug; ?>" <?php selected( $selected, $slug ); ?> ><?php echo $name; ?></option>
+							<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $selected, $slug ); ?> ><?php echo esc_attr( $name ); ?></option>
 							<?php
 						}
 					}
@@ -59,11 +68,12 @@ class Import_Facebook_Events_Common {
 
 		<tr class="event_cats_wrapper">
 			<th scope="row">
-				<?php esc_attr_e( 'Event Categories for Event Import', 'import-facebook-events' ); ?> : 
+				<?php esc_attr_e( 'Event Categories for Event Import', 'import-facebook-events' ); ?> :
 			</th>
 			<td>
 				<?php
-				$taxo_cats = $taxo_tags = '';
+				$taxo_cats = '';
+				$taxo_tags = '';
 				if ( ! empty( $taxonomy_terms ) && isset( $taxonomy_terms['cats'] ) ) {
 					$taxo_cats = implode( ',', $taxonomy_terms['cats'] );
 				}
@@ -71,8 +81,8 @@ class Import_Facebook_Events_Common {
 					$taxo_tags = implode( ',', $taxonomy_terms['tags'] );
 				}
 				?>
-				<input type="hidden" id="ife_taxo_cats" value="<?php echo $taxo_cats; ?>">
-				<input type="hidden" id="ife_taxo_tags" value="<?php echo $taxo_tags; ?>">
+				<input type="hidden" id="ife_taxo_cats" value="<?php echo esc_attr( $taxo_cats ); ?>">
+				<input type="hidden" id="ife_taxo_tags" value="<?php echo esc_attr( $taxo_tags ); ?>">
 				<div class="event_taxo_terms_wraper">
 				</div>
 				<span class="ife_small">
@@ -90,17 +100,14 @@ class Import_Facebook_Events_Common {
 	 * @since 1.0
 	 * @return void
 	 */
-	function ife_render_terms_by_plugin() {
+	public function ife_render_terms_by_plugin() {
 		global $ife_events;
-		$event_plugin = esc_attr( $_REQUEST['event_plugin'] );
-		$taxo_cats    = $taxo_tags = array();
-		if ( isset( $_REQUEST['taxo_cats'] ) ) {
-			$taxo_cats = explode( ',', sanitize_text_field( $_REQUEST['taxo_cats'] ) );
-		}
-		if ( isset( $_REQUEST['taxo_tags'] ) ) {
-			$taxo_tags = explode( ',', sanitize_text_field( $_REQUEST['taxo_tags'] ) );
-		}
-		$event_taxonomy = $event_tag_taxonomy = '';
+		$event_plugin = isset( $_POST['event_plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['event_plugin'] ) ) : 'ife'; // input var okay.
+		$taxo_cats    = isset( $_POST['taxo_cats'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_POST ['taxo_cats'] ) ) ) : array(); // input var okay.
+		$taxo_tags    = isset( $_POST['taxo_tags'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_POST['taxo_tags'] ) ) ) : array(); // input var okay.
+
+		$event_taxonomy     = '';
+		$event_tag_taxonomy = '';
 		if ( ! empty( $event_plugin ) ) {
 			$event_taxonomy = $ife_events->$event_plugin->get_taxonomy();
 		}
@@ -109,53 +116,55 @@ class Import_Facebook_Events_Common {
 		 * Import into tag Supported plugins.
 		 */
 		$tag_supported_plugins = apply_filters( 'ife_tag_supported_plugins', array( 'ife', 'em', 'tec' ) );
-		if ( in_array( $event_plugin, $tag_supported_plugins ) ) {
+		if ( in_array( $event_plugin, $tag_supported_plugins, true ) ) {
 			$event_tag_taxonomy = $ife_events->$event_plugin->get_tag_taxonomy();
 		}
 
-		// Event Taxonomy
+		// Event Taxonomy.
 		$terms = array();
-		if ( $event_taxonomy != '' ) {
+		if ( ! empty( $event_taxonomy ) ) {
 			if ( taxonomy_exists( $event_taxonomy ) ) {
 				$terms = get_terms( $event_taxonomy, array( 'hide_empty' => false ) );
 			}
 		}
 		if ( ! empty( $terms ) ) {
-		?>
-			<?php if ( in_array( $event_plugin, $tag_supported_plugins ) && ife_is_pro() ) { ?>
+			?>
+			<?php if ( in_array( $event_plugin, $tag_supported_plugins, true ) && ife_is_pro() ) { ?>
 				<strong style="display: block;margin: 5px 0px;">
-					<?php _e( 'Event Categories:', 'import-facebook-events' ); ?>
+					<?php esc_attr_e( 'Event Categories:', 'import-facebook-events' ); ?>
 				</strong>
-			<?php } ?>
+				<?php
+			}
+			$taxo_cats = array_map( 'absint', $taxo_cats );
+			$taxo_tags = array_map( 'absint', $taxo_tags );
+			?>
 			<select name="event_cats[]" multiple="multiple">
 				<?php foreach ( $terms as $term ) { ?>
-					<option value="<?php echo $term->term_id; ?>" <?php if ( in_array( $term->term_id, $taxo_cats ) ) { echo 'selected="selected"'; } ?>>
-						<?php echo $term->name; ?>
-					</option>
-				<?php } ?> 
+					<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php echo( ( in_array( $term->term_id, $taxo_cats, true ) ) ? 'selected="selected"' : '' ); ?> ><?php echo esc_attr( $term->name ); ?></option>
+				<?php } ?>
 			</select>
 			<?php
 		}
 
-		// Event Tag Taxonomy
+		// Event Tag Taxonomy.
 		$tag_terms = array();
-		if ( $event_tag_taxonomy != '' ) {
+		if ( ! empty( $event_tag_taxonomy ) ) {
 			if ( taxonomy_exists( $event_tag_taxonomy ) ) {
 				$tag_terms = get_terms( $event_tag_taxonomy, array( 'hide_empty' => false ) );
 			}
 		}
 
 		if ( ! empty( $tag_terms ) && ife_is_pro() ) {
-		?>
-			<?php if ( in_array( $event_plugin, $tag_supported_plugins ) ) { ?>
+			?>
+			<?php if ( in_array( $event_plugin, $tag_supported_plugins, true ) ) { ?>
 				<strong style="display: block;margin: 5px 0px;">
-					<?php _e( 'Event Tags:', 'import-facebook-events' ); ?>
+					<?php esc_attr_e( 'Event Tags:', 'import-facebook-events' ); ?>
 				</strong>
 			<?php } ?>
 			<select name="event_tags[]" multiple="multiple">
 				<?php foreach ( $tag_terms as $tag_term ) { ?>
-					<option value="<?php echo $tag_term->term_id; ?>" <?php if ( in_array( $tag_term->term_id, $taxo_tags ) ) { echo 'selected="selected"'; } ?>>
-						<?php echo $tag_term->name; ?>
+					<option value="<?php echo esc_attr( $tag_term->term_id ); ?>" <?php echo( ( in_array( $tag_term->term_id, $taxo_tags, true ) ) ? 'selected="selected"' : '' ); ?> >
+						<?php echo esc_attr( $tag_term->name ); ?>
 					</option>
 				<?php } ?>
 			</select>
@@ -196,17 +205,17 @@ class Import_Facebook_Events_Common {
 			$supported_plugins['eventon'] = __( 'EventON', 'import-facebook-events' );
 		}
 
-		// check All in one Event Calendar
+		// check All in one Event Calendar.
 		if ( class_exists( 'Ai1ec_Event' ) ) {
 			$supported_plugins['aioec'] = __( 'All in one Event Calendar', 'import-facebook-events' );
 		}
 
-		// check My Calendar
+		// check My Calendar.
 		if ( is_plugin_active( 'my-calendar/my-calendar.php' ) ) {
 			$supported_plugins['my_calendar'] = __( 'My Calendar', 'import-facebook-events' );
 		}
 
-		// check Event Espresso (EE4)
+		// check Event Espresso (EE4).
 		if ( defined( 'EVENT_ESPRESSO_VERSION' ) && defined( 'EVENT_ESPRESSO_MAIN_FILE' ) ) {
 			$supported_plugins['ee4'] = __( 'Event Espresso (EE4)', 'import-facebook-events' );
 		}
@@ -220,13 +229,13 @@ class Import_Facebook_Events_Common {
 	 * Setup Featured image to events
 	 *
 	 * @since    1.0.0
-	 * @param int $event_id event id.
-	 * @param int $image_url Image URL
-	 * @return attachment_id
+	 * @param int    $event_id event id.
+	 * @param string $image_url Image URL.
+	 * @return int Attachment Id.
 	 */
 	public function setup_featured_image_to_event( $event_id, $image_url = '' ) {
 
-		if ( $image_url == '' ) {
+		if ( empty( $image_url ) ) {
 			return;
 		}
 		$event = get_post( $event_id );
@@ -239,7 +248,6 @@ class Import_Facebook_Events_Common {
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
 		$event_title = $event->post_title;
-		// $image = media_sideload_image( $image_url, $event_id, $event_title );
 		if ( ! empty( $image_url ) ) {
 
 			// Set variables for storage, fix file filename for query strings.
@@ -275,7 +283,7 @@ class Import_Facebook_Events_Common {
 			if ( has_post_thumbnail( $event_id ) ) {
 				$attachment_id   = get_post_thumbnail_id( $event_id );
 				$attach_filename = basename( get_attached_file( $attachment_id ) );
-				if ( $attach_filename == $file_array['name'] ) {
+				if ( $attach_filename === $file_array['name'] ) {
 					return $attachment_id;
 				}
 			}
@@ -293,7 +301,7 @@ class Import_Facebook_Events_Common {
 
 			// If error storing permanently, unlink.
 			if ( is_wp_error( $att_id ) ) {
-				@unlink( $file_array['tmp_name'] );
+				@unlink( $file_array['tmp_name'] ); // @codingStandardsIgnoreLine.
 				return $att_id;
 			}
 
@@ -313,7 +321,9 @@ class Import_Facebook_Events_Common {
 	 * Format events arguments as per TEC
 	 *
 	 * @since    1.0.0
-	 * @param array $eventbrite_event Eventbrite event.
+	 * @param array  $import_data Event import Data.
+	 * @param array  $import_args Event import args.
+	 * @param string $schedule_post Scheduled Post.
 	 * @return array
 	 */
 	public function display_import_success_message( $import_data = array(), $import_args = array(), $schedule_post = '' ) {
@@ -326,48 +336,53 @@ class Import_Facebook_Events_Common {
 			return;
 		}
 
-		$import_status = $import_ids = array();
+		$import_status = array();
+		$import_ids    = array();
 		if ( ! empty( $import_data ) ) {
 			foreach ( $import_data as $key => $value ) {
-				if ( $value['status'] == 'created' ) {
+				if ( 'created' === $value['status'] ) {
 					$import_status['created'][] = $value;
-				} elseif ( $value['status'] == 'updated' ) {
+				} elseif ( 'updated' === $value['status'] ) {
 					$import_status['updated'][] = $value;
-				} elseif ( $value['status'] == 'skipped' ) {
+				} elseif ( 'skipped' === $value['status'] ) {
 					$import_status['skipped'][] = $value;
-				} else {
-
 				}
+
 				if ( isset( $value['id'] ) ) {
 					$import_ids[] = $value['id'];
 				}
 			}
 		}
 
-		$created = $updated = $skipped = 0;
+		$created = 0;
+		$updated = 0;
+		$skipped = 0;
 		$created = isset( $import_status['created'] ) ? count( $import_status['created'] ) : 0;
 		$updated = isset( $import_status['updated'] ) ? count( $import_status['updated'] ) : 0;
 		$skipped = isset( $import_status['skipped'] ) ? count( $import_status['skipped'] ) : 0;
 
 		$success_message = esc_html__( 'Event(s) are imported successfully.', 'import-facebook-events' ) . '<br>';
 		if ( $created > 0 ) {
+			// translators: %d is numbers of event created.
 			$success_message .= '<strong>' . sprintf( __( '%d Created', 'import-facebook-events' ), $created ) . '</strong><br>';
 		}
 		if ( $updated > 0 ) {
+			// translators: %d is numbers of event updated.
 			$success_message .= '<strong>' . sprintf( __( '%d Updated', 'import-facebook-events' ), $updated ) . '</strong><br>';
 		}
 		if ( $skipped > 0 ) {
+			// translators: %d is numbers of event skipped.
 			$success_message .= '<strong>' . sprintf( __( '%d Skipped (Already exists)', 'import-facebook-events' ), $skipped ) . '</strong><br>';
 		}
 		$ife_success_msg[] = $success_message;
 
-		if ( $schedule_post != '' && $schedule_post > 0 ) {
+		if ( ! empty( $schedule_post ) && $schedule_post > 0 ) {
 			$temp_title = get_the_title( $schedule_post );
 		} else {
-			$temp_title = 'Manual Import';
+			$temp_title = esc_attr__( 'Manual Import', 'import-facebook-events' );
 		}
 		$nothing_to_import = false;
-		if ( $created == 0 && $updated == 0 && $skipped == 0 ) {
+		if ( 0 === $created && 0 === $updated && 0 === $skipped ) {
 			$nothing_to_import = true;
 		}
 
@@ -387,7 +402,7 @@ class Import_Facebook_Events_Common {
 				update_post_meta( $insert, 'nothing_to_import', $nothing_to_import );
 				update_post_meta( $insert, 'imported_data', $import_data );
 				update_post_meta( $insert, 'import_data', $import_args );
-				if ( $schedule_post != '' && $schedule_post > 0 ) {
+				if ( ! empty( $schedule_post ) && $schedule_post > 0 ) {
 					update_post_meta( $insert, 'schedule_import_id', $schedule_post );
 				}
 			}
@@ -398,6 +413,8 @@ class Import_Facebook_Events_Common {
 	 * Get Import events into selected destination.
 	 *
 	 * @since  1.0.0
+	 * @param array $centralize_array Centralize event.
+	 * @param array $event_args Event args.
 	 * @return array
 	 */
 	public function import_events_into( $centralize_array, $event_args ) {
@@ -406,10 +423,10 @@ class Import_Facebook_Events_Common {
 		$import_origin     = isset( $event_args['import_origin'] ) ? $event_args['import_origin'] : '';
 		$event_import_into = isset( $event_args['import_into'] ) ? $event_args['import_into'] : '';
 
-		if ( $event_import_into == '' ) {
-			if ( $import_origin == 'facebook_tec' ) {
+		if ( empty( $event_import_into ) ) {
+			if ( 'facebook_tec' === $import_origin ) {
 				$event_import_into = 'tec';
-			} elseif ( $import_origin == 'facebook_em' ) {
+			} elseif ( 'facebook_em' === $import_origin ) {
 				$event_import_into = 'em';
 			} else {
 				$event_import_into = 'tec';
@@ -427,11 +444,12 @@ class Import_Facebook_Events_Common {
 	 * Render import Frequency
 	 *
 	 * @since   1.0.0
+	 * @param string $selected Selected import frequency.
 	 * @return  void
 	 */
-	function render_import_frequency( $selected = 'daily' ) {
+	public function render_import_frequency( $selected = 'daily' ) {
 		?>
-		<select name="import_frequency" class="import_frequency" <?php if ( ! ife_is_pro() ) {echo 'disabled="disabled"'; } ?>>
+		<select name="import_frequency" class="import_frequency" <?php echo( ( ! ife_is_pro() ) ? 'disabled="disabled"' : '' ); ?> >
 			<option value='hourly' <?php selected( $selected, 'hourly' ); ?>>
 				<?php esc_html_e( 'Once Hourly', 'import-facebook-events' ); ?>
 			</option>
@@ -457,11 +475,11 @@ class Import_Facebook_Events_Common {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	function render_import_type() {
+	public function render_import_type() {
 		?>
-		<select name="import_type" id="import_type" <?php if ( ! ife_is_pro() ) { echo 'disabled="disabled"'; } ?>>
+		<select name="import_type" id="import_type" <?php echo( ( ! ife_is_pro() ) ? 'disabled="disabled"' : '' ); ?> >
 			<option value="onetime" ><?php esc_attr_e( 'One-time Import', 'import-facebook-events' ); ?></option>
-			<option value="scheduled" <?php if ( ! ife_is_pro() ) { echo 'disabled="disabled"  selected="selected"'; } ?>><?php esc_attr_e( 'Scheduled Import', 'import-facebook-events' ); ?></option>
+			<option value="scheduled" <?php echo( ( ! ife_is_pro() ) ? 'disabled="disabled"' : '' ); ?> ><?php esc_attr_e( 'Scheduled Import', 'import-facebook-events' ); ?></option>
 		</select>
 		<span class="hide_frequency">
 			<?php $this->render_import_frequency(); ?>
@@ -474,8 +492,10 @@ class Import_Facebook_Events_Common {
 	 * Clean URL.
 	 *
 	 * @since 1.0.0
+	 * @param string $url Url.
+	 * @return string $url Url.
 	 */
-	function clean_url( $url ) {
+	public function clean_url( $url ) {
 
 		$url = str_replace( '&amp;#038;', '&', $url );
 		$url = str_replace( '&#038;', '&', $url );
@@ -487,8 +507,10 @@ class Import_Facebook_Events_Common {
 	 * Get UTC offset
 	 *
 	 * @since    1.0.0
+	 * @param string $datetime DateTime.
+	 * @return string UTC Offset.
 	 */
-	function get_utc_offset( $datetime ) {
+	public function get_utc_offset( $datetime ) {
 		try {
 			$datetime = new DateTime( $datetime );
 		} catch ( Exception $e ) {
@@ -509,9 +531,10 @@ class Import_Facebook_Events_Common {
 	 * Render dropdown for Imported event status.
 	 *
 	 * @since 1.0
+	 * @param string $selected Selected Event status.
 	 * @return void
 	 */
-	function render_eventstatus_input( $selected = 'publish' ) {
+	public function render_eventstatus_input( $selected = 'publish' ) {
 		?>
 		<tr class="event_status_wrapper">
 			<th scope="row">
@@ -535,11 +558,13 @@ class Import_Facebook_Events_Common {
 	}
 
 	/**
-	 * remove query string from URL.
+	 * Remove query string from URL.
 	 *
 	 * @since 1.0.0
+	 * @param string $datetime DateTime.
+	 * @return string $datetime DateTime.
 	 */
-	function convert_datetime_to_db_datetime( $datetime ) {
+	public function convert_datetime_to_db_datetime( $datetime ) {
 		try {
 			$datetime = new DateTime( $datetime );
 			return $datetime->format( 'Y-m-d H:i:s' );
@@ -552,23 +577,24 @@ class Import_Facebook_Events_Common {
 	 * Check for Existing Event
 	 *
 	 * @since    1.0.0
-	 * @param int $event_id event id.
-	 * @return /boolean
+	 * @param string $post_type Post Type.
+	 * @param int    $event_id Event ID.
+	 * @return boolean|int Evnet ID or false.
 	 */
 	public function get_event_by_event_id( $post_type, $event_id ) {
 		$event_args = array(
 			'post_type'        => $post_type,
 			'post_status'      => array( 'pending', 'draft', 'publish' ),
-			'posts_per_page'   => -1,
+			'posts_per_page'   => 1,
 			'suppress_filters' => true,
-			'meta_key'         => 'ife_facebook_event_id',
-			'meta_value'       => $event_id,
+			'meta_key'         => 'ife_facebook_event_id', // @codingStandardsIgnoreLine.
+			'meta_value'       => $event_id, // @codingStandardsIgnoreLine
 		);
-		if ( $post_type == 'tribe_events' && class_exists( 'Tribe__Events__Query' ) ) {
+		if ( 'tribe_events' === $post_type && class_exists( 'Tribe__Events__Query' ) ) {
 			remove_action( 'pre_get_posts', array( 'Tribe__Events__Query', 'pre_get_posts' ), 50 );
 		}
 		$events = new WP_Query( $event_args );
-		if ( $post_type == 'tribe_events' && class_exists( 'Tribe__Events__Query' ) ) {
+		if ( 'tribe_events' === $post_type && class_exists( 'Tribe__Events__Query' ) ) {
 			add_action( 'pre_get_posts', array( 'Tribe__Events__Query', 'pre_get_posts' ), 50 );
 		}
 		if ( $events->have_posts() ) {
@@ -584,15 +610,15 @@ class Import_Facebook_Events_Common {
 	/**
 	 * Check for user have Authorized user Token
 	 *
-	 * @since    1.2
-	 * @return /boolean
+	 * @since  1.2
+	 * @return boolean
 	 */
 	public function has_authorized_user_token() {
 		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
 		if ( ! empty( $ife_user_token_options ) ) {
 			$authorize_status = isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
 			$access_token     = isset( $ife_user_token_options['access_token'] ) ? $ife_user_token_options['access_token'] : '';
-			if ( 1 == $authorize_status && $access_token != '' ) {
+			if ( 1 === $authorize_status && ! empty( $access_token ) ) {
 				return true;
 			}
 		}
@@ -603,7 +629,7 @@ class Import_Facebook_Events_Common {
 	 * Check if user has minimum pro version.
 	 *
 	 * @since    1.6
-	 * @return /boolean
+	 * @return void
 	 */
 	public function ife_check_for_minimum_pro_version() {
 		if ( defined( 'IFEPRO_VERSION' ) ) {
@@ -618,14 +644,14 @@ class Import_Facebook_Events_Common {
 	 * Check if user access token has beed invalidated.
 	 *
 	 * @since    1.2
-	 * @return /boolean
+	 * @return void
 	 */
 	public function ife_check_if_access_token_invalidated() {
 		global $ife_warnings;
 		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
 		if ( ! empty( $ife_user_token_options ) ) {
 			$authorize_status = isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
-			if ( 0 == $authorize_status ) {
+			if ( 0 === $authorize_status ) {
 				$ife_warnings[] = __( 'The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong>Settings</strong>.', 'import-facebook-events' );
 			}
 		}
@@ -635,7 +661,8 @@ class Import_Facebook_Events_Common {
 	 * Get do not update data fields
 	 *
 	 * @since  1.0.0
-	 * @return array
+	 * @param string $field Field for check update is allowed or not.
+	 * @return boolean
 	 */
 	public function ife_is_updatable( $field = '' ) {
 		// deprectated status & category update feature.
@@ -646,12 +673,13 @@ class Import_Facebook_Events_Common {
 	 * Display upgrade to pro notice in form.
 	 *
 	 * @since 1.0.0
+	 * @return void
 	 */
 	public function render_pro_notice() {
 		if ( ! ife_is_pro() ) {
 			?>
 			<span class="ife_small">
-				<?php printf( '<span style="color: red">%s</span> <a href="' . IFE_PLUGIN_BUY_NOW_URL . '" target="_blank" >%s</a>', __( 'Available in Pro version.', 'import-facebook-events' ), __( 'Upgrade to PRO', 'import-facebook-events' ) ); ?>
+				<?php printf( '<span style="color: red">%s</span> <a href="' . esc_url( IFE_PLUGIN_BUY_NOW_URL ) . '" target="_blank" >%s</a>', esc_attr__( 'Available in Pro version.', 'import-facebook-events' ), esc_attr__( 'Upgrade to PRO', 'import-facebook-events' ) ); ?>
 			</span>
 			<?php
 		}
@@ -661,10 +689,11 @@ class Import_Facebook_Events_Common {
 	 * Get Active supported active plugins.
 	 *
 	 * @since  1.0.0
-	 * @return array
+	 * @param string $country Country name or code.
+	 * @return string $country Country name or code.
 	 */
 	public function ife_get_country_code( $country ) {
-		if ( $country == '' ) {
+		if ( empty( $country ) ) {
 			return '';
 		}
 
@@ -911,7 +940,7 @@ class Import_Facebook_Events_Common {
 		);
 
 		foreach ( $countries as $code => $name ) {
-			if ( strtoupper( $country ) == $name ) {
+			if ( strtoupper( $country ) === $name ) {
 				return $code;
 			}
 		}
@@ -949,10 +978,10 @@ function ife_is_pro() {
  * Gets and includes template files.
  *
  * @since 1.5.0
- * @param mixed  $template_name
- * @param array  $args (default: array())
- * @param string $template_path (default: '')
- * @param string $default_path (default: '')
+ * @param mixed  $template_name Template Name.
+ * @param array  $args (default: array()).
+ * @param string $template_path (default: '').
+ * @param string $default_path (default: '').
  */
 function get_ife_template( $template_name, $args = array(), $template_path = 'import-facebook-events', $default_path = '' ) {
 	if ( $args && is_array( $args ) ) {
@@ -971,27 +1000,27 @@ function get_ife_template( $template_name, $args = array(), $template_path = 'im
  *      $default_path   /   $template_name
  *
  * @since 1.5.0
- * @param string      $template_name
- * @param string      $template_path (default: 'import-facebook-events')
- * @param string|bool $default_path (default: '') False to not load a default
+ * @param string      $template_name Name of template.
+ * @param string      $template_path (default: 'import-facebook-events').
+ * @param string|bool $default_path (default: '') False to not load a default.
  * @return string
  */
 function locate_ife_template( $template_name, $template_path = 'import-facebook-events', $default_path = '' ) {
-	// Look within passed path within the theme - this is priority
+	// Look within passed path within the theme - this is priority.
 	$template = locate_template(
 		array(
 			trailingslashit( $template_path ) . $template_name,
 			$template_name,
 		)
 	);
-	// Get default template
-	if ( ! $template && $default_path !== false ) {
+	// Get default template.
+	if ( ! $template && false !== $default_path ) {
 		$default_path = $default_path ? $default_path : IFE_PLUGIN_DIR . '/templates/';
 		if ( file_exists( trailingslashit( $default_path ) . $template_name ) ) {
 			$template = trailingslashit( $default_path ) . $template_name;
 		}
 	}
-	// Return what we found
+	// Return what we found.
 	return apply_filters( 'ife_locate_template', $template, $template_name, $template_path );
 }
 
@@ -999,17 +1028,17 @@ function locate_ife_template( $template_name, $template_path = 'import-facebook-
  * Gets template part (for templates in loops).
  *
  * @since 1.0.0
- * @param string      $slug
- * @param string      $name (default: '')
- * @param string      $template_path (default: 'import-facebook-events')
- * @param string|bool $default_path (default: '') False to not load a default
+ * @param string      $slug template slug.
+ * @param string      $name (default: '').
+ * @param string      $template_path (default: 'import-facebook-events').
+ * @param string|bool $default_path (default: '') False to not load a default.
  */
 function get_ife_template_part( $slug, $name = '', $template_path = 'import-facebook-events', $default_path = '' ) {
 	$template = '';
 	if ( $name ) {
 		$template = locate_ife_template( "{$slug}-{$name}.php", $template_path, $default_path );
 	}
-	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/import-facebook-events/slug.php
+	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/import-facebook-events/slug.php.
 	if ( ! $template ) {
 		$template = locate_ife_template( "{$slug}.php", $template_path, $default_path );
 	}
@@ -1025,10 +1054,9 @@ function get_ife_template_part( $slug, $name = '', $template_path = 'import-face
  */
 function ife_get_inprogress_import() {
 	global $wpdb;
-	$batch_query = "SELECT * FROM {$wpdb->options} WHERE option_name LIKE '%ife_import_batch_%' ORDER BY option_id ASC";
+	$batches = $wpdb->get_results( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE '%ife_import_batch_%' ORDER BY option_id ASC" ); // db call ok; no-cache ok.
 	if ( is_multisite() ) {
-		$batch_query = "SELECT * FROM {$wpdb->sitemeta} WHERE meta_key LIKE '%ife_import_batch_%' ORDER BY meta_id ASC";
+		$batches = $wpdb->get_results( "SELECT * FROM {$wpdb->sitemeta} WHERE meta_key LIKE '%ife_import_batch_%' ORDER BY meta_id ASC" ); // db call ok; no-cache ok.
 	}
-	$batches = $wpdb->get_results( $batch_query );
 	return $batches;
 }

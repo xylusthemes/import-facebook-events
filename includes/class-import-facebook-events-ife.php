@@ -8,20 +8,40 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class for IFE.
+ *
+ * @package     Import_Facebook_Events
+ * @subpackage  Import_Facebook_Events/includes
+ * @author     Dharmesh Patel <dspatel44@gmail.com>
+ */
 class Import_Facebook_Events_IFE {
 
-	// Event Taxonomy.
+	/**
+	 * Event Taxonomy.
+	 *
+	 * @var string
+	 */
 	protected $taxonomy;
 
-	// Event tag Taxonomy.
+	/**
+	 * Event tag Taxonomy.
+	 *
+	 * @var string
+	 */
 	protected $tag_taxonomy;
 
-	// Event Posttype.
+	/**
+	 * Event Post Type
+	 *
+	 * @var string
+	 */
 	protected $event_posttype;
 
 	/**
@@ -38,7 +58,7 @@ class Import_Facebook_Events_IFE {
 	}
 
 	/**
-	 * Get Posttype and Taxonomy Functions
+	 * Get Event Posttype
 	 *
 	 * @return string
 	 */
@@ -46,19 +66,30 @@ class Import_Facebook_Events_IFE {
 		return $this->event_posttype;
 	}
 
+	/**
+	 * Get Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
 
+	/**
+	 * Get Tag Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_tag_taxonomy() {
 		return $this->tag_taxonomy;
 	}
 
 	/**
-	 * import event into TEC
+	 * Import event into TEC
 	 *
 	 * @since    1.0.0
-	 * @param  array $centralize event array.
+	 * @param  array $centralize_array Centralize event array.
+	 * @param  array $event_args Event args array.
 	 * @return array
 	 */
 	public function import_event( $centralize_array, $event_args ) {
@@ -74,7 +105,7 @@ class Import_Facebook_Events_IFE {
 			// Update event or not?
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
-			if ( 'yes' != $update_events ) {
+			if ( 'yes' !== $update_events ) {
 				return array(
 					'status' => 'skipped',
 					'id'     => $is_exitsing_event,
@@ -98,7 +129,7 @@ class Import_Facebook_Events_IFE {
 		if ( $is_exitsing_event ) {
 			$emeventdata['ID'] = $is_exitsing_event;
 		}
-		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
+		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$emeventdata['post_status'] = $event_args['event_status'];
 		}
 
@@ -116,7 +147,7 @@ class Import_Facebook_Events_IFE {
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
 
-			// Event Categories
+			// Event Categories.
 			if ( ! empty( $ife_cats ) ) {
 				foreach ( $ife_cats as $ife_catk => $ife_catv ) {
 					$ife_cats[ $ife_catk ] = (int) $ife_catv;
@@ -128,7 +159,7 @@ class Import_Facebook_Events_IFE {
 				}
 			}
 
-			// Event Tags
+			// Event Tags.
 			$ife_tags = isset( $event_args['event_tags'] ) ? $event_args['event_tags'] : array();
 			if ( ! empty( $ife_tags ) ) {
 				foreach ( $ife_tags as $ife_tagk => $ife_tagv ) {
@@ -141,18 +172,18 @@ class Import_Facebook_Events_IFE {
 				}
 			}
 
-			// Assign Featured images
+			// Assign Featured images.
 			$event_image = $centralize_array['image_url'];
-			if ( $event_image != '' ) {
+			if ( ! empty( $event_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
 			} else {
-				if ( $is_exitsing_event && $event_args['import_origin'] != 'ical' ) {
+				if ( $is_exitsing_event && 'ical' !== $event_args['import_origin'] ) {
 					delete_post_thumbnail( $inserted_event_id );
 				}
 			}
 
 			//
-			// Event Date & time Details
+			// Event Date & time Details.
 			$event_start_date     = date( 'Y-m-d', $start_time );
 			$event_end_date       = date( 'Y-m-d', $end_time );
 			$event_start_hour     = date( 'h', $start_time );
@@ -162,7 +193,7 @@ class Import_Facebook_Events_IFE {
 			$event_end_minute     = date( 'i', $end_time );
 			$event_end_meridian   = date( 'a', $end_time );
 
-			// Venue Deatails
+			// Venue Deatails.
 			$address_1     = isset( $venue_array['address_1'] ) ? $venue_array['address_1'] : '';
 			$venue_array   = isset( $centralize_array['location'] ) ? $centralize_array['location'] : array();
 			$venue_name    = isset( $venue_array['name'] ) ? sanitize_text_field( $venue_array['name'] ) : '';
@@ -176,15 +207,15 @@ class Import_Facebook_Events_IFE {
 			$venue_lon = isset( $venue_array['long'] ) ? sanitize_text_field( $venue_array['long'] ) : '';
 			$venue_url = isset( $venue_array['url'] ) ? esc_url( $venue_array['url'] ) : '';
 
-			// Oraganizer Deatails
+			// Oraganizer Deatails.
 			$organizer_array = isset( $centralize_array['organizer'] ) ? $centralize_array['organizer'] : array();
 			$organizer_name  = isset( $organizer_array['name'] ) ? sanitize_text_field( $organizer_array['name'] ) : '';
 			$organizer_email = isset( $organizer_array['email'] ) ? sanitize_text_field( $organizer_array['email'] ) : '';
 			$organizer_phone = isset( $organizer_array['phone'] ) ? sanitize_text_field( $organizer_array['phone'] ) : '';
 			$organizer_url   = isset( $organizer_array['url'] ) ? sanitize_text_field( $organizer_array['url'] ) : '';
 
-			// Save Event Data
-			// Date & Time
+			// Save Event Data.
+			// Date & Time.
 			update_post_meta( $inserted_event_id, 'event_start_date', $event_start_date );
 			update_post_meta( $inserted_event_id, 'event_start_hour', $event_start_hour );
 			update_post_meta( $inserted_event_id, 'event_start_minute', $event_start_minute );
@@ -196,7 +227,7 @@ class Import_Facebook_Events_IFE {
 			update_post_meta( $inserted_event_id, 'start_ts', $start_time );
 			update_post_meta( $inserted_event_id, 'end_ts', $end_time );
 
-			// Venue
+			// Venue.
 			update_post_meta( $inserted_event_id, 'venue_name', $venue_name );
 			update_post_meta( $inserted_event_id, 'venue_address', $venue_address );
 			update_post_meta( $inserted_event_id, 'venue_city', $venue_city );
@@ -207,7 +238,7 @@ class Import_Facebook_Events_IFE {
 			update_post_meta( $inserted_event_id, 'venue_lon', $venue_lon );
 			update_post_meta( $inserted_event_id, 'venue_url', $venue_url );
 
-			// Organizer
+			// Organizer.
 			update_post_meta( $inserted_event_id, 'organizer_name', $organizer_name );
 			update_post_meta( $inserted_event_id, 'organizer_email', $organizer_email );
 			update_post_meta( $inserted_event_id, 'organizer_phone', $organizer_phone );

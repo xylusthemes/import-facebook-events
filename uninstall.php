@@ -22,9 +22,9 @@ if ( 'yes' === $delete_ifedata ) {
 	// Remove schduled Imports.
 	$scheduled_import_args = array(
 		'post_type'      => 'fb_scheduled_imports',
-		'posts_per_page' => -1,
+		'posts_per_page' => -1, // @codingStandardsIgnoreLine.
 	);
-	$scheduled_imports     = get_posts( $scheduled_import_args );
+	$scheduled_imports     = get_posts( $scheduled_import_args ); // @codingStandardsIgnoreLine.
 	if ( ! empty( $scheduled_imports ) ) {
 		foreach ( $scheduled_imports as $import ) {
 			if ( ! empty( $import->ID ) ) {
@@ -36,9 +36,9 @@ if ( 'yes' === $delete_ifedata ) {
 	// Remove import History.
 	$ife_import_history_args = array(
 		'post_type'      => 'ife_import_history',
-		'posts_per_page' => -1,
+		'posts_per_page' => -1, // @codingStandardsIgnoreLine.
 	);
-	$ife_import_history      = get_posts( $ife_import_history_args );
+	$ife_import_history      = get_posts( $ife_import_history_args ); // @codingStandardsIgnoreLine.
 	if ( ! empty( $ife_import_history ) ) {
 		foreach ( $ife_import_history as $history ) {
 			if ( ! empty( $history->ID ) ) {

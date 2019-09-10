@@ -9,11 +9,18 @@
  * @subpackage Import_Facebook_Events/includes
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class for Facebook Account Authorize.
+ *
+ * @package     Import_Facebook_Events
+ * @subpackage  Import_Facebook_Events/includes
+ * @author     Dharmesh Patel <dspatel44@gmail.com>
+ */
 class Import_Facebook_Events_FB_Authorize {
 
 	/**
@@ -26,11 +33,13 @@ class Import_Facebook_Events_FB_Authorize {
 		add_action( 'admin_post_ife_facebook_authorize_callback', array( $this, 'ife_facebook_authorize_user_callback' ) );
 	}
 
-	/*
-	* Authorize facebook user to get access token
-	*/
-	function ife_facebook_authorize_user() {
-		if ( ! empty( $_POST ) && wp_verify_nonce( $_POST['ife_facebook_authorize_nonce'], 'ife_facebook_authorize_action' ) ) {
+	/**
+	 * Authorize facebook user to get access token.
+	 *
+	 * @return void
+	 */
+	public function ife_facebook_authorize_user() {
+		if ( ! empty( $_POST ) && isset( $_POST['ife_facebook_authorize_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ife_facebook_authorize_nonce'] ) ), 'ife_facebook_authorize_action' ) ) { // input var okay.
 
 			$ife_options       = get_option( IFE_OPTIONS, array() );
 			$app_id            = isset( $ife_options['facebook_app_id'] ) ? $ife_options['facebook_app_id'] : '';
@@ -41,7 +50,7 @@ class Import_Facebook_Events_FB_Authorize {
 			$ife_session_state = md5( uniqid( rand(), true ) );
 			setcookie( 'ife_session_state', $ife_session_state, '0', '/' );
 
-			if ( $app_id != '' && $app_secret != '' ) {
+			if ( ! empty( $app_id ) && ! empty( $app_secret ) ) {
 
 				$dialog_url = 'https://www.facebook.com/' . $api_version . '/dialog/oauth?client_id='
 						. $app_id . '&redirect_uri=' . $param_url . '&state='
@@ -49,21 +58,23 @@ class Import_Facebook_Events_FB_Authorize {
 				header( 'Location: ' . $dialog_url );
 
 			} else {
-				die( __( 'Please insert Facebook App ID and Secret.', 'import-facebook-events-pro' ) );
+				die( esc_attr__( 'Please insert Facebook App ID and Secret.', 'import-facebook-events-pro' ) );
 			}
 		} else {
-			die( __( 'You have not access to doing this operations.', 'import-facebook-events-pro' ) );
+			die( esc_attr__( 'You have not access to doing this operations.', 'import-facebook-events-pro' ) );
 		}
 	}
 
-	/*
-	* Authorize facebook user on callback to get access token
-	*/
-	function ife_facebook_authorize_user_callback() {
+	/**
+	 * Authorize facebook user on callback to get access token.
+	 *
+	 * @return void
+	 */
+	public function ife_facebook_authorize_user_callback() {
 		global $ife_success_msg;
-		if ( isset( $_COOKIE['ife_session_state'] ) && isset( $_REQUEST['state'] ) && ( $_COOKIE['ife_session_state'] === sanitize_text_field( $_REQUEST['state'] ) ) ) {
+		if ( isset( $_COOKIE['ife_session_state'] ) && isset( $_REQUEST['state'] ) && ( sanitize_text_field( wp_unslash( $_REQUEST['state'] ) ) === $_COOKIE['ife_session_state'] ) ) { // WPCS: CSRF ok. input var okay.
 
-				$code         = sanitize_text_field( $_GET['code'] );
+				$code         = isset( $_GET['code'] ) ? sanitize_text_field( wp_unslash( $_GET['code'] ) ) : ''; // WPCS: CSRF ok. input var okay.
 				$ife_options  = get_option( IFE_OPTIONS, array() );
 				$app_id       = isset( $ife_options['facebook_app_id'] ) ? $ife_options['facebook_app_id'] : '';
 				$app_secret   = isset( $ife_options['facebook_app_secret'] ) ? $ife_options['facebook_app_secret'] : '';
@@ -71,18 +82,19 @@ class Import_Facebook_Events_FB_Authorize {
 				$api_version  = 'v3.0';
 				$param_url    = urlencode( $redirect_url );
 
-			if ( $app_id != '' && $app_secret != '' ) {
+			if ( ! empty( $app_id ) && ! empty( $app_secret ) ) {
 
 				$token_url = 'https://graph.facebook.com/' . $api_version . '/oauth/access_token?'
 				. 'client_id=' . $app_id . '&redirect_uri=' . $param_url
 				. '&client_secret=' . $app_secret . '&code=' . $code;
 
 				$access_token           = '';
-				$ife_user_token_options = $ife_fb_authorize_user = array();
+				$ife_user_token_options = array();
+				$ife_fb_authorize_user  = array();
 				$response               = wp_remote_get( $token_url );
 				$body                   = wp_remote_retrieve_body( $response );
 				$body_response          = json_decode( $body );
-				if ( $body != '' && isset( $body_response->access_token ) ) {
+				if ( ! empty( $body ) && isset( $body_response->access_token ) ) {
 
 					$access_token                               = $body_response->access_token;
 					$ife_user_token_options['authorize_status'] = 1;
@@ -119,21 +131,20 @@ class Import_Facebook_Events_FB_Authorize {
 					}
 
 					$redirect_url = admin_url( 'admin.php?page=facebook_import&tab=settings&authorize=1' );
-					wp_redirect( $redirect_url );
+					wp_safe_redirect( $redirect_url );
 					exit();
 				} else {
 					$redirect_url = admin_url( 'admin.php?page=facebook_import&tab=settings&authorize=0' );
-					wp_redirect( $redirect_url );
+					wp_safe_redirect( $redirect_url );
 					exit();
 				}
 			} else {
 				$redirect_url = admin_url( 'admin.php?page=facebook_import&tab=settings&authorize=2' );
-				wp_redirect( $redirect_url );
+				wp_safe_redirect( $redirect_url );
 				exit();
-				die( __( 'Please insert Facebook App ID and Secret.', 'import-facebook-events-pro' ) );
 			}
 		} else {
-			die( __( 'You have not access to doing this operations.', 'import-facebook-events-pro' ) );
+			die( esc_attr__( 'You have not access to doing this operations.', 'import-facebook-events-pro' ) );
 		}
 	}
 }

@@ -7,7 +7,8 @@
  * @copyright   Copyright (c) 2016, Dharmesh Patel
  * @since       1.0.0
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -22,6 +23,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Import_Facebook_Events_Admin {
 
 
+	/**
+	 * $adminpage_url
+	 *
+	 * @var string
+	 */
 	public $adminpage_url;
 
 	/**
@@ -82,8 +88,8 @@ class Import_Facebook_Events_Admin {
 	 */
 	public function enqueue_admin_styles( $hook ) {
 		global $pagenow;
-		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // input var okay;
-		if ( 'facebook_import' === $page || 'widgets.php' === $pagenow || 'post.php' === $pagenow || 'post-new.php' === $pagenow ) {
+		$current_screen = get_current_screen();
+		if ( 'toplevel_page_facebook_import' === $current_screen->id || 'widgets.php' === $pagenow || 'post.php' === $pagenow || 'post-new.php' === $pagenow ) {
 			$css_dir = IFE_PLUGIN_URL . 'assets/css/';
 			wp_enqueue_style( 'jquery-ui', $css_dir . 'jquery-ui.css', false, '1.12.0' );
 			wp_enqueue_style( 'import-facebook-events', $css_dir . 'import-facebook-events-admin.css', false, IFE_VERSION );
@@ -97,14 +103,13 @@ class Import_Facebook_Events_Admin {
 	 * @since 1.0
 	 * @return void
 	 */
-	function admin_page() {
-
+	public function admin_page() {
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Import Facebook Events', 'import-facebook-events' ); ?></h2>
 			<?php
 			// Set Default Tab to Import.
-			$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'facebook';
+			$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'facebook'; // WPCS: CSRF ok. input var okay.
 			?>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
@@ -120,23 +125,23 @@ class Import_Facebook_Events_Admin {
 
 						<h1 class="nav-tab-wrapper">
 
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'facebook', $this->adminpage_url ) ); ?>" class="nav-tab <?php if ( 'facebook' === $tab ) { echo 'nav-tab-active'; } ?>">
+							<a href="<?php echo esc_url( add_query_arg( 'tab', 'facebook', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'facebook' === $tab ) ? 'nav-tab-active' : '' ); ?>">
 								<?php esc_html_e( 'Import', 'import-facebook-events' ); ?>
 							</a>
 
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'scheduled', $this->adminpage_url ) ); ?>" class="nav-tab <?php if ( $tab == 'scheduled' ) { echo 'nav-tab-active'; } ?>">
+							<a href="<?php echo esc_url( add_query_arg( 'tab', 'scheduled', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'scheduled' === $tab ) ? 'nav-tab-active' : '' ); ?>">
 								<?php esc_html_e( 'Scheduled Imports', 'import-facebook-events' ); ?>
 							</a>
 
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'history', $this->adminpage_url ) ); ?>" class="nav-tab <?php if ( $tab == 'history' ) { echo 'nav-tab-active'; } ?>">
+							<a href="<?php echo esc_url( add_query_arg( 'tab', 'history', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'history' === $tab ) ? 'nav-tab-active' : '' ); ?>">
 								<?php esc_html_e( 'Import History', 'import-facebook-events' ); ?>
 							</a>
 
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'settings', $this->adminpage_url ) ); ?>" class="nav-tab <?php if ( $tab == 'settings' ) { echo 'nav-tab-active'; } ?>">
+							<a href="<?php echo esc_url( add_query_arg( 'tab', 'settings', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'settings' === $tab ) ? 'nav-tab-active' : '' ); ?>">
 								<?php esc_html_e( 'Settings', 'import-facebook-events' ); ?>
 							</a>
 
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'support', $this->adminpage_url ) ); ?>" class="nav-tab <?php if ( $tab == 'support' ) { echo 'nav-tab-active'; } ?>">
+							<a href="<?php echo esc_url( add_query_arg( 'tab', 'support', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'support' === $tab ) ? 'nav-tab-active' : '' ); ?>">
 								<?php esc_html_e( 'Support & Help', 'import-facebook-events' ); ?>
 							</a>
 						</h1>
@@ -144,25 +149,25 @@ class Import_Facebook_Events_Admin {
 						<div class="import-facebook-events-page">
 
 							<?php
-							if ( $tab == 'facebook' ) {
+							if ( 'facebook' === $tab ) {
 
 								require_once IFE_PLUGIN_DIR . '/templates/admin/facebook-import-events.php';
 
-							} elseif ( $tab == 'settings' ) {
+							} elseif ( 'settings' === $tab ) {
 
 								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-settings.php';
 
-							} elseif ( $tab == 'scheduled' ) {
+							} elseif ( 'scheduled' === $tab ) {
 								if ( ife_is_pro() ) {
 									require_once IFEPRO_PLUGIN_DIR . '/templates/admin/scheduled-import-events.php';
 								} else {
 									do_action( 'ife_render_pro_notice' );
 								}
-							} elseif ( $tab == 'history' ) {
+							} elseif ( 'history' === $tab ) {
 
 								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-history.php';
 
-							} elseif ( $tab == 'support' ) {
+							} elseif ( 'support' === $tab ) {
 
 								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-support.php';
 
@@ -190,7 +195,7 @@ class Import_Facebook_Events_Admin {
 			foreach ( $ife_errors as $error ) :
 				?>
 				<div class="notice notice-error is-dismissible">
-					<p><?php echo $error; ?></p>
+					<p><?php echo wp_kses_post( $error ); ?></p>
 				</div>
 				<?php
 			endforeach;
@@ -200,7 +205,7 @@ class Import_Facebook_Events_Admin {
 			foreach ( $ife_success_msg as $success ) :
 				?>
 				<div class="notice notice-success is-dismissible">
-					<p><?php echo $success; ?></p>
+					<p><?php echo wp_kses_post( $success ); ?></p>
 				</div>
 				<?php
 			endforeach;
@@ -210,7 +215,7 @@ class Import_Facebook_Events_Admin {
 			foreach ( $ife_warnings as $warning ) :
 				?>
 				<div class="notice notice-warning is-dismissible">
-					<p><?php echo $warning; ?></p>
+					<p><?php echo wp_kses_post( $warning ); ?></p>
 				</div>
 				<?php
 			endforeach;
@@ -220,7 +225,7 @@ class Import_Facebook_Events_Admin {
 			foreach ( $ife_info_msg as $info ) :
 				?>
 				<div class="notice notice-info is-dismissible">
-					<p><?php echo $info; ?></p>
+					<p><?php echo wp_kses_post( $info ); ?></p>
 				</div>
 				<?php
 			endforeach;
@@ -248,7 +253,7 @@ class Import_Facebook_Events_Admin {
 			'search_items'       => __( 'Search Scheduled Imports', 'import-facebook-events' ),
 			'parent_item_colon'  => __( 'Parent Imports:', 'import-facebook-events' ),
 			'not_found'          => __( 'No Imports found.', 'import-facebook-events' ),
-			'not_found_in_trash' => __( 'No Imports found in Trash.', 'import-facebook-events' )
+			'not_found_in_trash' => __( 'No Imports found in Trash.', 'import-facebook-events' ),
 		);
 
 		$args = array(
@@ -266,7 +271,7 @@ class Import_Facebook_Events_Admin {
 			'has_archive'        => false,
 			'hierarchical'       => false,
 			'supports'           => array( 'title' ),
-			'menu_position'      => 5
+			'menu_position'      => 5,
 		);
 
 		register_post_type( 'fb_scheduled_imports', $args );
@@ -292,7 +297,7 @@ class Import_Facebook_Events_Admin {
 			'search_items'       => __( 'Search History', 'import-facebook-events' ),
 			'parent_item_colon'  => __( 'Parent History:', 'import-facebook-events' ),
 			'not_found'          => __( 'No History found.', 'import-facebook-events' ),
-			'not_found_in_trash' => __( 'No History found in Trash.', 'import-facebook-events' )
+			'not_found_in_trash' => __( 'No History found in Trash.', 'import-facebook-events' ),
 		);
 
 		$args = array(
@@ -310,7 +315,7 @@ class Import_Facebook_Events_Admin {
 			'has_archive'        => false,
 			'hierarchical'       => false,
 			'supports'           => array( 'title' ),
-			'menu_position'      => 5
+			'menu_position'      => 5,
 		);
 
 		register_post_type( 'ife_import_history', $args );
@@ -321,14 +326,15 @@ class Import_Facebook_Events_Admin {
 	 * Add Import Facebook Events ratting text
 	 *
 	 * @since 1.0
-	 * @return void
+	 * @param string $footer_text Current footer text.
+	 * @return string
 	 */
 	public function add_import_facebook_events_credit( $footer_text ) {
-		$page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
-		if ( $page != '' && $page == 'facebook_import' ) {
-			$rate_url = 'https://wordpress.org/support/plugin/import-facebook-events/reviews/?rate=5#new-post';
-
+		$current_screen = get_current_screen();
+		if ( 'toplevel_page_facebook_import' === $current_screen->id ) {
+			$rate_url     = 'https://wordpress.org/support/plugin/import-facebook-events/reviews/?rate=5#new-post';
 			$footer_text .= sprintf(
+				// translators: %1$s, %2$s and %3$s are html tags.
 				esc_html__( ' Rate %1$sImport Facebook Events%2$s %3$s', 'import-facebook-events' ),
 				'<strong>',
 				'</strong>',
@@ -350,7 +356,7 @@ class Import_Facebook_Events_Admin {
 			'import-eventbrite-events' => esc_html__( 'Import Eventbrite Events', 'import-facebook-events' ),
 			'import-meetup-events'     => esc_html__( 'Import Meetup Events', 'import-facebook-events' ),
 			'wp-bulk-delete'           => esc_html__( 'WP Bulk Delete', 'import-facebook-events' ),
-			'event-schema'             => esc_html__( 'Event Schema / Structured Data', 'import-facebook-events' )
+			'event-schema'             => esc_html__( 'Event Schema / Structured Data', 'import-facebook-events' ),
 		);
 	}
 
@@ -358,11 +364,12 @@ class Import_Facebook_Events_Admin {
 	 * Get Plugin Details.
 	 *
 	 * @since 1.1.0
+	 * @param string $slug Slug of plugin on wp.org.
 	 * @return array
 	 */
 	public function get_wporg_plugin( $slug ) {
 
-		if ( $slug == '' ) {
+		if ( empty( $slug ) ) {
 			return false;
 		}
 
@@ -380,14 +387,14 @@ class Import_Facebook_Events_Admin {
 					'fields' => array(
 						'banners'         => true,
 						'active_installs' => true,
-					)
+					),
 				)
 			);
 
 			if ( ! is_wp_error( $plugin_data ) ) {
 				set_transient( $transient_name, $plugin_data, 24 * HOUR_IN_SECONDS );
 			} else {
-				// If there was a bug on the Current Request just leave
+				// If there was a bug on the Current Request just leave.
 				return false;
 			}
 		}
@@ -424,20 +431,20 @@ class Import_Facebook_Events_Admin {
 								<?php
 								printf(
 									'<a href="%1$s" target="_blank">%2$s</a>',
-									get_the_permalink( $event['id'] ),
-									get_the_title( $event['id'] )
+									esc_url( get_the_permalink( absint( $event['id'] ) ) ),
+									esc_attr( get_the_title( absint( $event['id'] ) ) )
 								);
 								?>
 							</td>
 							<td class="title column-title">
-								<?php echo ucfirst( $event['status'] ); ?>
+								<?php echo esc_attr( ucfirst( $event['status'] ) ); ?>
 							</td>
 							<td class="title column-action">
 								<?php
 								printf(
 									'<a href="%1$s" target="_blank">%2$s</a>',
-									get_edit_post_link( $event['id'] ),
-									__( 'Edit', 'import-eventbrite-events' )
+									esc_url( get_edit_post_link( absint( $event['id'] ) ) ),
+									esc_attr__( 'Edit', 'import-eventbrite-events' )
 								);
 								?>
 							</td>

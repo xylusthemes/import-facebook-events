@@ -3,7 +3,7 @@
 
 	jQuery(document).ready(function(){
 		jQuery(document).on("click", ".ife_datepicker", function(){
-		    jQuery(this).datepicker({
+			jQuery(this).datepicker({
 				changeMonth: true,
 				changeYear: true,
 				dateFormat: 'yy-mm-dd',
@@ -12,7 +12,7 @@
 		});
 
 		jQuery(document).on("click", ".vc_ui-panel .ife_datepicker input[type='text']", function(){
-		    jQuery(this).datepicker({
+			jQuery(this).datepicker({
 				changeMonth: true,
 				changeYear: true,
 				dateFormat: 'yy-mm-dd',
@@ -144,10 +144,10 @@
 	            	terms_space.html( response );
 	            }else{
 	            	terms_space.html( '' );
-	            }	            
-	        });    
+	            }
+	        });
 	    });
-	    jQuery(".fb_event_plugin").trigger('change');                  
+	    jQuery(".fb_event_plugin").trigger('change');
 	});
 
 	// Color Picker

@@ -8,17 +8,33 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class for My Calendar functionality of the plugin.
+ *
+ * @package     Import_Facebook_Events
+ * @subpackage  Import_Facebook_Events/includes
+ * @author     Dharmesh Patel <dspatel44@gmail.com>
+ */
 class Import_Facebook_Events_My_Calendar {
 
-	// The Events Calendar Event Taxonomy
+	/**
+	 * The Events Calendar Event Taxonomy
+	 *
+	 * @var string
+	 */
 	protected $taxonomy;
 
-	// The Events Calendar Event Posttype
+	/**
+	 * The Events Calendar Event Posttype
+	 *
+	 * @var string
+	 */
 	protected $event_posttype;
 
 	/**
@@ -33,22 +49,29 @@ class Import_Facebook_Events_My_Calendar {
 
 
 	/**
-	 * Get Posttype and Taxonomy Functions
+	 * Get Event Posttype
 	 *
 	 * @return string
 	 */
 	public function get_event_posttype() {
 		return $this->event_posttype;
 	}
+
+	/**
+	 * Get Event Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
 
 	/**
-	 * import event into TEC
+	 * Import event into TEC
 	 *
 	 * @since    1.0.0
-	 * @param  array $centralize event array.
+	 * @param  array $centralize_array Centralize event array.
+	 * @param  array $event_args Event Args array.
 	 * @return array
 	 */
 	public function import_event( $centralize_array, $event_args ) {
@@ -63,7 +86,7 @@ class Import_Facebook_Events_My_Calendar {
 			// Update event or not?
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
-			if ( 'yes' != $update_events ) {
+			if ( 'yes' !== $update_events ) {
 				return array(
 					'status' => 'skipped',
 					'id'     => $is_exitsing_event,
@@ -87,7 +110,7 @@ class Import_Facebook_Events_My_Calendar {
 		if ( $is_exitsing_event ) {
 			$mc_eventdata['ID'] = $is_exitsing_event;
 		}
-		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
+		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$mc_eventdata['post_status'] = $event_args['event_status'];
 		}
 		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable( 'status' ) ) {
@@ -113,9 +136,9 @@ class Import_Facebook_Events_My_Calendar {
 				}
 			}
 
-			// Assign Featured images
+			// Assign Featured images.
 			$event_image = $centralize_array['image_url'];
-			if ( $event_image != '' ) {
+			if ( ! empty( $event_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
 			} else {
 				if ( $is_exitsing_event ) {
@@ -133,14 +156,17 @@ class Import_Facebook_Events_My_Calendar {
 			$time    = date( 'H:i:s', $start_time );
 			$endtime = date( 'H:i:s', $end_time );
 
-			$event_author = $host = 0;
+			$event_author = 0;
+			$host         = 0;
 			if ( is_user_logged_in() ) {
-				$event_author = $host = get_current_user_id();
+				$event_author = get_current_user_id();
+				$host         = get_current_user_id();
 			}
 			$event_category = 1;
 			if ( ! empty( $ife_cats ) ) {
-				$event_cat      = $ife_cats[0];
-				$temp_event_cat = $wpdb->get_var( 'SELECT `category_id` FROM ' . my_calendar_categories_table() . ' WHERE `category_term` = ' . (int) $event_cat . ' LIMIT 1' );
+				$event_cat                    = $ife_cats[0];
+				$my_calendar_categories_table = my_calendar_categories_table();
+				$temp_event_cat               = $wpdb->get_var( $wpdb->prepare( "SELECT `category_id` FROM {$my_calendar_categories_table} WHERE `category_term` = %d LIMIT 1", absint( $event_cat ) ) );  // WPCS: unprepared SQL OK. db call ok; no-cache ok.
 				if ( $temp_event_cat > 0 && is_numeric( $temp_event_cat ) && ! empty( $temp_event_cat ) ) {
 					$event_category = $temp_event_cat;
 				}
@@ -149,13 +175,27 @@ class Import_Facebook_Events_My_Calendar {
 			// Location Args for.
 			$venue = isset( $centralize_array['location'] ) ? $centralize_array['location'] : array();
 
-			$event_label = $event_street = $event_street2 = $address = $event_city = $event_state = $event_postcode = $event_region = $event_latitude = $event_longitude = $event_country = $event_url = $event_phone = $event_phone2 = $event_zoom = '';
-			$location_id = 0;
+			$event_label     = '';
+			$event_street    = '';
+			$event_street2   = '';
+			$address         = '';
+			$event_city      = '';
+			$event_state     = '';
+			$event_postcode  = '';
+			$event_region    = '';
+			$event_latitude  = '';
+			$event_longitude = '';
+			$event_country   = '';
+			$event_url       = '';
+			$event_phone     = '';
+			$event_phone2    = '';
+			$event_zoom      = '';
+			$location_id     = 0;
 
 			if ( ! empty( $venue ) ) {
 				$event_label  = isset( $venue['name'] ) ? $venue['name'] : '';
 				$event_street = isset( $venue['full_address'] ) ? $venue['full_address'] : '';
-				if ( $event_street == '' && isset( $venue['address_1'] ) ) {
+				if ( empty( $event_street ) && isset( $venue['address_1'] ) ) {
 					$event_street = $venue['address_1'];
 				}
 				$event_street2   = isset( $venue['address_2'] ) ? $venue['address_2'] : '';
@@ -209,20 +249,21 @@ class Import_Facebook_Events_My_Calendar {
 					'%s',
 				);
 
-				$location_id = $wpdb->get_var( 'SELECT `location_id` FROM ' . my_calendar_locations_table() . " WHERE `location_label` = '" . esc_sql( $event_label ) . "'" );
+				$location_table = my_calendar_locations_table();
+				$location_id    = $wpdb->get_var( $wpdb->prepare( "SELECT `location_id` FROM {$location_table} WHERE `location_label` = %s", esc_sql( $event_label ) ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
 				if ( $location_id > 0 && is_numeric( $location_id ) && ! empty( $location_id ) ) {
 
 					$where            = array( 'location_id' => (int) $location_id );
 					$loc_where_format = array( '%d' );
-					$wpdb->update( my_calendar_locations_table(), $location_data, $where, $loc_formats, $loc_where_format );
+					$wpdb->update( my_calendar_locations_table(), $location_data, $where, $loc_formats, $loc_where_format ); // db call ok; no-cache ok.
 				} else {
-					$wpdb->insert( my_calendar_locations_table(), $location_data, $loc_formats );
+					$wpdb->insert( my_calendar_locations_table(), $location_data, $loc_formats ); // db call ok;.
 					$location_id = $wpdb->insert_id;
 				}
 			}
 
 			$event_data = array(
-				// strings
+				// strings.
 				'event_begin'        => $begin,
 				'event_end'          => $end,
 				'event_title'        => $inserted_event->post_title,
@@ -246,7 +287,7 @@ class Import_Facebook_Events_My_Calendar {
 				'event_phone2'       => $event_phone2,
 				'event_access'       => '',
 				'event_tickets'      => '',
-				'event_registration' => '',                 // integers
+				'event_registration' => '',                 // integers.
 				'event_post'         => $inserted_event_id,
 				'event_location'     => isset( $location_id ) ? $location_id : 0,
 				'event_repeats'      => 0,
@@ -261,7 +302,7 @@ class Import_Facebook_Events_My_Calendar {
 				'event_holiday'      => 0,
 				'event_span'         => 0,
 				'event_hide_end'     => 0,
-				// floats
+				// floats.
 				'event_longitude'    => $event_longitude,
 				'event_latitude'     => $event_latitude,
 			);
@@ -309,25 +350,26 @@ class Import_Facebook_Events_My_Calendar {
 				'%f',
 			);
 
-			$db_event_id = $wpdb->get_var( $wpdb->prepare( 'SELECT `event_id` FROM ' . my_calendar_table() . ' WHERE `event_title` = %s AND `event_post`= %d LIMIT 1', sanitize_text_field( $inserted_event->post_title ), $inserted_event_id ) );
+			$my_calendar_table = my_calendar_table();
+			$db_event_id       = $wpdb->get_var( $wpdb->prepare( "SELECT `event_id` FROM {$my_calendar_table} WHERE `event_title` = %s AND `event_post`= %d LIMIT 1", sanitize_text_field( $inserted_event->post_title ), $inserted_event_id ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
 
 			if ( $db_event_id > 0 && is_numeric( $db_event_id ) && ! empty( $db_event_id ) ) {
 
 				if ( ! $ife_events->common->ife_is_updatable( 'category' ) ) {
-					$cat_id = $wpdb->get_var( 'SELECT `event_category` FROM ' . my_calendar_table() . ' WHERE `event_id`=' . absint( $db_event_id ) );
+					$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_category` FROM {$my_calendar_table} WHERE `event_id`= %d", absint( $db_event_id ) ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
 					if ( $cat_id ) {
 						$event_data['event_category'] = $cat_id;
 					}
 				}
 
 				$event_where = array( 'event_id' => absint( $db_event_id ) );
-				$wpdb->update( my_calendar_table(), $event_data, $event_where, $event_formats );
+				$wpdb->update( my_calendar_table(), $event_data, $event_where, $event_formats ); // db call ok; no-cache ok.
 			} else {
-				$wpdb->insert( my_calendar_table(), $event_data, $event_formats );
+				$wpdb->insert( my_calendar_table(), $event_data, $event_formats ); // db call ok;.
 				$db_event_id = $wpdb->insert_id;
 			}
 
-			if ( isset( $db_event_id ) && $db_event_id != '' ) {
+			if ( isset( $db_event_id ) && ! empty( $db_event_id ) ) {
 
 				$occur_data = array(
 					'occur_event_id' => $db_event_id,
@@ -336,26 +378,27 @@ class Import_Facebook_Events_My_Calendar {
 					'occur_group_id' => 0,
 				);
 
-				$occur_id     = $wpdb->get_var( 'SELECT `occur_id` FROM ' . my_calendar_event_table() . ' WHERE `occur_event_id`=' . absint( $db_event_id ) );
-				$occur_format = array( '%d', '%s', '%s', '%d' );
+				$my_calendar_event_table = my_calendar_event_table();
+				$occur_id                = $wpdb->get_var( $wpdb->prepare( "SELECT `occur_id` FROM {$my_calendar_event_table} WHERE `occur_event_id`= %d", absint( $db_event_id ) ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+				$occur_format            = array( '%d', '%s', '%s', '%d' );
 				if ( $occur_id > 0 && is_numeric( $occur_id ) && ! empty( $occur_id ) ) {
 
 					$occur_where = array( 'occur_id' => absint( $occur_id ) );
-					$wpdb->update( my_calendar_event_table(), $occur_data, $occur_where, $occur_format );
+					$wpdb->update( my_calendar_event_table(), $occur_data, $occur_where, $occur_format ); // db call ok; no-cache ok.
 				} else {
-					$wpdb->insert( my_calendar_event_table(), $occur_data, $occur_format );
+					$wpdb->insert( my_calendar_event_table(), $occur_data, $occur_format ); // db call ok;.
 					$occur_id = $wpdb->insert_id;
 				}
 			}
 
-			if ( isset( $db_event_id ) && $db_event_id != '' ) {
+			if ( isset( $db_event_id ) && ! empty( $db_event_id ) ) {
 				update_post_meta( $inserted_event_id, '_mc_event_shortcode', "[my_calendar_event event='" . $db_event_id . "' template='details' list='']" );
 				update_post_meta( $inserted_event_id, '_mc_event_id', $db_event_id );
 			}
 			update_post_meta( $inserted_event_id, '_mc_event_access', array( 'notes' => '' ) );
 			update_post_meta( $inserted_event_id, '_mc_event_desc', $inserted_event->post_content );
 			update_post_meta( $inserted_event_id, '_mc_event_image', '' );
-			if ( isset( $location_id ) && $location_id != '' ) {
+			if ( isset( $location_id ) && ! empty( $location_id ) ) {
 				update_post_meta( $inserted_event_id, '_mc_event_location', $location_id );
 			}
 

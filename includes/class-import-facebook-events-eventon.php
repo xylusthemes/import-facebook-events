@@ -8,23 +8,47 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * EventON functionality of the plugin.
+ *
+ * @package     Import_Facebook_Events
+ * @subpackage  Import_Facebook_Events/includes
+ * @author     Dharmesh Patel <dspatel44@gmail.com>
+ */
 class Import_Facebook_Events_EventON {
 
-	// The Events Calendar Event Taxonomy
+	/**
+	 * The Events Calendar Event Taxonomy
+	 *
+	 * @var string
+	 */
 	protected $taxonomy;
 
-	// The Events Calendar Event Posttype
+	/**
+	 * The Events Calendar Event Posttype
+	 *
+	 * @var string
+	 */
 	protected $event_posttype;
 
-	// The Events Calendar Location Taxonomy
+	/**
+	 * The Events Calendar Location Taxonomys
+	 *
+	 * @var string
+	 */
 	protected $location_taxonomy;
 
-	// The Events Calendar Location Taxonomy
+	/**
+	 * The Events Calendar Organizer Taxonomy
+	 *
+	 * @var string
+	 */
 	protected $organizer_taxonomy;
 
 	/**
@@ -41,28 +65,47 @@ class Import_Facebook_Events_EventON {
 	}
 
 	/**
-	 * Get Posttype and Taxonomy Functions
+	 * Get Event Posttype
 	 *
 	 * @return string
 	 */
 	public function get_event_posttype() {
 		return $this->event_posttype;
 	}
+
+	/**
+	 * Get Location Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_location_taxonomy() {
 		return $this->location_taxonomy;
 	}
+
+	/**
+	 * Get Organizer Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_organizer_taxonomy() {
 		return $this->organizer_taxonomy;
 	}
+
+	/**
+	 * Get Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
 
 	/**
-	 * import event into TEC
+	 * Import event into TEC
 	 *
 	 * @since    1.0.0
-	 * @param  array $centralize event array.
+	 * @param  array $centralize_array Centralize event array.
+	 * @param  array $event_args Event Args array.
 	 * @return array
 	 */
 	public function import_event( $centralize_array, $event_args ) {
@@ -78,7 +121,7 @@ class Import_Facebook_Events_EventON {
 			// Update event or not?
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
-			if ( 'yes' != $update_events ) {
+			if ( 'yes' !== $update_events ) {
 				return array(
 					'status' => 'skipped',
 					'id'     => $is_exitsing_event,
@@ -102,7 +145,7 @@ class Import_Facebook_Events_EventON {
 		if ( $is_exitsing_event ) {
 			$evon_eventdata['ID'] = $is_exitsing_event;
 		}
-		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
+		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$evon_eventdata['post_status'] = $event_args['event_status'];
 		}
 
@@ -130,14 +173,14 @@ class Import_Facebook_Events_EventON {
 				}
 			}
 
-			// Assign Featured images
+			// Assign Featured images.
 			$event_image = $centralize_array['image_url'];
-			if ( $event_image != '' ) {
+			if ( ! empty( $event_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
 			}
 			$address      = isset( $centralize_array['location']['address_1'] ) ? sanitize_text_field( $centralize_array['location']['address_1'] ) : '';
 			$full_address = isset( $centralize_array['location']['full_address'] ) ? sanitize_text_field( $centralize_array['location']['full_address'] ) : '';
-			if ( $full_address != '' ) {
+			if ( ! empty( $full_address ) ) {
 				$address = $full_address; }
 			$city    = isset( $centralize_array['location']['city'] ) ? sanitize_text_field( $centralize_array['location']['city'] ) : '';
 			$state   = isset( $centralize_array['location']['state'] ) ? sanitize_text_field( $centralize_array['location']['state'] ) : '';
@@ -151,9 +194,9 @@ class Import_Facebook_Events_EventON {
 			update_post_meta( $inserted_event_id, 'evcal_lmlink', $centralize_array['url'] );
 
 			$location_name = isset( $centralize_array['location']['name'] ) ? sanitize_text_field( $centralize_array['location']['name'] ) : '';
-			if ( $location_name != '' ) {
+			if ( ! empty( $location_name ) ) {
 				$loc_term = term_exists( $location_name, $this->location_taxonomy );
-				if ( $loc_term !== 0 && $loc_term !== null ) {
+				if ( 0 !== $loc_term && null !== $loc_term ) {
 					if ( is_array( $loc_term ) ) {
 						$loc_term_id = (int) $loc_term['term_id'];
 					}
@@ -167,7 +210,7 @@ class Import_Facebook_Events_EventON {
 					}
 				}
 
-				// latitude and longitude
+				// latitude and longitude.
 				$loc_term_meta                        = array();
 				$loc_term_meta['location_lon']        = ( ! empty( $centralize_array['location']['long'] ) ) ? $centralize_array['location']['long'] : null;
 				$loc_term_meta['location_lat']        = ( ! empty( $centralize_array['location']['lat'] ) ) ? $centralize_array['location']['lat'] : null;
@@ -189,20 +232,20 @@ class Import_Facebook_Events_EventON {
 				update_post_meta( $inserted_event_id, 'evcal_location_link', $centralize_array['location']['url'] );
 				update_post_meta( $inserted_event_id, 'evcal_location', $address );
 				update_post_meta( $inserted_event_id, 'evcal_lat', $centralize_array['location']['lat'] );
-				 update_post_meta( $inserted_event_id, 'evcal_lon', $centralize_array['location']['long'] );
-				if ( $centralize_array['location']['long'] != '' && $centralize_array['location']['lat'] != '' ) {
+				update_post_meta( $inserted_event_id, 'evcal_lon', $centralize_array['location']['long'] );
+				if ( ! empty( $centralize_array['location']['long'] ) && ! empty( $centralize_array['location']['lat'] ) ) {
 					update_post_meta( $inserted_event_id, 'evcal_gmap_gen', 'yes' );
 				}
 			}
 
-			if ( isset( $centralize_array['organizer'] ) && $centralize_array['organizer']['name'] != '' ) {
+			if ( isset( $centralize_array['organizer'] ) && ! empty( $centralize_array['organizer']['name'] ) ) {
 
 				$org_contact = $centralize_array['organizer']['phone'];
-				if ( $centralize_array['organizer']['email'] != '' ) {
+				if ( ! empty( $centralize_array['organizer']['email'] ) ) {
 					$org_contact = $centralize_array['organizer']['email'];
 				}
 				$org_term = term_exists( $centralize_array['organizer']['name'], $this->organizer_taxonomy );
-				if ( $org_term !== 0 && $org_term !== null ) {
+				if ( 0 !== $org_term && null !== $org_term ) {
 					if ( is_array( $org_term ) ) {
 						$org_term_id = (int) $org_term['term_id'];
 					}

@@ -8,23 +8,48 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+/**
+ * Class for Custom post type related functionalities.
+ *
+ * @package     Import_Facebook_Events
+ * @subpackage  Import_Facebook_Events/admin
+ * @author     Dharmesh Patel <dspatel44@gmail.com>
+ */
 class Import_Facebook_Events_Cpt {
 
-	// The Events Calendar Event Taxonomy
+	/**
+	 * Event Slug
+	 *
+	 * @var string
+	 */
 	protected $event_slug;
 
-	// Event post type.
+	/**
+	 * Event Post Type
+	 *
+	 * @var string
+	 */
 	protected $event_posttype;
 
-	// Event post type.
+	/**
+	 * Event Taxonomy.
+	 *
+	 * @var string
+	 */
 	protected $event_category;
 
-	// Event post type.
+	/**
+	 * Event tag.
+	 *
+	 * @var string
+	 */
 	protected $event_tag;
 
 	/**
@@ -34,8 +59,7 @@ class Import_Facebook_Events_Cpt {
 	 */
 	public function __construct() {
 
-		$this->event_slug = 'facebook-event';
-
+		$this->event_slug     = 'facebook-event';
 		$this->event_posttype = 'facebook_events';
 		$this->event_category = 'facebook_category';
 		$this->event_tag      = 'facebook_tag';
@@ -43,7 +67,7 @@ class Import_Facebook_Events_Cpt {
 		$ife_options       = get_option( IFE_OPTIONS );
 		$deactive_fbevents = isset( $ife_options['deactive_fbevents'] ) ? $ife_options['deactive_fbevents'] : 'no';
 
-		if ( $deactive_fbevents === 'no' ) {
+		if ( 'no' === $deactive_fbevents ) {
 			add_action( 'init', array( $this, 'register_event_post_type' ) );
 			add_action( 'init', array( $this, 'register_event_taxonomy' ) );
 			add_action( 'add_meta_boxes', array( $this, 'add_event_meta_boxes' ) );
@@ -67,7 +91,7 @@ class Import_Facebook_Events_Cpt {
 	}
 
 	/**
-	 * get events category taxonomy
+	 * Get events category taxonomy.
 	 *
 	 * @since    1.0.0
 	 */
@@ -76,7 +100,7 @@ class Import_Facebook_Events_Cpt {
 	}
 
 	/**
-	 * get events tag taxonomy
+	 * Get events tag taxonomy.
 	 *
 	 * @since    1.0.0
 	 */
@@ -90,10 +114,7 @@ class Import_Facebook_Events_Cpt {
 	 * @since    1.0.0
 	 */
 	public function register_event_post_type() {
-
-		/*
-		 * Event labels
-		 */
+		// Event labels.
 		$event_labels   = array(
 			'name'                  => _x( 'Facebook Events', 'Post Type General Name', 'import-facebook-events' ),
 			'singular_name'         => _x( 'Facebook Event', 'Post Type Singular Name', 'import-facebook-events' ),
@@ -224,9 +245,11 @@ class Import_Facebook_Events_Cpt {
 	}
 
 
-	/*
-     *  Add Meta box for team link meta box.
-     */
+	/**
+	 *  Add Meta box for team link meta box.
+	 *
+	 * @since 1.0.0
+	 */
 	public function add_event_meta_boxes() {
 		add_meta_box(
 			'facebook_events_metabox',
@@ -238,12 +261,15 @@ class Import_Facebook_Events_Cpt {
 		);
 	}
 
-	/*
-     * Event meta box render
-     */
+	/**
+	 * Event meta box render
+	 *
+	 * @param object $post Post object.
+	 * @return void
+	 */
 	public function render_event_meta_boxes( $post ) {
 
-		// Use nonce for verification
+		// Use nonce for verification.
 		wp_nonce_field( IFE_PLUGIN_DIR, 'ife_event_metabox_nonce' );
 
 		$start_hour     = get_post_meta( $post->ID, 'event_start_hour', true );
@@ -257,16 +283,16 @@ class Import_Facebook_Events_Cpt {
 			<thead>
 			<tr>
 				<th colspan="2">
-					<?php _e( 'Time & Date', 'import-facebook-events' ); ?>
+					<?php esc_attr_e( 'Time & Date', 'import-facebook-events' ); ?>
 					<hr>
 				</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr>
-				<td><?php _e( 'Start Date & Time', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Start Date & Time', 'import-facebook-events' ); ?>:</td>
 				<td>
-				<input type="text" name="event_start_date" class="ife_datepicker" id="event_start_date" value="<?php echo get_post_meta( $post->ID, 'event_start_date', true ); ?>" /> @ 
+				<input type="text" name="event_start_date" class="ife_datepicker" id="event_start_date" value="<?php echo esc_attr( get_post_meta( $post->ID, 'event_start_date', true ) ); ?>" /> @ 
 				<?php
 				$this->generate_dropdown( 'event_start', 'hour', $start_hour );
 				$this->generate_dropdown( 'event_start', 'minute', $start_minute );
@@ -275,9 +301,9 @@ class Import_Facebook_Events_Cpt {
 				</td>
 			</tr>
 			<tr>
-				<td><?php _e( 'End Date & Time', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'End Date & Time', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="event_end_date" class="ife_datepicker" id="event_end_date" value="<?php echo get_post_meta( $post->ID, 'event_end_date', true ); ?>" /> @ 
+					<input type="text" name="event_end_date" class="ife_datepicker" id="event_end_date" value="<?php echo esc_attr( get_post_meta( $post->ID, 'event_end_date', true ) ); ?>" /> @ 
 					<?php
 					$this->generate_dropdown( 'event_end', 'hour', $end_hour );
 					$this->generate_dropdown( 'event_end', 'minute', $end_minute );
@@ -292,7 +318,7 @@ class Import_Facebook_Events_Cpt {
 			<thead>
 			<tr>
 				<th colspan="2">
-					<?php _e( 'Location Details', 'import-facebook-events' ); ?>
+					<?php esc_attr_e( 'Location Details', 'import-facebook-events' ); ?>
 					<hr>
 				</th>
 			</tr>
@@ -300,65 +326,65 @@ class Import_Facebook_Events_Cpt {
 
 			<tbody>
 			<tr>
-				<td><?php _e( 'Venue', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Venue', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="venue_name" id="venue_name" value="<?php echo get_post_meta( $post->ID, 'venue_name', true ); ?>" />
+					<input type="text" name="venue_name" id="venue_name" value="<?php echo esc_attr( get_post_meta( $post->ID, 'venue_name', true ) ); ?>" />
 				</td>
 			</tr>
 
 			<tr>
-				<td><?php _e( 'Address', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Address', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="venue_address" id="venue_address" value="<?php echo get_post_meta( $post->ID, 'venue_address', true ); ?>" />
+					<input type="text" name="venue_address" id="venue_address" value="<?php echo esc_attr( get_post_meta( $post->ID, 'venue_address', true ) ); ?>" />
 				</td>
 			</tr>
 
 			<tr>
-				<td><?php _e( 'City', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'City', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="venue_city" id="venue_city" value="<?php echo get_post_meta( $post->ID, 'venue_city', true ); ?>" />
+					<input type="text" name="venue_city" id="venue_city" value="<?php echo esc_attr( get_post_meta( $post->ID, 'venue_city', true ) ); ?>" />
 				</td>
 			</tr>
 
 			<tr>
-				<td><?php _e( 'State', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'State', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="venue_state" id="venue_state" value="<?php echo get_post_meta( $post->ID, 'venue_state', true ); ?>" />
-				</td>
-			</tr>
-			
-			<tr>
-				<td><?php _e( 'Country', 'import-facebook-events' ); ?>:</td>
-				<td>
-					<input type="text" name="venue_country" id="venue_country" value="<?php echo get_post_meta( $post->ID, 'venue_country', true ); ?>" />
+					<input type="text" name="venue_state" id="venue_state" value="<?php echo esc_attr( get_post_meta( $post->ID, 'venue_state', true ) ); ?>" />
 				</td>
 			</tr>
 
 			<tr>
-				<td><?php _e( 'Zipcode', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Country', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="venue_zipcode" id="venue_zipcode" value="<?php echo get_post_meta( $post->ID, 'venue_zipcode', true ); ?>" />
+					<input type="text" name="venue_country" id="venue_country" value="<?php echo esc_attr( get_post_meta( $post->ID, 'venue_country', true ) ); ?>" />
 				</td>
 			</tr>
 
 			<tr>
-				<td><?php _e( 'Latitude', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Zipcode', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="venue_lat" id="venue_lat" value="<?php echo get_post_meta( $post->ID, 'venue_lat', true ); ?>" />
+					<input type="text" name="venue_zipcode" id="venue_zipcode" value="<?php echo esc_attr( get_post_meta( $post->ID, 'venue_zipcode', true ) ); ?>" />
 				</td>
 			</tr>
 
 			<tr>
-				<td><?php _e( 'Latitude', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Latitude', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="venue_lon" id="venue_lon" value="<?php echo get_post_meta( $post->ID, 'venue_lon', true ); ?>" />
+					<input type="text" name="venue_lat" id="venue_lat" value="<?php echo esc_attr( get_post_meta( $post->ID, 'venue_lat', true ) ); ?>" />
 				</td>
 			</tr>
 
 			<tr>
-				<td><?php _e( 'Website', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Latitude', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="venue_url" id="venue_url" value="<?php echo get_post_meta( $post->ID, 'venue_url', true ); ?>" />
+					<input type="text" name="venue_lon" id="venue_lon" value="<?php echo esc_attr( get_post_meta( $post->ID, 'venue_lon', true ) ); ?>" />
+				</td>
+			</tr>
+
+			<tr>
+				<td><?php esc_attr_e( 'Website', 'import-facebook-events' ); ?>:</td>
+				<td>
+					<input type="text" name="venue_url" id="venue_url" value="<?php echo esc_url( get_post_meta( $post->ID, 'venue_url', true ) ); ?>" />
 				</td>
 			</tr>
 			</tbody>
@@ -368,34 +394,34 @@ class Import_Facebook_Events_Cpt {
 			<thead>
 			<tr>
 				<th colspan="2">
-					<?php _e( 'Organizer Details', 'import-facebook-events' ); ?>
+					<?php esc_attr_e( 'Organizer Details', 'import-facebook-events' ); ?>
 					<hr>
 				</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr>
-				<td><?php _e( 'Organizer Name', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Organizer Name', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="organizer_name" id="organizer_name" value="<?php echo get_post_meta( $post->ID, 'organizer_name', true ); ?>" />
+					<input type="text" name="organizer_name" id="organizer_name" value="<?php echo esc_attr( get_post_meta( $post->ID, 'organizer_name', true ) ); ?>" />
 				</td>
 			</tr>
 			<tr>
-				<td><?php _e( 'Email', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Email', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="email" name="organizer_email" id="organizer_email" value="<?php echo get_post_meta( $post->ID, 'organizer_email', true ); ?>" />
+					<input type="email" name="organizer_email" id="organizer_email" value="<?php echo esc_attr( get_post_meta( $post->ID, 'organizer_email', true ) ); ?>" />
 				</td>
 			</tr>
 			<tr>
-				<td><?php _e( 'Phone', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Phone', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="organizer_phone" id="organizer_phone" value="<?php echo get_post_meta( $post->ID, 'organizer_phone', true ); ?>" />
+					<input type="text" name="organizer_phone" id="organizer_phone" value="<?php echo esc_attr( get_post_meta( $post->ID, 'organizer_phone', true ) ); ?>" />
 				</td>
 			</tr>
 			<tr>
-				<td><?php _e( 'Website', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Website', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="organizer_url" id="organizer_url" value="<?php echo get_post_meta( $post->ID, 'organizer_url', true ); ?>" />
+					<input type="text" name="organizer_url" id="organizer_url" value="<?php echo esc_url( get_post_meta( $post->ID, 'organizer_url', true ) ); ?>" />
 				</td>
 			</tr>
 			</tbody>
@@ -405,16 +431,20 @@ class Import_Facebook_Events_Cpt {
 	}
 
 	/**
-	 * generate dropdowns for event time.
+	 * Generate dropdowns for event time.
+	 *
+	 * @param string $start_end Start End.
+	 * @param string $type Type.
+	 * @param string $selected Selected.
 	 */
-	function generate_dropdown( $start_end, $type, $selected = '' ) {
-		if ( $start_end == '' || $type == '' ) {
+	public function generate_dropdown( $start_end, $type, $selected = '' ) {
+		if ( empty( $start_end ) || empty( $type ) ) {
 			return;
 		}
 		$select_name = $start_end . '_' . $type;
-		if ( $type == 'hour' ) {
+		if ( 'hour' === $type ) {
 			?>
-			<select name="<?php echo $select_name; ?>">
+			<select name="<?php echo esc_attr( $select_name ); ?>">
 				<option value="01" <?php selected( $selected, '01' ); ?>>01</option>
 				<option value="02" <?php selected( $selected, '02' ); ?>>02</option>
 				<option value="03" <?php selected( $selected, '03' ); ?>>03</option>
@@ -429,9 +459,9 @@ class Import_Facebook_Events_Cpt {
 				<option value="12" <?php selected( $selected, '12' ); ?>>12</option>
 			</select>
 			<?php
-		} elseif ( $type == 'minute' ) {
+		} elseif ( 'minute' === $type ) {
 			?>
-			<select name="<?php echo $select_name; ?>">
+			<select name="<?php echo esc_attr( $select_name ); ?>">
 				<option value="00" <?php selected( $selected, '00' ); ?>>00</option>
 				<option value="05" <?php selected( $selected, '05' ); ?>>05</option>
 				<option value="10" <?php selected( $selected, '10' ); ?>>10</option>
@@ -446,9 +476,9 @@ class Import_Facebook_Events_Cpt {
 				<option value="55" <?php selected( $selected, '55' ); ?>>55</option>
 			</select>
 			<?php
-		} elseif ( $type == 'meridian' ) {
+		} elseif ( 'meridian' === $type ) {
 			?>
-			<select name="<?php echo $select_name; ?>">
+			<select name="<?php echo esc_attr( $select_name ); ?>">
 				<option value="am" <?php selected( $selected, 'am' ); ?>>am</option>
 				<option value="pm" <?php selected( $selected, 'pm' ); ?>>pm</option>
 			</select>
@@ -458,62 +488,69 @@ class Import_Facebook_Events_Cpt {
 
 	/**
 	 * Save Testimonial meta box Options
+	 *
+	 * @param int    $post_id Post id.
+	 * @param object $post Post.
+	 *
+	 * @return void|int
 	 */
 	public function save_event_meta_boxes( $post_id, $post ) {
 		// Verify the nonce before proceeding.
-		if ( ! isset( $_POST['ife_event_metabox_nonce'] ) || ! wp_verify_nonce( $_POST['ife_event_metabox_nonce'], IFE_PLUGIN_DIR ) ) {
+		if ( ! isset( $_POST['ife_event_metabox_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ife_event_metabox_nonce'] ) ), IFE_PLUGIN_DIR ) ) { // input var okay;.
 			return $post_id;
 		}
 
-		// check user capability to edit post
+		// Check user capability to edit post.
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return $post_id;
 		}
 
-		// can't save if auto save
+		// can't save if auto save.
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return $post_id;
 		}
 
 		// check if team then save it.
-		if ( $post->post_type != $this->event_posttype ) {
+		if ( $post->post_type !== $this->event_posttype ) {
 			return $post_id;
 		}
 
-		// Event Date & time Details
-		$event_start_date     = isset( $_POST['event_start_date'] ) ? sanitize_text_field( $_POST['event_start_date'] ) : '';
-		$event_end_date       = isset( $_POST['event_end_date'] ) ? sanitize_text_field( $_POST['event_end_date'] ) : '';
-		$event_start_hour     = isset( $_POST['event_start_hour'] ) ? sanitize_text_field( $_POST['event_start_hour'] ) : '';
-		$event_start_minute   = isset( $_POST['event_start_minute'] ) ? sanitize_text_field( $_POST['event_start_minute'] ) : '';
-		$event_start_meridian = isset( $_POST['event_start_meridian'] ) ? sanitize_text_field( $_POST['event_start_meridian'] ) : '';
-		$event_end_hour       = isset( $_POST['event_end_hour'] ) ? sanitize_text_field( $_POST['event_end_hour'] ) : '';
-		$event_end_minute     = isset( $_POST['event_end_minute'] ) ? sanitize_text_field( $_POST['event_end_minute'] ) : '';
-		$event_end_meridian   = isset( $_POST['event_end_meridian'] ) ? sanitize_text_field( $_POST['event_end_meridian'] ) : '';
+		$postdata = array_map( 'sanitize_text_field', array_map( 'wp_unslash', $_POST ) ); // input var okay;.
+
+		// Event Date & time Details.
+		$event_start_date     = isset( $postdata['event_start_date'] ) ? $postdata['event_start_date'] : '';
+		$event_end_date       = isset( $postdata['event_end_date'] ) ? $postdata['event_end_date'] : '';
+		$event_start_hour     = isset( $postdata['event_start_hour'] ) ? $postdata['event_start_hour'] : '';
+		$event_start_minute   = isset( $postdata['event_start_minute'] ) ? $postdata['event_start_minute'] : '';
+		$event_start_meridian = isset( $postdata['event_start_meridian'] ) ? $postdata['event_start_meridian'] : '';
+		$event_end_hour       = isset( $postdata['event_end_hour'] ) ? $postdata['event_end_hour'] : '';
+		$event_end_minute     = isset( $postdata['event_end_minute'] ) ? $postdata['event_end_minute'] : '';
+		$event_end_meridian   = isset( $postdata['event_end_meridian'] ) ? $postdata['event_end_meridian'] : '';
 
 		$start_time = $event_start_date . ' ' . $event_start_hour . ':' . $event_start_minute . ' ' . $event_start_meridian;
 		$end_time   = $event_end_date . ' ' . $event_end_hour . ':' . $event_end_minute . ' ' . $event_end_meridian;
 		$start_ts   = strtotime( $start_time );
 		$end_ts     = strtotime( $end_time );
 
-		// Venue Deatails
-		$venue_name    = isset( $_POST['venue_name'] ) ? sanitize_text_field( $_POST['venue_name'] ) : '';
-		$venue_address = isset( $_POST['venue_address'] ) ? sanitize_text_field( $_POST['venue_address'] ) : '';
-		$venue_city    = isset( $_POST['venue_city'] ) ? sanitize_text_field( $_POST['venue_city'] ) : '';
-		$venue_state   = isset( $_POST['venue_state'] ) ? sanitize_text_field( $_POST['venue_state'] ) : '';
-		$venue_country = isset( $_POST['venue_country'] ) ? sanitize_text_field( $_POST['venue_country'] ) : '';
-		$venue_zipcode = isset( $_POST['venue_zipcode'] ) ? sanitize_text_field( $_POST['venue_zipcode'] ) : '';
-		$venue_lat     = isset( $_POST['venue_lat'] ) ? sanitize_text_field( $_POST['venue_lat'] ) : '';
-		$venue_lon     = isset( $_POST['venue_lon'] ) ? sanitize_text_field( $_POST['venue_lon'] ) : '';
-		$venue_url     = isset( $_POST['venue_url'] ) ? esc_url( $_POST['venue_url'] ) : '';
+		// Venue Deatails.
+		$venue_name    = isset( $postdata['venue_name'] ) ? $postdata['venue_name'] : '';
+		$venue_address = isset( $postdata['venue_address'] ) ? $postdata['venue_address'] : '';
+		$venue_city    = isset( $postdata['venue_city'] ) ? $postdata['venue_city'] : '';
+		$venue_state   = isset( $postdata['venue_state'] ) ? $postdata['venue_state'] : '';
+		$venue_country = isset( $postdata['venue_country'] ) ? $postdata['venue_country'] : '';
+		$venue_zipcode = isset( $postdata['venue_zipcode'] ) ? $postdata['venue_zipcode'] : '';
+		$venue_lat     = isset( $postdata['venue_lat'] ) ? $postdata['venue_lat'] : '';
+		$venue_lon     = isset( $postdata['venue_lon'] ) ? $postdata['venue_lon'] : '';
+		$venue_url     = isset( $postdata['venue_url'] ) ? esc_url( $postdata['venue_url'] ) : '';
 
-		// Oraganizer Deatails
-		$organizer_name  = isset( $_POST['organizer_name'] ) ? sanitize_text_field( $_POST['organizer_name'] ) : '';
-		$organizer_email = isset( $_POST['organizer_email'] ) ? sanitize_text_field( $_POST['organizer_email'] ) : '';
-		$organizer_phone = isset( $_POST['organizer_phone'] ) ? sanitize_text_field( $_POST['organizer_phone'] ) : '';
-		$organizer_url   = isset( $_POST['organizer_url'] ) ? esc_url( $_POST['organizer_url'] ) : '';
+		// Oraganizer Deatails.
+		$organizer_name  = isset( $postdata['organizer_name'] ) ? $postdata['organizer_name'] : '';
+		$organizer_email = isset( $postdata['organizer_email'] ) ? $postdata['organizer_email'] : '';
+		$organizer_phone = isset( $postdata['organizer_phone'] ) ? $postdata['organizer_phone'] : '';
+		$organizer_url   = isset( $postdata['organizer_url'] ) ? esc_url( $postdata['organizer_url'] ) : '';
 
-		// Save Event Data
-		// Date & Time
+		// Save Event Data.
+		// Date & Time.
 		update_post_meta( $post_id, 'event_start_date', $event_start_date );
 		update_post_meta( $post_id, 'event_start_hour', $event_start_hour );
 		update_post_meta( $post_id, 'event_start_minute', $event_start_minute );
@@ -525,7 +562,7 @@ class Import_Facebook_Events_Cpt {
 		update_post_meta( $post_id, 'start_ts', $start_ts );
 		update_post_meta( $post_id, 'end_ts', $end_ts );
 
-		// Venue
+		// Venue.
 		update_post_meta( $post_id, 'venue_name', $venue_name );
 		update_post_meta( $post_id, 'venue_address', $venue_address );
 		update_post_meta( $post_id, 'venue_city', $venue_city );
@@ -536,7 +573,7 @@ class Import_Facebook_Events_Cpt {
 		update_post_meta( $post_id, 'venue_lon', $venue_lon );
 		update_post_meta( $post_id, 'venue_url', $venue_url );
 
-		// Organizer
+		// Organizer.
 		update_post_meta( $post_id, 'organizer_name', $organizer_name );
 		update_post_meta( $post_id, 'organizer_email', $organizer_email );
 		update_post_meta( $post_id, 'organizer_phone', $organizer_phone );
@@ -545,22 +582,29 @@ class Import_Facebook_Events_Cpt {
 
 	/**
 	 * Add column to event listing in admin
+	 *
+	 * @param array $cols Columns.
 	 */
-	function facebook_events_columns( $cols ) {
+	public function facebook_events_columns( $cols ) {
 		$cols['fbevent_start_date'] = __( 'Event Date', 'event-list-calendar' );
 		return $cols;
 	}
 
 	/**
-	 * set column data
+	 * Set column data
+	 *
+	 * @param string $column Column.
+	 * @param int    $post_id Post ID.
+	 *
+	 * @return void
 	 */
-	function facebook_events_columns_data( $column, $post_id ) {
+	public function facebook_events_columns_data( $column, $post_id ) {
 		switch ( $column ) {
 			case 'fbevent_start_date':
 				$start_date = get_post_meta( $post_id, 'event_start_date', true );
-				if ( $start_date != '' ) {
+				if ( ! empty( $start_date ) ) {
 					$start_date = strtotime( $start_date );
-					echo date( 'F j, Y', $start_date );
+					echo esc_attr( date( 'F j, Y', $start_date ) );
 				} else {
 					echo '-';
 				}
@@ -570,9 +614,12 @@ class Import_Facebook_Events_Cpt {
 	}
 
 	/**
-	 * render event information above event content
+	 * Render event information above event content.
+	 *
+	 * @param string $content Content.
+	 * @return string $content Altered Content.
 	 */
-	function facebook_events_meta_before_content( $content ) {
+	public function facebook_events_meta_before_content( $content ) {
 		if ( is_singular( $this->event_posttype ) ) {
 			$event_details = $this->facebook_events_get_event_meta( get_the_ID() );
 			$is_before     = apply_filters( 'ife_events_information_before', true );
@@ -586,9 +633,12 @@ class Import_Facebook_Events_Cpt {
 	}
 
 	/**
-	 * get meta information for event.
+	 * Get meta information for event.
+	 *
+	 * @param int $event_id Event id.
+	 * @return string $event_meta_details Event meta details.
 	 */
-	function facebook_events_get_event_meta( $event_id = '' ) {
+	public function facebook_events_get_event_meta( $event_id = '' ) {
 
 		ob_start();
 
@@ -600,7 +650,10 @@ class Import_Facebook_Events_Cpt {
 	}
 
 	/**
-	 * render events lisiting.
+	 * Render events lisiting.
+	 *
+	 * @param array $atts Attributes.
+	 * @return string $wp_list_events Event list HTML.
 	 */
 	public function facebook_events_archive( $atts = array() ) {
 		// [facebook_events col='2' posts_per_page='12' category="cat1,cat2" past_events="yes" order="desc" orderby="" start_date="" end_date="" ]
@@ -612,26 +665,27 @@ class Import_Facebook_Events_Cpt {
 		$eve_args = array(
 			'post_type'   => 'facebook_events',
 			'post_status' => 'publish',
-			'meta_key'    => 'start_ts',
+			'meta_key'    => 'start_ts', // WPCS: slow query ok.
 			'paged'       => $paged,
 		);
 
 		// post per page.
-		if ( isset( $atts['posts_per_page'] ) && $atts['posts_per_page'] != '' && is_numeric( $atts['posts_per_page'] ) ) {
+		if ( isset( $atts['posts_per_page'] ) && ! empty( $atts['posts_per_page'] ) && is_numeric( $atts['posts_per_page'] ) ) {
 			$eve_args['posts_per_page'] = $atts['posts_per_page'];
 		}
 
-		// Past Events
-		if ( ( isset( $atts['start_date'] ) && $atts['start_date'] != '' ) || ( isset( $atts['end_date'] ) && $atts['end_date'] != '' ) ) {
-			$start_date_str = $end_date_str = '';
-			if ( isset( $atts['start_date'] ) && $atts['start_date'] != '' ) {
+		// Past Events.
+		if ( ( isset( $atts['start_date'] ) && ! empty( $atts['start_date'] ) ) || ( isset( $atts['end_date'] ) && ! empty( $atts['end_date'] ) ) ) {
+			$start_date_str = '';
+			$end_date_str   = '';
+			if ( isset( $atts['start_date'] ) && ! empty( $atts['start_date'] ) ) {
 				try {
 					$start_date_str = strtotime( sanitize_text_field( $atts['start_date'] ) );
 				} catch ( Exception $e ) {
 					$start_date_str = '';
 				}
 			}
-			if ( isset( $atts['end_date'] ) && $atts['end_date'] != '' ) {
+			if ( isset( $atts['end_date'] ) && ! empty( $atts['end_date'] ) ) {
 				try {
 					$end_date_str = strtotime( sanitize_text_field( $atts['end_date'] ) );
 				} catch ( Exception $e ) {
@@ -639,8 +693,8 @@ class Import_Facebook_Events_Cpt {
 				}
 			}
 
-			if ( $start_date_str != '' && $end_date_str != '' ) {
-				$eve_args['meta_query'] = array(
+			if ( ! empty( $start_date_str ) && ! empty( $end_date_str ) ) {
+				$eve_args['meta_query'] = array( // WPCS: slow query ok.
 					'relation' => 'AND',
 					array(
 						'key'     => 'end_ts',
@@ -653,16 +707,16 @@ class Import_Facebook_Events_Cpt {
 						'value'   => $end_date_str,
 					),
 				);
-			} elseif ( $start_date_str != '' ) {
-				$eve_args['meta_query'] = array(
+			} elseif ( ! empty( $start_date_str ) ) {
+				$eve_args['meta_query'] = array( // WPCS: slow query ok.
 					array(
 						'key'     => 'end_ts',
 						'compare' => '>=',
 						'value'   => $start_date_str,
 					),
 				);
-			} elseif ( $end_date_str != '' ) {
-				$eve_args['meta_query'] = array(
+			} elseif ( ! empty( $end_date_str ) ) {
+				$eve_args['meta_query'] = array( // WPCS: slow query ok.
 					'relation' => 'AND',
 					array(
 						'key'     => 'end_ts',
@@ -677,8 +731,8 @@ class Import_Facebook_Events_Cpt {
 				);
 			}
 		} else {
-			if ( isset( $atts['past_events'] ) && $atts['past_events'] == 'yes' ) {
-				$eve_args['meta_query'] = array(
+			if ( isset( $atts['past_events'] ) && 'yes' === $atts['past_events'] ) {
+				$eve_args['meta_query'] = array( // WPCS: slow query ok.
 					array(
 						'key'     => 'end_ts',
 						'compare' => '<=',
@@ -686,7 +740,7 @@ class Import_Facebook_Events_Cpt {
 					),
 				);
 			} else {
-				$eve_args['meta_query'] = array(
+				$eve_args['meta_query'] = array( // WPCS: slow query ok.
 					array(
 						'key'     => 'end_ts',
 						'compare' => '>=',
@@ -696,15 +750,15 @@ class Import_Facebook_Events_Cpt {
 			}
 		}
 
-		// Category
-		if ( isset( $atts['category'] ) && $atts['category'] != '' ) {
+		// Category.
+		if ( isset( $atts['category'] ) && ! empty( $atts['category'] ) ) {
 			$categories = explode( ',', $atts['category'] );
 			$tax_field  = 'slug';
 			if ( is_numeric( implode( '', $categories ) ) ) {
 				$tax_field = 'term_id';
 			}
 			if ( ! empty( $categories ) ) {
-				$eve_args['tax_query'] = array(
+				$eve_args['tax_query'] = array( // WPCS: slow query ok.
 					array(
 						'taxonomy' => $this->event_category,
 						'field'    => $tax_field,
@@ -714,11 +768,11 @@ class Import_Facebook_Events_Cpt {
 			}
 		}
 
-		// Order by
-		if ( isset( $atts['orderby'] ) && $atts['orderby'] != '' ) {
-			if ( $atts['orderby'] == 'event_start_date' || $atts['orderby'] == 'event_end_date' ) {
-				if ( $atts['orderby'] == 'event_end_date' ) {
-					$eve_args['meta_key'] = 'end_ts';
+		// Order by.
+		if ( isset( $atts['orderby'] ) && ! empty( $atts['orderby'] ) ) {
+			if ( 'event_start_date' === $atts['orderby'] || 'event_end_date' === $atts['orderby'] ) {
+				if ( 'event_end_date' === $atts['orderby'] ) {
+					$eve_args['meta_key'] = 'end_ts'; // WPCS: slow query ok.
 				}
 				$eve_args['orderby'] = 'meta_value';
 			} else {
@@ -728,13 +782,13 @@ class Import_Facebook_Events_Cpt {
 			$eve_args['orderby'] = 'meta_value';
 		}
 
-		// Order
-		if ( isset( $atts['order'] ) && $atts['order'] != '' ) {
-			if ( strtoupper( $atts['order'] ) == 'DESC' || strtoupper( $atts['order'] ) == 'ASC' ) {
+		// Order.
+		if ( isset( $atts['order'] ) && ! empty( $atts['order'] ) ) {
+			if ( 'DESC' === strtoupper( $atts['order'] ) || 'ASC' === strtoupper( $atts['order'] ) ) {
 				$eve_args['order'] = sanitize_text_field( $atts['order'] );
 			}
 		} else {
-			if ( isset( $atts['past_events'] ) && $atts['past_events'] == 'yes' && $eve_args['orderby'] == 'meta_value' ) {
+			if ( isset( $atts['past_events'] ) && 'yes' === $atts['past_events'] && 'meta_value' === $eve_args['orderby'] ) {
 				$eve_args['order'] = 'DESC';
 			} else {
 				$eve_args['order'] = 'ASC';
@@ -743,7 +797,7 @@ class Import_Facebook_Events_Cpt {
 
 		$col       = 3;
 		$css_class = 'col-ife-md-4';
-		if ( isset( $atts['col'] ) && $atts['col'] != '' && is_numeric( $atts['col'] ) ) {
+		if ( isset( $atts['col'] ) && ! empty( $atts['col'] ) && is_numeric( $atts['col'] ) ) {
 			$col = $atts['col'];
 			switch ( $col ) {
 				case '1':
@@ -771,12 +825,12 @@ class Import_Facebook_Events_Cpt {
 		$facebook_events = new WP_Query( $eve_args );
 
 		$wp_list_events = '';
-		/* Start the Loop */
+		// Start the Loop.
 		if ( is_front_page() ) {
 			$curr_paged = $paged;
 			global $paged;
 			$temp_paged = $paged;
-			$paged      = $curr_paged;
+			$paged      = $curr_paged; // WPCS: override ok.
 		}
 		$ife_options  = get_option( IFE_OPTIONS );
 		$accent_color = isset( $ife_options['accent_color'] ) ? $ife_options['accent_color'] : '#039ED7';
@@ -794,7 +848,7 @@ class Import_Facebook_Events_Cpt {
 
 				endwhile; // End of the loop.
 
-				if ( $facebook_events->max_num_pages > 1 ) : // custom pagination
+				if ( $facebook_events->max_num_pages > 1 ) : // custom pagination.
 				?>
 					<div class="col-ife-md-12">
 						<nav class="prev-next-posts">
@@ -809,17 +863,17 @@ class Import_Facebook_Events_Cpt {
 				<?php
 				endif;
 			else :
-				echo apply_filters( 'ife_no_events_found_message', __( 'No Events are found.', 'import-facebook-events' ) );
+				echo esc_attr( apply_filters( 'ife_no_events_found_message', __( 'No Events are found.', 'import-facebook-events' ) ) );
 			endif;
 
 			?>
 		</div>
 		<style type="text/css">
 			.ife_event .event_date{
-				background-color: <?php echo $accent_color; ?>;
+				background-color: <?php echo esc_attr( $accent_color ); ?>;
 			}
 			.ife_event .event_desc .event_title{
-				color: <?php echo $accent_color; ?>;
+				color: <?php echo esc_attr( $accent_color ); ?>;
 			}
 		</style>
 		<?php
@@ -830,7 +884,7 @@ class Import_Facebook_Events_Cpt {
 		wp_reset_postdata();
 		if ( is_front_page() ) {
 			global $paged;
-			$paged = $temp_paged;
+			$paged = $temp_paged; // WPCS: override ok.
 		}
 		return $wp_list_events;
 

@@ -30,6 +30,8 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		/** Singleton *************************************************************/
 		/**
 		 * Import_Facebook_Events The one true Import_Facebook_Events.
+		 *
+		 * @var object Instance of Import_Facebook_Events
 		 */
 		private static $instance;
 
@@ -98,7 +100,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @since 1.0.0
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.6.7' ); }
+			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.6.7' ); }
 
 		/**
 		 * A dummy magic method to prevent Import_Facebook_Events from being unserialized.
@@ -106,7 +108,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @since 1.0.0
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.6.7' ); }
+			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.6.7' ); }
 
 
 		/**
@@ -178,7 +180,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-tec.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-em.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-eventon.php';
-			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-event_organizer.php';
+			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-event-organizer.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-aioec.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-my-calendar.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ee4.php';
@@ -273,6 +275,7 @@ function run_import_facebook_events() {
  * Get Import events setting options
  *
  * @since 1.0
+ * @param string $type origin for requested options.
  * @return array
  */
 function ife_get_import_options( $type = '' ) {
@@ -282,8 +285,11 @@ function ife_get_import_options( $type = '' ) {
 
 // Get Import_Facebook_Events Running.
 global $ife_events, $ife_errors, $ife_success_msg, $ife_warnings, $ife_info_msg;
-$ife_events = run_import_facebook_events();
-$ife_errors = $ife_warnings = $ife_success_msg = $ife_info_msg = array();
+$ife_errors      = array();
+$ife_warnings    = array();
+$ife_success_msg = array();
+$ife_info_msg    = array();
+$ife_events      = run_import_facebook_events();
 
 /**
  * The code that runs during plugin activation.

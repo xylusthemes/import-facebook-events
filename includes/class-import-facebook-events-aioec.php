@@ -8,23 +8,47 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class for Aioec plugin related functionalities
+ *
+ * @package     Import_Facebook_Events
+ * @subpackage  Import_Facebook_Events/admin
+ * @author     Dharmesh Patel <dspatel44@gmail.com>
+ */
 class Import_Facebook_Events_Aioec {
 
-	// All-in-one Event Calendar Event Taxonomy
+	/**
+	 * All-in-one Event Calendar Event Taxonomy
+	 *
+	 * @var string
+	 */
 	protected $taxonomy;
 
-	// All-in-one Event Calendar Event Posttype
+	/**
+	 * All-in-one Event Calendar Event Posttype
+	 *
+	 * @var string
+	 */
 	protected $event_posttype;
 
-	// All-in-one Event Calendar Event Custom Table
+	/**
+	 * All-in-one Event Calendar Event Custom Table
+	 *
+	 * @var string
+	 */
 	protected $event_db_table;
 
-	// All-in-one Event Calendar Event Instance custom table
+	/**
+	 * All-in-one Event Calendar Event Instance custom table
+	 *
+	 * @var string
+	 */
 	protected $event_instances_table;
 
 	/**
@@ -44,22 +68,29 @@ class Import_Facebook_Events_Aioec {
 
 
 	/**
-	 * Get Posttype and Taxonomy Functions
+	 * Get Event Posttype
 	 *
 	 * @return string
 	 */
 	public function get_event_posttype() {
 		return $this->event_posttype;
 	}
+
+	/**
+	 * Get Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
 
 	/**
-	 * import event into TEC
+	 * Import event into TEC
 	 *
 	 * @since    1.0.0
-	 * @param  array $centralize event array.
+	 * @param  array $centralize_array event array.
+	 * @param  array $event_args event arguments.
 	 * @return array
 	 */
 	public function import_event( $centralize_array, $event_args ) {
@@ -75,10 +106,10 @@ class Import_Facebook_Events_Aioec {
 			// Update event or not?
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
-			if ( 'yes' != $update_events ) {
+			if ( 'yes' !== $update_events ) {
 				return array(
 					'status' => 'skipped',
-					'id'     => $is_exitsing_event
+					'id'     => $is_exitsing_event,
 				);
 			}
 		}
@@ -99,13 +130,13 @@ class Import_Facebook_Events_Aioec {
 			'post_title'   => $post_title,
 			'post_content' => $post_description,
 			'post_type'    => $this->event_posttype,
-			'post_status'  => 'pending'
+			'post_status'  => 'pending',
 		);
 		if ( $is_exitsing_event ) {
 			$eo_eventdata['ID'] = $is_exitsing_event;
 		}
 
-		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
+		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$eo_eventdata['post_status'] = $event_args['event_status'];
 		}
 
@@ -133,9 +164,9 @@ class Import_Facebook_Events_Aioec {
 				}
 			}
 
-			// Assign Featured images
+			// Assign Featured images.
 			$event_image = $centralize_array['image_url'];
-			if ( $event_image != '' ) {
+			if ( ! empty( $event_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
 			} else {
 				if ( $is_exitsing_event ) {
@@ -148,19 +179,24 @@ class Import_Facebook_Events_Aioec {
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $event_uri ) );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 
-			// Custom table Details
+			// Custom table Details.
 			$event_array = array(
 				'post_id' => $inserted_event_id,
 				'start'   => $start_time,
 				'end'     => $end_time,
 			);
 
-			$event_count = $wpdb->get_var( "SELECT COUNT(*) FROM $this->event_instances_table WHERE `post_id` = " . absint( $inserted_event_id ) );
+			$event_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM `{$this->event_instances_table}` WHERE `post_id` = %d", // @codingStandardsIgnoreLine
+					absint( $inserted_event_id )
+				)
+			); // cache ok, db call ok.
 			if ( $event_count > 0 && is_numeric( $event_count ) ) {
 				$where = array( 'post_id' => absint( $inserted_event_id ) );
-				$wpdb->update( $this->event_instances_table, $event_array, $where );
+				$wpdb->update( $this->event_instances_table, $event_array, $where ); // db call ok; no-cache ok.
 			} else {
-				$wpdb->insert( $this->event_instances_table, $event_array );
+				$wpdb->insert( $this->event_instances_table, $event_array ); // db call ok; no-cache ok.
 			}
 
 			$venue         = isset( $centralize_array['location'] ) ? $centralize_array['location'] : '';
@@ -175,18 +211,21 @@ class Import_Facebook_Events_Aioec {
 			$lat      = isset( $venue['lat'] ) ? $venue['lat'] : '';
 			$lon      = isset( $venue['long'] ) ? $venue['long'] : '';
 			$country  = isset( $venue['country'] ) ? $venue['country'] : '';
-			$show_map = $show_coordinates = 0;
-			if ( $lat != '' && $lon != '' ) {
-				$show_map = $show_coordinates = 1;
+			$show_map = 0;
+
+			$show_coordinates = 0;
+			if ( ! empty( $lat ) && ! empty( $lon ) ) {
+				$show_map         = 1;
+				$show_coordinates = 1;
 			}
 			$full_address = $address;
-			if ( $city != '' ) {
+			if ( ! empty( $city ) ) {
 				$full_address .= ', ' . $city;
 			}
-			if ( $state != '' ) {
+			if ( ! empty( $state ) ) {
 				$full_address .= ', ' . $state;
 			}
-			if ( $zip != '' ) {
+			if ( ! empty( $zip ) ) {
 				$full_address .= ' ' . $zip;
 			}
 
@@ -219,49 +258,54 @@ class Import_Facebook_Events_Aioec {
 				'ical_uid'         => $this->get_ical_uid_for_event( $inserted_event_id ),
 				'show_coordinates' => $show_coordinates,
 			);
-			if ( $lat != '' ) {
+			if ( ! empty( $lat ) ) {
 				$event_table_array['latitude'] = $lat;
 			}
-			if ( $lon != '' ) {
+			if ( ! empty( $lon ) ) {
 				$event_table_array['longitude'] = $lon;
 			}
 
 			$event_format = array(
-				'%d',  // post_id
-				'%d',  // start
-				'%d',  // end
-				'%s',  // timezone_name
-				'%d',  // allday
-				'%d',  // instant_event
-				'%s',  // venue
-				'%s',  // country
-				'%s',  // address
-				'%s',  // city
-				'%s',  // province
-				'%s',  // postal_code
-				'%d',  // show_map
-				'%s',  // contact_name
-				'%s',  // contact_phone
-				'%s',  // contact_email
-				'%s',  // contact_url
-				'%s',  // cost
-				'%s',  // ticket_url
-				'%s',  // ical_uid
-				'%d',  // show_coordinates
+				'%d',  // post_id.
+				'%d',  // start.
+				'%d',  // end.
+				'%s',  // timezone_name.
+				'%d',  // allday.
+				'%d',  // instant_event.
+				'%s',  // venue.
+				'%s',  // country.
+				'%s',  // address.
+				'%s',  // city.
+				'%s',  // province.
+				'%s',  // postal_code.
+				'%d',  // show_map.
+				'%s',  // contact_name.
+				'%s',  // contact_phone.
+				'%s',  // contact_email.
+				'%s',  // contact_url.
+				'%s',  // cost.
+				'%s',  // ticket_url.
+				'%s',  // ical_uid.
+				'%d',  // show_coordinates.
 			);
-			if ( $lat != '' ) {
-				$event_format[] = '%f';  // latitude
+			if ( ! empty( $lat ) ) {
+				$event_format[] = '%f';  // latitude.
 			}
-			if ( $lon != '' ) {
-				$event_format[] = '%f';  // longitude
+			if ( ! empty( $lon ) ) {
+				$event_format[] = '%f';  // longitude.
 			}
 
-			$event_exist_count = $wpdb->get_var( "SELECT COUNT(*) FROM $this->event_db_table WHERE `post_id` = " . absint( $inserted_event_id ) );
+			$event_exist_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM `{$this->event_db_table}` WHERE `post_id` = %d", // @codingStandardsIgnoreLine
+					absint( $inserted_event_id )
+				)
+			); // cache ok, db call ok.
 			if ( $event_exist_count > 0 && is_numeric( $event_exist_count ) ) {
 				$where = array( 'post_id' => absint( $inserted_event_id ) );
-				$wpdb->update( $this->event_db_table, $event_table_array, $where, $event_format );
+				$wpdb->update( $this->event_db_table, $event_table_array, $where, $event_format ); // db call ok; no-cache ok.
 			} else {
-				$wpdb->insert( $this->event_db_table, $event_table_array, $event_format );
+				$wpdb->insert( $this->event_db_table, $event_table_array, $event_format ); // db call ok; no-cache ok.
 			}
 
 			if ( $is_exitsing_event ) {
@@ -290,10 +334,10 @@ class Import_Facebook_Events_Aioec {
 	 *
 	 * @since    1.0.0
 	 * @param int $event_id event id.
-	 * @return str
+	 * @return string
 	 */
 	public function get_ical_uid_for_event( $event_id ) {
-		$site_url = parse_url( ai1ec_get_site_url() );
+		$site_url = wp_parse_url( ai1ec_get_site_url() );
 		$format   = 'ai1ec-%d@' . $site_url['host'];
 		if ( isset( $site_url['path'] ) ) {
 			$format .= $site_url['path'];
@@ -305,8 +349,11 @@ class Import_Facebook_Events_Aioec {
 	 * Remove query string from URL.
 	 *
 	 * @since 1.0.0
+	 * @param string $datetime DateTime.
+	 * @param string $local_timezone Local Timezone.
+	 * @return string
 	 */
-	function convert_datetime_to_local_datetime( $datetime, $local_timezone ) {
+	public function convert_datetime_to_local_datetime( $datetime, $local_timezone ) {
 		try {
 			$datetime2 = new DateTime( date( 'Y-m-d H:i:s', $datetime ), new DateTimeZone( $local_timezone ) );
 			$datetime2->setTimezone( new DateTimeZone( 'UTC' ) );

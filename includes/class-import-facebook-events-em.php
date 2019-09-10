@@ -8,23 +8,47 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Event Manager functionality of the plugin.
+ *
+ * @package     Import_Facebook_Events
+ * @subpackage  Import_Facebook_Events/includes
+ * @author     Dharmesh Patel <dspatel44@gmail.com>
+ */
 class Import_Facebook_Events_EM {
 
-	// Events manager Event Taxonomy
+	/**
+	 * $taxonomy Event Taxonomy
+	 *
+	 * @var string
+	 */
 	protected $taxonomy;
 
-	// Event tag Taxonomy
+	/**
+	 * $tag_taxonomy Event tag Taxonomy
+	 *
+	 * @var string
+	 */
 	protected $tag_taxonomy;
 
-	// Events manager Event Posttype
+	/**
+	 * $event_posttype Event Posttype
+	 *
+	 * @var string
+	 */
 	protected $event_posttype;
 
-	// Events manager Venue Posttype
+	/**
+	 * $venue_posttype Venue Posttype
+	 *
+	 * @var string
+	 */
 	protected $venue_posttype;
 
 	/**
@@ -59,28 +83,47 @@ class Import_Facebook_Events_EM {
 
 
 	/**
-	 * Get Posttype and Taxonomy Functions
+	 * Get Event Posttype
 	 *
 	 * @return string
 	 */
 	public function get_event_posttype() {
 		return $this->event_posttype;
 	}
+
+	/**
+	 * Get Venue Posttype
+	 *
+	 * @return string
+	 */
 	public function get_venue_posttype() {
 		return $this->venue_posttype;
 	}
+
+	/**
+	 * Get Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
+
+	/**
+	 * Get Tag Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_tag_taxonomy() {
 		return $this->tag_taxonomy;
 	}
 
 	/**
-	 * import event into TEC
+	 * Import event into TEC
 	 *
 	 * @since    1.0.0
-	 * @param  array $centralize event array.
+	 * @param  array $centralize_array Centralize event array.
+	 * @param  array $event_args Event Args array.
 	 * @return array
 	 */
 	public function import_event( $centralize_array, $event_args ) {
@@ -96,7 +139,7 @@ class Import_Facebook_Events_EM {
 			// Update event or not?
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
-			if ( 'yes' != $update_events ) {
+			if ( 'yes' !== $update_events ) {
 				return array(
 					'status' => 'skipped',
 					'id'     => $is_exitsing_event,
@@ -124,7 +167,7 @@ class Import_Facebook_Events_EM {
 		if ( $is_exitsing_event ) {
 			$emeventdata['ID'] = $is_exitsing_event;
 		}
-		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
+		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$emeventdata['post_status'] = $event_args['event_status'];
 		}
 
@@ -166,9 +209,9 @@ class Import_Facebook_Events_EM {
 				}
 			}
 
-			// Assign Featured images
+			// Assign Featured images.
 			$event_image = $centralize_array['image_url'];
-			if ( $event_image != '' ) {
+			if ( ! empty( $event_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
 			} else {
 				if ( $is_exitsing_event ) {
@@ -188,9 +231,9 @@ class Import_Facebook_Events_EM {
 			}
 
 			$event_status = null;
-			if ( $inserted_event->post_status == 'publish' ) {
+			if ( 'publish' === $inserted_event->post_status ) {
 				$event_status = 1;}
-			if ( $inserted_event->post_status == 'pending' ) {
+			if ( 'pending' === $inserted_event->post_status ) {
 				$event_status = 0;}
 			// Save Meta.
 			update_post_meta( $inserted_event_id, '_event_start_time', date( 'H:i:s', $start_time ) );
@@ -213,7 +256,7 @@ class Import_Facebook_Events_EM {
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $ticket_uri ) );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 
-			// Custom table Details
+			// Custom table Details.
 			$event_array = array(
 				'post_id'            => $inserted_event_id,
 				'event_slug'         => $inserted_event->post_name,
@@ -237,15 +280,15 @@ class Import_Facebook_Events_EM {
 			if ( $is_exitsing_event ) {
 				$eve_id = get_post_meta( $inserted_event_id, '_event_id', true );
 				$where  = array( 'event_id' => $eve_id );
-				$wpdb->update( $event_table, $event_array, $where );
+				$wpdb->update( $event_table, $event_array, $where ); // db call ok; no-cache ok.
 			} else {
-				if ( $wpdb->insert( $event_table, $event_array ) ) {
+				if ( $wpdb->insert( $event_table, $event_array ) ) { // db call ok;.
 					update_post_meta( $inserted_event_id, '_event_id', $wpdb->insert_id );
 				}
 			}
 
-			if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
-				$status_changed = $wpdb->update( $wpdb->posts, array( 'post_status' => sanitize_text_field( $event_args['event_status'] ) ), array( 'ID' => $inserted_event_id ) );
+			if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
+				$status_changed = $wpdb->update( $wpdb->posts, array( 'post_status' => sanitize_text_field( $event_args['event_status'] ) ), array( 'ID' => $inserted_event_id ) ); // db call ok; no-cache ok.
 			}
 
 			if ( $is_exitsing_event ) {
@@ -274,6 +317,7 @@ class Import_Facebook_Events_EM {
 	 *
 	 * @since    1.0.0
 	 * @param array $venue location.
+	 * @param int   $event_id Event id.
 	 * @return array
 	 */
 	public function get_location_args( $venue, $event_id = false ) {
@@ -311,7 +355,7 @@ class Import_Facebook_Events_EM {
 
 			// Location information.
 			$country = isset( $venue['country'] ) ? $venue['country'] : '';
-			if ( strlen( $country ) > 2 && $country != '' ) {
+			if ( strlen( $country ) > 2 && ! empty( $country ) ) {
 				$country = $ife_events->common->ife_get_country_code( $country );
 			}
 			$address = isset( $venue['full_address'] ) ? $venue['full_address'] : $venue['address_1'];
@@ -364,14 +408,14 @@ class Import_Facebook_Events_EM {
 
 			if ( $event_id && is_numeric( $event_id ) && $event_id > 0 ) {
 				$loc_id = get_post_meta( $event_id, '_location_id', true );
-				if ( $loc_id != '' ) {
+				if ( ! empty( $loc_id ) ) {
 					$where     = array( 'location_id' => $loc_id );
-					$is_update = $wpdb->update( $event_location_table, $location_array, $where, $location_format, $where_format );
+					$is_update = $wpdb->update( $event_location_table, $location_array, $where, $location_format, $where_format ); // db call ok; no-cache ok.
 					if ( false !== $is_update ) {
 						return $loc_id;
 					}
 				} else {
-					$is_insert = $wpdb->insert( $event_location_table, $location_array, $location_format );
+					$is_insert = $wpdb->insert( $event_location_table, $location_array, $location_format ); // db call ok;.
 					if ( false !== $is_insert ) {
 						$insert_loc_id = $wpdb->insert_id;
 						update_post_meta( $location_id, '_location_id', $insert_loc_id );
@@ -379,7 +423,7 @@ class Import_Facebook_Events_EM {
 					}
 				}
 			} else {
-				$is_insert = $wpdb->insert( $event_location_table, $location_array, $location_format );
+				$is_insert = $wpdb->insert( $event_location_table, $location_array, $location_format ); // db call ok;.
 				if ( false !== $is_insert ) {
 					$insert_loc_id = $wpdb->insert_id;
 					update_post_meta( $location_id, '_location_id', $insert_loc_id );
@@ -402,8 +446,8 @@ class Import_Facebook_Events_EM {
 			array(
 				'posts_per_page'   => 1,
 				'post_type'        => $this->venue_posttype,
-				'meta_key'         => 'ife_event_venue_id',
-				'meta_value'       => $venue_id,
+				'meta_key'         => 'ife_event_venue_id', // WPCS: slow query ok.
+				'meta_value'       => $venue_id, // WPCS: slow query ok.
 				'suppress_filters' => false,
 			)
 		);

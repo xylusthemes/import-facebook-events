@@ -8,7 +8,8 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -47,7 +48,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 	 * @param string $column_name  Column name.
 	 * @return string
 	 */
-	function column_default( $item, $column_name ) {
+	public function column_default( $item, $column_name ) {
 		return $item[ $column_name ];
 	}
 
@@ -55,22 +56,22 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 	 * Setup output for title column.
 	 *
 	 * @since    1.0.0
-	 * @param array $item Items.
+	 * @param array $item Item.
 	 * @return array
 	 */
-	function column_title( $item ) {
+	public function column_title( $item ) {
 
 		$ife_url_delete_args = array(
 			'page'       => 'facebook_import',
 			'ife_action' => 'ife_simport_delete',
-			'import_id'  => absint( $item['ID'] )
+			'import_id'  => absint( $item['ID'] ),
 		);
 
 		$page              = 'facebook_import';
-		$tab               = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'scheduled';
+		$tab               = 'scheduled';
 		$wp_redirect       = admin_url( 'admin.php?page=' . $page );
 		$ife_url_edit_args = array(
-			'tab'  => wp_unslash( $tab ),
+			'tab'  => $tab,
 			'edit' => absint( $item['ID'] ),
 		);
 		// Build row actions.
@@ -80,7 +81,8 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 		);
 
 		if ( isset( $item['facebook_id'] ) && 'me' === $item['facebook_id'] ) {
-			$item['import_by'] = $item['facebook_id'] = __( 'My Events', 'import-facebook-events' );
+			$item['import_by']   = esc_attr__( 'My Events', 'import-facebook-events' );
+			$item['facebook_id'] = esc_attr__( 'My Events', 'import-facebook-events' );
 		}
 
 		// Return the title contents.
@@ -108,12 +110,12 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 	 * @param array $item Items.
 	 * @return array
 	 */
-	function column_action( $item ) {
+	public function column_action( $item ) {
 
 		$xtmi_run_import_args = array(
 			'page'       => 'facebook_import',
 			'ife_action' => 'ife_run_import',
-			'import_id'  => $item['ID']
+			'import_id'  => $item['ID'],
 		);
 
 		$current_import = '';
@@ -122,13 +124,16 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 			if ( ! empty( $item['current_import'] ) ) {
 				$stats = array();
 				if ( $item['current_import']['created'] > 0 ) {
-					$stats[] = sprintf( __( '%d Created', 'import-facebook-events' ), $item['current_import']['created'] );
+					// translators: %d is numbers of event created.
+					$stats[] = sprintf( esc_attr__( '%d Created', 'import-facebook-events' ), $item['current_import']['created'] );
 				}
 				if ( $item['current_import']['updated'] > 0 ) {
-					$stats[] = sprintf( __( '%d Updated', 'import-facebook-events' ), $item['current_import']['updated'] );
+					// translators: %d is numbers of event updated.
+					$stats[] = sprintf( esc_attr__( '%d Updated', 'import-facebook-events' ), $item['current_import']['updated'] );
 				}
 				if ( $item['current_import']['skipped'] > 0 ) {
-					$stats[] = sprintf( __( '%d Skipped', 'import-facebook-events' ), $item['current_import']['skipped'] );
+					// translators: %d is numbers of event skipped.
+					$stats[] = sprintf( esc_attr__( '%d Skipped', 'import-facebook-events' ), $item['current_import']['skipped'] );
 				}
 				if ( ! empty( $stats ) ) {
 					$stats    = esc_html__( 'Stats: ', 'import-facebook-events' ) . '<span style="color: silver">' . implode( ', ', $stats ) . '</span>';
@@ -149,11 +154,17 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 		);
 	}
 
-	function column_cb( $item ) {
+	/**
+	 * Return Checkbox Column.
+	 *
+	 * @param array $item Item.
+	 * @return string
+	 */
+	public function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
-			/*$1%s*/ $this->_args['singular'],  // Let's simply repurpose the table's singular label ("video")
-			/*$2%s*/ $item['ID']             // The value of the checkbox should be the record's id
+			/*$1%s*/ $this->_args['singular'],  // Let's simply repurpose the table's singular label ("video").
+			/*$2%s*/ $item['ID']             // The value of the checkbox should be the record's id.
 		);
 	}
 
@@ -162,32 +173,39 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 	 *
 	 * @since    1.0.0
 	 */
-	function get_columns() {
+	public function get_columns() {
 		$columns = array(
 			'cb'               => '<input type="checkbox" />',
-			'title'            => __( 'Scheduled import', 'import-facebook-events' ),
-			'import_status'    => __( 'Import Event Status', 'import-facebook-events' ),
-			'import_category'  => __( 'Import Category', 'import-facebook-events' ),
-			'import_frequency' => __( 'Import Frequency', 'import-facebook-events' ),
-			'action'           => __( 'Action', 'import-facebook-events' )
+			'title'            => esc_attr__( 'Scheduled import', 'import-facebook-events' ),
+			'import_status'    => esc_attr__( 'Import Event Status', 'import-facebook-events' ),
+			'import_category'  => esc_attr__( 'Import Category', 'import-facebook-events' ),
+			'import_frequency' => esc_attr__( 'Import Frequency', 'import-facebook-events' ),
+			'action'           => esc_attr__( 'Action', 'import-facebook-events' ),
 		);
 		return $columns;
 	}
 
+	/**
+	 * Get bulk actions.
+	 *
+	 * @since    1.0.0
+	 * @return array
+	 */
 	public function get_bulk_actions() {
 
 		return array(
-			'delete' => __( 'Delete', 'import-facebook-events' ),
+			'delete' => esc_attr__( 'Delete', 'import-facebook-events' ),
 		);
 
 	}
 
 	/**
-	 * Prepare Meetup url data.
+	 * Prepare Facebook Scheduled data.
 	 *
 	 * @since    1.0.0
+	 * @param string $origin Event Origin.
 	 */
-	function prepare_items( $origin = '' ) {
+	public function prepare_items( $origin = '' ) {
 		$per_page = 10;
 		$columns  = $this->get_columns();
 		$hidden   = array( 'ID' );
@@ -197,7 +215,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 
 		$this->process_bulk_action();
 
-		if ( $origin !== '' ) {
+		if ( ! empty( $origin ) ) {
 			$data = $this->get_scheduled_import_data( $origin );
 		} else {
 			$data = $this->get_scheduled_import_data();
@@ -212,7 +230,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 				array(
 					'total_items' => $total_items,  // WE have to calculate the total number of items.
 					'per_page'    => $per_page, // WE have to determine how many items to show on a page.
-					'total_pages' => ceil( $total_items / $per_page ) // WE have to calculate the total number of pages.
+					'total_pages' => ceil( $total_items / $per_page ), // WE have to calculate the total number of pages.
 				)
 			);
 		}
@@ -222,8 +240,9 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 	 * Get Meetup url data.
 	 *
 	 * @since    1.0.0
+	 * @param string $origin Event Origin.
 	 */
-	function get_scheduled_import_data( $origin = '' ) {
+	public function get_scheduled_import_data( $origin = '' ) {
 		global $ife_events;
 
 		// Check Running Imports.
@@ -242,14 +261,14 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 					$import_status = array(
 						'created' => 0,
 						'updated' => 0,
-						'skipped' => 0
+						'skipped' => 0,
 					);
 					foreach ( $import_data as $key => $value ) {
-						if ( $value['status'] == 'created' ) {
+						if ( 'created' === $value['status'] ) {
 							$import_status['created'] += 1;
-						} elseif ( $value['status'] == 'updated' ) {
+						} elseif ( 'updated' === $value['status'] ) {
 							$import_status['updated'] += 1;
-						} elseif ( $value['status'] == 'skipped' ) {
+						} elseif ( 'skipped' === $value['status'] ) {
 							$import_status['skipped'] += 1;
 						}
 					}
@@ -260,7 +279,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 
 		$scheduled_import_data = array(
 			'total_records' => 0,
-			'import_data'   => array()
+			'import_data'   => array(),
 		);
 		$per_page              = 10;
 		$current_page          = $this->get_pagenum();
@@ -269,16 +288,16 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 		$query_args = array(
 			'post_type'      => 'fb_scheduled_imports',
 			'posts_per_page' => $per_page,
-			'paged'          => $current_page
+			'paged'          => $current_page,
 		);
 
 		if ( isset( $_REQUEST['s'] ) ) {
-			$query_args['s'] = sanitize_text_field( $_REQUEST['s'] );
+			$query_args['s'] = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) );
 		}
 
-		if ( $origin != '' ) {
-			$query_args['meta_key']   = 'import_origin';
-			$query_args['meta_value'] = esc_attr( $origin );
+		if ( ! empty( $origin ) ) {
+			$query_args['meta_key']   = 'import_origin'; // WPCS: slow query ok.
+			$query_args['meta_value'] = esc_attr( $origin ); // WPCS: slow query ok.
 		}
 		$importdata_query                       = new WP_Query( $query_args );
 		$scheduled_import_data['total_records'] = ( $importdata_query->found_posts ) ? (int) $importdata_query->found_posts : 0;
@@ -302,7 +321,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 				if ( $import_terms && ! empty( $import_terms ) ) {
 					foreach ( $import_terms as $term ) {
 						$get_term = '';
-						if ( $import_plugin != '' ) {
+						if ( ! empty( $import_plugin ) ) {
 							if ( ! empty( $ife_events->$import_plugin ) ) {
 								$get_term = get_term( $term, $ife_events->$import_plugin->get_taxonomy() );
 							}
@@ -314,38 +333,43 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 					}
 				}
 
-				$stats        = $last_import_history_date = '';
-				$history_args = array(
+				$stats                    = '';
+				$last_import_history_date = '';
+				$history_args             = array(
 					'post_type'   => 'ife_import_history',
 					'post_status' => 'publish',
 					'numberposts' => 1,
-					'meta_key'    => 'schedule_import_id',
-					'meta_value'  => $import_id,
-					'fields'      => 'ids'
+					'meta_key'    => 'schedule_import_id', // WPCS: slow query ok.
+					'meta_value'  => $import_id, // WPCS: slow query ok.
+					'fields'      => 'ids',
 				);
-				$history      = get_posts( $history_args );
+				$history                  = get_posts( $history_args );
 				if ( ! empty( $history ) ) {
-					$last_import_history_date = sprintf( __( 'Last Import: %s ago', 'import-facebook-events' ), human_time_diff( get_the_date( 'U', $history[0] ), current_time( 'timestamp' ) ) );
+					// translators: %s time.
+					$last_import_history_date = sprintf( esc_attr__( 'Last Import: %s ago', 'import-facebook-events' ), human_time_diff( get_the_date( 'U', $history[0] ), current_time( 'timestamp' ) ) );
 
 					$created = get_post_meta( $history[0], 'created', true );
 					$updated = get_post_meta( $history[0], 'updated', true );
 					$skipped = get_post_meta( $history[0], 'skipped', true );
 					$stats   = array();
 					if ( $created > 0 ) {
-						$stats[] = sprintf( __( '%d Created', 'import-facebook-events' ), $created );
+						// translators: %d is numbers of event Created.
+						$stats[] = sprintf( esc_attr__( '%d Created', 'import-facebook-events' ), $created );
 					}
 					if ( $updated > 0 ) {
-						$stats[] = sprintf( __( '%d Updated', 'import-facebook-events' ), $updated );
+						// translators: %d is numbers of event Updated.
+						$stats[] = sprintf( esc_attr__( '%d Updated', 'import-facebook-events' ), $updated );
 					}
 					if ( $skipped > 0 ) {
-						$stats[] = sprintf( __( '%d Skipped', 'import-facebook-events' ), $skipped );
+						// translators: %d is numbers of event skipped.
+						$stats[] = sprintf( esc_attr__( '%d Skipped', 'import-facebook-events' ), $skipped );
 					}
 					if ( ! empty( $stats ) ) {
 						$stats = esc_html__( 'Last Import Stats: ', 'import-facebook-events' ) . '<span style="color: silver">' . implode( ', ', $stats ) . '</span>';
 					} else {
 						$nothing_to_import = get_post_meta( $history[0], 'nothing_to_import', true );
 						if ( $nothing_to_import ) {
-							$stats = '<span style="color: silver">' . __( 'No events are imported.', 'import-facebook-events' ) . '</span>';
+							$stats = '<span style="color: silver">' . esc_attr__( 'No events are imported.', 'import-facebook-events' ) . '</span>';
 						} else {
 							$stats = '';
 						}
@@ -361,7 +385,7 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 					'import_origin'    => $import_origin,
 					'import_into'      => $import_into,
 					'facebook_id'      => $facebook_id,
-					'import_by'        => ( 'facebook_organization' === $import_data['import_by'] ) ? __( 'Facebook Page', 'import-facebook-events' ) : __( 'Facebook Group', 'import-facebook-events' ),
+					'import_by'        => ( 'facebook_organization' === $import_data['import_by'] ) ? esc_attr__( 'Facebook Page', 'import-facebook-events' ) : esc_attr__( 'Facebook Group', 'import-facebook-events' ),
 					'last_import'      => $last_import_history_date,
 					'stats'            => $stats,
 				);
@@ -407,7 +431,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 	 * @param string $column_name  Column name.
 	 * @return string
 	 */
-	function column_default( $item, $column_name ) {
+	public function column_default( $item, $column_name ) {
 		return $item[ $column_name ];
 	}
 
@@ -418,7 +442,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 	 * @param array $item Items.
 	 * @return array
 	 */
-	function column_title( $item ) {
+	public function column_title( $item ) {
 
 		$ife_url_delete_args = array(
 			'page'       => 'facebook_import',
@@ -447,7 +471,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 	 * @param array $item Items.
 	 * @return array
 	 */
-	function column_stats( $item ) {
+	public function column_stats( $item ) {
 
 		$created           = get_post_meta( $item['ID'], 'created', true );
 		$updated           = get_post_meta( $item['ID'], 'updated', true );
@@ -456,16 +480,19 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 
 		$success_message = '<span style="color: silver"><strong>';
 		if ( $created > 0 ) {
-			$success_message .= sprintf( __( '%d Created', 'import-facebook-events' ), $created ) . '<br>';
+			// translators: %d is numbers of event Created.
+			$success_message .= sprintf( esc_attr__( '%d Created', 'import-facebook-events' ), $created ) . '<br>';
 		}
 		if ( $updated > 0 ) {
-			$success_message .= sprintf( __( '%d Updated', 'import-facebook-events' ), $updated ) . '<br>';
+			// translators: %d is numbers of event Updated.
+			$success_message .= sprintf( esc_attr__( '%d Updated', 'import-facebook-events' ), $updated ) . '<br>';
 		}
 		if ( $skipped > 0 ) {
-			$success_message .= sprintf( __( '%d Skipped', 'import-facebook-events' ), $skipped ) . '<br>';
+			// translators: %d is numbers of event skipped.
+			$success_message .= sprintf( esc_attr__( '%d Skipped', 'import-facebook-events' ), $skipped ) . '<br>';
 		}
 		if ( $nothing_to_import ) {
-			$success_message .= __( 'No events are imported.', 'import-facebook-events' ) . '<br>';
+			$success_message .= esc_attr__( 'No events are imported.', 'import-facebook-events' ) . '<br>';
 		}
 		$success_message .= '</strong></span>';
 
@@ -479,7 +506,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 	 * @param array $item Items.
 	 * @return array
 	 */
-	function column_action( $item ) {
+	public function column_action( $item ) {
 		$url = add_query_arg(
 			array(
 				'action'    => 'ife_view_import_history',
@@ -496,18 +523,24 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 				'<a href="%1$s" title="%2$s" class="open-history-details-modal button button-primary thickbox">%3$s</a>',
 				$url,
 				$item['title'],
-				__( 'View Imported Events', 'import-facebook-events' )
+				esc_attr__( 'View Imported Events', 'import-facebook-events' )
 			);
 		} else {
 			return '-';
 		}
 	}
 
-	function column_cb( $item ) {
+	/**
+	 * Return Checkbox Column.
+	 *
+	 * @param array $item Item.
+	 * @return string
+	 */
+	public function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
-			/*$1%s*/ $this->_args['singular'],  // Let's simply repurpose the table's singular label ("video")
-			/*$2%s*/ $item['ID']                // The value of the checkbox should be the record's id
+			/*$1%s*/ $this->_args['singular'],  // Let's simply repurpose the table's singular label ("video").
+			/*$2%s*/ $item['ID']                // The value of the checkbox should be the record's id.
 		);
 	}
 
@@ -516,22 +549,27 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 	 *
 	 * @since    1.0.0
 	 */
-	function get_columns() {
+	public function get_columns() {
 		$columns = array(
 			'cb'              => '<input type="checkbox" />',
-			'title'           => __( 'Import', 'import-facebook-events' ),
-			'import_category' => __( 'Import Category', 'import-facebook-events' ),
-			'import_date'     => __( 'Import Date', 'import-facebook-events' ),
-			'stats'           => __( 'Import Stats', 'import-facebook-events' ),
-			'action'          => __( 'Action', 'import-facebook-events' ),
+			'title'           => esc_attr__( 'Import', 'import-facebook-events' ),
+			'import_category' => esc_attr__( 'Import Category', 'import-facebook-events' ),
+			'import_date'     => esc_attr__( 'Import Date', 'import-facebook-events' ),
+			'stats'           => esc_attr__( 'Import Stats', 'import-facebook-events' ),
+			'action'          => esc_attr__( 'Action', 'import-facebook-events' ),
 		);
 		return $columns;
 	}
 
+	/**
+	 * Get Bulk Actions
+	 *
+	 * @return array
+	 */
 	public function get_bulk_actions() {
 
 		return array(
-			'delete' => __( 'Delete', 'import-facebook-events' ),
+			'delete' => esc_attr__( 'Delete', 'import-facebook-events' ),
 		);
 
 	}
@@ -540,8 +578,9 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 	 * Prepare Meetup url data.
 	 *
 	 * @since    1.0.0
+	 * @param string $origin Event Origin.
 	 */
-	function prepare_items( $origin = '' ) {
+	public function prepare_items( $origin = '' ) {
 		$per_page = 10;
 		$columns  = $this->get_columns();
 		$hidden   = array( 'ID' );
@@ -551,7 +590,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 
 		$this->process_bulk_action();
 
-		if ( $origin != '' ) {
+		if ( ! empty( $origin ) ) {
 			$data = $this->get_import_history_data( $origin );
 		} else {
 			$data = $this->get_import_history_data();
@@ -576,8 +615,9 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 	 * Get Meetup url data.
 	 *
 	 * @since    1.0.0
+	 * @param string $origin Event Origin.
 	 */
-	function get_import_history_data( $origin = '' ) {
+	public function get_import_history_data( $origin = '' ) {
 		global $ife_events;
 
 		$scheduled_import_data = array(
@@ -593,9 +633,9 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 			'paged'          => $current_page,
 		);
 
-		if ( $origin != '' ) {
-			$query_args['meta_key']   = 'import_origin';
-			$query_args['meta_value'] = esc_attr( $origin );
+		if ( ! empty( $origin ) ) {
+			$query_args['meta_key']   = 'import_origin'; // WPCS: slow query ok.
+			$query_args['meta_value'] = esc_attr( $origin ); // WPCS: slow query ok.
 		}
 
 		$importdata_query                       = new WP_Query( $query_args );
@@ -616,7 +656,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 				if ( $import_terms && ! empty( $import_terms ) ) {
 					foreach ( $import_terms as $term ) {
 						$get_term = '';
-						if ( $import_plugin != '' ) {
+						if ( ! empty( $import_plugin ) ) {
 							$get_term = get_term( $term, $ife_events->$import_plugin->get_taxonomy() );
 						}
 

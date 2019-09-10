@@ -8,20 +8,40 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * EE4 functionality of the plugin.
+ *
+ * @package     Import_Facebook_Events
+ * @subpackage  Import_Facebook_Events/includes
+ * @author     Dharmesh Patel <dspatel44@gmail.com>
+ */
 class Import_Facebook_Events_EE4 {
 
-	// Event Taxonomy
+	/**
+	 * $taxonomy Event Taxonomy
+	 *
+	 * @var string
+	 */
 	protected $taxonomy;
 
-	// Event Posttype
+	/**
+	 * $event_posttype Event Posttype
+	 *
+	 * @var string
+	 */
 	protected $event_posttype;
 
-	// Venue Posttype
+	/**
+	 * $venue_posttype Venue Posttype
+	 *
+	 * @var string
+	 */
 	protected $venue_posttype;
 
 	/**
@@ -39,25 +59,38 @@ class Import_Facebook_Events_EE4 {
 
 
 	/**
-	 * Get Posttype and Taxonomy Functions
+	 * Get Event Posttype
 	 *
 	 * @return string
 	 */
 	public function get_event_posttype() {
 		return $this->event_posttype;
 	}
+
+	/**
+	 * Get Taxonomy
+	 *
+	 * @return string
+	 */
 	public function get_taxonomy() {
 		return $this->taxonomy;
 	}
+
+	/**
+	 * Get Venue Posttype
+	 *
+	 * @return string
+	 */
 	public function get_venue_posttype() {
 		return $this->venue_posttype;
 	}
 
 	/**
-	 * import event into EE4
+	 * Import event into EE4
 	 *
 	 * @since    1.3.0
-	 * @param  array $centralize event array.
+	 * @param  array $centralize_array Centralize event array.
+	 * @param  array $event_args Event Args array.
 	 * @return array
 	 */
 	public function import_event( $centralize_array, $event_args ) {
@@ -73,7 +106,7 @@ class Import_Facebook_Events_EE4 {
 			// Update event or not?
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
-			if ( 'yes' != $update_events ) {
+			if ( 'yes' !== $update_events ) {
 				return array(
 					'status' => 'skipped',
 					'id'     => $is_exitsing_event,
@@ -97,7 +130,7 @@ class Import_Facebook_Events_EE4 {
 		if ( $is_exitsing_event ) {
 			$emeventdata['ID'] = $is_exitsing_event;
 		}
-		if ( isset( $event_args['event_status'] ) && $event_args['event_status'] != '' ) {
+		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$emeventdata['post_status'] = $event_args['event_status'];
 		}
 
@@ -126,9 +159,9 @@ class Import_Facebook_Events_EE4 {
 				}
 			}
 
-			// Assign Featured images
+			// Assign Featured images.
 			$event_image = $centralize_array['image_url'];
-			if ( $event_image != '' ) {
+			if ( ! empty( $event_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
 			} else {
 				if ( $is_exitsing_event ) {
@@ -136,7 +169,7 @@ class Import_Facebook_Events_EE4 {
 				}
 			}
 
-			// Event Date & time Details
+			// Event Date & time Details.
 			$event_start_date = date( 'Y-m-d H:i:s', $start_time );
 			$event_end_date   = date( 'Y-m-d H:i:s', $end_time );
 
@@ -151,29 +184,29 @@ class Import_Facebook_Events_EE4 {
 
 			if ( $is_exitsing_event ) {
 				$where     = array( 'EVT_ID' => $inserted_event_id );
-				$is_insert = $wpdb->update( $datetime_table, $datetime_data, $where );
+				$is_insert = $wpdb->update( $datetime_table, $datetime_data, $where ); // db call ok; no-cache ok.
 			} else {
-				$is_insert = $wpdb->insert( $datetime_table, $datetime_data );
+				$is_insert = $wpdb->insert( $datetime_table, $datetime_data ); // db call ok;.
 			}
 
-			// Disable event registration
+			// Disable event registration.
 			if ( ! $is_exitsing_event ) {
 				$event_meta_data = array(
 					'EVT_display_desc'            => 0,
 					'EVT_display_ticket_selector' => 0,
 					'EVT_visible_on'              => date( 'Y-m-d H:i:s' ),
 				);
-				$event_meta_id   = $wpdb->get_var( $wpdb->prepare( "SELECT `EVTM_ID` FROM {$event_meta_table} WHERE EVT_ID = %d", $inserted_event_id ) );
+				$event_meta_id   = $wpdb->get_var( $wpdb->prepare( "SELECT `EVTM_ID` FROM {$event_meta_table} WHERE EVT_ID = %d", $inserted_event_id ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
 				if ( count( $result ) > 0 ) {
 					$wpdb->update(
 						$event_meta_table, $event_meta_data, array(
 							'EVTM_ID' => $event_meta_id,
 							'EVT_ID'  => $inserted_event_id,
 						)
-					);
+					); // db call ok; no-cache ok.
 				} else {
 					$event_meta_data['EVT_ID'] = $inserted_event_id;
-					$wpdb->insert( $event_meta_table, $event_meta_data );
+					$wpdb->insert( $event_meta_table, $event_meta_data ); // db call ok;.
 				}
 			}
 
@@ -183,22 +216,22 @@ class Import_Facebook_Events_EE4 {
 			$venue_id = $this->add_ee4_venue( $centralize_array['location'], $inserted_event_id );
 
 			if ( ! empty( $venue_id ) && $venue_id > 0 ) {
-				// Connect venue with Event
+				// Connect venue with Event.
 				$event_venue_table = $wpdb->prefix . 'esp_event_venue';
-				$result            = $wpdb->get_col( $wpdb->prepare( "SELECT * FROM {$event_venue_table} WHERE EVT_ID = %d", $inserted_event_id ) );
+				$result            = $wpdb->get_col( $wpdb->prepare( "SELECT * FROM {$event_venue_table} WHERE EVT_ID = %d", $inserted_event_id ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
 				if ( count( $result ) > 0 ) {
-					$wpdb->update( $event_venue_table, array( 'VNU_ID' => $venue_id ), array( 'EVT_ID' => $inserted_event_id ) );
+					$wpdb->update( $event_venue_table, array( 'VNU_ID' => $venue_id ), array( 'EVT_ID' => $inserted_event_id ) ); // db call ok; no-cache ok.
 				} else {
 					$wpdb->insert(
 						$event_venue_table, array(
 							'EVT_ID' => $inserted_event_id,
 							'VNU_ID' => $venue_id,
 						)
-					);
+					); // db call ok;.
 				}
 			}
 
-			// Save Event Data
+			// Save Event Data.
 			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $ticket_uri ) );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
@@ -228,12 +261,12 @@ class Import_Facebook_Events_EE4 {
 		}
 	}
 
-	/*
+	/**
 	 * Add Venue to EE4 Events
 	 *
-	 * @param $centralize_array array Event data array.
-	 *
-	 * @retun int|bool venue ID on success or false on failure
+	 * @param array $venue_array Venue data array.
+	 * @param int   $event_id Event id.
+	 * @return int|bool venue ID on success or false on failure
 	 */
 	public function add_ee4_venue( $venue_array, $event_id ) {
 		global $wpdb;
@@ -251,7 +284,7 @@ class Import_Facebook_Events_EE4 {
 			return $is_exitsing_venue;
 		}
 
-		// Venue Deatails
+		// Venue Deatails.
 		$address_1     = isset( $venue_array['address_1'] ) ? $venue_array['address_1'] : '';
 		$address_2     = isset( $venue_array['address_2'] ) ? $venue_array['address_2'] : '';
 		$venue_name    = isset( $venue_array['name'] ) ? sanitize_text_field( $venue_array['name'] ) : '';
@@ -275,22 +308,23 @@ class Import_Facebook_Events_EE4 {
 		$ivenue_id = wp_insert_post( $venuedata, true );
 		update_post_meta( $ivenue_id, 'ife_ee4_venue_id', $venue_id );
 
-		// Get Country code
-		$cnt_iso       = $sta_id = '';
+		// Get Country code.
+		$cnt_iso       = '';
+		$sta_id        = '';
 		$country_table = $wpdb->prefix . 'esp_country';
 		$state_table   = $wpdb->prefix . 'esp_state';
-		if ( $venue_country != '' ) {
-			$cnt_country = $wpdb->get_row( $wpdb->prepare( "SELECT `CNT_ISO`,`CNT_active` FROM {$country_table} WHERE `CNT_name` = %s OR `CNT_ISO` = %s OR `CNT_ISO3` = %s", $venue_country, $venue_country, $venue_country ) );
-			if ( ! empty( $cnt_country ) && isset( $cnt_country->CNT_ISO ) ) {
-				$cnt_iso = $cnt_country->CNT_ISO;
-				if ( $cnt_country->CNT_active == 0 ) {
-					$active_con = $wpdb->update( $country_table, array( 'CNT_active' => 1 ), array( 'CNT_ISO' => $cnt_iso ) );
+		if ( ! empty( $venue_country ) ) {
+			$cnt_country = $wpdb->get_row( $wpdb->prepare( "SELECT `CNT_ISO`,`CNT_active` FROM {$country_table} WHERE `CNT_name` = %s OR `CNT_ISO` = %s OR `CNT_ISO3` = %s", $venue_country, $venue_country, $venue_country ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+			if ( ! empty( $cnt_country ) && isset( $cnt_country->CNT_ISO ) ) { // @codingStandardsIgnoreLine.
+				$cnt_iso = $cnt_country->CNT_ISO; // @codingStandardsIgnoreLine.
+				if ( 0 === $cnt_country->CNT_active ) { // @codingStandardsIgnoreLine.
+					$active_con = $wpdb->update( $country_table, array( 'CNT_active' => 1 ), array( 'CNT_ISO' => $cnt_iso ) ); // db call ok; no-cache ok.
 				}
 			}
 		}
 
-		if ( $venue_state != '' && $cnt_iso != '' ) {
-			$sta_id = $wpdb->get_var( $wpdb->prepare( "SELECT `STA_ID` FROM {$state_table} WHERE `CNT_ISO` = %s AND (`STA_abbrev` = %s OR `STA_name` = %s)", $cnt_iso, $venue_state, $venue_state ) );
+		if ( ! empty( $venue_state ) && ! empty( $cnt_iso ) ) {
+			$sta_id = $wpdb->get_var( $wpdb->prepare( "SELECT `STA_ID` FROM {$state_table} WHERE `CNT_ISO` = %s AND (`STA_abbrev` = %s OR `STA_name` = %s)", $cnt_iso, $venue_state, $venue_state ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
 			if ( empty( $sta_id ) || is_null( $sta_id ) ) {
 				$inserted = $wpdb->insert(
 					$state_table, array(
@@ -298,14 +332,14 @@ class Import_Facebook_Events_EE4 {
 						'STA_abbrev' => $venue_state,
 						'STA_name'   => $venue_state,
 					)
-				);
+				); // db call ok;.
 				if ( $inserted ) {
 					$sta_id = $wpdb->insert_id;
 				}
 			}
 		}
 
-		// Add Venue Meta
+		// Add Venue Meta.
 		$venue_data = array(
 			'VNU_ID'              => $ivenue_id,
 			'VNU_address'         => $address_1,
@@ -315,16 +349,16 @@ class Import_Facebook_Events_EE4 {
 			'VNU_url'             => $venue_url,
 			'VNU_enable_for_gmap' => apply_filters( 'ife_ee4_venue_enable_for_map', 1 ),
 		);
-		if ( $cnt_iso != '' ) {
+		if ( ! empty( $cnt_iso ) ) {
 			$venue_data['CNT_ISO'] = $cnt_iso;
 		}
-		if ( $sta_id != '' ) {
+		if ( ! empty( $sta_id ) ) {
 			$venue_data['STA_ID'] = $sta_id;
 		}
 
 		$venue_table = $wpdb->prefix . 'esp_venue_meta';
 
-		$wpdb->insert( $venue_table, $venue_data );
+		$wpdb->insert( $venue_table, $venue_data ); // db call ok;.
 
 		return $ivenue_id;
 	}
@@ -345,8 +379,8 @@ class Import_Facebook_Events_EE4 {
 			array(
 				'posts_per_page'   => 1,
 				'post_type'        => $this->venue_posttype,
-				'meta_key'         => 'ife_ee4_venue_id',
-				'meta_value'       => $venue_id,
+				'meta_key'         => 'ife_ee4_venue_id', // WPCS: slow query ok.
+				'meta_value'       => $venue_id, // WPCS: slow query ok.
 				'suppress_filters' => false,
 			)
 		);
