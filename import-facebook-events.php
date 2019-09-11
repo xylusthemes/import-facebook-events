@@ -233,8 +233,8 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		public function ife_enqueue_style() {
 
 			$css_dir = IFE_PLUGIN_URL . 'assets/css/';
-			wp_enqueue_style( 'font-awesome', $css_dir . 'font-awesome.min.css', false, '' );
-			wp_enqueue_style( 'import-facebook-events-front', $css_dir . 'import-facebook-events.css', false, '' );
+			wp_enqueue_style( 'font-awesome', $css_dir . 'font-awesome.min.css', false, IFE_VERSION );
+			wp_enqueue_style( 'import-facebook-events-front', $css_dir . 'import-facebook-events.css', false, IFE_VERSION );
 		}
 
 		/**

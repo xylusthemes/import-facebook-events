@@ -72,7 +72,11 @@ class Import_Facebook_Events_Admin {
 	public function enqueue_admin_scripts( $hook ) {
 
 		$js_dir = IFE_PLUGIN_URL . 'assets/js/';
-		wp_register_script( 'import-facebook-events', $js_dir . 'import-facebook-events-admin.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'wp-color-picker' ), IFE_VERSION );
+		wp_register_script( 'import-facebook-events', $js_dir . 'import-facebook-events-admin.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'wp-color-picker' ), IFE_VERSION, true );
+		$params = array(
+			'ajax_nonce' => wp_create_nonce( 'ife_admin_js_nonce' ),
+		);
+		wp_localize_script( 'import-facebook-events', 'ife_ajax', $params );
 		wp_enqueue_script( 'import-facebook-events' );
 
 	}
@@ -109,7 +113,8 @@ class Import_Facebook_Events_Admin {
 			<h2><?php esc_html_e( 'Import Facebook Events', 'import-facebook-events' ); ?></h2>
 			<?php
 			// Set Default Tab to Import.
-			$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'facebook'; // WPCS: CSRF ok. input var okay.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'facebook'; // input var okay.
 			?>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
@@ -381,7 +386,8 @@ class Import_Facebook_Events_Admin {
 			}
 
 			$plugin_data = plugins_api(
-				'plugin_information', array(
+				'plugin_information',
+				array(
 					'slug'   => $slug,
 					'is_ssl' => is_ssl(),
 					'fields' => array(
@@ -409,7 +415,7 @@ class Import_Facebook_Events_Admin {
 	public function ife_view_import_history_handler() {
 		define( 'IFRAME_REQUEST', true );
 		iframe_header();
-		$history_id = isset( $_GET['history'] ) ? absint( $_GET['history'] ) : 0;
+		$history_id = isset( $_GET['history'] ) ? absint( $_GET['history'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( $history_id > 0 ) {
 			$imported_data = get_post_meta( $history_id, 'imported_data', true );
 			if ( ! empty( $imported_data ) ) {
@@ -419,7 +425,7 @@ class Import_Facebook_Events_Admin {
 					<tr>
 						<th id="title" class="column-title column-primary"><?php esc_html_e( 'Event', 'import-eventbrite-events' ); ?></th>
 						<th id="action" class="column-operation"><?php esc_html_e( 'Created/Updated', 'import-eventbrite-events' ); ?></th>
-						<th id="action" class="column-date"><?php esc_html_e( 'Action', 'import-eventbrite-events' ); ?></th>
+						<th id="action" class="column-date"><?php esc_html_e( 'Action', 'import-facebook-events' ); ?></th>
 					</tr>
 				</thead>
 				<tbody id="the-list">

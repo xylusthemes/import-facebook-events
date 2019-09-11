@@ -296,8 +296,8 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 		}
 
 		if ( ! empty( $origin ) ) {
-			$query_args['meta_key']   = 'import_origin'; // WPCS: slow query ok.
-			$query_args['meta_value'] = esc_attr( $origin ); // WPCS: slow query ok.
+			$query_args['meta_key']   = 'import_origin'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+			$query_args['meta_value'] = esc_attr( $origin ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 		}
 		$importdata_query                       = new WP_Query( $query_args );
 		$scheduled_import_data['total_records'] = ( $importdata_query->found_posts ) ? (int) $importdata_query->found_posts : 0;
@@ -339,8 +339,8 @@ class Import_Facebook_Events_List_Table extends WP_List_Table {
 					'post_type'   => 'ife_import_history',
 					'post_status' => 'publish',
 					'numberposts' => 1,
-					'meta_key'    => 'schedule_import_id', // WPCS: slow query ok.
-					'meta_value'  => $import_id, // WPCS: slow query ok.
+					'meta_key'    => 'schedule_import_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+					'meta_value'  => $import_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 					'fields'      => 'ids',
 				);
 				$history                  = get_posts( $history_args );
@@ -514,7 +514,8 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 				'TB_iframe' => 'true',
 				'width'     => '800',
 				'height'    => '500',
-			), admin_url( 'admin.php' )
+			),
+			admin_url( 'admin.php' )
 		);
 
 		$imported_data = get_post_meta( $item['ID'], 'imported_data', true );
@@ -634,8 +635,8 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 		);
 
 		if ( ! empty( $origin ) ) {
-			$query_args['meta_key']   = 'import_origin'; // WPCS: slow query ok.
-			$query_args['meta_value'] = esc_attr( $origin ); // WPCS: slow query ok.
+			$query_args['meta_key']   = 'import_origin'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+			$query_args['meta_value'] = esc_attr( $origin ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 		}
 
 		$importdata_query                       = new WP_Query( $query_args );

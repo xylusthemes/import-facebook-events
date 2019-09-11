@@ -196,10 +196,13 @@ class Import_Facebook_Events_EE4 {
 					'EVT_display_ticket_selector' => 0,
 					'EVT_visible_on'              => date( 'Y-m-d H:i:s' ),
 				);
-				$event_meta_id   = $wpdb->get_var( $wpdb->prepare( "SELECT `EVTM_ID` FROM {$event_meta_table} WHERE EVT_ID = %d", $inserted_event_id ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$event_meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT `EVTM_ID` FROM {$event_meta_table} WHERE EVT_ID = %d", $inserted_event_id ) ); // cache ok, db call ok.
 				if ( count( $result ) > 0 ) {
 					$wpdb->update(
-						$event_meta_table, $event_meta_data, array(
+						$event_meta_table,
+						$event_meta_data,
+						array(
 							'EVTM_ID' => $event_meta_id,
 							'EVT_ID'  => $inserted_event_id,
 						)
@@ -218,12 +221,14 @@ class Import_Facebook_Events_EE4 {
 			if ( ! empty( $venue_id ) && $venue_id > 0 ) {
 				// Connect venue with Event.
 				$event_venue_table = $wpdb->prefix . 'esp_event_venue';
-				$result            = $wpdb->get_col( $wpdb->prepare( "SELECT * FROM {$event_venue_table} WHERE EVT_ID = %d", $inserted_event_id ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$result = $wpdb->get_col( $wpdb->prepare( "SELECT * FROM {$event_venue_table} WHERE EVT_ID = %d", $inserted_event_id ) ); // cache ok, db call ok.
 				if ( count( $result ) > 0 ) {
 					$wpdb->update( $event_venue_table, array( 'VNU_ID' => $venue_id ), array( 'EVT_ID' => $inserted_event_id ) ); // db call ok; no-cache ok.
 				} else {
 					$wpdb->insert(
-						$event_venue_table, array(
+						$event_venue_table,
+						array(
 							'EVT_ID' => $inserted_event_id,
 							'VNU_ID' => $venue_id,
 						)
@@ -314,7 +319,8 @@ class Import_Facebook_Events_EE4 {
 		$country_table = $wpdb->prefix . 'esp_country';
 		$state_table   = $wpdb->prefix . 'esp_state';
 		if ( ! empty( $venue_country ) ) {
-			$cnt_country = $wpdb->get_row( $wpdb->prepare( "SELECT `CNT_ISO`,`CNT_active` FROM {$country_table} WHERE `CNT_name` = %s OR `CNT_ISO` = %s OR `CNT_ISO3` = %s", $venue_country, $venue_country, $venue_country ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$cnt_country = $wpdb->get_row( $wpdb->prepare( "SELECT `CNT_ISO`,`CNT_active` FROM {$country_table} WHERE `CNT_name` = %s OR `CNT_ISO` = %s OR `CNT_ISO3` = %s", $venue_country, $venue_country, $venue_country ) ); // cache ok, db call ok.
 			if ( ! empty( $cnt_country ) && isset( $cnt_country->CNT_ISO ) ) { // @codingStandardsIgnoreLine.
 				$cnt_iso = $cnt_country->CNT_ISO; // @codingStandardsIgnoreLine.
 				if ( 0 === $cnt_country->CNT_active ) { // @codingStandardsIgnoreLine.
@@ -324,10 +330,12 @@ class Import_Facebook_Events_EE4 {
 		}
 
 		if ( ! empty( $venue_state ) && ! empty( $cnt_iso ) ) {
-			$sta_id = $wpdb->get_var( $wpdb->prepare( "SELECT `STA_ID` FROM {$state_table} WHERE `CNT_ISO` = %s AND (`STA_abbrev` = %s OR `STA_name` = %s)", $cnt_iso, $venue_state, $venue_state ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$sta_id = $wpdb->get_var( $wpdb->prepare( "SELECT `STA_ID` FROM {$state_table} WHERE `CNT_ISO` = %s AND (`STA_abbrev` = %s OR `STA_name` = %s)", $cnt_iso, $venue_state, $venue_state ) ); // cache ok, db call ok.
 			if ( empty( $sta_id ) || is_null( $sta_id ) ) {
 				$inserted = $wpdb->insert(
-					$state_table, array(
+					$state_table,
+					array(
 						'CNT_ISO'    => $cnt_iso,
 						'STA_abbrev' => $venue_state,
 						'STA_name'   => $venue_state,
@@ -379,8 +387,8 @@ class Import_Facebook_Events_EE4 {
 			array(
 				'posts_per_page'   => 1,
 				'post_type'        => $this->venue_posttype,
-				'meta_key'         => 'ife_ee4_venue_id', // WPCS: slow query ok.
-				'meta_value'       => $venue_id, // WPCS: slow query ok.
+				'meta_key'         => 'ife_ee4_venue_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+				'meta_value'       => $venue_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				'suppress_filters' => false,
 			)
 		);

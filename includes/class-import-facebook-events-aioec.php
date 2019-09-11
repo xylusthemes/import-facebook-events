@@ -188,7 +188,7 @@ class Import_Facebook_Events_Aioec {
 
 			$event_count = $wpdb->get_var(
 				$wpdb->prepare(
-					"SELECT COUNT(*) FROM `{$this->event_instances_table}` WHERE `post_id` = %d", // @codingStandardsIgnoreLine
+					"SELECT COUNT(*) FROM `{$this->event_instances_table}` WHERE `post_id` = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 					absint( $inserted_event_id )
 				)
 			); // cache ok, db call ok.
@@ -297,7 +297,7 @@ class Import_Facebook_Events_Aioec {
 
 			$event_exist_count = $wpdb->get_var(
 				$wpdb->prepare(
-					"SELECT COUNT(*) FROM `{$this->event_db_table}` WHERE `post_id` = %d", // @codingStandardsIgnoreLine
+					"SELECT COUNT(*) FROM `{$this->event_db_table}` WHERE `post_id` = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 					absint( $inserted_event_id )
 				)
 			); // cache ok, db call ok.

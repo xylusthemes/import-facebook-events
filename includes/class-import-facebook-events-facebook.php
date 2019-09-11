@@ -252,6 +252,7 @@ class Import_Facebook_Events_Facebook {
 					$access_token_response      = wp_remote_get( $access_token_url );
 					$access_token_response_body = wp_remote_retrieve_body( $access_token_response );
 					$access_token_data          = json_decode( $access_token_response_body );
+					// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 					if ( ! isset( $access_token_data->error ) && 1 == $access_token_data->data->is_valid ) {
 						$access_token = $user_access_token;
 					} else {

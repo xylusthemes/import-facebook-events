@@ -39,7 +39,7 @@ $website             = get_post_meta( $event_id, 'ife_event_link', true );
 		} else {
 			echo esc_attr( $start_time );
 		}
-?>
+		?>
 		</p>
 		<?php
 	} else {
@@ -118,8 +118,8 @@ $website             = get_post_meta( $event_id, 'ife_event_link', true );
 			<?php if ( ! empty( $website ) ) { ?>
 				<strong style="display: block;"><?php esc_html_e( 'Website', 'import-facebook-events' ); ?>:</strong>
 				<a href="<?php echo esc_url( $org_url ); ?>"><?php esc_html_e( "Organizer's Website", 'import-facebook-events' ); ?></a>
-			<?php
-}
+				<?php
+			}
 	}
 	?>
 	<div style="clear: both"></div>

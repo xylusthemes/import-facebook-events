@@ -431,8 +431,8 @@ class Import_Facebook_Events_TEC {
 			array(
 				'posts_per_page'   => 1,
 				'post_type'        => $this->oraganizer_posttype,
-				'meta_key'         => 'ife_event_organizer_id', // WPCS: slow query ok.
-				'meta_value'       => $organizer_id, // WPCS: slow query ok.
+				'meta_key'         => 'ife_event_organizer_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+				'meta_value'       => $organizer_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				'suppress_filters' => false,
 			)
 		);
@@ -455,8 +455,8 @@ class Import_Facebook_Events_TEC {
 			array(
 				'posts_per_page'   => 1,
 				'post_type'        => $this->venue_posttype,
-				'meta_key'         => 'ife_event_venue_id', // WPCS: slow query ok.
-				'meta_value'       => $venue_id, // WPCS: slow query ok.
+				'meta_key'         => 'ife_event_venue_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+				'meta_value'       => $venue_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				'suppress_filters' => false,
 			)
 		);

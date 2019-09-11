@@ -282,7 +282,8 @@ class Import_Facebook_Events_EM {
 				$where  = array( 'event_id' => $eve_id );
 				$wpdb->update( $event_table, $event_array, $where ); // db call ok; no-cache ok.
 			} else {
-				if ( $wpdb->insert( $event_table, $event_array ) ) { // db call ok;.
+				$is_inserted = $wpdb->insert( $event_table, $event_array ); // db call ok.
+				if ( $is_inserted ) {
 					update_post_meta( $inserted_event_id, '_event_id', $wpdb->insert_id );
 				}
 			}
@@ -446,8 +447,8 @@ class Import_Facebook_Events_EM {
 			array(
 				'posts_per_page'   => 1,
 				'post_type'        => $this->venue_posttype,
-				'meta_key'         => 'ife_event_venue_id', // WPCS: slow query ok.
-				'meta_value'       => $venue_id, // WPCS: slow query ok.
+				'meta_key'         => 'ife_event_venue_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+				'meta_value'       => $venue_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				'suppress_filters' => false,
 			)
 		);

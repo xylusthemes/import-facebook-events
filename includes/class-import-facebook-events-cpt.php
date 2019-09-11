@@ -182,7 +182,9 @@ class Import_Facebook_Events_Cpt {
 
 		/* Register the Event Category taxonomy. */
 		register_taxonomy(
-			$this->event_category, array( $this->event_posttype ), array(
+			$this->event_category,
+			array( $this->event_posttype ),
+			array(
 				'labels'            => array(
 					'name'           => __( 'Event Categories', 'import-facebook-events' ),
 					'singular_name'  => __( 'Event Category', 'import-facebook-events' ),
@@ -292,7 +294,7 @@ class Import_Facebook_Events_Cpt {
 			<tr>
 				<td><?php esc_attr_e( 'Start Date & Time', 'import-facebook-events' ); ?>:</td>
 				<td>
-				<input type="text" name="event_start_date" class="ife_datepicker" id="event_start_date" value="<?php echo esc_attr( get_post_meta( $post->ID, 'event_start_date', true ) ); ?>" /> @ 
+				<input type="text" name="event_start_date" class="ife_datepicker" id="event_start_date" value="<?php echo esc_attr( get_post_meta( $post->ID, 'event_start_date', true ) ); ?>" /> @
 				<?php
 				$this->generate_dropdown( 'event_start', 'hour', $start_hour );
 				$this->generate_dropdown( 'event_start', 'minute', $start_minute );
@@ -303,7 +305,7 @@ class Import_Facebook_Events_Cpt {
 			<tr>
 				<td><?php esc_attr_e( 'End Date & Time', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="event_end_date" class="ife_datepicker" id="event_end_date" value="<?php echo esc_attr( get_post_meta( $post->ID, 'event_end_date', true ) ); ?>" /> @ 
+					<input type="text" name="event_end_date" class="ife_datepicker" id="event_end_date" value="<?php echo esc_attr( get_post_meta( $post->ID, 'event_end_date', true ) ); ?>" /> @
 					<?php
 					$this->generate_dropdown( 'event_end', 'hour', $end_hour );
 					$this->generate_dropdown( 'event_end', 'minute', $end_minute );
@@ -656,6 +658,7 @@ class Import_Facebook_Events_Cpt {
 	 * @return string $wp_list_events Event list HTML.
 	 */
 	public function facebook_events_archive( $atts = array() ) {
+		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 		// [facebook_events col='2' posts_per_page='12' category="cat1,cat2" past_events="yes" order="desc" orderby="" start_date="" end_date="" ]
 		$current_date = time();
 		$paged        = ( get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1 );
@@ -665,7 +668,7 @@ class Import_Facebook_Events_Cpt {
 		$eve_args = array(
 			'post_type'   => 'facebook_events',
 			'post_status' => 'publish',
-			'meta_key'    => 'start_ts', // WPCS: slow query ok.
+			'meta_key'    => 'start_ts', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key --Ignore.
 			'paged'       => $paged,
 		);
 
@@ -694,7 +697,7 @@ class Import_Facebook_Events_Cpt {
 			}
 
 			if ( ! empty( $start_date_str ) && ! empty( $end_date_str ) ) {
-				$eve_args['meta_query'] = array( // WPCS: slow query ok.
+				$eve_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					'relation' => 'AND',
 					array(
 						'key'     => 'end_ts',
@@ -708,7 +711,7 @@ class Import_Facebook_Events_Cpt {
 					),
 				);
 			} elseif ( ! empty( $start_date_str ) ) {
-				$eve_args['meta_query'] = array( // WPCS: slow query ok.
+				$eve_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					array(
 						'key'     => 'end_ts',
 						'compare' => '>=',
@@ -716,7 +719,7 @@ class Import_Facebook_Events_Cpt {
 					),
 				);
 			} elseif ( ! empty( $end_date_str ) ) {
-				$eve_args['meta_query'] = array( // WPCS: slow query ok.
+				$eve_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					'relation' => 'AND',
 					array(
 						'key'     => 'end_ts',
@@ -732,7 +735,7 @@ class Import_Facebook_Events_Cpt {
 			}
 		} else {
 			if ( isset( $atts['past_events'] ) && 'yes' === $atts['past_events'] ) {
-				$eve_args['meta_query'] = array( // WPCS: slow query ok.
+				$eve_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					array(
 						'key'     => 'end_ts',
 						'compare' => '<=',
@@ -740,7 +743,7 @@ class Import_Facebook_Events_Cpt {
 					),
 				);
 			} else {
-				$eve_args['meta_query'] = array( // WPCS: slow query ok.
+				$eve_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					array(
 						'key'     => 'end_ts',
 						'compare' => '>=',
@@ -758,7 +761,7 @@ class Import_Facebook_Events_Cpt {
 				$tax_field = 'term_id';
 			}
 			if ( ! empty( $categories ) ) {
-				$eve_args['tax_query'] = array( // WPCS: slow query ok.
+				$eve_args['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 					array(
 						'taxonomy' => $this->event_category,
 						'field'    => $tax_field,
@@ -772,7 +775,7 @@ class Import_Facebook_Events_Cpt {
 		if ( isset( $atts['orderby'] ) && ! empty( $atts['orderby'] ) ) {
 			if ( 'event_start_date' === $atts['orderby'] || 'event_end_date' === $atts['orderby'] ) {
 				if ( 'event_end_date' === $atts['orderby'] ) {
-					$eve_args['meta_key'] = 'end_ts'; // WPCS: slow query ok.
+					$eve_args['meta_key'] = 'end_ts'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key --Ignore.
 				}
 				$eve_args['orderby'] = 'meta_value';
 			} else {
@@ -830,7 +833,7 @@ class Import_Facebook_Events_Cpt {
 			$curr_paged = $paged;
 			global $paged;
 			$temp_paged = $paged;
-			$paged      = $curr_paged; // WPCS: override ok.
+			$paged      = $curr_paged; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		}
 		$ife_options  = get_option( IFE_OPTIONS );
 		$accent_color = isset( $ife_options['accent_color'] ) ? $ife_options['accent_color'] : '#039ED7';
@@ -849,24 +852,24 @@ class Import_Facebook_Events_Cpt {
 				endwhile; // End of the loop.
 
 				if ( $facebook_events->max_num_pages > 1 ) : // custom pagination.
-				?>
+					?>
 					<div class="col-ife-md-12">
 						<nav class="prev-next-posts">
 							<div class="prev-posts-link alignright">
-								<?php echo get_next_posts_link( 'Next Events &raquo;', $facebook_events->max_num_pages ); ?>
+								<?php echo get_next_posts_link( 'Next Events &raquo;', $facebook_events->max_num_pages ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</div>
 							<div class="next-posts-link alignleft">
-								<?php echo get_previous_posts_link( '&laquo; Previous Events' ); ?>
+								<?php echo get_previous_posts_link( '&laquo; Previous Events' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</div>
 						</nav>
 					</div>
-				<?php
+					<?php
 				endif;
-			else :
-				echo esc_attr( apply_filters( 'ife_no_events_found_message', __( 'No Events are found.', 'import-facebook-events' ) ) );
+				else :
+					echo esc_attr( apply_filters( 'ife_no_events_found_message', __( 'No Events are found.', 'import-facebook-events' ) ) );
 			endif;
 
-			?>
+				?>
 		</div>
 		<style type="text/css">
 			.ife_event .event_date{
@@ -884,7 +887,7 @@ class Import_Facebook_Events_Cpt {
 		wp_reset_postdata();
 		if ( is_front_page() ) {
 			global $paged;
-			$paged = $temp_paged; // WPCS: override ok.
+			$paged = $temp_paged; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		}
 		return $wp_list_events;
 

@@ -46,8 +46,8 @@ class Import_Facebook_Events_FB_Authorize {
 			$app_secret        = isset( $ife_options['facebook_app_secret'] ) ? $ife_options['facebook_app_secret'] : '';
 			$redirect_url      = admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' );
 			$api_version       = 'v3.0';
-			$param_url         = urlencode( $redirect_url );
-			$ife_session_state = md5( uniqid( rand(), true ) );
+			$param_url         = rawurlencode( $redirect_url );
+			$ife_session_state = md5( uniqid( rand(), true ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand
 			setcookie( 'ife_session_state', $ife_session_state, '0', '/' );
 
 			if ( ! empty( $app_id ) && ! empty( $app_secret ) ) {
@@ -72,15 +72,16 @@ class Import_Facebook_Events_FB_Authorize {
 	 */
 	public function ife_facebook_authorize_user_callback() {
 		global $ife_success_msg;
-		if ( isset( $_COOKIE['ife_session_state'] ) && isset( $_REQUEST['state'] ) && ( sanitize_text_field( wp_unslash( $_REQUEST['state'] ) ) === $_COOKIE['ife_session_state'] ) ) { // WPCS: CSRF ok. input var okay.
-
-				$code         = isset( $_GET['code'] ) ? sanitize_text_field( wp_unslash( $_GET['code'] ) ) : ''; // WPCS: CSRF ok. input var okay.
+		// phpcs:ignore WordPress.Security.NonceVerification
+		if ( isset( $_COOKIE['ife_session_state'] ) && isset( $_REQUEST['state'] ) && ( sanitize_text_field( wp_unslash( $_REQUEST['state'] ) ) === $_COOKIE['ife_session_state'] ) ) { // input var okay.
+				// phpcs:ignore WordPress.Security.NonceVerification
+				$code         = isset( $_GET['code'] ) ? sanitize_text_field( wp_unslash( $_GET['code'] ) ) : ''; // input var okay.
 				$ife_options  = get_option( IFE_OPTIONS, array() );
 				$app_id       = isset( $ife_options['facebook_app_id'] ) ? $ife_options['facebook_app_id'] : '';
 				$app_secret   = isset( $ife_options['facebook_app_secret'] ) ? $ife_options['facebook_app_secret'] : '';
 				$redirect_url = admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' );
 				$api_version  = 'v3.0';
-				$param_url    = urlencode( $redirect_url );
+				$param_url    = rawurlencode( $redirect_url );
 
 			if ( ! empty( $app_id ) && ! empty( $app_secret ) ) {
 

@@ -204,8 +204,8 @@ class Import_Facebook_Events_Event_Organizer {
 				'FinishTime'       => date( 'H:i:s', $end_time ),
 				'event_occurrence' => 0,
 			);
-
-			$event_count = $wpdb->get_var( "SELECT COUNT(*) FROM $this->event_db_table WHERE `post_id` = " . absint( $inserted_event_id ) );
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$event_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $this->event_db_table WHERE `post_id` = %d", absint( $inserted_event_id ) ) ); // db call ok; no-cache ok.
 			if ( $event_count > 0 && is_numeric( $event_count ) ) {
 				$where = array( 'post_id' => absint( $inserted_event_id ) );
 				$wpdb->update( $this->event_db_table, $event_array, $where );  // db call ok; no-cache ok.
@@ -242,47 +242,47 @@ class Import_Facebook_Events_Event_Organizer {
 				$loc_term_meta   = array();
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key'    => '_address', // WPCS: slow query ok.
-					'meta_value'  => $address, // WPCS: slow query ok.
+					'meta_key'    => '_address', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+					'meta_value'  => $address, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key'    => '_city', // WPCS: slow query ok.
-					'meta_value'  => $city, // WPCS: slow query ok.
+					'meta_key'    => '_city', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+					'meta_value'  => $city, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key'    => '_state', // WPCS: slow query ok.
-					'meta_value'  => $state, // WPCS: slow query ok.
+					'meta_key'    => '_state', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+					'meta_value'  => $state, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key'    => '_postcode', // WPCS: slow query ok.
-					'meta_value'  => $zip, // WPCS: slow query ok.
+					'meta_key'    => '_postcode', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+					'meta_value'  => $zip, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key'    => '_country', // WPCS: slow query ok.
-					'meta_value'  => $country, // WPCS: slow query ok.
+					'meta_key'    => '_country', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+					'meta_value'  => $country, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key'    => '_lat', // WPCS: slow query ok.
-					'meta_value'  => $lat, // WPCS: slow query ok.
+					'meta_key'    => '_lat', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+					'meta_value'  => $lat, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				);
 				$loc_term_meta[] = array(
 					'eo_venue_id' => $loc_term_id,
-					'meta_key'    => '_lng', // WPCS: slow query ok.
-					'meta_value'  => $lon, // WPCS: slow query ok.
+					'meta_key'    => '_lng', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+					'meta_value'  => $lon, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				);
 
 				if ( ! empty( $loc_term_meta ) ) {
-					$meta_keys = $wpdb->get_col( "SELECT `meta_key` FROM {$wpdb->prefix}eo_venuemeta WHERE `eo_venue_id` = " . $loc_term_id );
+					$meta_keys = $wpdb->get_col( $wpdb->prepare( "SELECT `meta_key` FROM {$wpdb->prefix}eo_venuemeta WHERE `eo_venue_id` = %d", $loc_term_id ) ); // db call ok; no-cache ok.
 					foreach ( $loc_term_meta as $loc_value ) {
-						if ( in_array( $loc_value['meta_key'], $meta_keys, true ) ) { // WPCS: slow query ok.
+						if ( in_array( $loc_value['meta_key'], $meta_keys, true ) ) { // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
 							$where = array(
 								'eo_venue_id' => absint( $loc_term_id ),
-								'meta_key'    => $loc_value['meta_key'], // WPCS: slow query ok.
+								'meta_key'    => $loc_value['meta_key'], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
 							);
 							$wpdb->update( $this->venue_db_table, $loc_value, $where );  // db call ok; no-cache ok.
 						} else {

@@ -26,7 +26,8 @@ function ife_register_gutenberg_block() {
 			'ife-facebook-events-block',
 			$js_dir . 'gutenberg.blocks.js',
 			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
-			IFE_VERSION
+			IFE_VERSION,
+			false
 		);
 
 		// Register block editor style.
@@ -40,7 +41,8 @@ function ife_register_gutenberg_block() {
 
 		// Register our block.
 		register_block_type(
-			'ife-block/facebook-events', array(
+			'ife-block/facebook-events',
+			array(
 				'attributes'      => array(
 					'col'            => array(
 						'type'    => 'number',

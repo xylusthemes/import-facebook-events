@@ -39,30 +39,30 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 			</a>
 
 			<p><strong><?php esc_attr_e( 'Enjoying Import Facebook Events or have feedback?', 'import-facebook-events' ); ?></strong></p>
-			<a class="button button-secondary" href="<?php echo esc_url( $review_url ); ?>" target="_blank" ><?php esc_attr_e( 'Leave us a review', 'import-facebook-events' ); ?></a> 
-			<a class="button button-secondary" href="<?php echo esc_url( $twitter_url ); ?>" target="_blank" ><?php esc_attr_e( 'Follow us on Twitter', 'import-facebook-events' ); ?></a> 
+			<a class="button button-secondary" href="<?php echo esc_url( $review_url ); ?>" target="_blank" ><?php esc_attr_e( 'Leave us a review', 'import-facebook-events' ); ?></a>
+			<a class="button button-secondary" href="<?php echo esc_url( $twitter_url ); ?>" target="_blank" ><?php esc_attr_e( 'Follow us on Twitter', 'import-facebook-events' ); ?></a>
 			<a class="button button-secondary" href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" ><?php esc_attr_e( 'Like us on Facebook', 'import-facebook-events' ); ?></a>
 		</div>
 
 		<?php
-		$plugins     = array();
+		$org_plugins = array();
 		$plugin_list = $ife_events->admin->get_xyuls_themes_plugins();
 		if ( ! empty( $plugin_list ) ) {
 			foreach ( $plugin_list as $key => $value ) {
-				$plugins[] = $ife_events->admin->get_wporg_plugin( $key );
+				$org_plugins[] = $ife_events->admin->get_wporg_plugin( $key );
 			}
 		}
 		?>
 		<div class="" style="margin-top: 20px;">
 			<h3 class="setting_bar"><?php esc_attr_e( 'Plugins you should try', 'import-facebook-events' ); ?></h3>
 			<?php
-			if ( ! empty( $plugins ) ) {
-				foreach ( $plugins as $plugin ) {
+			if ( ! empty( $org_plugins ) ) {
+				foreach ( $org_plugins as $plugin ) {
 					?>
 					<div class="plugin_box">
 						<?php if ( ! empty( $plugin->banners['low'] ) ) { ?>
 							<img src="<?php echo esc_url( $plugin->banners['low'] ); ?>" class="plugin_img" title="<?php echo esc_attr( $plugin->name ); ?>">
-						<?php } ?>                    
+						<?php } ?>
 						<div class="plugin_content">
 							<h3><?php echo esc_attr( $plugin->name ); ?></h3>
 
@@ -74,14 +74,14 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 									'number' => $plugin->num_ratings,
 								)
 							);
-								?>
+							?>
 
 							<?php if ( ! empty( $plugin->version ) ) { ?>
 								<p><strong><?php esc_attr_e( 'Version:', 'import-facebook-events' ); ?> </strong><?php echo esc_attr( $plugin->version ); ?></p>
 							<?php } ?>
 
 							<?php if ( ! empty( $plugin->requires ) ) { ?>
-								<p><strong><?php esc_attr_e( 'Requires:', 'import-facebook-events' ); ?> </strong> 
+								<p><strong><?php esc_attr_e( 'Requires:', 'import-facebook-events' ); ?> </strong>
 									<?php
 									esc_attr_e( 'WordPress ', 'import-facebook-events' );
 									echo esc_attr( $plugin->requires ) . '+';

@@ -64,7 +64,8 @@ class Import_Facebook_Events_Manage_Import {
 			$event_data['import_origin'] = 'facebook';
 			$event_data['import_by']     = 'facebook_event_id';
 			$event_data['page_username'] = '';
-			$event_data['event_ids']     = isset( $_POST['facebook_event_ids'] ) ? array_map( 'trim', array_map( 'sanitize_text_field', explode( "\n", preg_replace( "/^\n+|^[\t\s]*\n+/m", '', wp_unslash( $_POST['facebook_event_ids'] ) ) ) ) ) : array(); // WPCS: sanitization ok. input var okay.
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$event_data['event_ids'] = isset( $_POST['facebook_event_ids'] ) ? array_map( 'trim', array_map( 'sanitize_text_field', explode( "\n", preg_replace( "/^\n+|^[\t\s]*\n+/m", '', wp_unslash( $_POST['facebook_event_ids'] ) ) ) ) ) : array(); // input var okay.
 
 			$this->handle_facebook_import_form_submit( $event_data );
 		}
@@ -181,7 +182,9 @@ class Import_Facebook_Events_Manage_Import {
 	 */
 	public function setup_success_messages() {
 		global $ife_success_msg;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_GET['imp_fb_msg'] ) && ! empty( $_GET['imp_fb_msg'] ) ) { // input var okay.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			switch ( sanitize_text_field( wp_unslash( $_GET['imp_fb_msg'] ) ) ) { // input var okay.
 				case 'import_del':
 					$ife_success_msg[] = esc_html__( 'Scheduled import deleted successfully.', 'import-facebook-events' );

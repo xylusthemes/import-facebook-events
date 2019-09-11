@@ -166,7 +166,8 @@ class Import_Facebook_Events_My_Calendar {
 			if ( ! empty( $ife_cats ) ) {
 				$event_cat                    = $ife_cats[0];
 				$my_calendar_categories_table = my_calendar_categories_table();
-				$temp_event_cat               = $wpdb->get_var( $wpdb->prepare( "SELECT `category_id` FROM {$my_calendar_categories_table} WHERE `category_term` = %d LIMIT 1", absint( $event_cat ) ) );  // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
+				$temp_event_cat = $wpdb->get_var( $wpdb->prepare( "SELECT `category_id` FROM {$my_calendar_categories_table} WHERE `category_term` = %d LIMIT 1", absint( $event_cat ) ) ); // cache ok, db call ok.
 				if ( $temp_event_cat > 0 && is_numeric( $temp_event_cat ) && ! empty( $temp_event_cat ) ) {
 					$event_category = $temp_event_cat;
 				}
@@ -250,7 +251,8 @@ class Import_Facebook_Events_My_Calendar {
 				);
 
 				$location_table = my_calendar_locations_table();
-				$location_id    = $wpdb->get_var( $wpdb->prepare( "SELECT `location_id` FROM {$location_table} WHERE `location_label` = %s", esc_sql( $event_label ) ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
+				$location_id = $wpdb->get_var( $wpdb->prepare( "SELECT `location_id` FROM {$location_table} WHERE `location_label` = %s", esc_sql( $event_label ) ) ); // cache ok, db call ok.
 				if ( $location_id > 0 && is_numeric( $location_id ) && ! empty( $location_id ) ) {
 
 					$where            = array( 'location_id' => (int) $location_id );
@@ -351,12 +353,14 @@ class Import_Facebook_Events_My_Calendar {
 			);
 
 			$my_calendar_table = my_calendar_table();
-			$db_event_id       = $wpdb->get_var( $wpdb->prepare( "SELECT `event_id` FROM {$my_calendar_table} WHERE `event_title` = %s AND `event_post`= %d LIMIT 1", sanitize_text_field( $inserted_event->post_title ), $inserted_event_id ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
+			$db_event_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_id` FROM {$my_calendar_table} WHERE `event_title` = %s AND `event_post`= %d LIMIT 1", sanitize_text_field( $inserted_event->post_title ), $inserted_event_id ) ); // cache ok, db call ok.
 
 			if ( $db_event_id > 0 && is_numeric( $db_event_id ) && ! empty( $db_event_id ) ) {
 
 				if ( ! $ife_events->common->ife_is_updatable( 'category' ) ) {
-					$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_category` FROM {$my_calendar_table} WHERE `event_id`= %d", absint( $db_event_id ) ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
+					$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_category` FROM {$my_calendar_table} WHERE `event_id`= %d", absint( $db_event_id ) ) ); // cache ok, db call ok.
 					if ( $cat_id ) {
 						$event_data['event_category'] = $cat_id;
 					}
@@ -379,8 +383,9 @@ class Import_Facebook_Events_My_Calendar {
 				);
 
 				$my_calendar_event_table = my_calendar_event_table();
-				$occur_id                = $wpdb->get_var( $wpdb->prepare( "SELECT `occur_id` FROM {$my_calendar_event_table} WHERE `occur_event_id`= %d", absint( $db_event_id ) ) ); // WPCS: unprepared SQL OK. db call ok; no-cache ok.
-				$occur_format            = array( '%d', '%s', '%s', '%d' );
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
+				$occur_id     = $wpdb->get_var( $wpdb->prepare( "SELECT `occur_id` FROM {$my_calendar_event_table} WHERE `occur_event_id`= %d", absint( $db_event_id ) ) ); // cache ok, db call ok.
+				$occur_format = array( '%d', '%s', '%s', '%d' );
 				if ( $occur_id > 0 && is_numeric( $occur_id ) && ! empty( $occur_id ) ) {
 
 					$occur_where = array( 'occur_id' => absint( $occur_id ) );

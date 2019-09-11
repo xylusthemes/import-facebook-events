@@ -101,6 +101,8 @@ class Import_Facebook_Events_Common {
 	 * @return void
 	 */
 	public function ife_render_terms_by_plugin() {
+		// Check nonce.
+		check_ajax_referer( 'ife_admin_js_nonce', 'security' );
 		global $ife_events;
 		$event_plugin = isset( $_POST['event_plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['event_plugin'] ) ) : 'ife'; // input var okay.
 		$taxo_cats    = isset( $_POST['taxo_cats'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_POST ['taxo_cats'] ) ) ) : array(); // input var okay.
@@ -587,8 +589,8 @@ class Import_Facebook_Events_Common {
 			'post_status'      => array( 'pending', 'draft', 'publish' ),
 			'posts_per_page'   => 1,
 			'suppress_filters' => true,
-			'meta_key'         => 'ife_facebook_event_id', // @codingStandardsIgnoreLine.
-			'meta_value'       => $event_id, // @codingStandardsIgnoreLine
+			'meta_key'         => 'ife_facebook_event_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key --Ignore.
+			'meta_value'       => $event_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value --Ignore.
 		);
 		if ( 'tribe_events' === $post_type && class_exists( 'Tribe__Events__Query' ) ) {
 			remove_action( 'pre_get_posts', array( 'Tribe__Events__Query', 'pre_get_posts' ), 50 );
@@ -985,7 +987,7 @@ function ife_is_pro() {
  */
 function get_ife_template( $template_name, $args = array(), $template_path = 'import-facebook-events', $default_path = '' ) {
 	if ( $args && is_array( $args ) ) {
-		extract( $args );
+		extract( $args ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 	}
 	include locate_ife_template( $template_name, $template_path, $default_path );
 }
