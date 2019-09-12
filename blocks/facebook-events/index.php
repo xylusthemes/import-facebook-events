@@ -26,7 +26,8 @@ function ife_register_gutenberg_block() {
 			'ife-facebook-events-block',
 			$js_dir . 'gutenberg.blocks.js',
 			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
-			IFE_VERSION
+			IFE_VERSION,
+			false
 		);
 
 		// Register block editor style.
@@ -39,41 +40,44 @@ function ife_register_gutenberg_block() {
 		);
 
 		// Register our block.
-		register_block_type( 'ife-block/facebook-events', array(
-			'attributes'      => array(
-				'col'            => array(
-					'type'    => 'number',
-					'default' => 3,
-				),
-				'posts_per_page' => array(
-					'type'    => 'number',
-					'default' => 12,
-				),
-				'past_events'    => array(
-					'type' => 'string',
-				),
-				'start_date'     => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'end_date'       => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'order'          => array(
-					'type'    => 'string',
-					'default' => 'ASC',
-				),
-				'orderby'        => array(
-					'type'    => 'string',
-					'default' => 'event_start_date',
-				),
+		register_block_type(
+			'ife-block/facebook-events',
+			array(
+				'attributes'      => array(
+					'col'            => array(
+						'type'    => 'number',
+						'default' => 3,
+					),
+					'posts_per_page' => array(
+						'type'    => 'number',
+						'default' => 12,
+					),
+					'past_events'    => array(
+						'type' => 'string',
+					),
+					'start_date'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'end_date'       => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'order'          => array(
+						'type'    => 'string',
+						'default' => 'ASC',
+					),
+					'orderby'        => array(
+						'type'    => 'string',
+						'default' => 'event_start_date',
+					),
 
-			),
-			'editor_script'   => 'ife-facebook-events-block', // The script name we gave in the wp_register_script() call.
-			'editor_style'    => 'ife-facebook-events-block-style', // The script name we gave in the wp_register_style() call.
-			'render_callback' => array( $ife_events->cpt, 'facebook_events_archive' ),
-		) );
+				),
+				'editor_script'   => 'ife-facebook-events-block', // The script name we gave in the wp_register_script() call.
+				'editor_style'    => 'ife-facebook-events-block-style', // The script name we gave in the wp_register_style() call.
+				'render_callback' => array( $ife_events->cpt, 'facebook_events_archive' ),
+			)
+		);
 	}
 }
 
