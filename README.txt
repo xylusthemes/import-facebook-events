@@ -4,7 +4,7 @@ Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
 Requires at least: 4.0
 Requires PHP: 5.3
-Tested up to: 5.2
+Tested up to: 5.3
 Stable tag: 1.6.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,7 +58,7 @@ You can use `[facebook_events]` for display in-built facebook events list.
 * Import multiple events easily
 * Show events from facebook page into WordPress
 * Upcoming Events widget
-* Works with Visual Composer ( WPBackery Page Builder ). Support for more page builders is on the way :)
+* Works with WPBackery Page Builder. Support for more page builders is on the way :)
 
 ><strong>New All in one Event Import Tool!</strong><br>
 >We’ve developed bulk event imports tool. This add-on service for The Events Calendar allows you import events from your favorite sources like Facebook, Meetup, Eventbrite, iCalendar, and ICS.
