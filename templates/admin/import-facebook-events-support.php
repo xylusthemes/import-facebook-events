@@ -20,29 +20,45 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 ?>
 <div class="wpea_container">
 	<div class="wpea_row">
-		<div class="wpea-column support_well">
-			<h3><?php esc_attr_e( 'Getting Support', 'import-facebook-events' ); ?></h3>
-			<p><?php esc_attr_e( 'Thanks you for using Import Facebook Events, We are sincerely appreciate your support and we’re excited to see you using our plugins.', 'import-facebook-events' ); ?> </p>
-			<p><?php esc_attr_e( 'Our support team is always around to help you.', 'import-facebook-events' ); ?></p>
+		<div class="wrap"style="min-width: 100%;">
+            <h3 class="setting_bar"><?php esc_attr_e( 'Getting Support', 'import-eventbrite-events' ); ?></h3>
+            <div class="xylus-support-page">
+                <div class="support-block">
+                    <img src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ).'assets/images/target.png'; ?>" alt="Looking for Something?">
+                    <h3>Looking for Something?</h3>
+                    <p>We have documentation of how to import eventbrite events.</p>
+                    <a target="_blank" class="button button-primary" href="https://docs.xylusthemes.com/docs/import-facebook-events/">Visit the Plugin Documentation</a>
+                </div>
 
-							<p><strong><?php esc_attr_e( 'Looking for free support?', 'import-facebook-events' ); ?></strong></p>
-			<a class="button button-secondary" href="<?php echo esc_url( $open_source_support_url ); ?>" target="_blank" >
-				<?php esc_attr_e( 'Open-source forum on WordPress.org', 'import-facebook-events' ); ?>
-			</a>
+                <div class="support-block">
+                    <img src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ).'assets/images/assistance.png'; ?>" alt="Need Any Assistance?">
+                    <h3>Need Any Assistance?</h3>
+                    <p>Our EXPERT Support Team is always ready to Help you out.</p>
+                    <a target="_blank" class="button button-primary" href="https://xylusthemes.com/support/">Contact Support</a>
+                </div>
 
-			<p><strong><?php esc_attr_e( 'Looking for more immediate support?', 'import-facebook-events' ); ?></strong></p>
-			<p><?php esc_attr_e( 'We offer premium support on our website with the purchase of our premium plugins.', 'import-facebook-events' ); ?>
-			</p>
+                <div class="support-block">
+                    <img src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ).'assets/images/bug.png'; ?>" alt="Found Any Bugs?">
+                    <h3>Found Any Bugs?</h3>
+                    <p>Report any Bug that you Discovered, Get Instant Solutions.</p>
+                    <a target="_blank" class="button button-primary" href="https://github.com/xylusthemes/import-facebook-events">Report to GitHub</a>
+                </div>
 
-			<a class="button button-primary" href="<?php echo esc_url( $support_url ); ?>" target="_blank" >
-				<?php esc_attr_e( 'Contact us directly (Premium Support)', 'import-facebook-events' ); ?>
-			</a>
+                <div class="support-block">
+                    <img src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ).'assets/images/tools.png'; ?>" alt="Require Customization?">
+                    <h3>Require Customization?</h3>
+                    <p>We would Love to hear your Integration and Customization Ideas.</p>
+                    <a target="_blank" class="button button-primary" href="https://xylusthemes.com/what-we-do/">Connect Our Service</a>
+                </div>
 
-			<p><strong><?php esc_attr_e( 'Enjoying Import Facebook Events or have feedback?', 'import-facebook-events' ); ?></strong></p>
-			<a class="button button-secondary" href="<?php echo esc_url( $review_url ); ?>" target="_blank" ><?php esc_attr_e( 'Leave us a review', 'import-facebook-events' ); ?></a>
-			<a class="button button-secondary" href="<?php echo esc_url( $twitter_url ); ?>" target="_blank" ><?php esc_attr_e( 'Follow us on Twitter', 'import-facebook-events' ); ?></a>
-			<a class="button button-secondary" href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" ><?php esc_attr_e( 'Like us on Facebook', 'import-facebook-events' ); ?></a>
-		</div>
+                <div class="support-block">
+                    <img src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ).'assets/images/like.png'; ?>" alt="Like The Plugin?">
+                    <h3>Like The Plugin?</h3>
+                    <p>Your Review is very important to us as it helps us to grow more.</p>
+                    <a target="_blank" class="button button-primary" href="https://wordpress.org/support/plugin/import-facebook-events/reviews/?rate=5#new-post">Review US on WP.org</a>
+                </div>
+            </div>
+        </div>
 
 		<?php
 		$org_plugins = array();
