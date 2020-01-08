@@ -348,3 +348,100 @@ table.ife_form_table tr td:nth-child(1) {
     top: -30px;
   }
 } 
+
+/* Support page CSS */
+.ife-support-features-card {
+  display: flex;
+  flex-basis: 32%;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  box-sizing: border-box;
+  margin: .5rem;
+  background-color: #fff;
+  box-shadow: 0 0 0 1px #ccd0d4, 0 1px 1px 1px rgba(0, 0, 0, 0.04)
+}
+
+.ife-support-features-card:last-child {
+  max-width: 100%
+}
+
+@media (min-width: 661px) {
+  .ife-support-features-card {
+      margin-bottom: 1%
+  }
+}
+
+@media (max-width: 660px) {
+  .ife-support-features-card {
+      max-width: 100%;
+      margin-bottom: .5rem
+  }
+}
+
+@media (min-width: 481px) {
+  .ife-support-features-card {
+      padding: 2rem
+  }
+}
+
+@media (max-width: 480px) {
+  .ife-support-features-card {
+      padding: 1rem
+  }
+}
+
+.ife-support-features-list {
+  list-style: initial;
+  margin-left: 1rem
+}
+
+.ife-support-features-img {
+  width: 5.625rem;
+  margin-right: .5rem;
+  line-height: 1
+}
+
+@media (min-width: 961px) {
+  .ife-support-features-img {
+      width: 6.5rem;
+      margin-right: 1.125rem
+  }
+}
+
+.ife-support-features-icon {
+  display: block;
+  max-width: 80%;
+  margin-left: 0px;
+}
+
+@media (min-width: 481px) {
+  .ife-support-features-icon {
+      max-width: 80%;
+      margin-left: 0px;
+  }
+}
+
+.ife-support-features-text {
+  flex: 1
+}
+
+.ife-support-features-title {
+  margin: 0
+}
+
+.ife-support-features {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  margin-left: -.5rem;
+  margin-right: -.5rem
+}
+
+@media (max-width: 660px) {
+  .ife-support-features {
+      display: block
+  }
+}

@@ -6,6 +6,7 @@
  */
 
 // If this file is called directly, abort.
+// Icon Credit: Icon made by Freepik and Vectors Market from www.flaticon.com
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -21,27 +22,59 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 <div class="wpea_container">
 	<div class="wpea_row">
 		<div class="wpea-column support_well">
-			<h3><?php esc_attr_e( 'Getting Support', 'import-facebook-events' ); ?></h3>
-			<p><?php esc_attr_e( 'Thanks you for using Import Facebook Events, We are sincerely appreciate your support and we’re excited to see you using our plugins.', 'import-facebook-events' ); ?> </p>
-			<p><?php esc_attr_e( 'Our support team is always around to help you.', 'import-facebook-events' ); ?></p>
-
-							<p><strong><?php esc_attr_e( 'Looking for free support?', 'import-facebook-events' ); ?></strong></p>
-			<a class="button button-secondary" href="<?php echo esc_url( $open_source_support_url ); ?>" target="_blank" >
-				<?php esc_attr_e( 'Open-source forum on WordPress.org', 'import-facebook-events' ); ?>
-			</a>
-
-			<p><strong><?php esc_attr_e( 'Looking for more immediate support?', 'import-facebook-events' ); ?></strong></p>
-			<p><?php esc_attr_e( 'We offer premium support on our website with the purchase of our premium plugins.', 'import-facebook-events' ); ?>
-			</p>
-
-			<a class="button button-primary" href="<?php echo esc_url( $support_url ); ?>" target="_blank" >
-				<?php esc_attr_e( 'Contact us directly (Premium Support)', 'import-facebook-events' ); ?>
-			</a>
-
-			<p><strong><?php esc_attr_e( 'Enjoying Import Facebook Events or have feedback?', 'import-facebook-events' ); ?></strong></p>
-			<a class="button button-secondary" href="<?php echo esc_url( $review_url ); ?>" target="_blank" ><?php esc_attr_e( 'Leave us a review', 'import-facebook-events' ); ?></a>
-			<a class="button button-secondary" href="<?php echo esc_url( $twitter_url ); ?>" target="_blank" ><?php esc_attr_e( 'Follow us on Twitter', 'import-facebook-events' ); ?></a>
-			<a class="button button-secondary" href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" ><?php esc_attr_e( 'Like us on Facebook', 'import-facebook-events' ); ?></a>
+			<h3 class="setting_bar"><?php esc_attr_e( 'Getting Support', 'import-facebook-events' ); ?></h3>
+            <div class="ife-support-features">
+				<div class="ife-support-features-card">
+					<div class="ife-support-features-img">
+						<img class="ife-support-features-icon" src="<?php echo IFE_PLUGIN_URL.'assets/images/document.svg'; ?>" alt="<?php esc_attr_e( 'Looking for Something?', 'import-facebook-events' ); ?>">
+					</div>
+					<div class="ife-support-features-text">
+						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Looking for Something?', 'import-facebook-events' ); ?></h3>
+						<p><?php esc_attr_e( 'We have documentation of how to import facebook events.', 'import-facebook-events' ); ?></p>
+						<a target="_blank" class="button button-primary" href="http://docs.xylusthemes.com/docs/import-facebook-events/"><?php esc_attr_e( 'Plugin Documentation', 'import-facebook-events' ); ?></a>
+					</div>
+				</div>
+				<div class="ife-support-features-card">
+					<div class="ife-support-features-img">
+						<img class="ife-support-features-icon" src="<?php echo IFE_PLUGIN_URL.'assets/images/call-center.svg'; ?>" alt="<?php esc_attr_e( 'Need Any Assistance?', 'import-facebook-events' ); ?>">
+					</div>
+					<div class="ife-support-features-text">
+						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Need Any Assistance?', 'import-facebook-events' ); ?></h3>
+						<p><?php esc_attr_e( 'Our EXPERT Support Team is always ready to Help you out.', 'import-facebook-events' ); ?></p>
+						<a target="_blank" class="button button-primary" href="https://xylusthemes.com/support/"><?php esc_attr_e( 'Contact Support', 'import-facebook-events' ); ?></a>
+					</div>
+				</div>
+				<div class="ife-support-features-card">
+					<div class="ife-support-features-img">
+						<img class="ife-support-features-icon"  src="<?php echo IFE_PLUGIN_URL.'assets/images/bug.svg'; ?>" alt="<?php esc_attr_e( 'Found Any Bugs?', 'import-facebook-events' ); ?>" />
+					</div>
+					<div class="ife-support-features-text">
+						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Found Any Bugs?', 'import-facebook-events' ); ?></h3>
+						<p><?php esc_attr_e( 'Report any Bug that you Discovered, Get Instant Solutions.', 'import-facebook-events' ); ?></p>
+						<a target="_blank" class="button button-primary" href="https://github.com/xylusthemes/import-facebook-events"><?php esc_attr_e( 'Report to GitHub', 'import-facebook-events' ); ?></a>
+					</div>
+				</div>
+				<div class="ife-support-features-card">
+					<div class="ife-support-features-img">
+						<img class="ife-support-features-icon" src="<?php echo IFE_PLUGIN_URL.'assets/images/tools.svg'; ?>" alt="<?php esc_attr_e( 'Require Customization?', 'import-facebook-events' ); ?>" />
+					</div>
+					<div class="ife-support-features-text">
+						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Require Customization?', 'import-facebook-events' ); ?></h3>
+						<p><?php esc_attr_e( 'We would Love to hear your Integration and Customization Ideas.', 'import-facebook-events' ); ?></p>
+						<a target="_blank" class="button button-primary" href="https://xylusthemes.com/what-we-do/"><?php esc_attr_e( 'Connect Our Service', 'import-facebook-events' ); ?></a>
+					</div>
+				</div>
+				<div class="ife-support-features-card">
+					<div class="ife-support-features-img">
+						<img class="ife-support-features-icon" src="<?php echo IFE_PLUGIN_URL.'assets/images/like.svg'; ?>" alt="<?php esc_attr_e( 'Like The Plugin?', 'import-facebook-events' ); ?>" />
+					</div>
+					<div class="ife-support-features-text">
+						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Like The Plugin?', 'import-facebook-events' ); ?></h3>
+						<p><?php esc_attr_e( 'Your Review is very important to us as it helps us to grow more.', 'import-facebook-events' ); ?></p>
+						<a target="_blank" class="button button-primary" href="https://wordpress.org/support/plugin/import-facebook-events/reviews/?rate=5#new-post"><?php esc_attr_e( 'Review Us on WP.org', 'import-facebook-events' ); ?></a>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<?php
