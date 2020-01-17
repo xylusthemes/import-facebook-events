@@ -144,6 +144,22 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 						</td>
 					</tr>
 
+                    <tr>
+                        <th scope="row">
+                            <?php _e('Direct link to Facebook', 'import-facebook-events'); ?> :
+                        </th>
+                        <td>
+                            <?php
+                            $direct_link = isset($facebook_options['direct_link']) ? $facebook_options['direct_link'] : 'no';
+                            ?>
+                            <input type="checkbox" name="facebook[direct_link]" value="yes" <?php if ($direct_link == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
+                            <span>
+                                <?php _e('Check to enable direct event link to facebook instead of event detail page.', 'import-facebook-events'); ?>
+                            </span>
+                            <?php do_action('ife_render_pro_notice'); ?>
+                        </td>
+                    </tr>
+                    
 					<tr>
 						<th scope="row">
 							<?php esc_attr_e( 'Advanced Synchronization', 'import-facebook-events' ); ?> :
