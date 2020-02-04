@@ -177,6 +177,25 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 						</td>
 					</tr>
 
+                    <tr>
+						<th scope="row">
+							<?php esc_attr_e( 'Time Format', 'import-facebook-events' ); ?> :
+						</th>
+						<td>
+                            <?php
+                            $time_format = isset( $facebook_options['time_format'] ) ? $facebook_options['time_format'] : '';
+                            ?>
+                            <select name="facebook[time_format]" value="<?php echo esc_attr( $accent_color ); ?>">
+                                    <option value="hours12" <?php echo( ( $time_format == 'hours12' ) ? 'selected="selected"' : '' ); ?> ><?php esc_attr_e( '12 Hours', 'import-facebook-events' ); ?></option>
+                                    <option value="hours24" <?php echo( ( $time_format == 'hours24' ) ? 'selected="selected"' : '' ); ?> ><?php esc_attr_e( '24 Hours', 'import-facebook-events' ); ?></option>
+                                    <option value="default_wordpress" <?php echo( ( $time_format == 'default_wordpress' ) ? 'selected="selected"' : '' ); ?> ><?php esc_attr_e( 'By Default Wordpress', 'import-facebook-events' ); ?></option>
+                            </select>
+                            <span class="ife_small">
+                                <?php esc_attr_e( 'Change Diaplay Time Format.', 'import-facebook-events' ); ?>
+                            </span>
+						</td>
+					</tr>
+
 					<tr>
 						<th scope="row">
 							<?php esc_attr_e( 'Accent Color', 'import-facebook-events' ); ?> :
