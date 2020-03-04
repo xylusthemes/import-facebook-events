@@ -145,7 +145,8 @@ class Import_Facebook_Events_TEC {
 		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$formated_args['post_status'] = $event_args['event_status'];
 		}
-
+        $formated_args['post_author'] = isset($event_args['event_author']) ? $event_args['event_author'] : get_current_user_id();
+        
 		if ( $is_exitsing_event && is_numeric( $is_exitsing_event ) && $is_exitsing_event > 0 ) {
 			if ( ! $ife_events->common->ife_is_updatable( 'status' ) ) {
 				$formated_args['post_status'] = get_post_status( $is_exitsing_event );

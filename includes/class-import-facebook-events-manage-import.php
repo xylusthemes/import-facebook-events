@@ -65,8 +65,9 @@ class Import_Facebook_Events_Manage_Import {
 			$event_data['import_by']     = 'facebook_event_id';
 			$event_data['page_username'] = '';
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$event_data['event_ids'] = isset( $_POST['facebook_event_ids'] ) ? array_map( 'trim', array_map( 'sanitize_text_field', explode( "\n", preg_replace( "/^\n+|^[\t\s]*\n+/m", '', wp_unslash( $_POST['facebook_event_ids'] ) ) ) ) ) : array(); // input var okay.
-
+            $event_data['event_ids'] = isset( $_POST['facebook_event_ids'] ) ? array_map( 'trim', array_map( 'sanitize_text_field', explode( "\n", preg_replace( "/^\n+|^[\t\s]*\n+/m", '', wp_unslash( $_POST['facebook_event_ids'] ) ) ) ) ) : array(); // input var okay.
+            $event_data['event_author']     = !empty( $_POST['event_author'] ) ? $_POST['event_author'] : get_current_user_id();
+            
 			$this->handle_facebook_import_form_submit( $event_data );
 		}
 	}

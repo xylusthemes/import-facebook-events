@@ -136,6 +136,17 @@ if ( ! ife_is_pro() ) {
 						$ife_events->common->render_import_into_and_taxonomy();
 						$ife_events->common->render_eventstatus_input();
 						?>
+                        <tr>
+							<th scope="row">
+								<?php _e('Author','import-facebook-events'); ?> :
+							</th>
+							<td>
+								<?php wp_dropdown_users( array( 'show_option_none' => esc_attr__( 'Select Author','import-facebook-events'), 'name' => 'event_author' ) ); ?>
+								<span class="ife_small">
+									<?php _e( 'Select event author for imported events. Default event auther is current loggedin user.', 'import-facebook-events' ); ?>
+								</span>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 
