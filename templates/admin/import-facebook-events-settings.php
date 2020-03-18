@@ -16,6 +16,7 @@ $facebook_app_id        = isset( $facebook_options['facebook_app_id'] ) ? $faceb
 $facebook_app_secret    = isset( $facebook_options['facebook_app_secret'] ) ? $facebook_options['facebook_app_secret'] : '';
 $ife_user_token_options = get_option( 'ife_user_token_options', array() );
 $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
+$fb_users = get_option( 'ife_fb_users', array() );
 ?>
 <div class="ife_container">
 	<div class="ife_row">
@@ -47,6 +48,69 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 		if ( ! empty( $facebook_app_id ) && ! empty( $facebook_app_secret ) ) {
 			?>
 			<h4 class="setting_bar"><?php esc_attr_e( 'Authorize your Facebook Account', 'import-facebook-events' ); ?></h4>
+			<div class="ife_accounts">
+				<div class="bg-white sm:max-w-full max-w-md rounded overflow-hidden shadow-lg">
+					<div class="border-b">
+						<?php
+						$add_label = esc_attr__( 'Connect Facebook account', 'import-facebook-events' );
+						$connect_url = wp_nonce_url(admin_url('admin-post.php?action=ife_facebook_authorize_action'), 'ife_facebook_authorize_action', 'ife_facebook_authorize_nonce');
+						if(!empty($fb_users)){
+							$add_label = esc_attr__( 'Connect another Facebook account', 'import-facebook-events' );
+							foreach($fb_users as $fb_user){
+								?>
+								<div class="px-6 py-3 hover:bg-gray-200 flex"> 
+									<div class="mt-1 w-12 h-12 bg-blue-700 rounded-full text-center align-middle text-white text-lg content-center">
+										<img class="rounded-full border-none" src="<?php echo $fb_user['avatar'];?>" />
+									</div>
+									<div class="pl-3">
+									<p class="text-sm font-semibold">
+										<?php echo $fb_user['name']; ?>
+									</p>
+									<p class="text-xs text-gray-600">
+										<?php esc_attr_e( 'Facebook ID: ', 'import-facebook-events' );echo $fb_user['ID']; ?>
+									</p>
+									<p class="text-xs text-gray-600">
+										<a href="<?php echo wp_nonce_url(admin_url('admin-post.php?action=ife_disconnect_user&fbuser_id='.$fb_user['ID']), 'ife_disconnect_user_action', 'ife_disconnect_user_nonce'); ?>" class="text-blue-600 font-medium">
+											<?php esc_attr_e( 'Disconnect', 'import-facebook-events' ); ?>
+										</a>
+									</p>
+									</div>
+								</div>
+								<?php
+							}
+						}
+						?>
+						<a href="<?php echo $connect_url; ?>" class="px-6 py-3 hover:bg-gray-200 flex">
+							<div class="w-10 h-10 rounded-full text-center align-middle text-lg">
+								<img class="w-10 h-10 rounded-full border-none mx-auto" src="<?php echo IFE_PLUGIN_URL.'assets/images/add-user-male.png'; ?>">
+							</div>
+							<div class="pl-3">
+								<p class="text-sm font-semibold text-gray-700">
+									<?php echo $add_label; ?>
+								</p>
+								<p class="text-xs text-gray-600">
+									<?php esc_attr_e( 'Please connect your facebook account for import facebook events.', 'import-facebook-events' ); ?>
+								</p>
+							</div>
+						</a>
+					</div>
+					<?php
+					if( count($fb_users) > 0){
+						?>
+						<div class="border-b">
+							<!-- First list item -->
+							<div class="px-6 py-4 text-center">
+								<a href="<?php echo wp_nonce_url(admin_url('admin-post.php?action=ife_disconnect_all_users'), 'ife_disconnect_all_users_action', 'ife_disconnect_all_users_nonce'); ?>" class="border rounded py-2 px-4 text-xs font-semibold text-gray-70">
+									<?php esc_attr_e( 'Disconnect all accounts', 'import-facebook-events' ); ?>
+								</a>
+							</div>
+						</div>
+						<?php
+					}
+					?>
+				</div>
+			</div>
+			
 			<div class="fb_authorize">
 				<table class="form-table">
 					<tbody>
