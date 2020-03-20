@@ -191,6 +191,25 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 						</span>
 						</td>
 					</tr>
+                    
+                    <tr>
+						<th scope="row">
+							<?php esc_attr_e( 'Event Display Time Format', 'import-facebook-events' ); ?> :
+						</th>
+						<td>
+						<?php
+                        $time_format = isset( $facebook_options['time_format'] ) ? $facebook_options['time_format'] : '';
+						?>
+                        <select name="facebook[time_format]">
+								<option value="12hours" <?php selected('12hours', $time_format); ?>><?php esc_attr_e( '12 Hours', 'import-facebook-events' );  ?></option>
+                                <option value="24hours" <?php selected('24hours', $time_format); ?>><?php esc_attr_e( '24 Hours', 'import-facebook-events' ); ?></option>						
+                                <option value="wordpress_default" <?php selected('wordpress_default', $time_format); ?>><?php esc_attr_e( 'Wordpress Default', 'import-facebook-events' ); ?></option>
+                        </select>
+						<span class="ife_small">
+							<?php esc_attr_e( 'Choose event display time format for front-end.', 'import-facebook-events' ); ?>
+						</span>
+						</td>
+					</tr>
 
 					<tr>
 						<th scope="row">
