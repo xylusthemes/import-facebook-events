@@ -28,7 +28,8 @@ if ( '' !== get_the_post_thumbnail() ) {
 $ticket_uri = esc_url(get_permalink());
 $target = '';
 if ('yes' === $direct_link) {
-    $ticket_uri = get_post_meta(get_the_ID(), 'ife_event_link', true);
+	$facebook_event_id = get_post_meta(get_the_ID(), 'ife_facebook_event_id', true);
+    $ticket_uri = "https://www.facebook.com/events/". $facebook_event_id;
     $target = 'target="_blank"';
 }
 ?>
