@@ -174,7 +174,7 @@ class Import_Facebook_Events_Manage_Import {
 			$ife_events->common->display_import_success_message( $import_events, $event_data );
 		} else {
 			if ( empty( $ife_errors ) ) {
-				$ife_success_msg[] = esc_html__( 'Nothing to Import', 'import-facebook-events' )."<br>";
+				$ife_success_msg[] = esc_html__( 'Nothing to Import', 'import-facebook-events' ) . '<br>';
 			}
 			return false;
 		}
