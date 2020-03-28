@@ -153,7 +153,7 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
                             $direct_link = isset($facebook_options['direct_link']) ? $facebook_options['direct_link'] : 'no';
                             ?>
                             <input type="checkbox" name="facebook[direct_link]" value="yes" <?php if ($direct_link == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
-                            <span>
+                            <span class="ife_small">
                                 <?php _e('Check to enable direct event link to facebook instead of event detail page.', 'import-facebook-events'); ?>
                             </span>
                             <?php do_action('ife_render_pro_notice'); ?>
@@ -171,7 +171,7 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 							$disabled      = ( ! ife_is_pro() ) ? 'disabled' : '';
 							?>
 							<input type="checkbox" name="facebook[advanced_sync]" value="yes" <?php echo esc_attr( $checked . ' ' . $disabled ); ?> />
-							<span>
+							<span class="ife_small">
 								<?php esc_attr_e( 'Check to enable advanced synchronization, this will delete events which are removed from Facebook. Also, it deletes passed events.', 'import-facebook-events' ); ?>
 							</span>
 							<?php do_action( 'ife_render_pro_notice' ); ?>
