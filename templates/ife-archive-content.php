@@ -25,12 +25,12 @@ if ( '' !== get_the_post_thumbnail() ) {
 	$image_date  = date_i18n( 'F+d', $event_date );
 	$image_url[] = 'http://placehold.it/420x150?text=' . $image_date;
 }
-$ticket_uri = esc_url(get_permalink());
-$target = '';
-if ('yes' === $direct_link) {
-	$facebook_event_id = get_post_meta(get_the_ID(), 'ife_facebook_event_id', true);
-    $ticket_uri = "https://www.facebook.com/events/". $facebook_event_id;
-    $target = 'target="_blank"';
+$ticket_uri = esc_url( get_permalink() );
+$target     = '';
+if ( 'yes' === $direct_link ) {
+	$facebook_event_id = get_post_meta( get_the_ID(), 'ife_facebook_event_id', true );
+	$ticket_uri        = 'https://www.facebook.com/events/' . $facebook_event_id;
+	$target            = 'target="_blank"';
 }
 ?>
 <a href="<?php echo $ticket_uri; ?>" <?php echo $target; ?>>	
