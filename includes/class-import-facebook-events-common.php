@@ -1062,3 +1062,143 @@ function ife_get_inprogress_import() {
 	}
 	return $batches;
 }
+
+/**
+ * Get HourMins from given time stamp
+ *
+ * @param [int] $scheduledDate
+ * @return string
+ */
+function ife_get_hour_mins($scheduledDate) {
+	try{
+		if($scheduledDate){
+			$scheduledDate = date('Hi', $scheduledDate);
+		}
+		return $scheduledDate;
+	} catch (Exception $e) {
+		return $scheduledDate;
+	}
+}
+
+/**
+ * Get IFE crons.
+ *
+ * @return Array
+ */
+function ife_get_crons(){
+	$crons = array();
+	if(function_exists('_get_cron_array') ){
+		$crons = _get_cron_array();
+	}
+	$ife_scheduled = array_filter($crons, function($cron) {
+		$cron_name = array_keys($cron)[0];
+		if (strpos($cron_name, 'xt_run_fb_scheduled_import') !== false) {
+			return true;
+		}
+		return false;
+	});
+	return $ife_scheduled;
+}
+
+/**
+ * Get timestamp for schedule crom event.
+ *
+ * @return int
+ */
+function ife_get_schedule_time(){
+	try {
+		$current_time = time();
+		if(!function_exists('_get_cron_array') ){
+			return $current_time;
+		}
+		$current_hour = date('Hi', $current_time);
+		$current_hour_formated = date('H:i:s', $current_time);
+		$ife_scheduled = ife_get_crons();
+		if(empty($ife_scheduled)){
+			return $current_time;
+		}
+		$scheduled_times = array_map( 'ife_get_hour_mins', array_keys( $ife_scheduled ) );
+		$conflict_times = ife_has_conflict_times( $scheduled_times, $current_hour );
+		if(!empty($conflict_times)){
+			$slots = ife_get_slots($current_hour);
+			foreach( $slots as $slot ){
+				$conflict_time = ife_has_conflict_times( $scheduled_times, $slot );
+				if(empty($conflict_time)){
+					$seconds = strtotime(substr_replace($slot,':',-2,0).':00') - (strtotime($current_hour_formated));
+					if( $seconds < 86400 ){
+						$current_time = (int)$current_time + (int)$seconds;
+					}
+					return $current_time;
+					break;
+				}
+			}
+			return $current_time;
+		}
+		return $current_time;
+	} catch (Exception $e) {
+		return time();
+	}
+}
+
+/**
+ * Check if current slot has conflict or not
+ *
+ * @param [Array] $scheduled_times
+ * @param [strinh] $current_hour
+ * @return Array
+ */
+function ife_has_conflict_times( $scheduled_times, $current_hour ){
+	$current_hour = (int) $current_hour;
+	$scheduled_gap = 2;
+	$conflict_times = array();
+	$min_time = (int) $current_hour - $scheduled_gap;
+	$max_time = (int) $current_hour + $scheduled_gap;
+	foreach( $scheduled_times as $scheduled_time){
+		if( $scheduled_time >= $min_time && $scheduled_time <= $max_time ){
+			$conflict_times[] = $scheduled_time;
+		}
+	}
+	return $conflict_times;
+}
+
+/**
+ * Get IFE slots for check cron availability.
+ *
+ * @param [string] $current_hour
+ * @return Array
+ */
+function ife_get_slots( $current_hour ){
+	$slots = array();
+	for ($hour=0; $hour < 24; $hour++) { 
+		if( $hour < 10 ) { $hour = '0'. $hour; }
+		for ($min=0; $min < 60; $min++) {
+			if( $min < 10 ) { $min = '0'.$min; }
+			$slots[] = $hour.$min;
+			$min = (int) $min;
+		}
+		$hour = (int) $hour;
+	}
+	$current_index = array_search( $current_hour, $slots );
+	if($current_hour > 0 ){
+		return array_merge( array_slice( $slots, $current_index ), array_slice( $slots, 0, $current_index ) );
+	}
+	return $slots;
+}
+
+/**
+ * Get Next run time array for schdeuled import.
+ *
+ * @return Array
+ */
+function ife_get_next_run_times(){
+	$next_runs = array();
+	$crons  = ife_get_crons();
+	foreach($crons as $time => $cron){
+		foreach($cron as $cron_name){
+			foreach($cron_name as $cron_post_id){
+				$next_runs[$cron_post_id['args']['post_id']] = $time;
+			}
+		}
+	}
+	return $next_runs;
+}
