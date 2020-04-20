@@ -62,7 +62,7 @@ class Import_Facebook_Events_Facebook {
 		$options             = ife_get_import_options( 'facebook' );
 		$this->fb_app_id     = isset( $options['facebook_app_id'] ) ? $options['facebook_app_id'] : '';
 		$this->fb_app_secret = isset( $options['facebook_app_secret'] ) ? $options['facebook_app_secret'] : '';
-		$this->fb_graph_url  = 'https://graph.facebook.com/v3.0/';
+		$this->fb_graph_url  = 'https://graph.facebook.com/v6.0/';
 
 	}
 
@@ -220,13 +220,9 @@ class Import_Facebook_Events_Facebook {
 	 * @return string
 	 */
 	public function get_access_token() {
-
-		if ( ! empty( $this->fb_access_token ) ) {
-
-			return $this->fb_access_token;
-
-		} else {
-
+		$token_transient_key = 'ife_facebook_access_token';
+		$access_token_cache = get_transient( 'ife_facebook_access_token' );
+		if ( false === $access_token_cache ) {
 			$args                       = array(
 				'grant_type'    => 'client_credentials',
 				'client_id'     => $this->fb_app_id,
@@ -257,14 +253,19 @@ class Import_Facebook_Events_Facebook {
 						$access_token = $user_access_token;
 					} else {
 						$ife_user_token_options['authorize_status'] = 0;
+						delete_transient( $token_transient_key );
 						update_option( 'ife_user_token_options', $ife_user_token_options );
 					}
 				}
 			}
-
 			$this->fb_access_token = apply_filters( 'ife_facebook_access_token', $access_token );
+			if ( ! isset( $access_token_data->error ) && 1 == $access_token_data->data->is_valid ) {
+				set_transient( $token_transient_key, $this->fb_access_token, DAY_IN_SECONDS );
+			}
 			return $this->fb_access_token;
 		}
+		$this->fb_access_token = $access_token_cache;
+		return $access_token_cache;
 	}
 
 	/**
@@ -344,10 +345,20 @@ class Import_Facebook_Events_Facebook {
 	 * @return object $response
 	 */
 	public function get_json_response_from_url( $url ) {
-		$args     = array( 'timeout' => 15 );
-		$response = wp_remote_get( $url, $args );
-		$response = json_decode( wp_remote_retrieve_body( $response ) );
-		return $response;
+		$transient_key = 'ife_';
+		$transient_key .= md5($url);
+		$api_response = get_transient( $transient_key );
+		if ( false === $api_response ) {
+			$args     = array( 'timeout' => 15 );
+			$response = wp_remote_get( $url, $args );
+			$response = json_decode( wp_remote_retrieve_body( $response ) );
+			if( ! isset($response->error) ){
+				// cache API response
+				$test = set_transient( $transient_key, $response, 15 * MINUTE_IN_SECONDS );			
+			}
+			return $response;
+		}
+		return $api_response;
 	}
 
 	/**
