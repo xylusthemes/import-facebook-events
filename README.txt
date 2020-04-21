@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event, facebook import, faceb
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 5.4
-Stable tag: 1.6.9
+Stable tag: 1.6.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,12 @@ You can use `[facebook_events]` for display in-built facebook events list.
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+= 1.6.10 =
+* ADDED: Option for Direct Event link to Facebook.
+* IMPROVEMENT: FB API call Limit exceed issue.
+* IMPROVEMENT: New design for Support and help page.
+* FIXED: Event get removed before it happens (for some timezones)
+
 = 1.6.9 =
 * FIXED: "The link you followed has expired" Issue
 
