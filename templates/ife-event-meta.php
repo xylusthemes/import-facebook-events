@@ -23,8 +23,8 @@ if($time_format == '12hours' ){
     $start_time          = date_i18n( 'h:i a', $start_date_str );
     $end_time            = date_i18n( 'h:i a', $end_date_str );
 }elseif($time_format == '24hours' ){
-    $start_time          = date_i18n( 'G:i', $start_date_str );
-    $end_time            = date_i18n( 'G:i', $end_date_str );
+    $start_time          = date_i18n( 'H:i', $start_date_str );
+    $end_time            = date_i18n( 'H:i', $end_date_str );
 }elseif($time_format == 'wordpress_default' ){
     $start_time          = date_i18n( get_option( 'time_format' ), $start_date_str );
     $end_time            = date_i18n( get_option( 'time_format' ), $end_date_str );
