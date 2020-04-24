@@ -141,7 +141,7 @@ if ( ! ife_is_pro() ) {
 								<?php _e('Author','import-facebook-events'); ?> :
 							</th>
 							<td>
-								<?php wp_dropdown_users( array( 'show_option_none' => esc_attr__( 'Select Author','import-facebook-events'), 'name' => 'event_author' ) ); ?>
+								<?php wp_dropdown_users( array( 'show_option_none' => esc_attr__( 'Select Author','import-facebook-events'), 'name' => 'event_author', 'option_none_value' => get_current_user_id() ) ); ?>
 								<span class="ife_small">
 									<?php _e( 'Select event author for imported events. Default event auther is current loggedin user.', 'import-facebook-events' ); ?>
 								</span>
