@@ -15,9 +15,21 @@ $start_date_str      = get_post_meta( $event_id, 'start_ts', true );
 $end_date_str        = get_post_meta( $event_id, 'end_ts', true );
 $start_date_formated = date_i18n( 'F j', $start_date_str );
 $end_date_formated   = date_i18n( 'F j', $end_date_str );
-$start_time          = date_i18n( 'h:i a', $start_date_str );
-$end_time            = date_i18n( 'h:i a', $end_date_str );
 $website             = get_post_meta( $event_id, 'ife_event_link', true );
+
+$ife_options  = get_option( IFE_OPTIONS );
+$time_format = isset( $ife_options['time_format'] ) ? $ife_options['time_format'] : '';
+if($time_format == '12hours' ){
+    $start_time          = date_i18n( 'h:i a', $start_date_str );
+    $end_time            = date_i18n( 'h:i a', $end_date_str );
+}elseif($time_format == '24hours' ){
+    $start_time          = date_i18n( 'H:i', $start_date_str );
+    $end_time            = date_i18n( 'H:i', $end_date_str );
+}elseif($time_format == 'wordpress_default' ){
+    $start_time          = date_i18n( get_option( 'time_format' ), $start_date_str );
+    $end_time            = date_i18n( get_option( 'time_format' ), $end_date_str );
+}
+
 ?>
 <div class="ife_eventmeta">
 <div class="organizermain">
