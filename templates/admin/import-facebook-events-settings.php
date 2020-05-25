@@ -208,6 +208,22 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 						</td>
 					</tr>
 
+					<tr>
+                        <th scope="row">
+                            <?php _e('Event Slug', 'import-facebook-events'); ?> :
+                        </th>
+                        <td>
+                            <?php
+                            $event_slug = isset($facebook_options['event_slug']) ? $facebook_options['event_slug'] : 'facebook-event';
+                            ?>
+                            <input type="text" name="facebook[event_slug]" value="<?php if ( $event_slug ) { echo $event_slug; } ?>" <?php if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
+                            <span class="ife_small">
+                                <?php _e('Write the slug of your event.', 'import-facebook-events'); ?>
+                            </span>
+                            <?php do_action('ife_render_pro_notice'); ?>
+                        </td>
+                    </tr>
+
                     <tr>
 						<th scope="row">
 							<?php esc_attr_e( 'Event Display Time Format', 'import-facebook-events' ); ?> :

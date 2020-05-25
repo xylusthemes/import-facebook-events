@@ -29,7 +29,7 @@ class Import_Facebook_Events_Cpt {
 	 *
 	 * @var string
 	 */
-	protected $event_slug;
+	public $event_slug;
 
 	/**
 	 * Event Post Type
@@ -59,12 +59,12 @@ class Import_Facebook_Events_Cpt {
 	 */
 	public function __construct() {
 
-		$this->event_slug     = 'facebook-event';
 		$this->event_posttype = 'facebook_events';
 		$this->event_category = 'facebook_category';
 		$this->event_tag      = 'facebook_tag';
 
 		$ife_options       = get_option( IFE_OPTIONS );
+		$this->event_slug = isset( $ife_options['event_slug'] ) ? $ife_options['event_slug'] : 'facebook-event';
 		$deactive_fbevents = isset( $ife_options['deactive_fbevents'] ) ? $ife_options['deactive_fbevents'] : 'no';
 
 		if ( 'no' === $deactive_fbevents ) {
