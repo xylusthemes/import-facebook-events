@@ -36,7 +36,7 @@ class Import_Facebook_Events_FB_Authorize {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		$this->api_version = 'v6.0';
+		$this->api_version = 'v7.0';
 		add_action( 'admin_post_ife_facebook_authorize_action', array( $this, 'ife_facebook_authorize_user' ) );
 		add_action( 'admin_post_ife_facebook_authorize_callback', array( $this, 'ife_facebook_authorize_user_callback' ) );
 	}
@@ -61,7 +61,7 @@ class Import_Facebook_Events_FB_Authorize {
 
 				$dialog_url = 'https://www.facebook.com/' . $this->api_version . '/dialog/oauth?client_id='
 						. $app_id . '&redirect_uri=' . $param_url . '&state='
-						. $ife_session_state . '&scope=groups_access_member_info,user_events,pages_show_list';
+						. $ife_session_state . '&scope=groups_access_member_info,user_events,pages_show_list,pages_manage_metadata,pages_read_engagement,pages_read_user_content';
 				header( 'Location: ' . $dialog_url );
 
 			} else {
