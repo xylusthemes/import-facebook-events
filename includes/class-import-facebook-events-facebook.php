@@ -62,7 +62,7 @@ class Import_Facebook_Events_Facebook {
 		$options             = ife_get_import_options( 'facebook' );
 		$this->fb_app_id     = isset( $options['facebook_app_id'] ) ? $options['facebook_app_id'] : '';
 		$this->fb_app_secret = isset( $options['facebook_app_secret'] ) ? $options['facebook_app_secret'] : '';
-		$this->fb_graph_url  = 'https://graph.facebook.com/v6.0/';
+		$this->fb_graph_url  = 'https://graph.facebook.com/v7.0/';
 
 	}
 
@@ -354,7 +354,7 @@ class Import_Facebook_Events_Facebook {
 			$response = json_decode( wp_remote_retrieve_body( $response ) );
 			if( ! isset($response->error) ){
 				// cache API response
-				$test = set_transient( $transient_key, $response, 15 * MINUTE_IN_SECONDS );			
+				$test = set_transient( $transient_key, $response, 15 * MINUTE_IN_SECONDS );
 			}
 			return $response;
 		}
