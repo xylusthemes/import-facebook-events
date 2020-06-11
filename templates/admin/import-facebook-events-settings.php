@@ -159,7 +159,7 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
                             <?php do_action('ife_render_pro_notice'); ?>
                         </td>
                     </tr>
-                    
+
 					<tr>
 						<th scope="row">
 							<?php esc_attr_e( 'Advanced Synchronization', 'import-facebook-events' ); ?> :
@@ -207,6 +207,27 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 						</span>
 						</td>
 					</tr>
+
+					<tr>
+                        <th scope="row">
+                            <?php _e('Event Slug', 'import-facebook-events'); ?> :
+                        </th>
+                        <td>
+                            <?php
+							$event_slug = isset($facebook_options['event_slug']) ? $facebook_options['event_slug'] : 'facebook-event';
+							if (!ife_is_pro()) {
+								echo '<input type="text" name="" value="" disabled="disabled" />';
+							} else {
+                            	?>
+                            	<input type="text" name="facebook[event_slug]" value="<?php if ( $event_slug ) { echo $event_slug; } ?>" />
+								<?php
+							} ?>
+                            <span class="ife_small">
+                                <?php _e('Slug for the event.', 'import-facebook-events'); ?>
+                            </span>
+                            <?php do_action('ife_render_pro_notice'); ?>
+                        </td>
+                    </tr>
 
                     <tr>
 						<th scope="row">
