@@ -25,7 +25,7 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 		if ( ! isset( $_SERVER['HTTPS'] ) && false === stripos( $site_url, 'https' ) ) { // WPCS: input var okay.
 			?>
 			<div class="widefat ife_settings_error">
-				<?php printf( '%1$s <b><a href="https://developers.facebook.com/blog/post/2018/06/08/enforce-https-facebook-login/" target="_blank">%2$s</a></b> %3$s', esc_attr__( "It looks like you don't have HTTPS enabled on your website. Please enable it. HTTPS is required for authorize your facebook account.", 'import-facebook-events' ), esc_attr__( 'Click here', 'import-facebook-events' ), esc_attr__( 'for more information.', 'import-facebook-events' ) ); ?>
+				<?php printf( '%1$s <b><a href="https://developers.facebook.com/blog/post/2018/06/08/enforce-https-facebook-login/" target="_blank">%2$s</a></b> %3$s', esc_attr__( "It looks like you don't have HTTPS enabled on your website. Please enable it. HTTPS is required for authorize your Facebook account.", 'import-facebook-events' ), esc_attr__( 'Click here', 'import-facebook-events' ), esc_attr__( 'for more information.', 'import-facebook-events' ) ); ?>
 			</div>
 			<?php
 		}
@@ -77,7 +77,7 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 								</form>
 
 								<span class="ife_small">
-									<?php esc_attr_e( 'Please authorize your facebook account for import facebook events. Please authorize with account which you have used for create an facebook app.', 'import-facebook-events' ); ?>
+									<?php esc_attr_e( 'Please authorize your Facebook account for import Facebook events. Please authorize with account which you have used for create an Facebook app.', 'import-facebook-events' ); ?>
 								</span>
 							</td>
 						</tr>
@@ -154,7 +154,7 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
                             ?>
                             <input type="checkbox" name="facebook[direct_link]" value="yes" <?php if ($direct_link == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
                             <span class="ife_small">
-                                <?php _e('Check to enable direct event link to facebook instead of event detail page.', 'import-facebook-events'); ?>
+                                <?php _e('Check to enable direct event link to Facebook instead of event detail page.', 'import-facebook-events'); ?>
                             </span>
                             <?php do_action('ife_render_pro_notice'); ?>
                         </td>

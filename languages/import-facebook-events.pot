@@ -1,17 +1,85 @@
-# Copyright (C) 2020 Import Social Events
-# This file is distributed under the same license as the Import Social Events package.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Import Social Events 1.6.11\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/import-facebook-"
-"events\n"
-"POT-Creation-Date: 2020-06-29 17:51:44+00:00\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: Import Social Events\n"
+"POT-Creation-Date: 2020-08-04 15:49+0200\n"
+"PO-Revision-Date: 2020-08-04 15:49+0200\n"
+"Last-Translator: PiwEL <poedit@piwel.fr>\n"
+"Language-Team: PiwEL <poedit@piwel.fr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Poedit 2.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: import-facebook-events.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: assets/js/gutenberg.blocks.js:1
+msgid "path"
+msgstr ""
+
+#: assets/js/gutenberg.blocks.js:1
+msgid "svg"
+msgstr ""
+
+#: assets/js/gutenberg.blocks.js:1
+msgid "span"
+msgstr ""
+
+#: blocks/facebook-events/index.js:24 blocks/facebook-events/index.js:34
+#: includes/class-import-facebook-events-common.php:225
+#: includes/class-import-facebook-events-cpt.php:121
+#: includes/class-import-facebook-events-cpt.php:125
+msgid "Facebook Events"
+msgstr ""
+
+#: blocks/facebook-events/index.js:25
+msgid "Block for Display Facebook Events"
+msgstr ""
+
+#: blocks/facebook-events/index.js:32
+#: includes/class-import-facebook-events-cpt.php:153
+msgid "Events"
+msgstr ""
+
+#: blocks/facebook-events/index.js:33
+msgid "Facebook"
+msgstr ""
+
+#: blocks/facebook-events/index.js:91
+msgid "Facebook Events Setting"
+msgstr ""
+
+#: blocks/facebook-events/index.js:93
+msgid "Columns"
+msgstr ""
+
+#: blocks/facebook-events/index.js:100
+msgid "Events per page"
+msgstr ""
+
+#: blocks/facebook-events/index.js:117
+msgid "Order"
+msgstr ""
+
+#: blocks/facebook-events/index.js:120
+msgid "Ascending"
+msgstr ""
+
+#: blocks/facebook-events/index.js:121
+msgid "Descending"
+msgstr ""
+
+#: blocks/facebook-events/index.js:126
+msgid "Display past events"
+msgstr ""
 
 #: import-facebook-events.php:103 import-facebook-events.php:111
 msgid "Cheatin&#8217; huh?"
@@ -174,6 +242,7 @@ msgstr ""
 
 #. translators: %1$s, %2$s and %3$s are html tags.
 #: includes/class-import-facebook-events-admin.php:343
+#, php-format
 msgid " Rate %1$sImport Facebook Events%2$s %3$s"
 msgstr ""
 
@@ -267,12 +336,6 @@ msgstr ""
 msgid "Event Espresso (EE4)"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:225
-#: includes/class-import-facebook-events-cpt.php:121
-#: includes/class-import-facebook-events-cpt.php:125
-msgid "Facebook Events"
-msgstr ""
-
 #: includes/class-import-facebook-events-common.php:258
 msgid "Invalid image URL"
 msgstr ""
@@ -285,6 +348,7 @@ msgstr ""
 #. translators: %d is numbers of event Created.
 #: includes/class-import-facebook-events-common.php:369
 #: includes/class-import-facebook-events-list-table.php:101
+#, php-format
 msgid "%d Created"
 msgstr ""
 
@@ -292,11 +356,13 @@ msgstr ""
 #. translators: %d is numbers of event Updated.
 #: includes/class-import-facebook-events-common.php:373
 #: includes/class-import-facebook-events-list-table.php:105
+#, php-format
 msgid "%d Updated"
 msgstr ""
 
 #. translators: %d is numbers of event skipped.
 #: includes/class-import-facebook-events-common.php:377
+#, php-format
 msgid "%d Skipped (Already exists)"
 msgstr ""
 
@@ -458,10 +524,6 @@ msgstr ""
 
 #: includes/class-import-facebook-events-cpt.php:143
 msgid "Filter Event items list"
-msgstr ""
-
-#: includes/class-import-facebook-events-cpt.php:153
-msgid "Events"
 msgstr ""
 
 #: includes/class-import-facebook-events-cpt.php:154
@@ -668,11 +730,13 @@ msgstr ""
 
 #. translators: %s is Facebook event ID.
 #: includes/class-import-facebook-events-facebook.php:178
+#, php-format
 msgid "Please provide valid Facebook event ID: %s."
 msgstr ""
 
 #. translators: %s is Facebook event ID.
 #: includes/class-import-facebook-events-facebook.php:185
+#, php-format
 msgid ""
 "We are not able to access Facebook event: %s. Possible reasons: - App "
 "Credentials are wrong - Facebook event is not public or some restrictions "
@@ -699,6 +763,7 @@ msgstr ""
 
 #. translators: %d is numbers of event skipped.
 #: includes/class-import-facebook-events-list-table.php:109
+#, php-format
 msgid "%d Skipped"
 msgstr ""
 
@@ -823,6 +888,7 @@ msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
 #: templates/admin/facebook-import-events.php:46
+#, php-format
 msgid ""
 "Select Event source. %1$s, %2$s ( import events belonging to a Facebook "
 "organization or a Facebook page )."
@@ -838,10 +904,11 @@ msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
 #: templates/admin/facebook-import-events.php:56
+#, php-format
 msgid ""
-"%1$s (Import events from facebook group), %2$s (Import events which you have "
-"marked intrested or going on facebook, this also include your events on "
-"facebook)"
+"%1$s (Import events from Facebook group), %2$s (Import events which you have "
+"marked interested or going on Facebook, this also include your events on "
+"Facebook)"
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:57
@@ -902,7 +969,7 @@ msgstr ""
 
 #: templates/admin/facebook-import-events.php:146
 msgid ""
-"Select event author for imported events. Default event auther is current "
+"Select event author for imported events. Default event author is current "
 "loggedin user."
 msgstr ""
 
@@ -917,7 +984,7 @@ msgstr ""
 #: templates/admin/import-facebook-events-settings.php:28
 msgid ""
 "It looks like you don't have HTTPS enabled on your website. Please enable "
-"it. HTTPS is required for authorize your facebook account."
+"it. HTTPS is required for authorize your Facebook account."
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:28
@@ -974,13 +1041,14 @@ msgstr ""
 
 #. translators: %s is user's name.
 #: templates/admin/import-facebook-events-settings.php:73
+#, php-format
 msgid " ( Authorized as: %s )"
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:80
 msgid ""
-"Please authorize your facebook account for import facebook events. Please "
-"authorize with account which you have used for create an facebook app."
+"Please authorize your Facebook account for import Facebook events. Please "
+"authorize with account which you have used for create an Facebook app."
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:96
@@ -1015,7 +1083,7 @@ msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:157
 msgid ""
-"Check to enable direct event link to facebook instead of event detail page."
+"Check to enable direct event link to Facebook instead of event detail page."
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:165
@@ -1096,7 +1164,7 @@ msgid "Looking for Something?"
 msgstr ""
 
 #: templates/admin/import-facebook-events-support.php:33
-msgid "We have documentation of how to import facebook events."
+msgid "We have documentation of how to import Facebook events."
 msgstr ""
 
 #: templates/admin/import-facebook-events-support.php:34

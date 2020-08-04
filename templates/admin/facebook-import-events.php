@@ -53,7 +53,7 @@ if ( ! ife_is_pro() ) {
 									if ( $ife_events->common->has_authorized_user_token() ) {
 										printf(
 											// translators: please ignore %1$s and  %2$s.
-											esc_attr__( '%1$s (Import events from facebook group), %2$s (Import events which you have marked intrested or going on facebook, this also include your events on facebook)', 'import-facebook-events' ),
+											esc_attr__( '%1$s (Import events from Facebook group), %2$s (Import events which you have marked interested or going on Facebook, this also include your events on Facebook)', 'import-facebook-events' ),
 											'<strong>' . esc_attr__( '3. Facebook Group', 'import-facebook-events' ) . '</strong>',
 											'<strong>' . esc_attr__( '4. My Events', 'import-facebook-events' ) . '</strong>'
 										);
@@ -143,7 +143,7 @@ if ( ! ife_is_pro() ) {
 							<td>
 								<?php wp_dropdown_users( array( 'show_option_none' => esc_attr__( 'Select Author','import-facebook-events'), 'name' => 'event_author', 'option_none_value' => get_current_user_id() ) ); ?>
 								<span class="ife_small">
-									<?php _e( 'Select event author for imported events. Default event auther is current loggedin user.', 'import-facebook-events' ); ?>
+									<?php _e( 'Select event author for imported events. Default event author is current loggedin user.', 'import-facebook-events' ); ?>
 								</span>
 							</td>
 						</tr>
