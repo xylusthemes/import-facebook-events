@@ -1091,7 +1091,7 @@ function ife_get_crons(){
 		$crons = _get_cron_array();
 	}
 	$ife_scheduled = array_filter($crons, function($cron) {
-		$cron_name = array_keys($cron)[0];
+		$cron_name = array_keys($cron) ? array_keys($cron)[0] : '';
 		if (strpos($cron_name, 'xt_run_fb_scheduled_import') !== false) {
 			return true;
 		}
@@ -1169,7 +1169,7 @@ function ife_has_conflict_times( $scheduled_times, $current_hour ){
  */
 function ife_get_slots( $current_hour ){
 	$slots = array();
-	for ($hour=0; $hour < 24; $hour++) { 
+	for ($hour=0; $hour < 24; $hour++) {
 		if( $hour < 10 ) { $hour = '0'. $hour; }
 		for ($min=0; $min < 60; $min++) {
 			if( $min < 10 ) { $min = '0'.$min; }
