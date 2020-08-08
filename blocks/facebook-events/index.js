@@ -31,7 +31,7 @@ registerBlockType( 'ife-block/facebook-events', {
 	keywords: [
 		__( 'Events' ),
 		__( 'Facebook' ),
-		__( 'facebook events' ),
+		__( 'Facebook events' ),
 	],
 
 	// Enable or disable support for features

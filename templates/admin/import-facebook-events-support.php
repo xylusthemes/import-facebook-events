@@ -30,7 +30,7 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 					</div>
 					<div class="ife-support-features-text">
 						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Looking for Something?', 'import-facebook-events' ); ?></h3>
-						<p><?php esc_attr_e( 'We have documentation of how to import facebook events.', 'import-facebook-events' ); ?></p>
+						<p><?php esc_attr_e( 'We have documentation of how to import Facebook events.', 'import-facebook-events' ); ?></p>
 						<a target="_blank" class="button button-primary" href="http://docs.xylusthemes.com/docs/import-facebook-events/"><?php esc_attr_e( 'Plugin Documentation', 'import-facebook-events' ); ?></a>
 					</div>
 				</div>
