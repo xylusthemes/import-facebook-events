@@ -199,7 +199,7 @@ class Import_Facebook_Events_EE4 {
 				);
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$event_meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT `EVTM_ID` FROM {$event_meta_table} WHERE EVT_ID = %d", $inserted_event_id ) ); // cache ok, db call ok.
-				if ( count( $result ) > 0 ) {
+				if ( ! empty( $result ) && $result > 0 ) {
 					$wpdb->update(
 						$event_meta_table,
 						$event_meta_data,
