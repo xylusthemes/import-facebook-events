@@ -18,7 +18,7 @@ $end_date_formated   = date_i18n( 'F j', $end_date_str );
 $website             = get_post_meta( $event_id, 'ife_event_link', true );
 
 $ife_options  = get_option( IFE_OPTIONS );
-$time_format = isset( $ife_options['time_format'] ) ? $ife_options['time_format'] : '';
+$time_format = isset( $ife_options['time_format'] ) ? $ife_options['time_format'] : '12hours';
 if($time_format == '12hours' ){
     $start_time          = date_i18n( 'h:i a', $start_date_str );
     $end_time            = date_i18n( 'h:i a', $end_date_str );
