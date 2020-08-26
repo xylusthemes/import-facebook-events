@@ -235,7 +235,7 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 						</th>
 						<td>
 						<?php
-                        $time_format = isset( $facebook_options['time_format'] ) ? $facebook_options['time_format'] : '';
+                        $time_format = isset( $facebook_options['time_format'] ) ? $facebook_options['time_format'] : '12hours';
 						?>
                         <select name="facebook[time_format]">
 							<option value="12hours" <?php selected('12hours', $time_format); ?>><?php esc_attr_e( '12 Hours', 'import-facebook-events' );  ?></option>
