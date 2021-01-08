@@ -253,3 +253,5 @@ You can use `[facebook_events]` for display in-built facebook events list.
 
 = 1.0.0 =
 * Initial Version.
+
+Codacy Badge
