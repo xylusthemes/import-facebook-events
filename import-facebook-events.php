@@ -77,7 +77,6 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				self::$instance->aioec           = new Import_Facebook_Events_Aioec();
 				self::$instance->my_calendar     = new Import_Facebook_Events_My_Calendar();
 				self::$instance->ee4             = new Import_Facebook_Events_EE4();
-
 			}
 			return self::$instance;
 		}
@@ -184,6 +183,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-aioec.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-my-calendar.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ee4.php';
+			require_once IFE_PLUGIN_DIR . 'includes/class-ife-plugin-deactivation.php';
 			// Gutenberg Block.
 			require_once IFE_PLUGIN_DIR . 'blocks/facebook-events/index.php';
 		}
