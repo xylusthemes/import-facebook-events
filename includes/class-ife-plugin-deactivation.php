@@ -235,7 +235,7 @@ if ( ! class_exists( 'IFE_Plugin_Deactivation' ) ) {
                 });
             </script>
 			<style>
-			.<?php echo $this->slug; ?>-deactivate-dialog .ui-dialog-titlebar{
+			<?php echo '.'.$this->slug; ?>-deactivate-dialog .ui-dialog-titlebar{
 				display: none;
 			}
             .ui-widget.<?php echo $this->slug; ?>-deactivate-dialog{
@@ -248,6 +248,9 @@ if ( ! class_exists( 'IFE_Plugin_Deactivation' ) ) {
                 font-family: inherit;
                 font-size: 14px;
                 width: 100%;
+            }
+            <?php echo '#'.$this->slug; ?>-deactivate-dialog {
+                display : none;
             }
 			</style>
             <div id="<?php echo $this->slug; ?>-deactivate-dialog">
