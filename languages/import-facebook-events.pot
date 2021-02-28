@@ -1,20 +1,116 @@
-# Copyright (C) 2020 Import Social Events
-# This file is distributed under the same license as the Import Social Events package.
+# Copyright (C) 2021 Xylus Themes
+# This file is distributed under the same license as the Import Social Events plugin.
 msgid ""
 msgstr ""
 "Project-Id-Version: Import Social Events 1.6.12\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/import-facebook-"
-"events\n"
-"POT-Creation-Date: 2020-08-08 09:35:24+00:00\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/import-facebook-events\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2021-02-28T05:59:38+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: import-facebook-events\n"
 
-#: import-facebook-events.php:103 import-facebook-events.php:111
+#. Plugin Name of the plugin
+#: includes/class-ife-plugin-deactivation.php:38
+msgid "Import Social Events"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "http://xylusthemes.com/plugins/import-facebook-events/"
+msgstr ""
+
+#. Description of the plugin
+msgid "Import Social Events allows you to import Facebook ( facebook.com ) events into your WordPress site."
+msgstr ""
+
+#. Author of the plugin
+msgid "Xylus Themes"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://xylusthemes.com"
+msgstr ""
+
+#: import-facebook-events.php:102
+#: import-facebook-events.php:110
 msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:49
+msgid "I couldn't understand how to make it work"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:50
+msgid "I found a better plugin"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:51
+msgid "The plugin is great, but I need specific feature that you don't support"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:52
+msgid "Plugin has bugs and it's not working"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:53
+msgid "It's not what I was looking for"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:54
+msgid "Plugin didn't work as expected"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:55
+msgid "It's temporary deactivatation, for debug an issue"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:56
+msgid "Other reasons"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:169
+msgid "Submit & Deactivate"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:196
+msgid "Skip"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:213
+msgid "Finding it confusing? let us know so that we can improve the interface"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:216
+msgid "Can you let us know the reason for deactivation (Required)"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:220
+msgid "Can you please let us know about the bug/issue in detail?"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:223
+msgid "Can you please let us know which plugin you found helpful"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:226
+msgid "Can you please let us know more about the feature you want"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:229
+msgid "Can you please let us know more about your requirement"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:232
+#: includes/class-ife-plugin-deactivation.php:270
+msgid "Write your query here"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:257
+msgid "If you have a moment, please let us know why you are deactivating:"
 msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:60
@@ -197,26 +293,9 @@ msgstr ""
 msgid "Event Schema / Structured Data"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:426
-msgid "Event"
-msgstr ""
-
-#: includes/class-import-facebook-events-admin.php:427
-msgid "Created/Updated"
-msgstr ""
-
 #: includes/class-import-facebook-events-admin.php:428
 #: includes/class-import-facebook-events-list-table.php:177
 msgid "Action"
-msgstr ""
-
-#: includes/class-import-facebook-events-admin.php:453
-msgid "Edit"
-msgstr ""
-
-#: includes/class-import-facebook-events-admin.php:467
-#: includes/class-import-facebook-events-admin.php:474
-msgid "No data found"
 msgstr ""
 
 #: includes/class-import-facebook-events-common.php:52
@@ -271,10 +350,6 @@ msgstr ""
 #: includes/class-import-facebook-events-cpt.php:121
 #: includes/class-import-facebook-events-cpt.php:125
 msgid "Facebook Events"
-msgstr ""
-
-#: includes/class-import-facebook-events-common.php:258
-msgid "Invalid image URL"
 msgstr ""
 
 #: includes/class-import-facebook-events-common.php:366
@@ -349,17 +424,11 @@ msgid "Draft"
 msgstr ""
 
 #: includes/class-import-facebook-events-common.php:640
-msgid ""
-"Your current \"Import Facebok Event Pro\" add-on is not competible with Free "
-"plugin. Please Upgrade Pro latest to work event importing Flawlessly."
+msgid "Your current \"Import Facebok Event Pro\" add-on is not competible with Free plugin. Please Upgrade Pro latest to work event importing Flawlessly."
 msgstr ""
 
 #: includes/class-import-facebook-events-common.php:657
-msgid ""
-"The Access Token has been invalidated because the user changed their "
-"password or Facebook has changed the session for security reasons. Can you "
-"please Authorize/Reauthorize your Facebook account from <strong>Facebook "
-"Import</strong> > <strong>Settings</strong>."
+msgid "The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong>Settings</strong>."
 msgstr ""
 
 #: includes/class-import-facebook-events-common.php:684
@@ -622,7 +691,8 @@ msgstr ""
 
 #: includes/class-import-facebook-events-cpt.php:387
 #: includes/class-import-facebook-events-cpt.php:424
-#: templates/ife-event-meta.php:102 templates/ife-event-meta.php:131
+#: templates/ife-event-meta.php:102
+#: templates/ife-event-meta.php:131
 msgid "Website"
 msgstr ""
 
@@ -642,10 +712,6 @@ msgstr ""
 #: includes/class-import-facebook-events-cpt.php:418
 #: templates/ife-event-meta.php:127
 msgid "Phone"
-msgstr ""
-
-#: includes/class-import-facebook-events-cpt.php:591
-msgid "Event Date"
 msgstr ""
 
 #: includes/class-import-facebook-events-cpt.php:874
@@ -673,19 +739,7 @@ msgstr ""
 
 #. translators: %s is Facebook event ID.
 #: includes/class-import-facebook-events-facebook.php:185
-msgid ""
-"We are not able to access Facebook event: %s. Possible reasons: - App "
-"Credentials are wrong - Facebook event is not public or some restrictions "
-"are there like age,country etc."
-msgstr ""
-
-#: includes/class-import-facebook-events-fb-authorize.php:68
-msgid "Please insert Facebook App ID and Secret."
-msgstr ""
-
-#: includes/class-import-facebook-events-fb-authorize.php:71
-#: includes/class-import-facebook-events-fb-authorize.php:156
-msgid "You have not access to doing this operations."
+msgid "We are not able to access Facebook event: %s. Possible reasons: - App Credentials are wrong - Facebook event is not public or some restrictions are there like age,country etc."
 msgstr ""
 
 #: includes/class-import-facebook-events-list-table.php:72
@@ -764,14 +818,13 @@ msgstr ""
 msgid "Something went wrong, please try again."
 msgstr ""
 
-#: templates/admin/admin-sidebar.php:18 templates/admin/admin-sidebar.php:21
+#: templates/admin/admin-sidebar.php:18
+#: templates/admin/admin-sidebar.php:21
 msgid "Upgrade to Pro"
 msgstr ""
 
 #: templates/admin/admin-sidebar.php:19
-msgid ""
-"Unlock more power to events import operation, enable scheduled imports "
-"today, Upgrade today!!"
+msgid "Unlock more power to events import operation, enable scheduled imports today, Upgrade today!!"
 msgstr ""
 
 #: templates/admin/admin-sidebar.php:26
@@ -779,9 +832,7 @@ msgid "Custom WordPress Development Services"
 msgstr ""
 
 #: templates/admin/admin-sidebar.php:27
-msgid ""
-"From small blog to complex web apps, we push the limits of what's possible "
-"with WordPress."
+msgid "From small blog to complex web apps, we push the limits of what's possible with WordPress."
 msgstr ""
 
 #: templates/admin/admin-sidebar.php:29
@@ -823,11 +874,10 @@ msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
 #: templates/admin/facebook-import-events.php:46
-msgid ""
-"Select Event source. %1$s, %2$s ( import events belonging to a Facebook "
-"organization or a Facebook page )."
+msgid "Select Event source. %1$s, %2$s ( import events belonging to a Facebook organization or a Facebook page )."
 msgstr ""
 
+#. translators: please ignore %1$s and  %2$s.
 #: templates/admin/facebook-import-events.php:47
 msgid "1. by Facebook Event ID"
 msgstr ""
@@ -838,12 +888,10 @@ msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
 #: templates/admin/facebook-import-events.php:56
-msgid ""
-"%1$s (Import events from Facebook group), %2$s (Import events which you have "
-"marked interested or going on Facebook, this also include your events on "
-"Facebook)"
+msgid "%1$s (Import events from Facebook group), %2$s (Import events which you have marked interested or going on Facebook, this also include your events on Facebook)"
 msgstr ""
 
+#. translators: please ignore %1$s and  %2$s.
 #: templates/admin/facebook-import-events.php:57
 msgid "3. Facebook Group"
 msgstr ""
@@ -857,9 +905,7 @@ msgid "Facebook Event IDs"
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:73
-msgid ""
-"One event ID per line, ( Eg. Event ID for https://www.facebook.com/"
-"events/123456789/ is \"123456789\" )."
+msgid "One event ID per line, ( Eg. Event ID for https://www.facebook.com/events/123456789/ is \"123456789\" )."
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:80
@@ -875,9 +921,7 @@ msgid "Facebook Group Numeric ID to fetch events from"
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:98
-msgid ""
-" Eg.Input value for group https://www.facebook.com/groups/123456789123456/ "
-"is \"123456789123456\""
+msgid " Eg.Input value for group https://www.facebook.com/groups/123456789123456/ is \"123456789123456\""
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:111
@@ -901,9 +945,7 @@ msgid "Select Author"
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:146
-msgid ""
-"Select event author for imported events. Default event author is current "
-"loggedin user."
+msgid "Select event author for imported events. Default event author is current loggedin user."
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:157
@@ -915,9 +957,7 @@ msgid "Facebook Settings"
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:28
-msgid ""
-"It looks like you don't have HTTPS enabled on your website. Please enable "
-"it. HTTPS is required for authorize your Facebook account."
+msgid "It looks like you don't have HTTPS enabled on your website. Please enable it. HTTPS is required for authorize your Facebook account."
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:28
@@ -935,9 +975,7 @@ msgid "Note : "
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:34
-msgid ""
-"You have to create a Facebook application before filling the following "
-"details."
+msgid "You have to create a Facebook application before filling the following details."
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:34
@@ -978,9 +1016,7 @@ msgid " ( Authorized as: %s )"
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:80
-msgid ""
-"Please authorize your Facebook account for import Facebook events. Please "
-"authorize with account which you have used for create an Facebook app."
+msgid "Please authorize your Facebook account for import Facebook events. Please authorize with account which you have used for create an Facebook app."
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:96
@@ -1014,8 +1050,7 @@ msgid "Direct link to Facebook"
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:157
-msgid ""
-"Check to enable direct event link to Facebook instead of event detail page."
+msgid "Check to enable direct event link to Facebook instead of event detail page."
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:165
@@ -1023,9 +1058,7 @@ msgid "Advanced Synchronization"
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:175
-msgid ""
-"Check to enable advanced synchronization, this will delete events which are "
-"removed from Facebook. Also, it deletes passed events."
+msgid "Check to enable advanced synchronization, this will delete events which are removed from Facebook. Also, it deletes passed events."
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:183
@@ -1077,9 +1110,7 @@ msgid "Delete Import Facebook Events data on Uninstall"
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:261
-msgid ""
-"Delete Import Facebook Events data like settings, scheduled imports, import "
-"history on Uninstall."
+msgid "Delete Import Facebook Events data like settings, scheduled imports, import history on Uninstall."
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:274
@@ -1213,26 +1244,4 @@ msgstr ""
 
 #: templates/ife-event-meta.php:132
 msgid "Organizer's Website"
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-msgid "Import Social Events"
-msgstr ""
-
-#. Plugin URI of the plugin/theme
-msgid "http://xylusthemes.com/plugins/import-facebook-events/"
-msgstr ""
-
-#. Description of the plugin/theme
-msgid ""
-"Import Social Events allows you to import Facebook ( facebook.com ) events "
-"into your WordPress site."
-msgstr ""
-
-#. Author of the plugin/theme
-msgid "Xylus Themes"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "http://xylusthemes.com"
 msgstr ""
