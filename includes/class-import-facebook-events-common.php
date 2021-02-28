@@ -255,7 +255,7 @@ class Import_Facebook_Events_Common {
 			// Set variables for storage, fix file filename for query strings.
 			preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $image_url, $matches );
 			if ( ! $matches ) {
-				return new WP_Error( 'image_sideload_failed', __( 'Invalid image URL' ) );
+				return new WP_Error( 'image_sideload_failed', __( 'Invalid image URL', 'import-facebook-events' ) );
 			}
 
 			$args = array(
