@@ -358,7 +358,7 @@ class Import_Facebook_Events_Admin {
 	public function get_xyuls_themes_plugins() {
 		return array(
 			'wp-event-aggregator'      => esc_html__( 'WP Event Aggregator', 'import-facebook-events' ),
-			'import-eventbrite-events' => esc_html__( 'Import Eventbrite Events', 'import-facebook-events' ),
+			'import-facebook-events' => esc_html__( 'Import Eventbrite Events', 'import-facebook-events' ),
 			'import-meetup-events'     => esc_html__( 'Import Meetup Events', 'import-facebook-events' ),
 			'wp-bulk-delete'           => esc_html__( 'WP Bulk Delete', 'import-facebook-events' ),
 			'event-schema'             => esc_html__( 'Event Schema / Structured Data', 'import-facebook-events' ),
@@ -423,8 +423,8 @@ class Import_Facebook_Events_Admin {
 				<table class="widefat fixed striped">
 				<thead>
 					<tr>
-						<th id="title" class="column-title column-primary"><?php esc_html_e( 'Event', 'import-eventbrite-events' ); ?></th>
-						<th id="action" class="column-operation"><?php esc_html_e( 'Created/Updated', 'import-eventbrite-events' ); ?></th>
+						<th id="title" class="column-title column-primary"><?php esc_html_e( 'Event', 'import-facebook-events' ); ?></th>
+						<th id="action" class="column-operation"><?php esc_html_e( 'Created/Updated', 'import-facebook-events' ); ?></th>
 						<th id="action" class="column-date"><?php esc_html_e( 'Action', 'import-facebook-events' ); ?></th>
 					</tr>
 				</thead>
@@ -450,7 +450,7 @@ class Import_Facebook_Events_Admin {
 								printf(
 									'<a href="%1$s" target="_blank">%2$s</a>',
 									esc_url( get_edit_post_link( absint( $event['id'] ) ) ),
-									esc_attr__( 'Edit', 'import-eventbrite-events' )
+									esc_attr__( 'Edit', 'import-facebook-events' )
 								);
 								?>
 							</td>
@@ -464,14 +464,14 @@ class Import_Facebook_Events_Admin {
 			} else {
 				?>
 				<div class="ife_no_import_events">
-					<?php esc_html_e( 'No data found', 'import-eventbrite-events' ); ?>
+					<?php esc_html_e( 'No data found', 'import-facebook-events' ); ?>
 				</div>
 				<?php
 			}
 		} else {
 			?>
 			<div class="ife_no_import_events">
-				<?php esc_html_e( 'No data found', 'import-eventbrite-events' ); ?>
+				<?php esc_html_e( 'No data found', 'import-facebook-events' ); ?>
 			</div>
 			<?php
 		}

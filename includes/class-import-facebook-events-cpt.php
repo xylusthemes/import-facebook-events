@@ -588,7 +588,7 @@ class Import_Facebook_Events_Cpt {
 	 * @param array $cols Columns.
 	 */
 	public function facebook_events_columns( $cols ) {
-		$cols['fbevent_start_date'] = __( 'Event Date', 'event-list-calendar' );
+		$cols['fbevent_start_date'] = __( 'Event Date', 'import-facebook-events' );
 		return $cols;
 	}
 

@@ -65,10 +65,10 @@ class Import_Facebook_Events_FB_Authorize {
 				header( 'Location: ' . $dialog_url );
 
 			} else {
-				die( esc_attr__( 'Please insert Facebook App ID and Secret.', 'import-facebook-events-pro' ) );
+				die( esc_attr__( 'Please insert Facebook App ID and Secret.', 'import-facebook-events' ) );
 			}
 		} else {
-			die( esc_attr__( 'You have not access to doing this operations.', 'import-facebook-events-pro' ) );
+			die( esc_attr__( 'You have not access to doing this operations.', 'import-facebook-events' ) );
 		}
 	}
 
