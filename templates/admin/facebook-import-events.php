@@ -34,7 +34,7 @@ if ( ! ife_is_pro() ) {
 									<option value="facebook_organization"><?php esc_attr_e( 'Facebook Page', 'import-facebook-events' ); ?></option>
 									<?php if ( $ife_events->common->has_authorized_user_token() ) { ?>
 										<option value="facebook_group"><?php esc_attr_e( 'Facebook Group', 'import-facebook-events' ); ?></option>
-										<option value="my_events"><?php esc_attr_e( 'My Events', 'import-facebook-events' ); ?></option>
+										<option value="my_events" <?php echo esc_attr( $disabled ); ?>><?php esc_attr_e( 'My Events', 'import-facebook-events' ); ?></option>
 									<?php } if ( ! empty( $user_fb_pages ) ) { ?>
 										<option value="my_pages"><?php esc_attr_e( 'My Pages', 'import-facebook-events' ); ?></option>
 									<?php } ?>
