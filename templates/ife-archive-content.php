@@ -23,7 +23,7 @@ if ( '' !== get_the_post_thumbnail() ) {
 	$image_url = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full' );
 } else {
 	$image_date  = date_i18n( 'F+d', $event_date );
-	$image_url[] = 'http://placehold.it/420x150?text=' . $image_date;
+	$image_url[] = 'https://placehold.it/420x150?text=' . $image_date;
 }
 $ticket_uri = esc_url( get_permalink() );
 $target     = '';
@@ -33,7 +33,7 @@ if ( 'yes' === $direct_link ) {
 	$target            = 'target="_blank"';
 }
 ?>
-<a href="<?php echo $ticket_uri; ?>" <?php echo $target; ?>>	
+<a href="<?php echo $ticket_uri; ?>" <?php echo $target; ?>>
 	<div <?php post_class( array( $css_class, 'archive-event' ) ); ?>>
 		<div class="ife_event" >
 			<div class="img_placeholder" style=" background: url('<?php echo esc_url( $image_url[0] ); ?>') no-repeat left top;"></div>
