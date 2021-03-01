@@ -1,15 +1,15 @@
 {
-    "name": "xylusthemes/import-facebook-events",
-    "description": "Import Facebook events into your WordPress website and/or Event Calendar. Nice Display with shortcode & Event widget.",
-    "type": "wordpress-plugin",
-    "license": "GPL-2.0+",
-    "require-dev": {
-        "squizlabs/php_codesniffer": "^3.4",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-        "wp-coding-standards/wpcs": "^2.1"
-    },
-    "scripts": {
-      "wpcs-check": "phpcs -s --report=summary --extensions=php --ignore=*/node_modules/* ./",
-      "wpcs-fix": "phpcbf --extensions=php --ignore=*/node_modules/* ./"
-    }
+  "name": "xylusthemes/import-facebook-events",
+  "description": "Import Facebook events into your WordPress website and/or Event Calendar. Nice Display with shortcode & Event widget.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0+",
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.5",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+    "wp-coding-standards/wpcs": "^2.3"
+  },
+  "scripts": {
+    "wpcs-check": "phpcs -s --report=summary --extensions=php --ignore=*/node_modules/* ./",
+    "wpcs-fix": "phpcbf --extensions=php --ignore=*/node_modules/* ./"
+  }
 }
