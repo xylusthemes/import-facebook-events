@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event, facebook import, faceb
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 5.6
-Stable tag: 1.6.12
+Stable tag: 1.6.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,13 @@ You can use `[facebook_events]` for display in-built facebook events list.
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+= 1.6.13 =
+* ADDED: Optional Plugin deactivation Feedback
+* FIXED: Time format related error
+* FIXED: Event Espresso warning error
+* IMPROVEMENTS: Made placehold.it load over https
+* IMPROVEMENTS: Support for WP 5.6
+
 = 1.6.12 =
 * ADDED: French Translation (Thanks to [PiwEL](https://github.com/piwel))
 * IMPROVEMENTS: support for WP 5.5
