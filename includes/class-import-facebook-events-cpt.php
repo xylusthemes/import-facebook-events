@@ -377,7 +377,7 @@ class Import_Facebook_Events_Cpt {
 			</tr>
 
 			<tr>
-				<td><?php esc_attr_e( 'Latitude', 'import-facebook-events' ); ?>:</td>
+				<td><?php esc_attr_e( 'Longitude', 'import-facebook-events' ); ?>:</td>
 				<td>
 					<input type="text" name="venue_lon" id="venue_lon" value="<?php echo esc_attr( get_post_meta( $post->ID, 'venue_lon', true ) ); ?>" />
 				</td>
