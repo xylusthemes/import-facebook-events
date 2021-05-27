@@ -171,12 +171,18 @@ if ( ! empty( $venue_name ) && ( ! empty( $venue_address ) || ! empty( $venue['c
 			?>
 		</div>
 		<?php
-		if ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) {
+		if ( isset( $venue_name ) && ! empty( $venue_name ) ) {
 			?>
 			<div class="map">
-			<iframe src="https://maps.google.com/maps?q=<?php echo esc_attr( $venue['lat'] ) . ',' . esc_attr( $venue['lon'] ); ?>&hl=es;z=14&output=embed" width="100%" height="350" frameborder="0" style="border:0; margin:0;" allowfullscreen></iframe>
+				<iframe width="100%" height="350" frameborder="0" style="border:0; margin:0;" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAfqJHFi3ghTFSuuW5pIudu9Fq2pvoJzwc&q=<?php echo $venue_name; ?>" allowfullscreen ></iframe>
 		</div>
-			<?php
+		<?php
+		}else{
+		?>
+			<div class="map">
+				<iframe width="100%" height="350" frameborder="0" style="border:0; margin:0;" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAfqJHFi3ghTFSuuW5pIudu9Fq2pvoJzwc&q=<?php echo $venue['lat'] . ',' . $venue['lon']; ?>" allowfullscreen ></iframe>
+			</div>
+		<?php  
 		}
 		?>
 		<div style="clear: both;"></div>
