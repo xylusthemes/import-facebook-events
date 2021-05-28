@@ -16,7 +16,7 @@ $end_date_str        = get_post_meta( $event_id, 'end_ts', true );
 $start_date_formated = date_i18n( 'F j', $start_date_str );
 $end_date_formated   = date_i18n( 'F j', $end_date_str );
 $website             = get_post_meta( $event_id, 'ife_event_link', true );
-
+$map_api_key         = 'AIzaSyAfqJHFi3ghTFSuuW5pIudu9Fq2pvoJzwc';
 $ife_options  = get_option( IFE_OPTIONS );
 $time_format = isset( $ife_options['time_format'] ) ? $ife_options['time_format'] : '12hours';
 if($time_format == '12hours' ){
@@ -148,7 +148,7 @@ $venue['lat']     = get_post_meta( $event_id, 'venue_lat', true );
 $venue['lon']     = get_post_meta( $event_id, 'venue_lon', true );
 $venue_url        = esc_url( get_post_meta( $event_id, 'venue_url', true ) );
 
-if ( ! empty( $venue_name ) && ( ! empty( $venue_address ) || ! empty( $venue['city'] ) ) ) {
+if ( ! empty( $venue_address ) || ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) ) {
 	?>
 	<div class="organizermain library">
 		<div class="venue">
@@ -171,11 +171,32 @@ if ( ! empty( $venue_name ) && ( ! empty( $venue_address ) || ! empty( $venue['c
 			?>
 		</div>
 		<?php
+		$q = '';
+		$lat_lng = '';
 		if ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) {
+			$lat_lng = esc_attr( $venue['lat'] ) . ',' . esc_attr( $venue['lon'] );
+		}
+		if ( ! empty( $venue_address ) ) {
+			$q = esc_attr( $venue_address );
+		}
+		if ( ! empty( $venue_name ) && ! empty( $venue_address ) ) {
+			$q = esc_attr( $venue_name ) . ',' . esc_attr( $venue_address );
+		}
+		if(empty($q)){
+			$q = $lat_lng;
+		}
+		if ( ! empty( $q ) ) {
+			$params = array(
+				'q' => $q
+			);
+			if ( ! empty( $lat_lng ) ) {
+				$params['center'] = $lat_lng;
+			}
+			$query = http_build_query($params);
 			?>
 			<div class="map">
-			<iframe src="https://maps.google.com/maps?q=<?php echo esc_attr( $venue['lat'] ) . ',' . esc_attr( $venue['lon'] ); ?>&hl=es;z=14&output=embed" width="100%" height="350" frameborder="0" style="border:0; margin:0;" allowfullscreen></iframe>
-		</div>
+				<iframe src="https://www.google.com/maps/embed/v1/place?key=<?php echo $map_api_key; ?>&<?php echo $query; ?>" width="100%" height="350" frameborder="0" style="border:0; margin:0;" allowfullscreen></iframe>
+			</div>
 			<?php
 		}
 		?>
