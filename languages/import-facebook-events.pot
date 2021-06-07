@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-05-28T08:38:13+00:00\n"
+"POT-Creation-Date: 2021-06-07T12:23:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: import-facebook-events\n"
@@ -748,7 +748,7 @@ msgstr ""
 
 #: includes/class-import-facebook-events-facebook.php:83
 #: includes/class-import-facebook-events-facebook.php:171
-#: includes/class-import-facebook-events-manage-import.php:169
+#: includes/class-import-facebook-events-manage-import.php:185
 msgid "Please insert Facebook app ID and app Secret."
 msgstr ""
 
@@ -779,7 +779,7 @@ msgid "You have not access to doing this operations."
 msgstr ""
 
 #: includes/class-import-facebook-events-list-table.php:72
-#: includes/class-import-facebook-events-list-table.php:190
+#: includes/class-import-facebook-events-list-table.php:213
 msgid "Delete"
 msgstr ""
 
@@ -812,6 +812,10 @@ msgstr ""
 msgid "Import Stats"
 msgstr ""
 
+#: includes/class-import-facebook-events-list-table.php:197
+msgid "Clear Import History"
+msgstr ""
+
 #: includes/class-import-facebook-events-manage-import.php:56
 msgid "Please provide Import into plugin for Event import."
 msgstr ""
@@ -824,28 +828,28 @@ msgstr ""
 msgid "Something went wrong! please try again."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:178
+#: includes/class-import-facebook-events-manage-import.php:194
 msgid "Nothing to Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:196
+#: includes/class-import-facebook-events-manage-import.php:212
 msgid "Scheduled import deleted successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:200
 #: includes/class-import-facebook-events-manage-import.php:216
+#: includes/class-import-facebook-events-manage-import.php:232
 msgid "Scheduled imports are deleted successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:204
+#: includes/class-import-facebook-events-manage-import.php:220
 msgid "Scheduled import has been run successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:208
+#: includes/class-import-facebook-events-manage-import.php:224
 msgid "Import history deleted successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:212
+#: includes/class-import-facebook-events-manage-import.php:228
 msgid "Import histories are deleted successfully."
 msgstr ""
 
