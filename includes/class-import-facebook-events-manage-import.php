@@ -134,10 +134,8 @@ class Import_Facebook_Events_Manage_Import {
 		$is_bulk_delete = ( ( isset( $_GET['action'] ) && 'delete' === sanitize_text_field( wp_unslash( $_GET['action'] ) ) ) || ( isset( $_GET['action2'] ) && 'delete' === sanitize_text_field( wp_unslash( $_GET['action2'] ) ) ) ); // input var okay.
 
 		if ( $is_bulk_delete && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'bulk-fb_import_histories' ) ) { // input var okay.
-			$wp_redirect = admin_url();
-			if ( isset( $_GET['_wp_http_referer'] ) ) {
-				$wp_redirect = get_site_url() . urldecode( sanitize_text_field( wp_unslash( $_GET['_wp_http_referer'] ) ) ); // input var okay.
-			}
+			$page        = isset( $_GET['page'] ) ? $_GET['page'] : 'facebook_import';
+			$wp_redirect = admin_url( 'admin.php?page=' . $page );
 			$delete_ids = isset( $_GET['import_history'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['import_history'] ) ) : array(); // input var okay.
 			if ( ! empty( $delete_ids ) ) {
 				foreach ( $delete_ids as $delete_id ) {
@@ -150,6 +148,24 @@ class Import_Facebook_Events_Manage_Import {
 			);
 			wp_safe_redirect( add_query_arg( $query_args, $wp_redirect ) );
 			exit;
+		}
+
+		// Delete All History Data 
+		if ( isset( $_GET['ife_action'] ) && $_GET['ife_action'] == 'ife_all_history_delete' && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ife_delete_all_history_nonce' ) ) {
+			$page        = isset( $_GET['page'] ) ? $_GET['page'] : 'facebook_import';
+			$tab         = isset( $_GET['tab'] ) ? $_GET['tab'] : 'history';
+			$wp_redirect = admin_url( 'admin.php?page=' . $page );
+			if ( $_GET['ife_action'] == 'ife_all_history_delete'  && wp_verify_nonce( $_GET['_wpnonce'], 'ife_delete_all_history_nonce' ) ) {
+				global $wpdb;
+				$table_name = $wpdb->prefix . 'posts';
+				$other_attributes = $wpdb->query(  "DELETE FROM {$table_name} WHERE post_type='ife_import_history'"  );
+				$query_args = array(
+					'ife_msg' => 'history_dels',
+					'tab'     => $tab,
+				);
+				wp_safe_redirect( add_query_arg( $query_args, $wp_redirect ) );
+				exit;
+			}
 		}
 	}
 
