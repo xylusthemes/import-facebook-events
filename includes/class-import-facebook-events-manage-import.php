@@ -160,7 +160,7 @@ class Import_Facebook_Events_Manage_Import {
 				$table_name = $wpdb->prefix . 'posts';
 				$other_attributes = $wpdb->query(  "DELETE FROM {$table_name} WHERE post_type='ife_import_history'"  );
 				$query_args = array(
-					'ife_msg' => 'history_dels',
+					'imp_fb_msg' => 'history_dels',
 					'tab'     => $tab,
 				);
 				wp_safe_redirect( add_query_arg( $query_args, $wp_redirect ) );
