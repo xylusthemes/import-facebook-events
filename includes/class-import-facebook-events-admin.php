@@ -146,6 +146,10 @@ class Import_Facebook_Events_Admin {
 								<?php esc_html_e( 'Settings', 'import-facebook-events' ); ?>
 							</a>
 
+							<a href="<?php echo esc_url( add_query_arg( 'tab', 'shortcodes', $this->adminpage_url ) ); ?>" class="nav-tab <?php if ( 'shortcodes' == $tab) { echo 'nav-tab-active'; } ?>">
+								<?php esc_html_e( 'Shortcodes', 'import-facebook-events' ); ?>
+							</a>
+
 							<a href="<?php echo esc_url( add_query_arg( 'tab', 'support', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'support' === $tab ) ? 'nav-tab-active' : '' ); ?>">
 								<?php esc_html_e( 'Support & Help', 'import-facebook-events' ); ?>
 							</a>
@@ -176,6 +180,8 @@ class Import_Facebook_Events_Admin {
 
 								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-support.php';
 
+							}elseif ( 'shortcodes' === $tab ) {
+								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-shortcode.php';
 							}
 							?>
 							<div style="clear: both"></div>
