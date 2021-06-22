@@ -162,6 +162,26 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 		);
 	}
 
+	public function extra_tablenav( $which ) {
+
+		if ( 'top' !== $which ) {
+			return;
+		}	
+		$ife_url_all_delete_args = array(
+			'page'       => wp_unslash( $_REQUEST['page'] ),
+			'tab'        => wp_unslash( $_REQUEST['tab'] ),
+			'ife_action' => 'ife_all_history_delete',
+		);
+
+		$wp_delete_noonce_url = esc_url( wp_nonce_url( add_query_arg( $ife_url_all_delete_args ), 'ife_delete_all_history_nonce' ) );
+		$actions = '<a class="button apply" href="'.$wp_delete_noonce_url.'" onclick="return confirm(\'Warning!! Are you sure to Delete this import history? Import history will be permanatly deleted.\')">'.esc_html__( 'Clear Import History', 'import-facebook-events' ).'</a>';
+		echo $actions;
+
+		$action = array(
+			'all_delete' => $actions,
+		);
+	}
+
 	/**
 	 * Get column title.
 	 *

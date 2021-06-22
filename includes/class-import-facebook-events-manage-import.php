@@ -151,6 +151,27 @@ class Import_Facebook_Events_Manage_Import {
 			wp_safe_redirect( add_query_arg( $query_args, $wp_redirect ) );
 			exit;
 		}
+
+		// Delete All History Data 
+		if ( isset( $_GET['ife_action'] ) && $_GET['ife_action'] == 'ife_all_history_delete' && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ife_delete_all_history_nonce' ) ) {
+			$page        = isset( $_GET['page'] ) ? $_GET['page'] : 'facebook_import';
+			$tab         = isset( $_GET['tab'] ) ? $_GET['tab'] : 'history';
+			$wp_redirect = admin_url( 'admin.php?page=' . $page );
+
+			$delete_ids  = get_posts( array( 'numberposts' => -1,'fields' => 'ids', 'post_type'   => 'ife_import_history' ) );
+			if ( ! empty( $delete_ids ) ) {
+				foreach ( $delete_ids as $delete_id ) {
+					wp_delete_post( $delete_id, true );
+				}
+			}		
+			$query_args = array(
+				'imp_fb_msg' => 'history_dels',
+				'tab'     => $tab,
+			);			
+			wp_redirect( add_query_arg( $query_args, $wp_redirect ) );
+			exit;
+		}
+
 	}
 
 	/**
