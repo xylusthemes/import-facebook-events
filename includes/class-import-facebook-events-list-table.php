@@ -173,9 +173,12 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 			'ife_action' => 'ife_all_history_delete',
 		);
 
-		$wp_delete_noonce_url = esc_url( wp_nonce_url( add_query_arg( $ife_url_all_delete_args ), 'ife_delete_all_history_nonce' ) );
-		$actions = '<a class="button apply" href="'.$wp_delete_noonce_url.'" onclick="return confirm(\'Warning!! Are you sure to Delete this import history? Import history will be permanatly deleted.\')">'.esc_html__( 'Clear Import History', 'import-facebook-events' ).'</a>';
-		echo $actions;
+		$delete_ids  = get_posts( array( 'numberposts' => 1,'fields' => 'ids', 'post_type'   => 'ife_import_history' ) );
+		if( !empty( $delete_ids ) ){
+			$wp_delete_noonce_url = esc_url( wp_nonce_url( add_query_arg( $ife_url_all_delete_args, admin_url( 'admin.php' ) ),'ife_delete_all_history_nonce' ) );
+			$actions = '<a class="button apply" href="'.$wp_delete_noonce_url.'" onclick="return confirm(\'Warning!! Are you sure to Delete this import history? Import history will be permanatly deleted.\')">'.esc_html__( 'Clear Import History', 'import-facebook-events' ).'</a>';
+			echo $actions;
+		}
 
 		$action = array(
 			'all_delete' => $actions,
