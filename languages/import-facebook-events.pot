@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-06-11T15:14:07+00:00\n"
+"POT-Creation-Date: 2021-07-01T05:42:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: import-facebook-events\n"
@@ -743,11 +743,19 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: includes/class-import-facebook-events-cpt.php:591
+#: includes/class-import-facebook-events-cpt.php:437
+msgid "Event Source Link"
+msgstr ""
+
+#: includes/class-import-facebook-events-cpt.php:444
+msgid "Source Link"
+msgstr ""
+
+#: includes/class-import-facebook-events-cpt.php:617
 msgid "Event Date"
 msgstr ""
 
-#: includes/class-import-facebook-events-cpt.php:874
+#: includes/class-import-facebook-events-cpt.php:900
 msgid "No Events are found."
 msgstr ""
 
