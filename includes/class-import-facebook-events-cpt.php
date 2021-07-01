@@ -429,6 +429,26 @@ class Import_Facebook_Events_Cpt {
 			</tbody>
 		</table>
 
+		<div style="clear: both;"></div>
+		<table class="ife_form_table">
+		<thead>
+			<tr>
+				<th colspan="2">
+					<?php esc_attr_e( 'Event Source Link', 'import-facebook-events' ); ?>
+					<hr>
+				</th>
+			</tr>
+		</thead>
+			<tbody>
+				<tr>
+					<td><?php _e( 'Source Link', 'import-facebook-events' ); ?>:</td>
+				<td>
+					<input type="text" name="ife_event_link" id="ife_event_link" value="<?php echo get_post_meta( $post->ID, 'ife_event_link', true ); ?>" />
+				</td>
+			</tr>
+			</tbody>
+		</table>
+
 		<?php
 	}
 
@@ -551,6 +571,9 @@ class Import_Facebook_Events_Cpt {
 		$organizer_phone = isset( $postdata['organizer_phone'] ) ? $postdata['organizer_phone'] : '';
 		$organizer_url   = isset( $postdata['organizer_url'] ) ? esc_url( $postdata['organizer_url'] ) : '';
 
+		// Event Source Link
+		$ife_event_link   = isset( $_POST['ife_event_link'] ) ? esc_url( $_POST['ife_event_link'] ) : '';
+
 		// Save Event Data.
 		// Date & Time.
 		update_post_meta( $post_id, 'event_start_date', $event_start_date );
@@ -580,6 +603,9 @@ class Import_Facebook_Events_Cpt {
 		update_post_meta( $post_id, 'organizer_email', $organizer_email );
 		update_post_meta( $post_id, 'organizer_phone', $organizer_phone );
 		update_post_meta( $post_id, 'organizer_url', $organizer_url );
+		
+		// Event Source Link
+		update_post_meta( $post_id, 'ife_event_link', $ife_event_link );
 	}
 
 	/**
