@@ -148,7 +148,7 @@ $venue['lat']     = get_post_meta( $event_id, 'venue_lat', true );
 $venue['lon']     = get_post_meta( $event_id, 'venue_lon', true );
 $venue_url        = esc_url( get_post_meta( $event_id, 'venue_url', true ) );
 
-if ( ! empty( $venue_address ) || ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) ) {
+if ( ! empty( $venue_name ) || ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) ) {
 	?>
 	<div class="organizermain library">
 		<div class="venue">
@@ -176,11 +176,8 @@ if ( ! empty( $venue_address ) || ( ! empty( $venue['lat'] ) && ! empty( $venue[
 		if ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) {
 			$lat_lng = esc_attr( $venue['lat'] ) . ',' . esc_attr( $venue['lon'] );
 		}
-		if ( ! empty( $venue_address ) ) {
-			$q = esc_attr( $venue_address );
-		}
-		if ( ! empty( $venue_name ) && ! empty( $venue_address ) ) {
-			$q = esc_attr( $venue_name ) . ',' . esc_attr( $venue_address );
+		if ( ! empty( $venue_name ) ) {
+			$q = esc_attr( $venue_name );
 		}
 		if(empty($q)){
 			$q = $lat_lng;
