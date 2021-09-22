@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-22T17:15:16+00:00\n"
+"POT-Creation-Date: 2021-09-22T17:17:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: import-facebook-events\n"
@@ -124,7 +124,7 @@ msgid "Facebook Import"
 msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:134
-#: includes/class-import-facebook-events-list-table.php:196
+#: includes/class-import-facebook-events-list-table.php:202
 msgid "Import"
 msgstr ""
 
@@ -306,8 +306,8 @@ msgid "Created/Updated"
 msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:434
-#: includes/class-import-facebook-events-list-table.php:200
-#: includes/class-import-facebook-events-list-table.php:361
+#: includes/class-import-facebook-events-list-table.php:206
+#: includes/class-import-facebook-events-list-table.php:367
 msgid "Action"
 msgstr ""
 
@@ -792,7 +792,7 @@ msgid "You have not access to doing this operations."
 msgstr ""
 
 #: includes/class-import-facebook-events-list-table.php:72
-#: includes/class-import-facebook-events-list-table.php:213
+#: includes/class-import-facebook-events-list-table.php:219
 msgid "Delete"
 msgstr ""
 
@@ -813,31 +813,31 @@ msgstr ""
 msgid "View Imported Events"
 msgstr ""
 
-#: includes/class-import-facebook-events-list-table.php:179
-msgid "Clear Import History"
+#: includes/class-import-facebook-events-list-table.php:185
+msgid "Warning!! Are you sure to delete all these import history? Import history will be permanatly deleted."
 msgstr ""
 
-#: includes/class-import-facebook-events-list-table.php:197
+#: includes/class-import-facebook-events-list-table.php:203
 msgid "Import Category"
 msgstr ""
 
-#: includes/class-import-facebook-events-list-table.php:198
+#: includes/class-import-facebook-events-list-table.php:204
 msgid "Import Date"
 msgstr ""
 
-#: includes/class-import-facebook-events-list-table.php:199
+#: includes/class-import-facebook-events-list-table.php:205
 msgid "Import Stats"
 msgstr ""
 
-#: includes/class-import-facebook-events-list-table.php:358
+#: includes/class-import-facebook-events-list-table.php:364
 msgid "ID"
 msgstr ""
 
-#: includes/class-import-facebook-events-list-table.php:359
+#: includes/class-import-facebook-events-list-table.php:365
 msgid "Title"
 msgstr ""
 
-#: includes/class-import-facebook-events-list-table.php:360
+#: includes/class-import-facebook-events-list-table.php:366
 msgid "Shortcode"
 msgstr ""
 
