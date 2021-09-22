@@ -572,7 +572,7 @@ class Import_Facebook_Events_Cpt {
 		$organizer_url   = isset( $postdata['organizer_url'] ) ? esc_url( $postdata['organizer_url'] ) : '';
 
 		// Event Source Link
-		$ife_event_link   = isset( $_POST['ife_event_link'] ) ? esc_url( $_POST['ife_event_link'] ) : '';
+		$ife_event_link   = isset( $postdata['ife_event_link'] ) ? esc_url( $postdata['ife_event_link'] ) : '';
 
 		// Save Event Data.
 		// Date & Time.
