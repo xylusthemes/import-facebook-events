@@ -153,12 +153,12 @@ class Import_Facebook_Events_Manage_Import {
 		}
 
 		// Delete All History Data 
-		if ( isset( $_GET['ife_action'] ) && $_GET['ife_action'] == 'ife_all_history_delete' && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ife_delete_all_history_nonce' ) ) {
-			$page        = isset( $_GET['page'] ) ? $_GET['page'] : 'facebook_import';
-			$tab         = isset( $_GET['tab'] ) ? $_GET['tab'] : 'history';
+		if ( isset( $_GET['ife_action'] ) && esc_attr( $_GET['ife_action'] ) === 'ife_all_history_delete' && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ife_delete_all_history_nonce' ) ) {
+			$page        = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
+			$tab         = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'history';
 			$wp_redirect = admin_url( 'admin.php?page=' . $page );
 
-			$delete_ids  = get_posts( array( 'numberposts' => -1,'fields' => 'ids', 'post_type'   => 'ife_import_history' ) );
+			$delete_ids  = get_posts( array( 'numberposts' => -1,'fields' => 'ids', 'post_type' => 'ife_import_history' ) );
 			if ( ! empty( $delete_ids ) ) {
 				foreach ( $delete_ids as $delete_id ) {
 					wp_delete_post( $delete_id, true );
