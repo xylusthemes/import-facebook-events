@@ -4,8 +4,8 @@ Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
 Requires at least: 4.0
 Requires PHP: 5.3
-Tested up to: 5.7
-Stable tag: 1.6.14
+Tested up to: 5.8
+Stable tag: 1.6.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,13 @@ You can use `[facebook_events]` for display in-built facebook events list.
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+= 1.6.15 =
+* ADDED: Clear Import history button
+* ADDED: Event source link field in create/edit event
+* FIXED: Facebook Location Issue
+* FIXED: WPBackery Page builder block issue (PRO)
+* IMPROVEMENTS: Support for WP 5.8
+
 = 1.6.14 =
 * ADDED: shortcode page for help
 * ADDED: New Google map embed
