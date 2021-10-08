@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-22T17:23:23+00:00\n"
+"POT-Creation-Date: 2021-10-08T06:50:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: import-facebook-events\n"
@@ -35,9 +35,17 @@ msgstr ""
 msgid "http://xylusthemes.com"
 msgstr ""
 
-#: import-facebook-events.php:102
-#: import-facebook-events.php:110
+#: import-facebook-events.php:103
+#: import-facebook-events.php:111
 msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: import-facebook-events.php:216
+msgid "Setting"
+msgstr ""
+
+#: import-facebook-events.php:217
+msgid "Docs"
 msgstr ""
 
 #: includes/class-ife-plugin-deactivation.php:49
