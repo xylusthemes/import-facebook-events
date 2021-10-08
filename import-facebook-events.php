@@ -58,6 +58,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				add_action( 'plugins_loaded', array( self::$instance, 'load_authorize_class' ), 20 );
 				add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_style' ) );
 				add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_script' ) );
+				add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( self::$instance, 'ife_setting_doc_links' ) );
 
 				self::$instance->includes();
 				self::$instance->common   = new Import_Facebook_Events_Common();
@@ -203,6 +204,18 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				basename( dirname( __FILE__ ) ) . '/languages'
 			);
 
+		}
+
+		/**
+		 * IFE setting And docs link add in plugin page.
+		 *
+		 * @since 1.0
+		 * @return void
+		 */
+		public function ife_setting_doc_links ( $links ) {
+			$ife_setting_link = array('<a href='.admin_url( "admin.php?page=facebook_import&tab=settings" ).' target="_blank">' . __('Setting', 'import-facebook-events') . '</a>');
+			$ife_docs_link = array('<a href="https://docs.xylusthemes.com/docs/import-facebook-events/" target="_blank">' . __('Docs', 'import-facebook-events') . '</a>');
+			return array_merge( $links, $ife_setting_link, $ife_docs_link );
 		}
 
 		/**
