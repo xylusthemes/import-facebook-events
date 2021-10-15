@@ -167,7 +167,7 @@ class Import_Facebook_Events_Manage_Import {
 			$query_args = array(
 				'imp_fb_msg' => 'history_dels',
 				'tab'     => $tab,
-			);			
+			);
 			wp_redirect( add_query_arg( $query_args, $wp_redirect ) );
 			exit;
 		}
