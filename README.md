@@ -67,18 +67,6 @@ You can use `[facebook_events]` for display in-built facebook events list.
 * [Import Meetup Events](https://wordpress.org/plugins/import-meetup-events/)
 * [Import Eventbrite Events](https://wordpress.org/plugins/import-eventbrite-events/)
 
-## Installation
+## Changelog
 
-### This plugin can be installed directly from your site.
-
-1. Log in and navigate to Plugins & Add New.
-2. Type "Import Social Events" into the Search input and click the "Search" button.
-3. Locate the "Import Social Events" in the list of search results and click "Install Now".
-4. Click the "Activate Plugin" link at the bottom of the install screen.
-
-### It can also be installed manually.
-
-1. Download the "Import Social Events" plugin from WordPress.org.
-2. Unzip the package and move to your plugins directory.
-3. Log into WordPress and navigate to the "Plugins" screen.
-4. Locate "Import Social Events" in the list and click the "Activate" link.
+A complete listing of all notable changes to "Import Social Events" are documented in [CHANGELOG.md](https://github.com/xylusthemes/import-facebook-events/blob/develop/CHANGELOG.md).
