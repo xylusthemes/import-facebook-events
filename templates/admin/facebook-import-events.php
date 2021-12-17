@@ -19,6 +19,11 @@ if ( ! ife_is_pro() ) {
 ?>
 <div class="ife_container">
 	<div class="ife_row">
+	<div class="widefat" style="width: 100%;background-color: #FFFBCC;border: 1px solid #e5e5e5;
+-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);box-shadow: 0 1px 1px rgba(0,0,0,.04);padding: 10px;">
+			<?php esc_attr_e( 'Currently, Facebook events are not being imported using the "My Events" option due to a change in the Facebook API. we still working on it, you can import Facebook events using the Event iCal URL.', 'import-facebook-events' ); ?><br/><br/>
+			<?php esc_attr_e( 'You can also schedule auto import on regular basis in Pro version.', 'import-facebook-events' ); ?>
+		</div>
 		<div class="ife-column ife_well">
 			<h3><?php esc_attr_e( 'Facebook Import', 'import-facebook-events' ); ?></h3>
 			<form method="post" id="ife_facebook_form">
