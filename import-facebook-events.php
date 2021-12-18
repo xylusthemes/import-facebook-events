@@ -64,6 +64,9 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				self::$instance->cpt      = new Import_Facebook_Events_Cpt();
 				self::$instance->facebook = new Import_Facebook_Events_Facebook();
 				self::$instance->admin    = new Import_Facebook_Events_Admin();
+				
+				self::$instance->ical_parser 	   = new Import_Facebook_Events_Ical_Parser();
+				self::$instance->ical 			   = new Import_Facebook_Events_Ical();
 				if ( ife_is_pro() ) {
 					self::$instance->manage_import = new Import_Facebook_Events_Pro_Manage_Import();
 				} else {
@@ -173,6 +176,11 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-manage-import.php';
 			}
 
+			if( !class_exists( 'vcalendar' ) ){
+				require_once IFE_PLUGIN_DIR . 'includes/lib/iCalcreator/iCalcreator.php';
+			}
+			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ical_parser.php';
+			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ical.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-cpt.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-facebook.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ife.php';

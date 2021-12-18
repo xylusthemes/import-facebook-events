@@ -134,6 +134,10 @@ class Import_Facebook_Events_Admin {
 								<?php esc_html_e( 'Import', 'import-facebook-events' ); ?>
 							</a>
 
+							<a href="<?php echo esc_url( add_query_arg( 'tab', 'ics', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'ics' === $tab ) ? 'nav-tab-active' : '' ); ?>">
+		                        <?php esc_html_e( 'Facebook .ics Import', 'import-facebook-events' ); ?>
+		                    </a>
+
 							<a href="<?php echo esc_url( add_query_arg( 'tab', 'scheduled', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'scheduled' === $tab ) ? 'nav-tab-active' : '' ); ?>">
 								<?php esc_html_e( 'Scheduled Imports', 'import-facebook-events' ); ?>
 							</a>
@@ -161,6 +165,10 @@ class Import_Facebook_Events_Admin {
 							if ( 'facebook' === $tab ) {
 
 								require_once IFE_PLUGIN_DIR . '/templates/admin/facebook-import-events.php';
+
+							} elseif ( 'ics' === $tab ) {
+
+								require_once IFE_PLUGIN_DIR . '/templates/admin/ical-import-events.php';
 
 							} elseif ( 'settings' === $tab ) {
 
