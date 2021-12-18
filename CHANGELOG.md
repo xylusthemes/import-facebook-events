@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file
 
+## 1.6.16
+* ADDED: Considered private status in event already exists check
+* ADDED: iCal import support to the plugin
+
 ## 1.6.15
 * ADDED: Clear Import history button
 * ADDED: Event source link field in create/edit event
