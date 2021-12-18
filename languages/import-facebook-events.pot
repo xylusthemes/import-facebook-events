@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-12-17T11:09:09+00:00\n"
+"POT-Creation-Date: 2021-12-18T06:18:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: import-facebook-events\n"
@@ -119,7 +119,7 @@ msgid "Import Facebook Events"
 msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:60
-#: templates/admin/facebook-import-events.php:28
+#: templates/admin/facebook-import-events.php:30
 msgid "Facebook Import"
 msgstr ""
 
@@ -932,124 +932,124 @@ msgstr ""
 msgid "Get Premium"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:24
-msgid "Currently, Facebook events are not being imported using the \"My Events\" option due to a change in the Facebook API. we still working on it, you can import Facebook events using the Event iCal URL."
+#: templates/admin/facebook-import-events.php:23
+msgid "Currently, Facebook events are not being imported using the \"My Events\" option due to the changes in the Facebook API. We are still checking and working on it. meanwhile, you can import Facebook events using the Event iCal URL."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:25
+#: templates/admin/facebook-import-events.php:26
 msgid "You can also schedule auto import on regular basis in Pro version."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:34
+#: templates/admin/facebook-import-events.php:36
 #: templates/admin/ical-import-events.php:20
 msgid "Import by"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:38
+#: templates/admin/facebook-import-events.php:40
 msgid "Facebook Event ID"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:39
+#: templates/admin/facebook-import-events.php:41
 msgid "Facebook Page"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:41
+#: templates/admin/facebook-import-events.php:43
 msgid "Facebook Group"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:42
+#: templates/admin/facebook-import-events.php:44
 msgid "My Events"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:44
-#: templates/admin/facebook-import-events.php:111
+#: templates/admin/facebook-import-events.php:46
+#: templates/admin/facebook-import-events.php:113
 msgid "My Pages"
 msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
-#: templates/admin/facebook-import-events.php:51
+#: templates/admin/facebook-import-events.php:53
 msgid "Select Event source. %1$s, %2$s ( import events belonging to a Facebook organization or a Facebook page )."
 msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
-#: templates/admin/facebook-import-events.php:52
+#: templates/admin/facebook-import-events.php:54
 msgid "1. by Facebook Event ID"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:53
+#: templates/admin/facebook-import-events.php:55
 msgid "2. Facebook Organization or Page"
 msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
-#: templates/admin/facebook-import-events.php:61
+#: templates/admin/facebook-import-events.php:63
 msgid "%1$s (Import events from Facebook group), %2$s (Import events which you have marked interested or going on Facebook, this also include your events on Facebook)"
 msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
-#: templates/admin/facebook-import-events.php:62
+#: templates/admin/facebook-import-events.php:64
 msgid "3. Facebook Group"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:63
+#: templates/admin/facebook-import-events.php:65
 msgid "4. My Events"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:73
+#: templates/admin/facebook-import-events.php:75
 msgid "Facebook Event IDs"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:78
+#: templates/admin/facebook-import-events.php:80
 msgid "One event ID per line, ( Eg. Event ID for https://www.facebook.com/events/123456789/ is \"123456789\" )."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:85
+#: templates/admin/facebook-import-events.php:87
 msgid "Page username / ID to fetch events from"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:90
+#: templates/admin/facebook-import-events.php:92
 msgid " Eg. username for https://www.facebook.com/xylusinfo/ is \"xylusinfo\"."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:98
+#: templates/admin/facebook-import-events.php:100
 msgid "Facebook Group Numeric ID to fetch events from"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:103
+#: templates/admin/facebook-import-events.php:105
 msgid " Eg.Input value for group https://www.facebook.com/groups/123456789123456/ is \"123456789123456\""
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:116
+#: templates/admin/facebook-import-events.php:118
 msgid "Select Page"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:125
+#: templates/admin/facebook-import-events.php:127
 msgid "Select Page for import events from it."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:133
+#: templates/admin/facebook-import-events.php:135
 #: templates/admin/ical-import-events.php:70
 msgid "Import type"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:146
+#: templates/admin/facebook-import-events.php:148
 msgid "Author"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:149
+#: templates/admin/facebook-import-events.php:151
 msgid "Select Author"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:151
+#: templates/admin/facebook-import-events.php:153
 msgid "Select event author for imported events. Default event author is current loggedin user."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:162
+#: templates/admin/facebook-import-events.php:164
 #: templates/admin/ical-import-events.php:89
 msgid "Import Event"
 msgstr ""
 
 #: templates/admin/ical-import-events.php:9
-msgid "You can see the detailing documentation about how to get the Facebook iCal URL"
+msgid "You can see the detailed documentation about how to get the Facebook iCal URL"
 msgstr ""
 
 #: templates/admin/ical-import-events.php:9
