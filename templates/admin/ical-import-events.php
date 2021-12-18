@@ -5,8 +5,8 @@ global $ife_events;
 ?>
 <div class="ife_container">
     <div class="ife_row">
-    <div class="widefat" style="width: 100%;background-color: #FFFBCC;border: 1px solid #e5e5e5; -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);box-shadow: 0 1px 1px rgba(0,0,0,.04);padding: 10px;">
-			<?php printf( '%s <a href="https://docs.xylusthemes.com/docs/import-facebook-events/import-facebook-events-by-ical-url/" target="_blank">%s</a>', esc_attr__( 'You can see the detailing documentation about how to get the Facebook iCal URL', 'import-facebook-events' ), esc_attr__( 'Here.', 'import-facebook-events' ) ); ?>
+    <div class="widefat ife_settings_notice">
+		<?php printf( '%s <a href="https://docs.xylusthemes.com/docs/import-facebook-events/import-facebook-events-by-ical-url/" target="_blank">%s</a>', esc_attr__( 'You can see the detailed documentation about how to get the Facebook iCal URL', 'import-facebook-events' ), esc_attr__( 'Here.', 'import-facebook-events' ) ); ?>
 	</div>
 
         <div class="ife-column ife_well">
