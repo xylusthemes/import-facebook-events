@@ -201,6 +201,7 @@ class Import_Facebook_Events_Ical_Parser {
 		$post_description = str_replace('\n', '<br/>', $event->getProperty( 'DESCRIPTION' ) );
 		$uid = $this->generate_uid_for_ical_event( $event );
 		$uid_old = $this->generate_uid_for_ical_event_old_support( $event );
+		$url = $event->getProperty( 'URL' );
 		$is_all_day = false;
 		
 		$system_timezone = date_default_timezone_get();
@@ -354,6 +355,12 @@ class Import_Facebook_Events_Ical_Parser {
 			$event_image =  $ical_wp_images[1];
 		}
 
+		$facebook_event_id = str_replace( "https://www.facebook.com/events/","", $url );
+		if( !empty( $facebook_event_id )  ){
+			$facebook_event_image = $ife_events->facebook->get_facebook_event_by_event_id( $facebook_event_id );
+			$event_image = $facebook_event_image->cover->source;
+		}
+
 		$xt_event = array(
 			'origin'          => 'ical',
 			'ID'              => $uid,
@@ -370,7 +377,7 @@ class Import_Facebook_Events_Ical_Parser {
 			'utc_offset'      => '',
 			'event_duration'  => '',
 			'is_all_day'      => $is_all_day,
-			'url'             => $event->getProperty( 'URL' ),
+			'url'             => $url,
 			'image_url'       => $event_image,
 		);
 
