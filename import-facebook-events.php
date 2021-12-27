@@ -77,7 +77,6 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				self::$instance->em              = new Import_Facebook_Events_EM();
 				self::$instance->eventon         = new Import_Facebook_Events_EventON();
 				self::$instance->event_organizer = new Import_Facebook_Events_Event_Organizer();
-				self::$instance->aioec           = new Import_Facebook_Events_Aioec();
 				self::$instance->my_calendar     = new Import_Facebook_Events_My_Calendar();
 				self::$instance->ee4             = new Import_Facebook_Events_EE4();
 			}
@@ -188,7 +187,6 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-em.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-eventon.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-event-organizer.php';
-			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-aioec.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-my-calendar.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ee4.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-ife-plugin-deactivation.php';

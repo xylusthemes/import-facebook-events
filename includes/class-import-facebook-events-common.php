@@ -207,11 +207,6 @@ class Import_Facebook_Events_Common {
 			$supported_plugins['eventon'] = __( 'EventON', 'import-facebook-events' );
 		}
 
-		// check All in one Event Calendar.
-		if ( class_exists( 'Ai1ec_Event' ) ) {
-			$supported_plugins['aioec'] = __( 'All in one Event Calendar', 'import-facebook-events' );
-		}
-
 		// check My Calendar.
 		if ( is_plugin_active( 'my-calendar/my-calendar.php' ) ) {
 			$supported_plugins['my_calendar'] = __( 'My Calendar', 'import-facebook-events' );
