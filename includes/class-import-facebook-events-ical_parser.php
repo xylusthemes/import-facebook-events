@@ -200,6 +200,7 @@ class Import_Facebook_Events_Ical_Parser {
 		$post_title = str_replace('\n', ' ', $event->getProperty( 'SUMMARY' ) );
 		$post_description = str_replace('\n', '<br/>', $event->getProperty( 'DESCRIPTION' ) );
 		$uid = $this->generate_uid_for_ical_event( $event );
+		$url = $event->getProperty( 'URL' );
 		$uid_old = $this->generate_uid_for_ical_event_old_support( $event );
 		$is_all_day = false;
 		
@@ -376,7 +377,7 @@ class Import_Facebook_Events_Ical_Parser {
 			'utc_offset'      => '',
 			'event_duration'  => '',
 			'is_all_day'      => $is_all_day,
-			'url'             => $event->getProperty( 'URL' ),
+			'url'             => $url,
 			'image_url'       => $event_image,
 		);
 
