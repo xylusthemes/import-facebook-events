@@ -341,7 +341,6 @@ class Import_Facebook_Events_Ical_Parser {
 		}
 
 		$event_image       = '';
-		$facebook_event_id = '';
 		$event_venue       = null;
 		$ical_attachment = $event->getProperty( 'ATTACH', false, true );
 		if( isset($ical_attachment['params']) && isset($ical_attachment['params']['FMTTYPE']) ) {
