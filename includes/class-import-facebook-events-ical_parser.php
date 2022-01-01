@@ -200,6 +200,7 @@ class Import_Facebook_Events_Ical_Parser {
 		$post_title = str_replace('\n', ' ', $event->getProperty( 'SUMMARY' ) );
 		$post_description = str_replace('\n', '<br/>', $event->getProperty( 'DESCRIPTION' ) );
 		$uid = $this->generate_uid_for_ical_event( $event );
+		$url = $event->getProperty( 'URL' );
 		$uid_old = $this->generate_uid_for_ical_event_old_support( $event );
 		$is_all_day = false;
 		
@@ -339,7 +340,8 @@ class Import_Facebook_Events_Ical_Parser {
 			}		
 		}
 
-		$event_image = '';
+		$event_image       = '';
+		$event_venue       = null;
 		$ical_attachment = $event->getProperty( 'ATTACH', false, true );
 		if( isset($ical_attachment['params']) && isset($ical_attachment['params']['FMTTYPE']) ) {
 			$attachment_type = $ical_attachment['params']['FMTTYPE'];
@@ -354,6 +356,17 @@ class Import_Facebook_Events_Ical_Parser {
 			$event_image =  $ical_wp_images[1];
 		}
 
+		$fetch_image = apply_filters( 'ife_ical_fetch_event_image', true );
+		if( $fetch_image ) {
+			$facebook_event_id = str_replace( 'https://www.facebook.com/events/', '', $url );
+			if ( ! empty( $facebook_event_id )  ) {
+				$facebook_event = $ife_events->facebook->get_facebook_event_by_event_id( $facebook_event_id );
+				$event_image 	= $facebook_event->cover->source;
+				$event_venue    = $facebook_event->place;	
+			}
+		}
+
+		
 		$xt_event = array(
 			'origin'          => 'ical',
 			'ID'              => $uid,
@@ -370,12 +383,12 @@ class Import_Facebook_Events_Ical_Parser {
 			'utc_offset'      => '',
 			'event_duration'  => '',
 			'is_all_day'      => $is_all_day,
-			'url'             => $event->getProperty( 'URL' ),
+			'url'             => $url,
 			'image_url'       => $event_image,
 		);
 
 		$oraganizer_data = null;
-		$event_location = null;
+		$event_location  = $this->get_location( $event, $event_venue );
 
 		$organizer = $event->getProperty( 'ORGANIZER' );
 		if ( !empty( $organizer ) ) {
@@ -393,9 +406,44 @@ class Import_Facebook_Events_Ical_Parser {
 				}
 			}
 		}		
+		
+		$xt_event['organizer'] = $oraganizer_data;
+		$xt_event['location']  = $event_location;
+		
+		return $xt_event;
+	}
 
-		$location = str_replace('\n', ' ', $event->getProperty( 'LOCATION' ) );
-		if ( !empty( $location ) ) {
+	/**
+	 * Get location args for event
+	 *
+	 * @since    1.0.0
+	 * @param array $event iCal vevent.
+	 * @return array
+	 */
+	public function get_location( $event, $event_venue ) {
+		if ( ! empty( $event_venue ) ) {
+			$event_location = array(
+				'ID'           => isset( $facebook_event->place->id ) ? $facebook_event->place->id : '',
+				'name'         => isset( $event_venue->name ) ? $event_venue->name : '',
+				'description'  => '',
+				'address_1'    => isset( $event_venue->location->street ) ? $event_venue->location->street : '',
+				'address_2'    => '',
+				'city'         => isset( $event_venue->location->city ) ? $event_venue->location->city : '',
+				'state'        => isset( $event_venue->location->state ) ? $event_venue->location->state : '',
+				'country'      => isset( $event_venue->location->country ) ? $event_venue->location->country : '',
+				'zip'          => isset( $event_venue->location->zip ) ? $event_venue->location->zip : '',
+				'lat'          => isset( $event_venue->location->latitude ) ? $event_venue->location->latitude : '',
+				'long'         => isset( $event_venue->location->longitude ) ? $event_venue->location->longitude : '',
+				'full_address' => isset( $event_venue->location->street ) ? $event_venue->location->street : '',
+				'url'          => '',
+				'image_url'    => '',
+			);	
+		} else {
+			$location = str_replace('\n', ' ', $event->getProperty( 'LOCATION' ) );
+			if ( empty( $location ) ) {
+				return null;
+			}
+
 			$event_location = array(
 				'ID'           => strtolower( trim( stripslashes( $location ) ) ),
 				'name'         => isset( $location ) ? stripslashes( $location ) : '',
@@ -413,43 +461,7 @@ class Import_Facebook_Events_Ical_Parser {
 				'image_url'    => ''
 			);
 		}
-		
-		$xt_event['organizer'] = $oraganizer_data;
-		$xt_event['location'] = $event_location;
-		
-		return $xt_event;
-	}
 
-	/**
-	 * Get location args for event
-	 *
-	 * @since    1.0.0
-	 * @param array $event iCal vevent.
-	 * @return array
-	 */
-	public function get_location( $event ) {
-
-		$location = str_replace('\n', ' ', $event->getProperty( 'LOCATION' ) );
-		if ( empty( $location ) ) {
-			return null;
-		}
-
-		$event_location = array(
-			'ID'           => strtolower( trim( stripslashes( $location ) ) ),
-			'name'         => isset( $location ) ? stripslashes( $location ) : '',
-			'description'  => '',
-			'address_1'    => isset( $location ) ? stripslashes( $location ) : '',
-			'address_2'    => '',
-			'city'         => '',
-			'state'        => '',
-			'country'      => '',
-			'zip'	       => '',
-			'lat'     	   => '',
-			'long'		   => '',
-			'full_address' => isset( $location ) ? stripslashes( $location ) : '',
-			'url'          => '',
-			'image_url'    => ''
-		);
 		return $event_location;
 	}
 
