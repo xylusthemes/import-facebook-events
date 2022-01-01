@@ -3,8 +3,7 @@
 All notable changes to this project will be documented in this file
 
 ## 1.6.17
-* ADDED: iCal image import support to the plugin
-* ADDED: iCal location import support to the plugin
+* ADDED: Support for import image and location for ical
 
 ## 1.6.16
 * ADDED: Considered private status in event already exists check
