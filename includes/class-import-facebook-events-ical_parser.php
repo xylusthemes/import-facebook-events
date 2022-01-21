@@ -362,7 +362,10 @@ class Import_Facebook_Events_Ical_Parser {
 			if ( ! empty( $facebook_event_id )  ) {
 				$facebook_event = $ife_events->facebook->get_facebook_event_by_event_id( $facebook_event_id );
 				$event_image 	= $facebook_event->cover->source;
-				$event_venue    = $facebook_event->place;	
+				$event_venue    = $facebook_event->place;
+				$event_start_time = isset( $facebook_event->start_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->start_time ) ) : date( 'Y-m-d H:i:s' );
+				$event_end_time   = isset( $facebook_event->end_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->end_time ) ) : $start_time;
+				$timezone   	  = $facebook_event->timezone;
 			}
 		}
 
@@ -373,10 +376,10 @@ class Import_Facebook_Events_Ical_Parser {
 			'ID_ical_old'     => $uid_old,
 			'name'            => $post_title,
 			'description'     => $post_description,
-			'starttime_local' => $start_time,
-			'endtime_local'   => $end_time,
-			'starttime'       => date('Ymd\THis', $start_time),
-			'endtime'         => date('Ymd\THis', $end_time),
+			'starttime_local' => $event_start_time,
+			'endtime_local'   => $event_end_time,
+			'starttime'       => $event_start_time,
+			'endtime'         => $event_end_time,
 			'startime_utc'    => '',
 			'endtime_utc'     => '',
 			'timezone'        => $timezone,
@@ -423,7 +426,7 @@ class Import_Facebook_Events_Ical_Parser {
 	public function get_location( $event, $event_venue ) {
 		if ( ! empty( $event_venue ) ) {
 			$event_location = array(
-				'ID'           => isset( $facebook_event->place->id ) ? $facebook_event->place->id : '',
+				'ID'           => isset( $event_venue->id ) ? $event_venue->id : '',
 				'name'         => isset( $event_venue->name ) ? $event_venue->name : '',
 				'description'  => '',
 				'address_1'    => isset( $event_venue->location->street ) ? $event_venue->location->street : '',
