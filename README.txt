@@ -4,7 +4,7 @@ Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
 Requires at least: 4.0
 Requires PHP: 5.3
-Tested up to: 5.8
+Tested up to: 5.9
 Stable tag: 1.6.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,11 +35,9 @@ Using This plugin you can import facebook event into below listed leading Event 
 
 * [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/)
 * [Events manager](https://wordpress.org/plugins/events-manager/)
-* [All-in-One Event Calendar](https://wordpress.org/plugins/all-in-one-event-calendar/)
 * [Event Organiser](https://wordpress.org/plugins/event-organiser/)
 * [EventON](https://codecanyon.net/item/eventon-wordpress-event-calendar-plugin/1211017)
 * [My Calendar](https://wordpress.org/plugins/my-calendar/)
-* [Event Espresso 4 (EE4)](https://wordpress.org/plugins/event-espresso-decaf/)
 * In-built Events
 
 You can use `[facebook_events]` for display in-built facebook events list.
