@@ -35,6 +35,7 @@ Using This plugin you can import facebook event into below listed leading Event 
 
 * [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/)
 * [Events manager](https://wordpress.org/plugins/events-manager/)
+* [All-in-One Event Calendar](https://wordpress.org/plugins/all-in-one-event-calendar/)
 * [Event Organiser](https://wordpress.org/plugins/event-organiser/)
 * [EventON](https://codecanyon.net/item/eventon-wordpress-event-calendar-plugin/1211017)
 * [My Calendar](https://wordpress.org/plugins/my-calendar/)
