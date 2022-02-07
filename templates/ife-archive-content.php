@@ -4,6 +4,7 @@
  *
  * @package Import_Facebook_Events
  */
+global $post;
 
 $event_date = get_post_meta( get_the_ID(), 'event_start_date', true );
 if ( ! empty( $event_date ) ) {
@@ -20,10 +21,11 @@ if ( ! empty( $event_address ) && ! empty( $venue_address ) ) {
 
 $image_url = array();
 if ( '' !== get_the_post_thumbnail() ) {
-	$image_url = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full' );
+	$image_url 	= wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full' );
+	$image 		= "background: url( {$image_url[0]}) no-repeat left top;";
 } else {
-	$image_date  = date_i18n( 'F+d', $event_date );
-	$image_url[] = 'https://placehold.it/420x150?text=' . $image_date;
+	$image_url = 'http://placehold.it/420x150?text=' . str_replace(" ","+","$post->post_title");
+	$image		 = "background: url( {$image_url}) no-repeat center top;";
 }
 $ticket_uri = esc_url( get_permalink() );
 $target     = '';
@@ -36,7 +38,7 @@ if ( 'yes' === $direct_link ) {
 <a href="<?php echo $ticket_uri; ?>" <?php echo $target; ?>>
 	<div <?php post_class( array( $css_class, 'archive-event' ) ); ?>>
 		<div class="ife_event" >
-			<div class="img_placeholder" style=" background: url('<?php echo esc_url( $image_url[0] ); ?>') no-repeat left top;"></div>
+			<div class="img_placeholder" style="<?php echo $image;?>"></div>
 			<div class="event_details">
 				<div class="event_date">
 					<span class="month"><?php echo esc_attr( date_i18n( 'M', $event_date ) ); ?></span>
