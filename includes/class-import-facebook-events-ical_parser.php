@@ -163,7 +163,7 @@ class Import_Facebook_Events_Ical_Parser {
 					// Fitered Events
 					foreach ( $day_arr as $event ) {
 						
-						$centralize_event = $this->generate_centralize_event_array( $event );
+						$centralize_event = $this->generate_centralize_event_array( $event, $event_data );
 						if( !empty( $centralize_event ) ){
 							$centralize_events[$centralize_event['ID']] = $centralize_event;
 						}
@@ -190,7 +190,7 @@ class Import_Facebook_Events_Ical_Parser {
 	 * @param 	 array $event iCal vevent Object.
 	 * @return 	 array
 	 */
-	public function generate_centralize_event_array( $event ) {
+	public function generate_centralize_event_array( $event, $event_data = array()  ) {
 		if( empty( $event ) ){
 			return false;
 		}
@@ -300,7 +300,7 @@ class Import_Facebook_Events_Ical_Parser {
 		$end_time = strtotime( $this->convert_datetime_to_timezone_wise_datetime( $end, $force_timezone ) );
 		/*$start_time = strtotime( $start ); 
 		$end_time = strtotime( $end );*/
-		
+
 		$x_start_str  = $event->getProperty( 'X-CURRENT-DTSTART' );
 		$x_start_time = strtotime( $this->convert_datetime_to_timezone_wise_datetime( end( $x_start_str ), $force_timezone ) );
 		//$x_start_time = strtotime( end( $x_start_str ) );
@@ -356,16 +356,26 @@ class Import_Facebook_Events_Ical_Parser {
 			$event_image =  $ical_wp_images[1];
 		}
 
-		$fetch_image = apply_filters( 'ife_ical_fetch_event_image', true );
-		if( $fetch_image ) {
-			$facebook_event_id = str_replace( 'https://www.facebook.com/events/', '', $url );
-			if ( ! empty( $facebook_event_id )  ) {
-				$facebook_event = $ife_events->facebook->get_facebook_event_by_event_id( $facebook_event_id );
-				$event_image 	= $facebook_event->cover->source;
-				$event_venue    = $facebook_event->place;	
+		// Only for facebook ical imports.
+		$check_facebook = explode( '/', $url);
+		if( $check_facebook[2] == 'www.facebook.com' ){
+			$event_data = $this->get_event_image_and_location( $event_data['import_into'], $uid );
+
+			if( !empty( $event_data ) ){
+				$event_image = $event_data['image'];
+				$event_venue = $event_data['location'];
+				$timezone    = $event_data['timezone'];
+				$start_time  = $event_data['start_time'];
+				$end_time    = $event_data['end_time'];
+			}
+
+			if( empty( $event_data['start_time'] ) ){
+				$start_time = strtotime( $this->convert_fb_ical_timezone( $start, $event_data['timezone'] ) );
+			}
+			if( empty( $event_data['end_time'] ) ){
+				$end_time   = strtotime( $this->convert_fb_ical_timezone( $end, $event_data['timezone'] ) );
 			}
 		}
-
 		
 		$xt_event = array(
 			'origin'          => 'ical',
@@ -379,7 +389,7 @@ class Import_Facebook_Events_Ical_Parser {
 			'endtime'         => date('Ymd\THis', $end_time),
 			'startime_utc'    => '',
 			'endtime_utc'     => '',
-			'timezone'        => $timezone,
+			'timezone_name'   => $timezone,
 			'utc_offset'      => '',
 			'event_duration'  => '',
 			'is_all_day'      => $is_all_day,
@@ -423,7 +433,7 @@ class Import_Facebook_Events_Ical_Parser {
 	public function get_location( $event, $event_venue ) {
 		if ( ! empty( $event_venue ) ) {
 			$event_location = array(
-				'ID'           => isset( $facebook_event->place->id ) ? $facebook_event->place->id : '',
+				'ID'           => isset( $event_venue->id ) ? $event_venue->id : '',
 				'name'         => isset( $event_venue->name ) ? $event_venue->name : '',
 				'description'  => '',
 				'address_1'    => isset( $event_venue->location->street ) ? $event_venue->location->street : '',
@@ -448,7 +458,7 @@ class Import_Facebook_Events_Ical_Parser {
 				'ID'           => strtolower( trim( stripslashes( $location ) ) ),
 				'name'         => isset( $location ) ? stripslashes( $location ) : '',
 				'description'  => '',
-				'address_1'    => isset( $location ) ? stripslashes( $location ) : '',
+				'address_1'    => '',
 				'address_2'    => '',
 				'city'         => '',
 				'state'        => '',
@@ -573,4 +583,93 @@ class Import_Facebook_Events_Ical_Parser {
             return $datetime;
         }
     }
+
+
+	/**
+	 * Convert datetime to desired timezone.
+	 *
+	 * @param string $event_datetime     Date string to possibly convert
+	 *
+	 * @return string
+	 *
+	 * @since 1.0.0
+	 */
+	public function convert_fb_ical_timezone( $event_datetime = '', $timezone = '' ) {
+		
+		$timezone_string = get_option( 'timezone_string' );
+		$offset  = (float) get_option( 'gmt_offset' );
+		if( $timezone != '' ){
+			$tz = $timezone;
+		}else{
+
+			if ( ! empty( $timezone_string ) ) {
+				$tz        = $timezone_string;
+			} else {
+
+				$hours     = (int) $offset;
+				$minutes   = ( $offset - $hours );
+				$sign      = ( $offset < 0 ) ? '-' : '+';
+				$abs_hour  = abs( $hours );
+				$abs_mins  = abs( $minutes * 60 );
+				$tz_offset = sprintf( '%s%02d:%02d', $sign, $abs_hour, $abs_mins );
+				
+				list($hours, $minutes) = explode(':', $tz_offset);
+				$seconds = $hours * 60 * 60 + $minutes * 60;
+				$tz = timezone_name_from_abbr('', $seconds, 1);
+				if($tz === false) $tz = timezone_name_from_abbr('', $seconds, 0);
+			}
+		}
+
+		$utc_tz         = new DateTimeZone( 'UTC' );
+		$datetime       = new DateTime( $event_datetime, $utc_tz );
+		$event_timezone = new DateTimeZone( $tz );
+		$datetime->setTimezone( $event_timezone );
+
+		return $datetime->format('Y-m-d H:i:s');
+	}
+
+	/**
+     * Check and Update event image.
+     *
+     * @param string $import_into
+     * @param int $event_id
+     *
+     * @return array
+     *
+     * @since 1.0.0
+     */
+	public function get_event_image_and_location( $import_into, $facebook_event_id = 0 ){
+		global $ife_events;
+		$event_data        = array();
+		$event_id          = array( 'ID' => $facebook_event_id );
+		$post_type         = $ife_events->{$import_into}->get_event_posttype();
+		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $post_type, $event_id );
+		$has_event_image   = get_post_meta( $is_exitsing_event, '_thumbnail_id', true );
+
+		if ( empty( $has_event_image ) ){
+			$fetch_image = apply_filters( 'ife_ical_fetch_event_image', true );
+			if( $fetch_image ) {
+				$facebook_event = $ife_events->facebook->get_facebook_event_by_event_id( $event_id['ID'] );
+				if ( ! empty( $facebook_event->cover )  ) {
+					$event_data['image']      = $facebook_event->cover->source;
+					$event_data['location']   = $facebook_event->place;
+					$event_data['timezone']   = $facebook_event->timezone;
+					$event_data['start_time'] = isset( $facebook_event->start_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->start_time ) ) :'';
+					$event_data['end_time']   = isset( $facebook_event->end_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->end_time ) ) : $event_data['start_time'] ;
+				}
+			}
+		} else {
+			$attachment_id = get_post_thumbnail_id( $is_exitsing_event );
+			$imagesource = get_post_meta( $attachment_id, '_ife_attachment_source', true );				
+			if( !empty( $imagesource ) ){
+				$event_data['image'] = $imagesource;
+			}
+			$event_timezone   = get_post_meta( $is_exitsing_event, 'timezone', true );
+			if( !empty( $event_timezone ) ){
+				$event_data['timezone'] = $event_timezone;
+			}
+		}
+		return $event_data;
+	}
+
 }
