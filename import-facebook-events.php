@@ -213,9 +213,19 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @return void
 		 */
 		public function ife_setting_doc_links ( $links ) {
-			$ife_setting_link = array('<a href='.admin_url( "admin.php?page=facebook_import&tab=settings" ).' target="_blank">' . __('Setting', 'import-facebook-events') . '</a>');
-			$ife_docs_link = array('<a href="https://docs.xylusthemes.com/docs/import-facebook-events/" target="_blank">' . __('Docs', 'import-facebook-events') . '</a>');
-			return array_merge( $links, $ife_setting_link, $ife_docs_link );
+			$ife_setting_doc_link = array(
+                'ife-event-setting' => sprintf(
+                    '<a href="%s">%s</a>',
+                    esc_url( admin_url( 'admin.php?page=facebook_import&tab=settings' ) ),
+                    esc_html__( 'Setting', 'import-facebook-events' )
+                ),
+                'ife-event-docs' => sprintf(
+                    '<a target="_blank" href="%s">%s</a>',
+                    esc_url( 'https://docs.xylusthemes.com/docs/import-facebook-events/' ),
+                    esc_html__( 'Docs', 'import-facebook-events' )
+                ),
+            );
+            return array_merge( $links, $ife_setting_doc_link );
 		}
 
 		/**
