@@ -3,7 +3,7 @@
  * Plugin Name:       Import Social Events
  * Plugin URI:        http://xylusthemes.com/plugins/import-facebook-events/
  * Description:       Import Social Events allows you to import Facebook ( facebook.com ) events into your WordPress site.
- * Version:           1.6.14
+ * Version:           1.6.17
  * Author:            Xylus Themes
  * Author URI:        http://xylusthemes.com
  * License:           GPL-2.0+
@@ -65,6 +65,9 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				self::$instance->cpt      = new Import_Facebook_Events_Cpt();
 				self::$instance->facebook = new Import_Facebook_Events_Facebook();
 				self::$instance->admin    = new Import_Facebook_Events_Admin();
+				
+				self::$instance->ical_parser 	   = new Import_Facebook_Events_Ical_Parser();
+				self::$instance->ical 			   = new Import_Facebook_Events_Ical();
 				if ( ife_is_pro() ) {
 					self::$instance->manage_import = new Import_Facebook_Events_Pro_Manage_Import();
 				} else {
@@ -100,7 +103,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @since 1.0.0
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.6.14' ); }
+			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.6.17' ); }
 
 		/**
 		 * A dummy magic method to prevent Import_Facebook_Events from being unserialized.
@@ -108,7 +111,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @since 1.0.0
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.6.14' ); }
+			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.6.17' ); }
 
 
 		/**
@@ -122,12 +125,12 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 
 			// Plugin version.
 			if ( ! defined( 'IFE_VERSION' ) ) {
-				define( 'IFE_VERSION', '1.6.14' );
+				define( 'IFE_VERSION', '1.6.17' );
 			}
 
 			// Minimum Pro plugin version.
 			if ( ! defined( 'IFE_MIN_PRO_VERSION' ) ) {
-				define( 'IFE_MIN_PRO_VERSION', '1.6.7' );
+				define( 'IFE_MIN_PRO_VERSION', '1.6.9' );
 			}
 
 			// Plugin folder Path.
@@ -174,6 +177,11 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-manage-import.php';
 			}
 
+			if( !class_exists( 'vcalendar' ) ){
+				require_once IFE_PLUGIN_DIR . 'includes/lib/iCalcreator/iCalcreator.php';
+			}
+			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ical_parser.php';
+			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ical.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-cpt.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-facebook.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ife.php';

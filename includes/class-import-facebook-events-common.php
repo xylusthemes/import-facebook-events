@@ -586,7 +586,7 @@ class Import_Facebook_Events_Common {
 	public function get_event_by_event_id( $post_type, $event_id ) {
 		$event_args = array(
 			'post_type'        => $post_type,
-			'post_status'      => array( 'pending', 'draft', 'publish' ),
+			'post_status'      => array( 'pending', 'draft', 'publish', 'private' ),
 			'posts_per_page'   => 1,
 			'suppress_filters' => true,
 			'meta_key'         => 'ife_facebook_event_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key --Ignore.
