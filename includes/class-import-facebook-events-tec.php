@@ -182,9 +182,15 @@ class Import_Facebook_Events_TEC {
 		global $ife_events;
 		$new_event_id = tribe_create_event( $formated_args );
 		if ( $new_event_id ) {
+
+			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+
 			update_post_meta( $new_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $new_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $new_event_id, 'ife_event_link', esc_url( $centralize_array['url'] ) );
+			update_post_meta( $new_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $new_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
@@ -242,9 +248,15 @@ class Import_Facebook_Events_TEC {
 
 		$update_event_id = tribe_update_event( $event_id, $formated_args );
 		if ( $update_event_id ) {
+
+			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+
 			update_post_meta( $update_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $update_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $update_event_id, 'ife_event_link', esc_url( $centralize_array['url'] ) );
+			update_post_meta( $update_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $update_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? (array) $event_args['event_cats'] : array();
