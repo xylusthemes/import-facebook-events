@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-14T12:25:38+00:00\n"
+"POT-Creation-Date: 2022-02-16T16:53:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: import-facebook-events\n"
@@ -906,8 +906,8 @@ msgstr ""
 msgid "Import histories are deleted successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-tec.php:223
-#: includes/class-import-facebook-events-tec.php:288
+#: includes/class-import-facebook-events-tec.php:229
+#: includes/class-import-facebook-events-tec.php:300
 msgid "Something went wrong, please try again."
 msgstr ""
 
