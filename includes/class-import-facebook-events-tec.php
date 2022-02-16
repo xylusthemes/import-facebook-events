@@ -182,9 +182,15 @@ class Import_Facebook_Events_TEC {
 		global $ife_events;
 		$new_event_id = tribe_create_event( $formated_args );
 		if ( $new_event_id ) {
+
+			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+
 			update_post_meta( $new_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $new_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $new_event_id, 'ife_event_link', esc_url( $centralize_array['url'] ) );
+			update_post_meta( $new_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $new_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
@@ -242,9 +248,15 @@ class Import_Facebook_Events_TEC {
 
 		$update_event_id = tribe_update_event( $event_id, $formated_args );
 		if ( $update_event_id ) {
+
+			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+
 			update_post_meta( $update_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $update_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $update_event_id, 'ife_event_link', esc_url( $centralize_array['url'] ) );
+			update_post_meta( $update_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $update_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? (array) $event_args['event_cats'] : array();
@@ -381,12 +393,13 @@ class Import_Facebook_Events_TEC {
 	 */
 	public function get_venue_args( $venue ) {
 		global $ife_events;
-
-		if ( ! isset( $venue['ID'] ) ) {
-			return null;
+		$venue_id = !empty( $venue['ID'] ) ? $venue['ID'] : '';
+		if( !empty( $venue['ID'] ) ){
+			$existing_venue = $this->get_venue_by_id( $venue_id );
 		}
-		$existing_venue = $this->get_venue_by_id( $venue['ID'] );
-
+		if( empty( $existing_venue ) ){
+			$existing_venue = $this->get_venue_by_name( $venue['name'] );
+		}
 		if ( $existing_venue && is_numeric( $existing_venue ) && $existing_venue > 0 ) {
 			return array(
 				'VenueID' => $existing_venue,
@@ -412,7 +425,8 @@ class Import_Facebook_Events_TEC {
 		);
 
 		if ( $create_venue ) {
-			update_post_meta( $create_venue, 'ife_event_venue_id', $venue['ID'] );
+			update_post_meta( $create_venue, 'ife_event_venue_name', $venue['name'] );
+			update_post_meta( $create_venue, 'ife_event_venue_id', $venue_id );
 			return array(
 				'VenueID' => $create_venue,
 			);
@@ -458,6 +472,30 @@ class Import_Facebook_Events_TEC {
 				'post_type'        => $this->venue_posttype,
 				'meta_key'         => 'ife_event_venue_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
 				'meta_value'       => $venue_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
+				'suppress_filters' => false,
+			)
+		);
+
+		if ( is_array( $existing_organizer ) && ! empty( $existing_organizer ) ) {
+			return $existing_organizer[0]->ID;
+		}
+		return false;
+	}
+
+	/**
+	 * Check for Existing TEC Venue Name
+	 *
+	 * @since    1.0.0
+	 * @param int $venue_name Venue Name.
+	 * @return int/boolean
+	 */
+	public function get_venue_by_name( $venue_name ) {
+		$existing_organizer = get_posts(
+			array(
+				'posts_per_page'   => 1,
+				'post_type'        => $this->venue_posttype,
+				'meta_key'         => 'ife_event_venue_name', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+				'meta_value'       => $venue_name, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				'suppress_filters' => false,
 			)
 		);

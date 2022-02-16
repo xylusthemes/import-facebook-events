@@ -388,7 +388,7 @@ class Import_Facebook_Events_Facebook {
 		$end_time   = isset( $facebook_event->end_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->end_time ) ) : $start_time;
 
 		$ticket_uri    = isset( $facebook_event->ticket_uri ) ? esc_url( $facebook_event->ticket_uri ) : 'https://www.facebook.com/events/' . $facebook_id;
-		$timezone      = $this->get_utc_offset( $facebook_event->start_time );
+		$timezone      = $ife_events->common->get_utc_offset( $facebook_event->start_time );
 		$timezone_name = isset( $facebook_event->timezone ) ? $facebook_event->timezone : $timezone;
 		$cover_image   = isset( $facebook_event->cover->source ) ? $ife_events->common->clean_url( esc_url( $facebook_event->cover->source ) ) : '';
 
@@ -555,26 +555,4 @@ class Import_Facebook_Events_Facebook {
 
 	}
 
-	/**
-	 * Get UTC offset
-	 *
-	 * @since    1.0.0
-	 * @param string $datetime DateTime.
-	 */
-	public function get_utc_offset( $datetime ) {
-		try {
-			$datetime = new DateTime( $datetime );
-		} catch ( Exception $e ) {
-			return '';
-		}
-
-		$timezone = $datetime->getTimezone();
-		$offset   = $timezone->getOffset( $datetime ) / 60 / 60;
-
-		if ( $offset >= 0 ) {
-			$offset = '+' . $offset;
-		}
-
-		return 'UTC' . $offset;
-	}
 }

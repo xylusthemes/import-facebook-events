@@ -193,6 +193,8 @@ class Import_Facebook_Events_IFE {
 			$event_end_hour       = date( 'h', $end_time );
 			$event_end_minute     = date( 'i', $end_time );
 			$event_end_meridian   = date( 'a', $end_time );
+			$timezone             = isset( $centralize_array['timezone'] ) ? sanitize_text_field(  $centralize_array['timezone'] ) : '';
+			$timezone_name        = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field(  $centralize_array['timezone_name'] ) : '';
 
 			// Venue Deatails.
 			$address_1     = isset( $venue_array['address_1'] ) ? $venue_array['address_1'] : '';
@@ -227,6 +229,8 @@ class Import_Facebook_Events_IFE {
 			update_post_meta( $inserted_event_id, 'event_end_meridian', $event_end_meridian );
 			update_post_meta( $inserted_event_id, 'start_ts', $start_time );
 			update_post_meta( $inserted_event_id, 'end_ts', $end_time );
+			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $inserted_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Venue.
 			update_post_meta( $inserted_event_id, 'venue_name', $venue_name );

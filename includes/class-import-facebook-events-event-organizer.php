@@ -186,6 +186,9 @@ class Import_Facebook_Events_Event_Organizer {
 				}
 			}
 
+			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+			
 			// Save Meta.
 			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_until', date( 'Y-m-d H:i:s', $start_time ) );
 			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_start_start', date( 'Y-m-d H:i:s', $start_time ) );
@@ -195,6 +198,8 @@ class Import_Facebook_Events_Event_Organizer {
 			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $ticket_uri ) );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
+			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $inserted_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Custom table Details.
 			$event_array = array(

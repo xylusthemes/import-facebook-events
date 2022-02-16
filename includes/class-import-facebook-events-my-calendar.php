@@ -146,10 +146,14 @@ class Import_Facebook_Events_My_Calendar {
 					delete_post_thumbnail( $inserted_event_id );
 				}
 			}
+			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
 
 			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', $centralize_array['url'] );
+			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $inserted_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Setup Variables for insert into table.
 			$begin   = date( 'Y-m-d', $start_time );

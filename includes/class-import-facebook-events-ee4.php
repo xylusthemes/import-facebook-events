@@ -237,6 +237,9 @@ class Import_Facebook_Events_EE4 {
 				}
 			}
 
+			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+
 			// Save Event Data.
 			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $ticket_uri ) );
@@ -245,6 +248,8 @@ class Import_Facebook_Events_EE4 {
 			update_post_meta( $inserted_event_id, '_ife_endtime_str', $end_time );
 			update_post_meta( $inserted_event_id, 'start_ts', $start_time );
 			update_post_meta( $inserted_event_id, 'end_ts', $end_time );
+			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $inserted_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			if ( $is_exitsing_event ) {
 				do_action( 'ife_after_update_ee4_' . $centralize_array['origin'] . '_event', $inserted_event_id, $centralize_array );
