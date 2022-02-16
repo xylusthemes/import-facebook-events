@@ -377,7 +377,7 @@ class Import_Facebook_Events_Ical_Parser {
 				$end_time   = strtotime( $this->convert_fb_ical_timezone( $end, $event_api_data['ical_timezone_name'] ) );
 			}
 		}
-		
+
 		$xt_event = array(
 			'origin'          => 'ical',
 			'ID'              => $uid,
@@ -667,7 +667,7 @@ class Import_Facebook_Events_Ical_Parser {
 			if( !empty( $imagesource ) ){
 				$event_api_data['image'] = $imagesource;
 			}
-			$event_timezone   = get_post_meta( $is_exitsing_event, 'ical_timezone_name', true );
+			$event_timezone   = get_post_meta( $is_exitsing_event, 'ife_event_timezone_name', true );
 			if( !empty( $event_timezone ) ){
 				$event_api_data['ical_timezone_name'] = $event_timezone;
 			}
