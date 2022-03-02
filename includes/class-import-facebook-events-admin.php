@@ -58,6 +58,9 @@ class Import_Facebook_Events_Admin {
 	public function add_menu_pages() {
 
 		add_menu_page( __( 'Import Facebook Events', 'import-facebook-events' ), __( 'Facebook Import', 'import-facebook-events' ), 'manage_options', 'facebook_import', array( $this, 'admin_page' ), 'dashicons-calendar-alt', '30' );
+		if( !ife_is_pro() ){
+			add_submenu_page( 'facebook_import', __( 'Upgrade to Pro', 'import-facebook-events' ),  '<li class="ife_upgrade_pro current"> ' . __( 'Upgrade to Pro', 'import-facebook-events' ) . '</li>', 'manage_options', esc_url( "https://xylusthemes.com/plugins/import-facebook-events/") );
+		}
 	}
 
 	/**

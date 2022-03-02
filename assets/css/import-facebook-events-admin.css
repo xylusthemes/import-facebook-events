@@ -445,3 +445,8 @@ table.ife_form_table tr td:nth-child(1) {
       display: block
   }
 }
+
+/*Upgrade to pro link CSS*/
+.ife_upgrade_pro {
+  background: #1da867;
+}
