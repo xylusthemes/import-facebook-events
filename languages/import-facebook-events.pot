@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-17T07:58:08+00:00\n"
+"POT-Creation-Date: 2022-06-29T11:44:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: import-facebook-events\n"
@@ -469,11 +469,11 @@ msgstr ""
 msgid "The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong>Settings</strong>."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:684
+#: includes/class-import-facebook-events-common.php:690
 msgid "Available in Pro version."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:684
+#: includes/class-import-facebook-events-common.php:690
 msgid "Upgrade to PRO"
 msgstr ""
 
@@ -1195,75 +1195,91 @@ msgstr ""
 msgid "Check to updates existing events."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:149
-msgid "Direct link to Facebook"
+#: templates/admin/import-facebook-events-settings.php:148
+msgid "Don't Update these data."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:157
-msgid "Check to enable direct event link to Facebook instead of event detail page."
+#: templates/admin/import-facebook-events-settings.php:158
+msgid "Status ( Publish, Pending, Draft etc.. )"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:162
+msgid "Event category"
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:165
+msgid "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:173
+msgid "Direct link to Facebook"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:181
+msgid "Check to enable direct event link to Facebook instead of event detail page."
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:189
 msgid "Advanced Synchronization"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:175
+#: templates/admin/import-facebook-events-settings.php:199
 msgid "Check to enable advanced synchronization, this will delete events which are removed from Facebook. Also, it deletes passed events."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:183
+#: templates/admin/import-facebook-events-settings.php:207
 msgid "Disable Facebook events"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:191
+#: templates/admin/import-facebook-events-settings.php:215
 msgid "Check to disable inbuilt event management system."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:198
+#: templates/admin/import-facebook-events-settings.php:222
 msgid "Accent Color"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:206
+#: templates/admin/import-facebook-events-settings.php:230
 msgid "Choose accent color for front-end event grid and event widget."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:213
+#: templates/admin/import-facebook-events-settings.php:237
 msgid "Event Slug"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:226
+#: templates/admin/import-facebook-events-settings.php:250
 msgid "Slug for the event."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:234
+#: templates/admin/import-facebook-events-settings.php:258
 msgid "Event Display Time Format"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:241
+#: templates/admin/import-facebook-events-settings.php:265
 msgid "12 Hours"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:242
+#: templates/admin/import-facebook-events-settings.php:266
 msgid "24 Hours"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:243
+#: templates/admin/import-facebook-events-settings.php:267
 msgid "WordPress Default"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:246
+#: templates/admin/import-facebook-events-settings.php:270
 msgid "Choose event display time format for front-end."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:253
+#: templates/admin/import-facebook-events-settings.php:277
 msgid "Delete Import Facebook Events data on Uninstall"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:261
+#: templates/admin/import-facebook-events-settings.php:285
 msgid "Delete Import Facebook Events data like settings, scheduled imports, import history on Uninstall."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:274
+#: templates/admin/import-facebook-events-settings.php:298
 msgid "Save Settings"
 msgstr ""
 
