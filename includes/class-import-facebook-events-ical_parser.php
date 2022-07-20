@@ -326,8 +326,8 @@ class Import_Facebook_Events_Ical_Parser {
 			'endtime_local'   => $end_time,
 			'starttime'       => date('Ymd\THis', $start_time),
 			'endtime'         => date('Ymd\THis', $end_time),
-			'startime_utc'    => $start_time,
-			'endtime_utc'     => $end_time,
+			'startime_utc'    => '',
+			'endtime_utc'     => '',
 			'timezone'        => $timezone,
 			'timezone_name'   => $timezone_name,
 			'utc_offset'      => '',
@@ -450,8 +450,10 @@ class Import_Facebook_Events_Ical_Parser {
 		}
 		if ( false === $recurrence_id && false !== $ical_event->getXprop( Vcalendar::X_RECURRENCE ) ) {
 			$current_dt_start = $ical_event->getXprop( Vcalendar::X_CURRENT_DTSTART );
-			if ( is_a( $current_dt_start, 'DateTime' ) ) {
-				$recurrence_id    = $current_dt_start->format('Y-m-d');
+			if ( is_a( $current_dt_start, 'X-CURRENT-DTSTART' ) ) {
+					$recurrence_id = $recurrence_id->format('Y-m-d');
+			}elseif( !empty( $current_dt_start[1] ) ){
+				$recurrence_id    = isset( $current_dt_start[1] ) ? $current_dt_start[1] : false;
 			}
 		}
 		$event_id = $ical_event->getUid() . $recurrence_id;
@@ -478,8 +480,10 @@ class Import_Facebook_Events_Ical_Parser {
 		}
 		if ( false === $recurrence_id && false !== $ical_event->getXprop( Vcalendar::X_RECURRENCE ) ) {
 			$current_dt_start = $ical_event->getXprop( Vcalendar::X_CURRENT_DTSTART );
-			if ( is_a( $current_dt_start, 'DateTime' ) ) {
-				$recurrence_id    = $current_dt_start->format('Y-m-d');
+			if ( is_a( $current_dt_start, 'X-CURRENT-DTSTART' ) ) {
+					$recurrence_id = $recurrence_id->format('Y-m-d');
+			}elseif( !empty( $current_dt_start[1] ) ){
+				$recurrence_id    = isset( $current_dt_start[1] ) ? $current_dt_start[1] : false;
 			}
 		}
 		return $ical_event->getUid() . $recurrence_id . $ical_event->getSequence();
