@@ -472,6 +472,39 @@ class Import_Facebook_Events_Common {
 	}
 
 	/**
+	 * Display schedule import source 
+	 *
+	 * @since   1.7.0
+	 * @return  void
+	 */
+	function render_import_source( $schedule_eventdata = '' ){
+
+		if( !empty( $schedule_eventdata['page_username'] ) ){
+			$event_source  = $schedule_eventdata['page_username'];
+			$event_origins = 'Facebook Page ID';
+			$name          = 'page_username';
+		}elseif( !empty( $schedule_eventdata['facebook_group_id'] ) ){
+			$event_source  = $schedule_eventdata['facebook_group_id'];
+			$event_origins = 'Facebook Group ID';
+			$name          = 'facebook_group_id';
+		}elseif( !empty( $schedule_eventdata['ical_url'] ) ){
+			$event_source  = $schedule_eventdata['ical_url'];
+			$event_origins = 'iCal Url';
+			$name          = 'ical_url';		
+		}else{
+			$event_source  = '';
+			$event_origins = 'Please create a new schedule after deleting this';
+			$name          = '';
+		}
+		?>
+		<td>
+			<input type="text" name="<?php echo $name; ?>" required="required" value="<?php echo $event_source; ?>">
+			<span><?php echo $event_origins; ?></span>
+		</td>
+		<?php
+	}
+
+	/**
 	 * Render import type, one time or scheduled
 	 *
 	 * @since   1.0.0
