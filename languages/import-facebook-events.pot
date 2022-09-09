@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-17T07:58:08+00:00\n"
+"POT-Creation-Date: 2022-09-09T18:07:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: import-facebook-events\n"
@@ -461,19 +461,19 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:640
+#: includes/class-import-facebook-events-common.php:644
 msgid "Your current \"Import Facebok Event Pro\" add-on is not competible with Free plugin. Please Upgrade Pro latest to work event importing Flawlessly."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:657
+#: includes/class-import-facebook-events-common.php:661
 msgid "The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong>Settings</strong>."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:684
+#: includes/class-import-facebook-events-common.php:688
 msgid "Available in Pro version."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:684
+#: includes/class-import-facebook-events-common.php:688
 msgid "Upgrade to PRO"
 msgstr ""
 
