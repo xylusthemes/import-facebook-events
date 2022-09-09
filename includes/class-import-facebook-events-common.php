@@ -593,11 +593,15 @@ class Import_Facebook_Events_Common {
 			'meta_value'       => $event_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value --Ignore.
 		);
 		if ( 'tribe_events' === $post_type && class_exists( 'Tribe__Events__Query' ) ) {
-			remove_action( 'tribe_events_pre_get_posts', array( 'Tribe__Events__Query', 'tribe_events_pre_get_posts' ), 50 );
+			if( method_exists( "Tribe__Events__Query", "pre_get_posts" ) ){
+				remove_action( 'pre_get_posts', array( 'Tribe__Events__Query', 'pre_get_posts' ), 50 );
+			}
 		}
 		$events = new WP_Query( $event_args );
 		if ( 'tribe_events' === $post_type && class_exists( 'Tribe__Events__Query' ) ) {
-			add_action( 'tribe_events_pre_get_posts', array( 'Tribe__Events__Query', 'tribe_events_pre_get_posts' ), 50 );
+			if( method_exists( "Tribe__Events__Query", "pre_get_posts" ) ){
+				add_action( 'pre_get_posts', array( 'Tribe__Events__Query', 'pre_get_posts' ), 50 );
+			}
 		}
 		if ( $events->have_posts() ) {
 			while ( $events->have_posts() ) {
