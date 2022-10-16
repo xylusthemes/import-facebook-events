@@ -142,9 +142,9 @@ class Import_Facebook_Events_TEC {
 
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array['ID'] );
 		if( function_exists( 'tribe_events' ) ){
-			$formated_args = $this->format_event_args_for_tec( $centralize_array );
+			$formated_args = $this->format_event_args_for_tec_orm( $centralize_array );
 		}else{
-			$formated_args = $this->format_event_args_for_tec_old( $centralize_array );
+			$formated_args = $this->format_event_args_for_tec( $centralize_array );
 		}
 		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$formated_args['post_status'] = $event_args['event_status'];
@@ -185,8 +185,7 @@ class Import_Facebook_Events_TEC {
 		// Create event using TEC advanced functions.
 		global $ife_events;
 		if( function_exists( 'tribe_events' ) ){
-			$new_orm_id   = tribe_events()->set_args( $formated_args )->create();
-			$new_event_id = $new_orm_id->ID;
+			$new_event_id = tribe_events()->set_args( $formated_args )->create()->ID;
 		}else{
 			$new_event_id = tribe_create_event( $formated_args );
 		}
@@ -324,7 +323,7 @@ class Import_Facebook_Events_TEC {
 	 * @param array $centralize_array Facebook event.
 	 * @return array
 	 */
-	public function format_event_args_for_tec( $centralize_array ) {
+	public function format_event_args_for_tec_orm( $centralize_array ) {
 
 		if ( empty( $centralize_array ) ) {
 			return;
@@ -343,11 +342,13 @@ class Import_Facebook_Events_TEC {
 		);
 
 		if ( array_key_exists( 'organizer', $centralize_array ) ) {
-			$event_args['organizer'] = $this->get_organizer_args( $centralize_array['organizer'] );
+			$organizer               = $this->get_organizer_args( $centralize_array['organizer'] );      
+			$event_args['organizer'] = $organizer['OrganizerID'];
 		}
 
 		if ( array_key_exists( 'location', $centralize_array ) ) {
-			$event_args['venue'] = $this->get_venue_args( $centralize_array['location'] );
+			$venue               = $this->get_venue_args( $centralize_array['location'] );
+			$event_args['venue'] = $venue['VenueID'];
 		}
 		return $event_args;
 	}
@@ -359,7 +360,7 @@ class Import_Facebook_Events_TEC {
 	 * @param array $centralize_array Facebook event.
 	 * @return array
 	 */
-	public function format_event_args_for_tec_old( $centralize_array ) {
+	public function format_event_args_for_tec( $centralize_array ) {
 
 		if ( empty( $centralize_array ) ) {
 			return;
@@ -410,11 +411,7 @@ class Import_Facebook_Events_TEC {
 		}
 		$existing_organizer = $this->get_organizer_by_id( $centralize_org_array['name'] );
 		if ( $existing_organizer && is_numeric( $existing_organizer ) && $existing_organizer > 0 ) {
-			if( function_exists( 'tribe_events' ) ){
-				return $existing_organizer;
-			}else{
-				return array( 'OrganizerID' => $existing_organizer	);
-			}
+			return array( 'OrganizerID' => $existing_organizer	);
 		}
 
 		$create_organizer = tribe_create_organizer(
@@ -429,11 +426,7 @@ class Import_Facebook_Events_TEC {
 		if ( $create_organizer ) {
 			update_post_meta( $create_organizer, 'ife_event_organizer_name', $centralize_org_array['name'] );
 			update_post_meta( $create_organizer, 'ife_event_organizer_id', $centralize_org_array['ID'] );
-			if( function_exists( 'tribe_events' ) ){
-				return $existing_organizer;
-			}else{
-				return array( 'OrganizerID' => $existing_organizer	);
-			}
+			return array( 'OrganizerID' => $existing_organizer	);
 		}
 		return null;
 	}
@@ -455,11 +448,7 @@ class Import_Facebook_Events_TEC {
 			$existing_venue = $this->get_venue_by_name( $venue['name'] );
 		}
 		if ( $existing_venue && is_numeric( $existing_venue ) && $existing_venue > 0 ) {
-			if( function_exists( 'tribe_events' ) ){
-				return $create_venue;
-			}else{
-				return array( 'VenueID' => $create_venue );
-			}
+			return array( 'VenueID' => $create_venue );
 		}
 
 		$country = isset( $venue['country'] ) ? $venue['country'] : '';
@@ -484,11 +473,7 @@ class Import_Facebook_Events_TEC {
 			update_post_meta( $create_venue, 'ife_event_venue_name', $venue['name'] );
 			update_post_meta( $create_venue, 'ife_event_venue_id', $venue_id );
 			
-			if( function_exists( 'tribe_events' ) ){
-				return $create_venue;
-			}else{
-				return array( 'VenueID' => $create_venue );
-			}
+			return array( 'VenueID' => $create_venue );
 		}
 		return false;
 	}
