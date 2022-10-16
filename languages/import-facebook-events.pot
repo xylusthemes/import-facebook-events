@@ -817,6 +817,10 @@ msgstr ""
 msgid "Unable to retrieve content from the provided URL."
 msgstr ""
 
+#: includes/class-import-facebook-events-ical_parser.php:76
+msgid "Please select end date bigger than start date."
+msgstr ""
+
 #: includes/class-import-facebook-events-list-table.php:72
 #: includes/class-import-facebook-events-list-table.php:219
 msgid "Delete"
@@ -841,6 +845,10 @@ msgstr ""
 
 #: includes/class-import-facebook-events-list-table.php:185
 msgid "Warning!! Are you sure to delete all these import history? Import history will be permanatly deleted."
+msgstr ""
+
+#: includes/class-import-facebook-events-list-table.php:188
+msgid "Clear Import History"
 msgstr ""
 
 #: includes/class-import-facebook-events-list-table.php:203
