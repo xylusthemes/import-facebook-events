@@ -302,7 +302,7 @@ class Import_Facebook_Events_TEC {
 			if ( ! empty( $event_featured_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $update_event_id, $event_featured_image );
 			} else {
-				delete_post_thumbnail( $event_id );
+				delete_post_thumbnail( $update_event_id );
 			}
 
 			do_action( 'ife_after_update_tec_' . $centralize_array['origin'] . '_event', $update_event_id, $formated_args, $centralize_array );
