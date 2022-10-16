@@ -410,7 +410,11 @@ class Import_Facebook_Events_TEC {
 		}
 		$existing_organizer = $this->get_organizer_by_id( $centralize_org_array['name'] );
 		if ( $existing_organizer && is_numeric( $existing_organizer ) && $existing_organizer > 0 ) {
-			return $existing_organizer;
+			if( function_exists( 'tribe_events' ) ){
+				return $existing_organizer;
+			}else{
+				return array( 'OrganizerID' => $existing_organizer	);
+			}
 		}
 
 		$create_organizer = tribe_create_organizer(
@@ -425,7 +429,11 @@ class Import_Facebook_Events_TEC {
 		if ( $create_organizer ) {
 			update_post_meta( $create_organizer, 'ife_event_organizer_name', $centralize_org_array['name'] );
 			update_post_meta( $create_organizer, 'ife_event_organizer_id', $centralize_org_array['ID'] );
-			return $create_organizer;
+			if( function_exists( 'tribe_events' ) ){
+				return $existing_organizer;
+			}else{
+				return array( 'OrganizerID' => $existing_organizer	);
+			}
 		}
 		return null;
 	}
@@ -447,7 +455,11 @@ class Import_Facebook_Events_TEC {
 			$existing_venue = $this->get_venue_by_name( $venue['name'] );
 		}
 		if ( $existing_venue && is_numeric( $existing_venue ) && $existing_venue > 0 ) {
-			return $existing_venue;
+			if( function_exists( 'tribe_events' ) ){
+				return $create_venue;
+			}else{
+				return array( 'VenueID' => $create_venue );
+			}
 		}
 
 		$country = isset( $venue['country'] ) ? $venue['country'] : '';
@@ -471,7 +483,12 @@ class Import_Facebook_Events_TEC {
 		if ( $create_venue ) {
 			update_post_meta( $create_venue, 'ife_event_venue_name', $venue['name'] );
 			update_post_meta( $create_venue, 'ife_event_venue_id', $venue_id );
-			return $create_venue;
+			
+			if( function_exists( 'tribe_events' ) ){
+				return $create_venue;
+			}else{
+				return array( 'VenueID' => $create_venue );
+			}
 		}
 		return false;
 	}
