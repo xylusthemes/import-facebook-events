@@ -185,7 +185,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 			$confirmation_message = esc_html__( "Warning!! Are you sure to delete all these import history? Import history will be permanatly deleted.", "import-facebook-events" );
 			?>
 			<a class="button apply" href="<?php echo $wp_delete_nonce_url; ?>" onclick="return confirm('<?php echo $confirmation_message; ?>')">
-				<?php esc_html_e( 'Clear Import History', 'wp-event-aggregator' ); ?>
+				<?php esc_html_e( 'Clear Import History', 'import-facebook-events' ); ?>
 			</a>
 			<?php
 		}

@@ -73,7 +73,7 @@ class Import_Facebook_Events_Ical_Parser {
 		$start_date  = strtotime( $start_date );
 		$end_date  = strtotime( $end_date );
 		if( ( $end_date - $start_date ) < 0 ){
-			$ife_errors[] = esc_html__( 'Please select end date bigger than start date.', 'wp-event-aggregator' );
+			$ife_errors[] = esc_html__( 'Please select end date bigger than start date.', 'import-facebook-events' );
 			return false;
 		}
 
