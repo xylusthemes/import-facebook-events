@@ -356,10 +356,10 @@ class Import_Facebook_Events_TEC {
 	 */
 	public function get_organizer_args( $centralize_org_array ) {
 
-		if ( ! isset( $centralize_org_array['ID'] ) ) {
+		if ( ! isset( $centralize_org_array['name'] ) ) {
 			return null;
 		}
-		$existing_organizer = $this->get_organizer_by_id( $centralize_org_array['ID'] );
+		$existing_organizer = $this->get_organizer_by_id( $centralize_org_array['name'] );
 		if ( $existing_organizer && is_numeric( $existing_organizer ) && $existing_organizer > 0 ) {
 			return array(
 				'OrganizerID' => $existing_organizer,
@@ -376,6 +376,7 @@ class Import_Facebook_Events_TEC {
 		);
 
 		if ( $create_organizer ) {
+			update_post_meta( $create_organizer, 'ife_event_organizer_name', $centralize_org_array['name'] );
 			update_post_meta( $create_organizer, 'ife_event_organizer_id', $centralize_org_array['ID'] );
 			return array(
 				'OrganizerID' => $create_organizer,
@@ -441,13 +442,13 @@ class Import_Facebook_Events_TEC {
 	 * @param int $organizer_id Organizer id.
 	 * @return int/boolean
 	 */
-	public function get_organizer_by_id( $organizer_id ) {
+	public function get_organizer_by_id( $organizer_name ) {
 		$existing_organizer = get_posts(
 			array(
 				'posts_per_page'   => 1,
 				'post_type'        => $this->oraganizer_posttype,
-				'meta_key'         => 'ife_event_organizer_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
-				'meta_value'       => $organizer_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
+				'meta_key'         => 'ife_event_organizer_name', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+				'meta_value'       => $organizer_name, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				'suppress_filters' => false,
 			)
 		);
