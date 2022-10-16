@@ -141,7 +141,11 @@ class Import_Facebook_Events_TEC {
 		global $ife_events;
 
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array['ID'] );
-		$formated_args     = $this->format_event_args_for_tec( $centralize_array );
+		if( function_exists( 'tribe_events' ) ){
+			$formated_args = $this->format_event_args_for_tec( $centralize_array );
+		}else{
+			$formated_args = $this->format_event_args_for_tec_old( $centralize_array );
+		}
 		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$formated_args['post_status'] = $event_args['event_status'];
 		}
@@ -180,17 +184,21 @@ class Import_Facebook_Events_TEC {
 	public function create_event( $centralize_array = array(), $formated_args = array(), $event_args = array() ) {
 		// Create event using TEC advanced functions.
 		global $ife_events;
-		$new_event_id = tribe_events()->set_args( $formated_args )->create();
-		if ( $new_event_id->ID ) {
-
+		if( function_exists( 'tribe_events' ) ){
+			$new_orm_id   = tribe_events()->set_args( $formated_args )->create();
+			$new_event_id = $new_orm_id->ID;
+		}else{
+			$new_event_id = tribe_create_event( $formated_args );
+		}
+		if ( $new_event_id ) {
 			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
 			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
 
-			update_post_meta( $new_event_id->ID, 'ife_facebook_event_id', $centralize_array['ID'] );
-			update_post_meta( $new_event_id->ID, 'ife_event_origin', $event_args['import_origin'] );
-			update_post_meta( $new_event_id->ID, 'ife_event_link', esc_url( $centralize_array['url'] ) );
-			update_post_meta( $new_event_id->ID, 'ife_event_timezone', $timezone );
-			update_post_meta( $new_event_id->ID, 'ife_event_timezone_name', $timezone_name );
+			update_post_meta( $new_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
+			update_post_meta( $new_event_id, 'ife_event_origin', $event_args['import_origin'] );
+			update_post_meta( $new_event_id, 'ife_event_link', esc_url( $centralize_array['url'] ) );
+			update_post_meta( $new_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $new_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
@@ -200,7 +208,7 @@ class Import_Facebook_Events_TEC {
 				}
 			}
 			if ( ! empty( $ife_cats ) ) {
-				wp_set_object_terms( $new_event_id->ID, $ife_cats, $this->taxonomy );
+				wp_set_object_terms( $new_event_id, $ife_cats, $this->taxonomy );
 			}
 
 			// Asign event tag.
@@ -211,18 +219,18 @@ class Import_Facebook_Events_TEC {
 				}
 			}
 			if ( ! empty( $ife_tags ) ) {
-				wp_set_object_terms( $new_event_id->ID, $ife_tags, $this->tag_taxonomy );
+				wp_set_object_terms( $new_event_id, $ife_tags, $this->tag_taxonomy );
 			}
 
 			$event_featured_image = $centralize_array['image_url'];
 			if ( ! empty( $event_featured_image ) ) {
-				$ife_events->common->setup_featured_image_to_event( $new_event_id->ID, $event_featured_image );
+				$ife_events->common->setup_featured_image_to_event( $new_event_id, $event_featured_image );
 			}
 
-			do_action( 'ife_after_create_tec_' . $centralize_array['origin'] . '_event', $new_event_id->ID, $formated_args, $centralize_array );
+			do_action( 'ife_after_create_tec_' . $centralize_array['origin'] . '_event', $new_event_id, $formated_args, $centralize_array );
 			return array(
 				'status' => 'created',
-				'id'     => $new_event_id->ID,
+				'id'     => $new_event_id,
 			);
 
 		} else {
@@ -246,18 +254,23 @@ class Import_Facebook_Events_TEC {
 		// Update event using TEC advanced functions.
 		global $ife_events;
 
-		$update_event_id = tribe_events()->where( 'id', $event_id )->set_args( $formated_args )->save();
+		if( function_exists( 'tribe_events' ) ){
+			$update_event_id = tribe_events()->where( 'id', $event_id )->set_args( $formated_args )->save();
+			$update_event_id = $event_id;
+		}else{
+			$update_event_id = tribe_update_event( $event_id, $formated_args );
+		}
 
-		if ( $event_id ) {
+		if ( $update_event_id ) {
 
 			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
 			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
 
-			update_post_meta( $event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
-			update_post_meta( $event_id, 'ife_event_origin', $event_args['import_origin'] );
-			update_post_meta( $event_id, 'ife_event_link', esc_url( $centralize_array['url'] ) );
-			update_post_meta( $event_id, 'ife_event_timezone', $timezone );
-			update_post_meta( $event_id, 'ife_event_timezone_name', $timezone_name );
+			update_post_meta( $update_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
+			update_post_meta( $update_event_id, 'ife_event_origin', $event_args['import_origin'] );
+			update_post_meta( $update_event_id, 'ife_event_link', esc_url( $centralize_array['url'] ) );
+			update_post_meta( $update_event_id, 'ife_event_timezone', $timezone );
+			update_post_meta( $update_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? (array) $event_args['event_cats'] : array();
@@ -268,7 +281,7 @@ class Import_Facebook_Events_TEC {
 			}
 			if ( ! empty( $ife_cats ) ) {
 				if ( $ife_events->common->ife_is_updatable( 'category' ) ) {
-					wp_set_object_terms( $event_id, $ife_cats, $this->taxonomy );
+					wp_set_object_terms( $update_event_id, $ife_cats, $this->taxonomy );
 				}
 			}
 
@@ -281,21 +294,21 @@ class Import_Facebook_Events_TEC {
 			}
 			if ( ! empty( $ife_tags ) ) {
 				if ( $ife_events->common->ife_is_updatable( 'category' ) ) {
-					wp_set_object_terms( $event_id, $ife_tags, $this->tag_taxonomy );
+					wp_set_object_terms( $update_event_id, $ife_tags, $this->tag_taxonomy );
 				}
 			}
 
 			$event_featured_image = $centralize_array['image_url'];
 			if ( ! empty( $event_featured_image ) ) {
-				$ife_events->common->setup_featured_image_to_event( $event_id, $event_featured_image );
+				$ife_events->common->setup_featured_image_to_event( $update_event_id, $event_featured_image );
 			} else {
 				delete_post_thumbnail( $event_id );
 			}
 
-			do_action( 'ife_after_update_tec_' . $centralize_array['origin'] . '_event', $event_id, $formated_args, $centralize_array );
+			do_action( 'ife_after_update_tec_' . $centralize_array['origin'] . '_event', $update_event_id, $formated_args, $centralize_array );
 			return array(
 				'status' => 'updated',
-				'id'     => $event_id,
+				'id'     => $update_event_id,
 			);
 		} else {
 			$ife_errors[] = __( 'Something went wrong, please try again.', 'import-facebook-events' );
@@ -308,7 +321,7 @@ class Import_Facebook_Events_TEC {
 	 * Format events arguments as per TEC
 	 *
 	 * @since    1.0.0
-	 * @param array $centralize_array Eventbrite event.
+	 * @param array $centralize_array Facebook event.
 	 * @return array
 	 */
 	public function format_event_args_for_tec( $centralize_array ) {
@@ -327,6 +340,50 @@ class Import_Facebook_Events_TEC {
 			'timezone'          => $timezone,
 			'start_date'        => date( 'Y-m-d H:i:s', $start_time ),
 			'end_date'          => date( 'Y-m-d H:i:s', $end_time ),
+		);
+
+		if ( array_key_exists( 'organizer', $centralize_array ) ) {
+			$event_args['organizer'] = $this->get_organizer_args( $centralize_array['organizer'] );
+		}
+
+		if ( array_key_exists( 'location', $centralize_array ) ) {
+			$event_args['venue'] = $this->get_venue_args( $centralize_array['location'] );
+		}
+		return $event_args;
+	}
+
+	/**
+	 * Format event arguments as per TEC less than V4.9  
+	 *
+	 * @since    1.6.20
+	 * @param array $centralize_array Facebook event.
+	 * @return array
+	 */
+	public function format_event_args_for_tec_old( $centralize_array ) {
+
+		if ( empty( $centralize_array ) ) {
+			return;
+		}
+		$start_time = $centralize_array['starttime_local'];
+		$end_time   = $centralize_array['endtime_local'];
+		$event_args = array(
+			'post_type'          => $this->event_posttype,
+			'post_title'         => $centralize_array['name'],
+			'post_status'        => 'pending',
+			'post_content'       => $centralize_array['description'],
+			'EventStartDate'     => date( 'Y-m-d', $start_time ),
+			'EventStartHour'     => date( 'h', $start_time ),
+			'EventStartMinute'   => date( 'i', $start_time ),
+			'EventStartMeridian' => date( 'a', $start_time ),
+			'EventEndDate'       => date( 'Y-m-d', $end_time ),
+			'EventEndHour'       => date( 'h', $end_time ),
+			'EventEndMinute'     => date( 'i', $end_time ),
+			'EventEndMeridian'   => date( 'a', $end_time ),
+			'EventStartDateUTC'  => ! empty( $centralize_array['startime_utc'] ) ? date( 'Y-m-d H:i:s', $centralize_array['startime_utc'] ) : '',
+			'EventEndDateUTC'    => ! empty( $centralize_array['endtime_utc'] ) ? date( 'Y-m-d H:i:s', $centralize_array['endtime_utc'] ) : '',
+			'EventURL'           => $centralize_array['url'],
+			'EventShowMap'       => 1,
+			'EventShowMapLink'   => 1,
 		);
 
 		if ( array_key_exists( 'organizer', $centralize_array ) ) {
