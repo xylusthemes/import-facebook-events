@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event, facebook import, faceb
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 6.0
-Stable tag: 1.6.18
+Stable tag: 1.6.19
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,7 @@ Using This plugin you can import facebook event into below listed leading Event 
 
 <h3>Import Facebook Events into</h3>
 
-* [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/)
+* [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/) - Supported with the latest version 6.0. 
 * [Events manager](https://wordpress.org/plugins/events-manager/)
 * [Event Organiser](https://wordpress.org/plugins/event-organiser/)
 * [EventON](https://codecanyon.net/item/eventon-wordpress-event-calendar-plugin/1211017)
@@ -105,6 +105,11 @@ You can use `[facebook_events]` for display in-built facebook events list.
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.6.19 =
+* ADDED: Compatibility with The Events Calendar 6.0
+* FIXED: iCal Facebook Organizer issues
+
 = 1.6.18 =
 * ADDED: Support and Docs link in plugin list page
 * FIXED: iCal Image, Time, and Location issues
