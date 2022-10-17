@@ -177,7 +177,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-manage-import.php';
 			}
 
-			if( !class_exists( 'vcalendar' ) ){
+			if( !class_exists( 'Kigkonsult\Icalcreator\Vcalendar' ) ){
 				require_once IFE_PLUGIN_DIR . 'includes/lib/icalcreator/autoload.php';
 			}
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ical_parser.php';
