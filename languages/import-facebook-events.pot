@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-16T17:13:05+00:00\n"
+"POT-Creation-Date: 2022-10-17T06:34:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.0\n"
 "X-Domain: import-facebook-events\n"
@@ -817,8 +817,7 @@ msgstr ""
 msgid "Unable to retrieve content from the provided URL."
 msgstr ""
 
-#: includes/class-import-facebook-events-ical_parser.php:76
-
+#: includes/class-import-facebook-events-ical_parser.php:79
 msgid "Please select end date bigger than start date."
 msgstr ""
 
