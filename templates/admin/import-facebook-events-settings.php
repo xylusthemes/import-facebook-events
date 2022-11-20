@@ -74,7 +74,7 @@ $is_key_saved           = ( ! empty( $facebook_app_id ) && ! empty( $facebook_ap
 								?>
 								<a href="<?php echo esc_url( $fb_login_url ); ?>" class="button button-primary"><?php echo esc_attr( $button_value ); ?></a>
 								<span class="ife_small">
-									<?php esc_attr_e( 'Please authorize your Facebook account for import Facebook events from your Facebook page.', 'import-facebook-events' ); ?>
+									<?php esc_attr_e( 'Please authorize your Facebook account for import Facebook events from your Facebook page. (Supports import from Facebook page only, if you want to import Intersted/Going events, please continue by creating App as suggested below).', 'import-facebook-events' ); ?>
 								</span>
 								<?php
 							}
