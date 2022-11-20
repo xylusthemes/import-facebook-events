@@ -67,7 +67,7 @@ class Import_Facebook_Events_Manage_Import {
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             $event_data['event_ids'] = isset( $_POST['facebook_event_ids'] ) ? array_map( 'trim', array_map( 'sanitize_text_field', explode( "\n", preg_replace( "/^\n+|^[\t\s]*\n+/m", '', wp_unslash( $_POST['facebook_event_ids'] ) ) ) ) ) : array(); // input var okay.
             $event_data['event_author']     = !empty( $_POST['event_author'] ) ? $_POST['event_author'] : get_current_user_id();
-            
+
 			if( 'ical' === $event_origin ){
 				$this->handle_ical_import_form_submit( $event_data );
 			} else {
@@ -156,7 +156,7 @@ class Import_Facebook_Events_Manage_Import {
 			exit;
 		}
 
-		// Delete All History Data 
+		// Delete All History Data
 		if ( isset( $_GET['ife_action'] ) && esc_attr( $_GET['ife_action'] ) === 'ife_all_history_delete' && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ife_delete_all_history_nonce' ) ) {
 			$page        = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
 			$tab         = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'history';
@@ -167,7 +167,7 @@ class Import_Facebook_Events_Manage_Import {
 				foreach ( $delete_ids as $delete_id ) {
 					wp_delete_post( $delete_id, true );
 				}
-			}		
+			}
 			$query_args = array(
 				'imp_fb_msg' => 'history_dels',
 				'tab'     => $tab,
@@ -187,11 +187,8 @@ class Import_Facebook_Events_Manage_Import {
 	public function handle_facebook_import_form_submit( $event_data ) {
 		global $ife_errors, $ife_success_msg, $ife_events;
 
-		$fboptions           = ife_get_import_options( 'facebook' );
-		$facebook_app_id     = isset( $fboptions['facebook_app_id'] ) ? $fboptions['facebook_app_id'] : '';
-		$facebook_app_secret = isset( $fboptions['facebook_app_secret'] ) ? $fboptions['facebook_app_secret'] : '';
-		if ( empty( $facebook_app_id ) || empty( $facebook_app_secret ) ) {
-			$ife_errors[] = __( 'Please insert Facebook app ID and app Secret.', 'import-facebook-events' );
+		if ( ! ife_is_authenticated() ) {
+			$ife_errors[] = __( 'Please authenticate with Facebook first.', 'import-facebook-events' );
 			return;
 		}
 

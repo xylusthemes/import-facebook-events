@@ -79,8 +79,8 @@ class Import_Facebook_Events_Facebook {
 		$imported_events    = array();
 		$facebook_event_ids = array();
 
-		if ( empty( $this->fb_app_id ) || empty( $this->fb_app_secret ) ) {
-			$ife_errors[] = __( 'Please insert Facebook app ID and app Secret.', 'import-facebook-events' );
+		if ( ! ife_is_authenticated() ) {
+			$ife_errors[] = __( 'Please authenticate with Facebook first.', 'import-facebook-events' );
 			return;
 		}
 
@@ -166,9 +166,9 @@ class Import_Facebook_Events_Facebook {
 		$options       = ife_get_import_options( 'facebook' );
 		$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
 
-		if ( empty( $facebook_event_id ) || empty( $this->fb_app_id ) || empty( $this->fb_app_secret ) ) {
-			if ( empty( $this->fb_app_id ) || empty( $this->fb_app_secret ) ) {
-				$ife_errors[] = esc_attr__( 'Please insert Facebook app ID and app Secret.', 'import-facebook-events' );
+		if ( empty( $facebook_event_id ) || ! ife_is_authenticated() ) {
+			if ( ! ife_is_authenticated() ) {
+				$ife_errors[] = __( 'Please authenticate with Facebook first.', 'import-facebook-events' );
 				return;
 			}
 			return false;
