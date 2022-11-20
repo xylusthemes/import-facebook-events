@@ -223,21 +223,11 @@ class Import_Facebook_Events_Facebook {
 		$token_transient_key = 'ife_facebook_access_token';
 		$access_token_cache = get_transient( 'ife_facebook_access_token' );
 		if ( false === $access_token_cache ) {
-			$args                       = array(
-				'grant_type'    => 'client_credentials',
-				'client_id'     => $this->fb_app_id,
-				'client_secret' => $this->fb_app_secret,
-			);
-			$access_token_url           = add_query_arg( $args, $this->fb_graph_url . 'oauth/access_token' );
-			$access_token_response      = wp_remote_get( $access_token_url );
-			$access_token_response_body = wp_remote_retrieve_body( $access_token_response );
-			$access_token_data          = json_decode( $access_token_response_body );
-			$access_token               = ! empty( $access_token_data->access_token ) ? $access_token_data->access_token : null;
-
 			$ife_user_token_options = get_option( 'ife_user_token_options', array() );
-			if ( ! empty( $ife_user_token_options ) && ! empty( $access_token ) ) {
+			if ( ! empty( $ife_user_token_options ) ) {
 				$authorize_status  = isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
 				$user_access_token = isset( $ife_user_token_options['access_token'] ) ? $ife_user_token_options['access_token'] : '';
+				$access_token      = $user_access_token;
 				if ( 1 === $authorize_status && ! empty( $user_access_token ) ) {
 
 					$args                       = array(
