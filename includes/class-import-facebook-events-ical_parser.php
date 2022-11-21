@@ -287,6 +287,7 @@ class Import_Facebook_Events_Ical_Parser {
 		if( !empty( $ical_wp_images ) && !empty( $ical_wp_images[1]) ){
 			$event_image =  $ical_wp_images[1];
 		}
+		$timezone_name = '';
 
 		// Only for facebook ical imports.
 		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
@@ -306,10 +307,10 @@ class Import_Facebook_Events_Ical_Parser {
 						$timezone_name = $event_api_data['ical_timezone_name'];
 					}
 
-					if( empty( $event_api_data['start_time'] ) ){
+					if( isset( $event_api_data['ical_timezone_name'] ) && empty( $event_api_data['start_time'] ) ){
 						$start_time = strtotime( $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
 					}
-					if( empty( $event_api_data['end_time'] ) ){
+					if( isset( $event_api_data['ical_timezone_name'] ) &&  empty( $event_api_data['end_time'] ) ){
 						$end_time   = strtotime( $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
 					}
 				}

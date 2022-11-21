@@ -194,7 +194,9 @@ class Import_Facebook_Events_TEC {
 		if( function_exists( 'tribe_events' ) ){
 			$new_event_id = tribe_events()->set_args( $formated_args )->create()->ID;
 		}else{
-			$new_event_id = tribe_create_event( $formated_args );
+			if( function_exists( 'tribe_create_event' ) ){
+				$new_event_id = tribe_create_event( $formated_args );
+			}
 		}
 		if ( $new_event_id ) {
 			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
@@ -264,7 +266,9 @@ class Import_Facebook_Events_TEC {
 			$update_event_id = tribe_events()->where( 'id', $event_id )->set_args( $formated_args )->save();
 			$update_event_id = $event_id;
 		}else{
-			$update_event_id = tribe_update_event( $event_id, $formated_args );
+			if( function_exists( 'tribe_update_event' ) ){
+				$update_event_id = tribe_update_event( $event_id, $formated_args );
+			}
 		}
 
 		if ( $update_event_id ) {
