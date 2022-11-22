@@ -352,6 +352,11 @@ class Import_Facebook_Events_TEC {
 			'end_date'          => date( 'Y-m-d H:i:s', $end_time ),
 		);
 
+		if( isset( $centralize_array['is_all_day'] ) && true === $centralize_array['is_all_day'] ){
+			$event_args['_EventAllDay'] = 'yes';
+			$event_args['end_date'] = date( 'Y-m-d 23:59:59', $start_time );
+		}
+
 		if ( array_key_exists( 'organizer', $centralize_array ) ) {
 			$organizer               = $this->get_organizer_args( $centralize_array['organizer'] );      
 			$event_args['organizer'] = $organizer['OrganizerID'];
@@ -397,6 +402,11 @@ class Import_Facebook_Events_TEC {
 			'EventShowMap'       => 1,
 			'EventShowMapLink'   => 1,
 		);
+
+		if( isset( $centralize_array['is_all_day'] ) && true === $centralize_array['is_all_day'] ){
+			$event_args['_EventAllDay']      = 'yes';
+			$event_args['_EventEndDate']     = date( 'Y-m-d', $start_time );
+		}
 
 		if ( array_key_exists( 'organizer', $centralize_array ) ) {
 			$event_args['organizer'] = $this->get_organizer_args( $centralize_array['organizer'] );

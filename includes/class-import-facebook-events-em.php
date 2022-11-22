@@ -239,11 +239,12 @@ class Import_Facebook_Events_EM {
 			
 			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
 			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';	
+			$is_all_day    = !empty( $centralize_array['is_all_day'] ) ? $centralize_array['is_all_day'] : '';
 
 			// Save Meta.
 			update_post_meta( $inserted_event_id, '_event_start_time', date( 'H:i:s', $start_time ) );
 			update_post_meta( $inserted_event_id, '_event_end_time', date( 'H:i:s', $end_time ) );
-			update_post_meta( $inserted_event_id, '_event_all_day', 0 );
+			update_post_meta( $inserted_event_id, '_event_all_day', $is_all_day );
 			update_post_meta( $inserted_event_id, '_event_start_date', date( 'Y-m-d', $start_time ) );
 			update_post_meta( $inserted_event_id, '_event_end_date', date( 'Y-m-d', $end_time ) );
 			update_post_meta( $inserted_event_id, '_event_timezone', $timezone_name );

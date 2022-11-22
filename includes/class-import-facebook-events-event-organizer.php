@@ -200,6 +200,13 @@ class Import_Facebook_Events_Event_Organizer {
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
 			update_post_meta( $inserted_event_id, 'ife_event_timezone_name', $timezone_name );
+			$is_all_day    = !empty( $centralize_array['is_all_day'] ) ? $centralize_array['is_all_day'] : '';
+			$args = array(
+				'all_day' => $is_all_day,
+				'schedule' => 'once',
+				'frequency' => 1
+			);
+			update_post_meta( $inserted_event_id, '_eventorganiser_event_schedule', $args );
 
 			// Custom table Details.
 			$event_array = array(
