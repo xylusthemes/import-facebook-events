@@ -248,8 +248,8 @@ class Import_Facebook_Events_Event_Organizer {
 				$city         = isset( $venue['city'] ) ? $venue['city'] : '';
 				$state        = isset( $venue['state'] ) ? $venue['state'] : '';
 				$zip          = isset( $venue['zip'] ) ? $venue['zip'] : '';
-				$lat          = isset( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
-				$lon          = isset( $venue['long'] ) ? round( $venue['long'], 6 ) : 0.000000;
+				$lat          = !empty( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
+				$lon          = !empty( $venue['long'] ) ? round( $venue['long'], 6 ) : 0.000000;
 				$country      = isset( $venue['country'] ) ? $venue['country'] : '';
 
 				$loc_term_meta   = array();
