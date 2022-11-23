@@ -272,6 +272,10 @@ class Import_Facebook_Events_Ical_Parser {
 			}		
 		}
 
+		if( $is_all_day === true ){
+			$end_time = $end_time-1;
+		}
+
 		$event_image     = '';
 		$event_venue     = null;
 		$ical_attachment = $event->getAttach( true, true );
@@ -287,7 +291,7 @@ class Import_Facebook_Events_Ical_Parser {
 		if( !empty( $ical_wp_images ) && !empty( $ical_wp_images[1]) ){
 			$event_image =  $ical_wp_images[1];
 		}
-		$timezone_name = '';
+		$timezone_name = $calendar_timezone;
 
 		// Only for facebook ical imports.
 		$ife_user_token_options = get_option( 'ife_user_token_options', array() );

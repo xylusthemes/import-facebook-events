@@ -354,7 +354,6 @@ class Import_Facebook_Events_TEC {
 
 		if( isset( $centralize_array['is_all_day'] ) && true === $centralize_array['is_all_day'] ){
 			$event_args['_EventAllDay'] = 'yes';
-			$event_args['end_date'] = date( 'Y-m-d 23:59:59', $start_time );
 		}
 
 		if ( array_key_exists( 'organizer', $centralize_array ) ) {
@@ -405,7 +404,6 @@ class Import_Facebook_Events_TEC {
 
 		if( isset( $centralize_array['is_all_day'] ) && true === $centralize_array['is_all_day'] ){
 			$event_args['_EventAllDay']      = 'yes';
-			$event_args['_EventEndDate']     = date( 'Y-m-d', $start_time );
 		}
 
 		if ( array_key_exists( 'organizer', $centralize_array ) ) {
