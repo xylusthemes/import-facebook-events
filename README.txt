@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event, facebook import, faceb
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 6.1
-Stable tag: 1.6.20
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,13 @@ You can use `[facebook_events]` for display in-built facebook events list.
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.7.0 =
+* FIXED:  All Day events bug.
+* FIXED:  Events manager location bug.
+* FIXED:  Event organiser location bug.
+* IMPROVEMENTS: Upgraded iCal library to v2.30
+* IMPROVEMENTS: Support for PHP 8
 
 = 1.6.20 =
 * ADDED: Compatibility with The Events Calendar 6.0
