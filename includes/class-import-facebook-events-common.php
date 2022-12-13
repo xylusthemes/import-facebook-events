@@ -228,6 +228,26 @@ class Import_Facebook_Events_Common {
 	}
 
 	/**
+	 * Get event source link.
+	 * 
+	 * @since    1.7.1
+	 * @param array  $source_data Schedule Data.
+	 * @param string $source_title Schedule title.
+	 */
+	public function get_source_data( $source_data = array(), $source_title = '' ){
+		if( $source_data['import_by'] == 'ical_url' ){
+			$source = '<a href="' . $source_data['ical_url'] . '" target="_blank" >ICal URL</a>';
+		}elseif( $source_data['import_by'] == 'facebook_organization' ){
+			$source = '<a href="https://facebook.com/' . $source_data['page_username'] . '" target="_blank" >' . $source_title . '</a>';
+		}elseif( $source_data['import_by'] == 'facebook_group' ){
+			$source = '<a href="https://facebook.com/groups/' . $source_data['facebook_group_id'] . '" target="_blank" >' . $source_title . '</a>';
+		}else{
+			$source = '<a href="#">No Data Found</a>';
+		}
+		return $source;
+	}
+
+	/**
 	 * Setup Featured image to events
 	 *
 	 * @since    1.0.0
