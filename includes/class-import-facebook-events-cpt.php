@@ -64,7 +64,7 @@ class Import_Facebook_Events_Cpt {
 		$this->event_tag      = 'facebook_tag';
 
 		$ife_options       = get_option( IFE_OPTIONS );
-		$this->event_slug = isset( $ife_options['event_slug'] ) ? $ife_options['event_slug'] : 'facebook-event';
+		$this->event_slug  = isset( $ife_options['event_slug'] ) ? $ife_options['event_slug'] : 'facebook-event';
 		$deactive_fbevents = isset( $ife_options['deactive_fbevents'] ) ? $ife_options['deactive_fbevents'] : 'no';
 
 		if ( 'no' === $deactive_fbevents ) {
@@ -441,7 +441,7 @@ class Import_Facebook_Events_Cpt {
 		</thead>
 			<tbody>
 				<tr>
-					<td><?php _e( 'Source Link', 'import-facebook-events' ); ?>:</td>
+					<td><?php esc_attr_e( 'Source Link', 'import-facebook-events' ); ?>:</td>
 				<td>
 					<input type="text" name="ife_event_link" id="ife_event_link" value="<?php echo get_post_meta( $post->ID, 'ife_event_link', true ); ?>" />
 				</td>
@@ -572,7 +572,7 @@ class Import_Facebook_Events_Cpt {
 		$organizer_url   = isset( $postdata['organizer_url'] ) ? esc_url( $postdata['organizer_url'] ) : '';
 
 		// Event Source Link
-		$ife_event_link   = isset( $postdata['ife_event_link'] ) ? esc_url( $postdata['ife_event_link'] ) : '';
+		$ife_event_link = isset( $postdata['ife_event_link'] ) ? esc_url( $postdata['ife_event_link'] ) : '';
 
 		// Save Event Data.
 		// Date & Time.

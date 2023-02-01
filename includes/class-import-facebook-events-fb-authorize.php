@@ -106,7 +106,7 @@ class Import_Facebook_Events_FB_Authorize {
 					$access_token                               = $body_response->access_token;
 					$ife_user_token_options['authorize_status'] = 1;
 					$ife_user_token_options['access_token']     = sanitize_text_field( $access_token );
-					$token_transient_key = 'ife_facebook_access_token';
+					$token_transient_key                        = 'ife_facebook_access_token';
 					delete_transient( $token_transient_key );
 					update_option( 'ife_user_token_options', $ife_user_token_options );
 

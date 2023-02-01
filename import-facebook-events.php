@@ -58,16 +58,16 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				add_action( 'plugins_loaded', array( self::$instance, 'load_authorize_class' ), 20 );
 				add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_style' ) );
 				add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_script' ) );
-				add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( self::$instance, 'ife_setting_doc_links' ) );
+				add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( self::$instance, 'ife_setting_doc_links' ) );
 
 				self::$instance->includes();
 				self::$instance->common   = new Import_Facebook_Events_Common();
 				self::$instance->cpt      = new Import_Facebook_Events_Cpt();
 				self::$instance->facebook = new Import_Facebook_Events_Facebook();
 				self::$instance->admin    = new Import_Facebook_Events_Admin();
-				
-				self::$instance->ical_parser 	   = new Import_Facebook_Events_Ical_Parser();
-				self::$instance->ical 			   = new Import_Facebook_Events_Ical();
+
+				self::$instance->ical_parser = new Import_Facebook_Events_Ical_Parser();
+				self::$instance->ical        = new Import_Facebook_Events_Ical();
 				if ( ife_is_pro() ) {
 					self::$instance->manage_import = new Import_Facebook_Events_Pro_Manage_Import();
 				} else {
@@ -177,7 +177,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-manage-import.php';
 			}
 
-			if( !class_exists( 'Kigkonsult\Icalcreator\Vcalendar' ) ){
+			if ( ! class_exists( 'Kigkonsult\Icalcreator\Vcalendar' ) ) {
 				require_once IFE_PLUGIN_DIR . 'includes/lib/icalcreator/autoload.php';
 			}
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ical_parser.php';
@@ -220,20 +220,20 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @since 1.0
 		 * @return void
 		 */
-		public function ife_setting_doc_links ( $links ) {
+		public function ife_setting_doc_links( $links ) {
 			$ife_setting_doc_link = array(
-                'ife-event-setting' => sprintf(
-                    '<a href="%s">%s</a>',
-                    esc_url( admin_url( 'admin.php?page=facebook_import&tab=settings' ) ),
-                    esc_html__( 'Setting', 'import-facebook-events' )
-                ),
-                'ife-event-docs' => sprintf(
-                    '<a target="_blank" href="%s">%s</a>',
-                    esc_url( 'https://docs.xylusthemes.com/docs/import-facebook-events/' ),
-                    esc_html__( 'Docs', 'import-facebook-events' )
-                ),
-            );
-            return array_merge( $links, $ife_setting_doc_link );
+				'ife-event-setting' => sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( admin_url( 'admin.php?page=facebook_import&tab=settings' ) ),
+					esc_html__( 'Setting', 'import-facebook-events' )
+				),
+				'ife-event-docs'    => sprintf(
+					'<a target="_blank" href="%s">%s</a>',
+					esc_url( 'https://docs.xylusthemes.com/docs/import-facebook-events/' ),
+					esc_html__( 'Docs', 'import-facebook-events' )
+				),
+			);
+			return array_merge( $links, $ife_setting_doc_link );
 		}
 
 		/**
