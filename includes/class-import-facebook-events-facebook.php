@@ -221,7 +221,7 @@ class Import_Facebook_Events_Facebook {
 	 */
 	public function get_access_token() {
 		$token_transient_key = 'ife_facebook_access_token';
-		$access_token_cache = get_transient( 'ife_facebook_access_token' );
+		$access_token_cache  = get_transient( 'ife_facebook_access_token' );
 		if ( false === $access_token_cache ) {
 			$args                       = array(
 				'grant_type'    => 'client_credentials',
@@ -345,14 +345,14 @@ class Import_Facebook_Events_Facebook {
 	 * @return object $response
 	 */
 	public function get_json_response_from_url( $url ) {
-		$transient_key = 'ife_';
-		$transient_key .= md5($url);
-		$api_response = get_transient( $transient_key );
+		$transient_key  = 'ife_';
+		$transient_key .= md5( $url );
+		$api_response   = get_transient( $transient_key );
 		if ( false === $api_response ) {
 			$args     = array( 'timeout' => 15 );
 			$response = wp_remote_get( $url, $args );
 			$response = json_decode( wp_remote_retrieve_body( $response ) );
-			if( ! isset($response->error) ){
+			if ( ! isset( $response->error ) ) {
 				// cache API response
 				$test = set_transient( $transient_key, $response, 15 * MINUTE_IN_SECONDS );
 			}

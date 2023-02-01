@@ -17,17 +17,17 @@ $start_date_formated = date_i18n( 'F j', $start_date_str );
 $end_date_formated   = date_i18n( 'F j', $end_date_str );
 $website             = get_post_meta( $event_id, 'ife_event_link', true );
 $map_api_key         = 'AIzaSyAfqJHFi3ghTFSuuW5pIudu9Fq2pvoJzwc';
-$ife_options  = get_option( IFE_OPTIONS );
-$time_format = isset( $ife_options['time_format'] ) ? $ife_options['time_format'] : '12hours';
-if($time_format == '12hours' ){
-    $start_time          = date_i18n( 'h:i a', $start_date_str );
-    $end_time            = date_i18n( 'h:i a', $end_date_str );
-}elseif($time_format == '24hours' ){
-    $start_time          = date_i18n( 'H:i', $start_date_str );
-    $end_time            = date_i18n( 'H:i', $end_date_str );
-}else{
-    $start_time          = date_i18n( get_option( 'time_format' ), $start_date_str );
-    $end_time            = date_i18n( get_option( 'time_format' ), $end_date_str );
+$ife_options         = get_option( IFE_OPTIONS );
+$time_format         = isset( $ife_options['time_format'] ) ? $ife_options['time_format'] : '12hours';
+if ( $time_format == '12hours' ) {
+	$start_time = date_i18n( 'h:i a', $start_date_str );
+	$end_time   = date_i18n( 'h:i a', $end_date_str );
+} elseif ( $time_format == '24hours' ) {
+	$start_time = date_i18n( 'H:i', $start_date_str );
+	$end_time   = date_i18n( 'H:i', $end_date_str );
+} else {
+	$start_time = date_i18n( get_option( 'time_format' ), $start_date_str );
+	$end_time   = date_i18n( get_option( 'time_format' ), $end_date_str );
 }
 
 ?>
@@ -148,7 +148,7 @@ $venue['lat']     = get_post_meta( $event_id, 'venue_lat', true );
 $venue['lon']     = get_post_meta( $event_id, 'venue_lon', true );
 $venue_url        = esc_url( get_post_meta( $event_id, 'venue_url', true ) );
 
-if ( ! empty( $venue_name  ) || ! empty( $venue_address  ) || ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) ) {
+if ( ! empty( $venue_name ) || ! empty( $venue_address ) || ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) ) {
 	?>
 	<div class="organizermain library">
 		<div class="venue">
@@ -171,7 +171,7 @@ if ( ! empty( $venue_name  ) || ! empty( $venue_address  ) || ( ! empty( $venue[
 			?>
 		</div>
 		<?php
-		$q = '';
+		$q       = '';
 		$lat_lng = '';
 		if ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) {
 			$lat_lng = esc_attr( $venue['lat'] ) . ',' . esc_attr( $venue['lon'] );
@@ -179,23 +179,23 @@ if ( ! empty( $venue_name  ) || ! empty( $venue_address  ) || ( ! empty( $venue[
 		if ( ! empty( $venue_name ) ) {
 			$q = esc_attr( $venue_name );
 		}
-		if( ! empty( $venue_name ) && ! empty( $venue_address ) ){
-			$q = esc_attr( $venue_name ).', '.esc_attr( $venue_address );
+		if ( ! empty( $venue_name ) && ! empty( $venue_address ) ) {
+			$q = esc_attr( $venue_name ) . ', ' . esc_attr( $venue_address );
 		}
-		if(empty($q)){
+		if ( empty( $q ) ) {
 			$q = $lat_lng;
 		}
 		if ( ! empty( $q ) ) {
 			$params = array(
-				'q' => $q
+				'q' => $q,
 			);
 			if ( ! empty( $lat_lng ) ) {
 				$params['center'] = $lat_lng;
 			}
-			$query = http_build_query($params);
+			$query = http_build_query( $params );
 			?>
 			<div class="map">
-				<iframe src="https://www.google.com/maps/embed/v1/place?key=<?php echo $map_api_key; ?>&<?php echo $query; ?>" width="100%" height="350" frameborder="0" style="border:0; margin:0;" allowfullscreen></iframe>
+				<iframe src="https://www.google.com/maps/embed/v1/place?key=<?php echo esc_attr( $map_api_key ); ?>&<?php echo esc_attr( $query ); ?>" width="100%" height="350" frameborder="0" style="border:0; margin:0;" allowfullscreen></iframe>
 			</div>
 			<?php
 		}

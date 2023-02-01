@@ -21,7 +21,7 @@ if ( ! ife_is_pro() ) {
 	<div class="ife_row">
 		<div class="widefat ife_settings_notice">
 			<?php esc_attr_e( 'Currently, Facebook events are not being imported using the "My Events" option due to the changes in the Facebook API. We are still checking and working on it. meanwhile, you can import Facebook events using the Event iCal URL.', 'import-facebook-events' ); ?></br>
-			<?php 
+			<?php
 			if ( ! ife_is_pro() ) {
 				esc_attr_e( 'You can also schedule auto import on regular basis in Pro version.', 'import-facebook-events' );
 			} ?>
@@ -143,14 +143,22 @@ if ( ! ife_is_pro() ) {
 						$ife_events->common->render_import_into_and_taxonomy();
 						$ife_events->common->render_eventstatus_input();
 						?>
-                        <tr>
+						<tr>
 							<th scope="row">
-								<?php _e('Author','import-facebook-events'); ?> :
+								<?php esc_attr_e( 'Author', 'import-facebook-events' ); ?> :
 							</th>
 							<td>
-								<?php wp_dropdown_users( array( 'show_option_none' => esc_attr__( 'Select Author','import-facebook-events'), 'name' => 'event_author', 'option_none_value' => get_current_user_id() ) ); ?>
+								<?php
+								wp_dropdown_users(
+									array(
+										'show_option_none' => esc_attr__( 'Select Author', 'import-facebook-events' ),
+										'name'             => 'event_author',
+										'option_none_value' => get_current_user_id(),
+									)
+								);
+								?>
 								<span class="ife_small">
-									<?php _e( 'Select event author for imported events. Default event author is current loggedin user.', 'import-facebook-events' ); ?>
+									<?php esc_attr_e( 'Select event author for imported events. Default event author is current loggedin user.', 'import-facebook-events' ); ?>
 								</span>
 							</td>
 						</tr>

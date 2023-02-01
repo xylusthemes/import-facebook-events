@@ -23,10 +23,10 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 	<div class="wpea_row">
 		<div class="wpea-column support_well">
 			<h3 class="setting_bar"><?php esc_attr_e( 'Getting Support', 'import-facebook-events' ); ?></h3>
-            <div class="ife-support-features">
+			<div class="ife-support-features">
 				<div class="ife-support-features-card">
 					<div class="ife-support-features-img">
-						<img class="ife-support-features-icon" src="<?php echo IFE_PLUGIN_URL.'assets/images/document.svg'; ?>" alt="<?php esc_attr_e( 'Looking for Something?', 'import-facebook-events' ); ?>">
+						<img class="ife-support-features-icon" src="<?php echo esc_url( IFE_PLUGIN_URL . 'assets/images/document.svg' ); ?>" alt="<?php esc_attr_e( 'Looking for Something?', 'import-facebook-events' ); ?>">
 					</div>
 					<div class="ife-support-features-text">
 						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Looking for Something?', 'import-facebook-events' ); ?></h3>
@@ -36,7 +36,7 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 				</div>
 				<div class="ife-support-features-card">
 					<div class="ife-support-features-img">
-						<img class="ife-support-features-icon" src="<?php echo IFE_PLUGIN_URL.'assets/images/call-center.svg'; ?>" alt="<?php esc_attr_e( 'Need Any Assistance?', 'import-facebook-events' ); ?>">
+						<img class="ife-support-features-icon" src="<?php echo esc_url( IFE_PLUGIN_URL . 'assets/images/call-center.svg' ); ?>" alt="<?php esc_attr_e( 'Need Any Assistance?', 'import-facebook-events' ); ?>">
 					</div>
 					<div class="ife-support-features-text">
 						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Need Any Assistance?', 'import-facebook-events' ); ?></h3>
@@ -46,7 +46,7 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 				</div>
 				<div class="ife-support-features-card">
 					<div class="ife-support-features-img">
-						<img class="ife-support-features-icon"  src="<?php echo IFE_PLUGIN_URL.'assets/images/bug.svg'; ?>" alt="<?php esc_attr_e( 'Found Any Bugs?', 'import-facebook-events' ); ?>" />
+						<img class="ife-support-features-icon"  src="<?php echo esc_url( IFE_PLUGIN_URL . 'assets/images/bug.svg' ); ?>" alt="<?php esc_attr_e( 'Found Any Bugs?', 'import-facebook-events' ); ?>" />
 					</div>
 					<div class="ife-support-features-text">
 						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Found Any Bugs?', 'import-facebook-events' ); ?></h3>
@@ -56,7 +56,7 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 				</div>
 				<div class="ife-support-features-card">
 					<div class="ife-support-features-img">
-						<img class="ife-support-features-icon" src="<?php echo IFE_PLUGIN_URL.'assets/images/tools.svg'; ?>" alt="<?php esc_attr_e( 'Require Customization?', 'import-facebook-events' ); ?>" />
+						<img class="ife-support-features-icon" src="<?php echo esc_url( IFE_PLUGIN_URL . 'assets/images/tools.svg' ); ?>" alt="<?php esc_attr_e( 'Require Customization?', 'import-facebook-events' ); ?>" />
 					</div>
 					<div class="ife-support-features-text">
 						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Require Customization?', 'import-facebook-events' ); ?></h3>
@@ -66,7 +66,7 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 				</div>
 				<div class="ife-support-features-card">
 					<div class="ife-support-features-img">
-						<img class="ife-support-features-icon" src="<?php echo IFE_PLUGIN_URL.'assets/images/like.svg'; ?>" alt="<?php esc_attr_e( 'Like The Plugin?', 'import-facebook-events' ); ?>" />
+						<img class="ife-support-features-icon" src="<?php echo esc_url( IFE_PLUGIN_URL . 'assets/images/like.svg' ); ?>" alt="<?php esc_attr_e( 'Like The Plugin?', 'import-facebook-events' ); ?>" />
 					</div>
 					<div class="ife-support-features-text">
 						<h3 class="ife-support-features-title"><?php esc_attr_e( 'Like The Plugin?', 'import-facebook-events' ); ?></h3>

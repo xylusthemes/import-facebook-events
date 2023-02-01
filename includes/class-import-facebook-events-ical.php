@@ -9,7 +9,9 @@
  * @subpackage Import_Facebook_Events/includes
  */
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Import_Facebook_Events_Ical {
 
@@ -29,30 +31,30 @@ class Import_Facebook_Events_Ical {
 	 * @param  array $eventdata  import event data.
 	 * @return array/boolean
 	 */
-	public function import_events( $event_data = array() ){
+	public function import_events( $event_data = array() ) {
 
 		global $ife_errors;
 		$imported_events = array();
 
 		$import_by = isset( $event_data['import_by'] ) ? esc_attr( $event_data['import_by'] ) : '';
 
-		if( 'ical_url' != $import_by ){
+		if ( 'ical_url' != $import_by ) {
 			return;
 		}
 
-		if( $event_data['ical_url'] == '' ){
-			$ife_errors[] = esc_html__( 'Please provide iCal URL.', 'import-facebook-events');
+		if ( $event_data['ical_url'] == '' ) {
+			$ife_errors[] = esc_html__( 'Please provide iCal URL.', 'import-facebook-events' );
 			return;
 		}
 
-		$ical_url = str_replace( 'webcal://', 'http://', $event_data['ical_url'] );
-		$ics_content =  $this->get_remote_content( $ical_url );
+		$ical_url    = str_replace( 'webcal://', 'http://', $event_data['ical_url'] );
+		$ics_content = $this->get_remote_content( $ical_url );
 
-		if( false == $ics_content ){
+		if ( false == $ics_content ) {
 			return false;
 		}
 
-		if( $ics_content != "" ){
+		if ( $ics_content != '' ) {
 
 			$imported_events = $this->import_events_from_ics_content( $event_data, $ics_content );
 
@@ -69,19 +71,19 @@ class Import_Facebook_Events_Ical {
 	 * @param  array $ics_content  ics content data.
 	 * @return array/boolean
 	 */
-	public function import_events_from_ics_content( $event_data = array(), $ics_content = '' ){
+	public function import_events_from_ics_content( $event_data = array(), $ics_content = '' ) {
 		global $ife_events, $ife_errors;
 
-		error_reporting(0);
+		error_reporting( 0 );
 		// Set time and memory limit.
-		set_time_limit(0);
-		$xt_memory_limit = (int)str_replace( 'M', '',ini_get('memory_limit' ) );
-		if( $xt_memory_limit < 512 ){
-			ini_set('memory_limit', '512M');
+		set_time_limit( 0 );
+		$xt_memory_limit = (int) str_replace( 'M', '', ini_get( 'memory_limit' ) );
+		if ( $xt_memory_limit < 512 ) {
+			ini_set( 'memory_limit', '512M' );
 		}
 
 		$imported_events = array();
-		if( empty( $ics_content ) ){
+		if ( empty( $ics_content ) ) {
 			return array();
 		}
 
@@ -98,25 +100,25 @@ class Import_Facebook_Events_Ical {
 	protected function get_remote_content( $ical_url ) {
 
 		global $wp_version, $ife_errors;
-		$ical_url = str_replace( 'webcal://', 'http://', $ical_url );
+		$ical_url           = str_replace( 'webcal://', 'http://', $ical_url );
 		$timeout_in_seconds = 10;
-		$response = null;
+		$response           = null;
 
 		$request_args = array(
-			'timeout'     => $timeout_in_seconds,
-			'sslverify'   => false,
-			'method'      => 'GET',
-			'user-agent'  => 'WordPress/' . $wp_version . '; ' . home_url(),
+			'timeout'    => $timeout_in_seconds,
+			'sslverify'  => false,
+			'method'     => 'GET',
+			'user-agent' => 'WordPress/' . $wp_version . '; ' . home_url(),
 		);
 
 		$response = wp_remote_get( $ical_url, $request_args );
 		if ( is_wp_error( $response ) ) {
 			$request_args['sslverify'] = true;
-			$response = wp_remote_head( $ical_url, $request_args );
+			$response                  = wp_remote_head( $ical_url, $request_args );
 		}
 
 		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) != 200 ) {
-			$ife_errors[] = esc_html__( 'Unable to retrieve content from the provided URL.', 'import-facebook-events');
+			$ife_errors[] = esc_html__( 'Unable to retrieve content from the provided URL.', 'import-facebook-events' );
 			return false;
 		}
 		return $response['body'];

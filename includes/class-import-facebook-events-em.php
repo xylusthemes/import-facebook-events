@@ -162,8 +162,8 @@ class Import_Facebook_Events_EM {
 			'post_title'   => $post_title,
 			'post_content' => $post_description,
 			'post_type'    => $this->event_posttype,
-            'post_status'  => 'pending',
-            'post_author'  => isset($event_args['event_author']) ? $event_args['event_author'] : get_current_user_id()
+			'post_status'  => 'pending',
+			'post_author'  => isset( $event_args['event_author'] ) ? $event_args['event_author'] : get_current_user_id(),
 		);
 		if ( $is_exitsing_event ) {
 			$emeventdata['ID'] = $is_exitsing_event;
@@ -238,8 +238,8 @@ class Import_Facebook_Events_EM {
 				$event_status = 0;}
 			
 			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
-			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';	
-			$is_all_day    = !empty( $centralize_array['is_all_day'] ) ? $centralize_array['is_all_day'] : 0;
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+			$is_all_day    = ! empty( $centralize_array['is_all_day'] ) ? $centralize_array['is_all_day'] : 0;
 
 			// Save Meta.
 			update_post_meta( $inserted_event_id, '_event_start_time', date( 'H:i:s', $start_time ) );
@@ -371,8 +371,8 @@ class Import_Facebook_Events_EM {
 			$city    = isset( $venue['city'] ) ? $venue['city'] : '';
 			$state   = isset( $venue['state'] ) ? $venue['state'] : '';
 			$zip     = isset( $venue['zip'] ) ? $venue['zip'] : '';
-			$lat     = !empty( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
-			$lon     = !empty( $venue['long'] ) ? round( $venue['long'], 6 ) : 0.000000;
+			$lat     = ! empty( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
+			$lon     = ! empty( $venue['long'] ) ? round( $venue['long'], 6 ) : 0.000000;
 
 			// Save metas.
 			update_post_meta( $location_id, '_blog_id', $blog_id );

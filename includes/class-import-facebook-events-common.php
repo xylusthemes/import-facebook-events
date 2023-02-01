@@ -593,13 +593,13 @@ class Import_Facebook_Events_Common {
 			'meta_value'       => $event_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value --Ignore.
 		);
 		if ( 'tribe_events' === $post_type && class_exists( 'Tribe__Events__Query' ) ) {
-			if( method_exists( "Tribe__Events__Query", "pre_get_posts" ) ){
+			if ( method_exists( 'Tribe__Events__Query', 'pre_get_posts' ) ) {
 				remove_action( 'pre_get_posts', array( 'Tribe__Events__Query', 'pre_get_posts' ), 50 );
 			}
 		}
 		$events = new WP_Query( $event_args );
 		if ( 'tribe_events' === $post_type && class_exists( 'Tribe__Events__Query' ) ) {
-			if( method_exists( "Tribe__Events__Query", "pre_get_posts" ) ){
+			if ( method_exists( 'Tribe__Events__Query', 'pre_get_posts' ) ) {
 				add_action( 'pre_get_posts', array( 'Tribe__Events__Query', 'pre_get_posts' ), 50 );
 			}
 		}
@@ -1073,13 +1073,13 @@ function ife_get_inprogress_import() {
  * @param [int] $scheduledDate
  * @return string
  */
-function ife_get_hour_mins($scheduledDate) {
-	try{
-		if($scheduledDate){
-			$scheduledDate = date('Hi', $scheduledDate);
+function ife_get_hour_mins( $scheduledDate ) {
+	try {
+		if ( $scheduledDate ) {
+			$scheduledDate = date( 'Hi', $scheduledDate );
 		}
 		return $scheduledDate;
-	} catch (Exception $e) {
+	} catch ( Exception $e ) {
 		return $scheduledDate;
 	}
 }
@@ -1089,18 +1089,21 @@ function ife_get_hour_mins($scheduledDate) {
  *
  * @return Array
  */
-function ife_get_crons(){
+function ife_get_crons() {
 	$crons = array();
-	if(function_exists('_get_cron_array') ){
+	if ( function_exists( '_get_cron_array' ) ) {
 		$crons = _get_cron_array();
 	}
-	$ife_scheduled = array_filter($crons, function($cron) {
-		$cron_name = array_keys($cron) ? array_keys($cron)[0] : '';
-		if (strpos($cron_name, 'xt_run_fb_scheduled_import') !== false) {
-			return true;
+	$ife_scheduled = array_filter(
+		$crons,
+		function( $cron ) {
+			$cron_name = array_keys( $cron ) ? array_keys( $cron )[0] : '';
+			if ( strpos( $cron_name, 'xt_run_fb_scheduled_import' ) !== false ) {
+				return true;
+			}
+			return false;
 		}
-		return false;
-	});
+	);
 	return $ife_scheduled;
 }
 
@@ -1109,28 +1112,28 @@ function ife_get_crons(){
  *
  * @return int
  */
-function ife_get_schedule_time(){
+function ife_get_schedule_time() {
 	try {
 		$current_time = time();
-		if(!function_exists('_get_cron_array') ){
+		if ( ! function_exists( '_get_cron_array' ) ) {
 			return $current_time;
 		}
-		$current_hour = date('Hi', $current_time);
-		$current_hour_formated = date('H:i:s', $current_time);
-		$ife_scheduled = ife_get_crons();
-		if(empty($ife_scheduled)){
+		$current_hour          = date( 'Hi', $current_time );
+		$current_hour_formated = date( 'H:i:s', $current_time );
+		$ife_scheduled         = ife_get_crons();
+		if ( empty( $ife_scheduled ) ) {
 			return $current_time;
 		}
 		$scheduled_times = array_map( 'ife_get_hour_mins', array_keys( $ife_scheduled ) );
-		$conflict_times = ife_has_conflict_times( $scheduled_times, $current_hour );
-		if(!empty($conflict_times)){
-			$slots = ife_get_slots($current_hour);
-			foreach( $slots as $slot ){
+		$conflict_times  = ife_has_conflict_times( $scheduled_times, $current_hour );
+		if ( ! empty( $conflict_times ) ) {
+			$slots = ife_get_slots( $current_hour );
+			foreach ( $slots as $slot ) {
 				$conflict_time = ife_has_conflict_times( $scheduled_times, $slot );
-				if(empty($conflict_time)){
-					$seconds = strtotime(substr_replace($slot,':',-2,0).':00') - (strtotime($current_hour_formated));
-					if( $seconds < 86400 ){
-						$current_time = (int)$current_time + (int)$seconds;
+				if ( empty( $conflict_time ) ) {
+					$seconds = strtotime( substr_replace( $slot, ':', -2, 0 ) . ':00' ) - ( strtotime( $current_hour_formated ) );
+					if ( $seconds < 86400 ) {
+						$current_time = (int) $current_time + (int) $seconds;
 					}
 					return $current_time;
 					break;
@@ -1139,7 +1142,7 @@ function ife_get_schedule_time(){
 			return $current_time;
 		}
 		return $current_time;
-	} catch (Exception $e) {
+	} catch ( Exception $e ) {
 		return time();
 	}
 }
@@ -1147,18 +1150,18 @@ function ife_get_schedule_time(){
 /**
  * Check if current slot has conflict or not
  *
- * @param [Array] $scheduled_times
+ * @param [Array]  $scheduled_times
  * @param [strinh] $current_hour
  * @return Array
  */
-function ife_has_conflict_times( $scheduled_times, $current_hour ){
-	$current_hour = (int) $current_hour;
-	$scheduled_gap = 2;
+function ife_has_conflict_times( $scheduled_times, $current_hour ) {
+	$current_hour   = (int) $current_hour;
+	$scheduled_gap  = 2;
 	$conflict_times = array();
-	$min_time = (int) $current_hour - $scheduled_gap;
-	$max_time = (int) $current_hour + $scheduled_gap;
-	foreach( $scheduled_times as $scheduled_time){
-		if( $scheduled_time >= $min_time && $scheduled_time <= $max_time ){
+	$min_time       = (int) $current_hour - $scheduled_gap;
+	$max_time       = (int) $current_hour + $scheduled_gap;
+	foreach ( $scheduled_times as $scheduled_time ) {
+		if ( $scheduled_time >= $min_time && $scheduled_time <= $max_time ) {
 			$conflict_times[] = $scheduled_time;
 		}
 	}
@@ -1171,19 +1174,21 @@ function ife_has_conflict_times( $scheduled_times, $current_hour ){
  * @param [string] $current_hour
  * @return Array
  */
-function ife_get_slots( $current_hour ){
+function ife_get_slots( $current_hour ) {
 	$slots = array();
-	for ($hour=0; $hour < 24; $hour++) {
-		if( $hour < 10 ) { $hour = '0'. $hour; }
-		for ($min=0; $min < 60; $min++) {
-			if( $min < 10 ) { $min = '0'.$min; }
-			$slots[] = $hour.$min;
-			$min = (int) $min;
+	for ( $hour = 0; $hour < 24; $hour++ ) {
+		if ( $hour < 10 ) {
+			$hour = '0' . $hour; }
+		for ( $min = 0; $min < 60; $min++ ) {
+			if ( $min < 10 ) {
+				$min = '0' . $min; }
+			$slots[] = $hour . $min;
+			$min     = (int) $min;
 		}
 		$hour = (int) $hour;
 	}
 	$current_index = array_search( $current_hour, $slots );
-	if($current_hour > 0 ){
+	if ( $current_hour > 0 ) {
 		return array_merge( array_slice( $slots, $current_index ), array_slice( $slots, 0, $current_index ) );
 	}
 	return $slots;
@@ -1194,13 +1199,13 @@ function ife_get_slots( $current_hour ){
  *
  * @return Array
  */
-function ife_get_next_run_times(){
+function ife_get_next_run_times() {
 	$next_runs = array();
-	$crons  = ife_get_crons();
-	foreach($crons as $time => $cron){
-		foreach($cron as $cron_name){
-			foreach($cron_name as $cron_post_id){
-				$next_runs[$cron_post_id['args']['post_id']] = $time;
+	$crons     = ife_get_crons();
+	foreach ( $crons as $time => $cron ) {
+		foreach ( $cron as $cron_name ) {
+			foreach ( $cron_name as $cron_post_id ) {
+				$next_runs[ $cron_post_id['args']['post_id'] ] = $time;
 			}
 		}
 	}

@@ -124,8 +124,8 @@ class Import_Facebook_Events_IFE {
 			'post_title'   => $post_title,
 			'post_content' => $post_description,
 			'post_type'    => $this->event_posttype,
-            'post_status'  => 'pending',
-            'post_author'  => isset($event_args['event_author']) ? $event_args['event_author'] : get_current_user_id()
+			'post_status'  => 'pending',
+			'post_author'  => isset( $event_args['event_author'] ) ? $event_args['event_author'] : get_current_user_id(),
 		);
 		if ( $is_exitsing_event ) {
 			$emeventdata['ID'] = $is_exitsing_event;
@@ -193,8 +193,8 @@ class Import_Facebook_Events_IFE {
 			$event_end_hour       = date( 'h', $end_time );
 			$event_end_minute     = date( 'i', $end_time );
 			$event_end_meridian   = date( 'a', $end_time );
-			$timezone             = isset( $centralize_array['timezone'] ) ? sanitize_text_field(  $centralize_array['timezone'] ) : '';
-			$timezone_name        = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field(  $centralize_array['timezone_name'] ) : '';
+			$timezone             = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
+			$timezone_name        = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
 
 			// Venue Deatails.
 			$address_1     = isset( $venue_array['address_1'] ) ? $venue_array['address_1'] : '';

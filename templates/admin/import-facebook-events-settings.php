@@ -144,21 +144,28 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 						</td>
 					</tr>
 
-                    <tr>
-                        <th scope="row">
-                            <?php _e('Direct link to Facebook', 'import-facebook-events'); ?> :
-                        </th>
-                        <td>
-                            <?php
-                            $direct_link = isset($facebook_options['direct_link']) ? $facebook_options['direct_link'] : 'no';
-                            ?>
-                            <input type="checkbox" name="facebook[direct_link]" value="yes" <?php if ($direct_link == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
-                            <span class="ife_small">
-                                <?php _e('Check to enable direct event link to Facebook instead of event detail page.', 'import-facebook-events'); ?>
-                            </span>
-                            <?php do_action('ife_render_pro_notice'); ?>
-                        </td>
-                    </tr>
+					<tr>
+						<th scope="row">
+							<?php esc_attr_e( 'Direct link to Facebook', 'import-facebook-events' ); ?> :
+						</th>
+						<td>
+							<?php
+							$direct_link = isset( $facebook_options['direct_link'] ) ? $facebook_options['direct_link'] : 'no';
+							?>
+							<input type="checkbox" name="facebook[direct_link]" value="yes" 
+							<?php
+							if ( $direct_link == 'yes' ) {
+								echo 'checked="checked"';
+							}if ( ! ife_is_pro() ) {
+								echo 'disabled="disabled"'; }
+							?>
+							 />
+							<span class="ife_small">
+								<?php esc_attr_e( 'Check to enable direct event link to Facebook instead of event detail page.', 'import-facebook-events' ); ?>
+							</span>
+							<?php do_action( 'ife_render_pro_notice' ); ?>
+						</td>
+					</tr>
 
 					<tr>
 						<th scope="row">
@@ -209,39 +216,40 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 					</tr>
 
 					<tr>
-                        <th scope="row">
-                            <?php _e('Event Slug', 'import-facebook-events'); ?> :
-                        </th>
-                        <td>
-                            <?php
-							$event_slug = isset($facebook_options['event_slug']) ? $facebook_options['event_slug'] : 'facebook-event';
-							if (!ife_is_pro()) {
+						<th scope="row">
+							<?php esc_attr_e( 'Event Slug', 'import-facebook-events' ); ?> :
+						</th>
+						<td>
+							<?php
+							$event_slug = isset( $facebook_options['event_slug'] ) ? $facebook_options['event_slug'] : 'facebook-event';
+							if ( ! ife_is_pro() ) {
 								echo '<input type="text" name="" value="" disabled="disabled" />';
 							} else {
-                            	?>
-                            	<input type="text" name="facebook[event_slug]" value="<?php if ( $event_slug ) { echo $event_slug; } ?>" />
+								?>
+								<input type="text" name="facebook[event_slug]" value="<?php if ( $event_slug ){ echo esc_attr( $event_slug ); } ?>" />
 								<?php
-							} ?>
-                            <span class="ife_small">
-                                <?php _e('Slug for the event.', 'import-facebook-events'); ?>
-                            </span>
-                            <?php do_action('ife_render_pro_notice'); ?>
-                        </td>
-                    </tr>
+							}
+							?>
+							<span class="ife_small">
+								<?php esc_attr_e( 'Slug for the event.', 'import-facebook-events' ); ?>
+							</span>
+							<?php do_action( 'ife_render_pro_notice' ); ?>
+						</td>
+					</tr>
 
-                    <tr>
+					<tr>
 						<th scope="row">
 							<?php esc_attr_e( 'Event Display Time Format', 'import-facebook-events' ); ?> :
 						</th>
 						<td>
 						<?php
-                        $time_format = isset( $facebook_options['time_format'] ) ? $facebook_options['time_format'] : '12hours';
+						$time_format = isset( $facebook_options['time_format'] ) ? $facebook_options['time_format'] : '12hours';
 						?>
-                        <select name="facebook[time_format]">
-							<option value="12hours" <?php selected('12hours', $time_format); ?>><?php esc_attr_e( '12 Hours', 'import-facebook-events' );  ?></option>
-							<option value="24hours" <?php selected('24hours', $time_format); ?>><?php esc_attr_e( '24 Hours', 'import-facebook-events' ); ?></option>
-							<option value="wordpress_default" <?php selected('wordpress_default', $time_format); ?>><?php esc_attr_e( 'WordPress Default', 'import-facebook-events' ); ?></option>
-                        </select>
+						<select name="facebook[time_format]">
+							<option value="12hours" <?php selected( '12hours', $time_format ); ?>><?php esc_attr_e( '12 Hours', 'import-facebook-events' ); ?></option>
+							<option value="24hours" <?php selected( '24hours', $time_format ); ?>><?php esc_attr_e( '24 Hours', 'import-facebook-events' ); ?></option>
+							<option value="wordpress_default" <?php selected( 'wordpress_default', $time_format ); ?>><?php esc_attr_e( 'WordPress Default', 'import-facebook-events' ); ?></option>
+						</select>
 						<span class="ife_small">
 							<?php esc_attr_e( 'Choose event display time format for front-end.', 'import-facebook-events' ); ?>
 						</span>
@@ -271,7 +279,7 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 			<div class="ife_element">
 				<input type="hidden" name="ife_action" value="ife_save_settings" />
 				<?php wp_nonce_field( 'ife_setting_form_nonce_action', 'ife_setting_form_nonce' ); ?>
-				<input type="submit" class="button-primary xtei_submit_button" style=""  value="<?php esc_attr_e( 'Save Settings', 'import-facebook-events' ); ?>" />
+				<input type="submit" class="button-primary xtei_submit_button" style="" value="<?php esc_attr_e( 'Save Settings', 'import-facebook-events' ); ?>" />
 			</div>
 			</form>
 	</div>

@@ -58,8 +58,8 @@ class Import_Facebook_Events_Admin {
 	public function add_menu_pages() {
 
 		add_menu_page( __( 'Import Facebook Events', 'import-facebook-events' ), __( 'Facebook Import', 'import-facebook-events' ), 'manage_options', 'facebook_import', array( $this, 'admin_page' ), 'dashicons-calendar-alt', '30' );
-		if( !ife_is_pro() ){
-			add_submenu_page( 'facebook_import', __( 'Upgrade to Pro', 'import-facebook-events' ),  '<li class="ife_upgrade_pro current"> ' . __( 'Upgrade to Pro', 'import-facebook-events' ) . '</li>', 'manage_options', esc_url( "https://xylusthemes.com/plugins/import-facebook-events/") );
+		if ( ! ife_is_pro() ) {
+			add_submenu_page( 'facebook_import', __( 'Upgrade to Pro', 'import-facebook-events' ), '<li class="ife_upgrade_pro current"> ' . __( 'Upgrade to Pro', 'import-facebook-events' ) . '</li>', 'manage_options', esc_url( 'https://xylusthemes.com/plugins/import-facebook-events/' ) );
 		}
 	}
 
@@ -138,8 +138,8 @@ class Import_Facebook_Events_Admin {
 							</a>
 
 							<a href="<?php echo esc_url( add_query_arg( 'tab', 'ics', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'ics' === $tab ) ? 'nav-tab-active' : '' ); ?>">
-		                        <?php esc_html_e( 'Facebook .ics Import', 'import-facebook-events' ); ?>
-		                    </a>
+								<?php esc_html_e( 'Facebook .ics Import', 'import-facebook-events' ); ?>
+							</a>
 
 							<a href="<?php echo esc_url( add_query_arg( 'tab', 'scheduled', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'scheduled' === $tab ) ? 'nav-tab-active' : '' ); ?>">
 								<?php esc_html_e( 'Scheduled Imports', 'import-facebook-events' ); ?>
@@ -191,7 +191,7 @@ class Import_Facebook_Events_Admin {
 
 								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-support.php';
 
-							}elseif ( 'shortcodes' === $tab ) {
+							} elseif ( 'shortcodes' === $tab ) {
 								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-shortcode.php';
 							}
 							?>
