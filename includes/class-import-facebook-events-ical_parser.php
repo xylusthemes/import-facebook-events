@@ -572,7 +572,7 @@ class Import_Facebook_Events_Ical_Parser {
 	public function get_event_image_and_location( $import_into, $facebook_event_id = 0 ){
 		global $ife_events;
 		$event_api_data    = array();
-		$event_id          = array( 'ID' => $facebook_event_id );
+		$event_id          = $facebook_event_id;
 		$post_type         = $ife_events->{$import_into}->get_event_posttype();
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $post_type, $event_id );
 		$has_event_image   = get_post_meta( $is_exitsing_event, '_thumbnail_id', true );
@@ -580,7 +580,7 @@ class Import_Facebook_Events_Ical_Parser {
 		if ( empty( $has_event_image ) ){
 			$fetch_image = apply_filters( 'ife_ical_fetch_event_image', true );
 			if( $fetch_image ) {
-				$facebook_event = $ife_events->facebook->get_facebook_event_by_event_id( $event_id['ID'] );
+				$facebook_event = $ife_events->facebook->get_facebook_event_by_event_id( $event_id );
 				if ( ! empty( $facebook_event->cover )  ) {
 					$event_api_data['image']              = $facebook_event->cover->source;
 					$event_api_data['location']           = $facebook_event->place;

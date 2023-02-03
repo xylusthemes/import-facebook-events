@@ -480,19 +480,19 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:644
+#: includes/class-import-facebook-events-common.php:633
 msgid "Your current \"Import Facebok Event Pro\" add-on is not competible with Free plugin. Please Upgrade Pro latest to work event importing Flawlessly."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:661
+#: includes/class-import-facebook-events-common.php:650
 msgid "The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong> <a style=\"text-decoration: none;\" href=\""
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:688
+#: includes/class-import-facebook-events-common.php:677
 msgid "Available in Pro version."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:688
+#: includes/class-import-facebook-events-common.php:677
 msgid "Upgrade to PRO"
 msgstr ""
 
