@@ -228,6 +228,26 @@ class Import_Facebook_Events_Common {
 	}
 
 	/**
+	 * Get event source link.
+	 * 
+	 * @since    1.7.1
+	 * @param array  $source_data Schedule Data.
+	 * @param string $source_title Schedule title.
+	 */
+	public function get_source_data( $source_data = array(), $source_title = '' ){
+		if( $source_data['import_by'] == 'ical_url' ){
+			$source = '<a href="' . $source_data['ical_url'] . '" target="_blank" >ICal URL</a>';
+		}elseif( $source_data['import_by'] == 'facebook_organization' ){
+			$source = '<a href="https://facebook.com/' . $source_data['page_username'] . '" target="_blank" >' . $source_title . '</a>';
+		}elseif( $source_data['import_by'] == 'facebook_group' ){
+			$source = '<a href="https://facebook.com/groups/' . $source_data['facebook_group_id'] . '" target="_blank" >' . $source_title . '</a>';
+		}else{
+			$source = '<a href="#">No Data Found</a>';
+		}
+		return $source;
+	}
+
+	/**
 	 * Setup Featured image to events
 	 *
 	 * @since    1.0.0
@@ -584,32 +604,21 @@ class Import_Facebook_Events_Common {
 	 * @return boolean|int Evnet ID or false.
 	 */
 	public function get_event_by_event_id( $post_type, $event_id ) {
-		$event_args = array(
-			'post_type'        => $post_type,
-			'post_status'      => array( 'pending', 'draft', 'publish', 'private' ),
-			'posts_per_page'   => 1,
-			'suppress_filters' => true,
-			'meta_key'         => 'ife_facebook_event_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key --Ignore.
-			'meta_value'       => $event_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value --Ignore.
+		global $wpdb;
+		
+		$get_post_id = $wpdb->get_col(
+			$wpdb->prepare(
+				'SELECT ' . $wpdb->prefix . 'posts.ID FROM ' . $wpdb->prefix . 'posts, ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'posts.post_type = %s AND ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.ID AND ' . $wpdb->prefix . 'posts.post_status != %s AND (' . $wpdb->prefix . 'postmeta.meta_key = %s AND ' . $wpdb->prefix . 'postmeta.meta_value = %s ) LIMIT 1',
+				$post_type,
+				'trash',
+				'ife_facebook_event_id',
+				$event_id
+			)
 		);
-		if ( 'tribe_events' === $post_type && class_exists( 'Tribe__Events__Query' ) ) {
-			if( method_exists( "Tribe__Events__Query", "pre_get_posts" ) ){
-				remove_action( 'pre_get_posts', array( 'Tribe__Events__Query', 'pre_get_posts' ), 50 );
-			}
+
+		if ( !empty( $get_post_id[0] ) ) {
+			return $get_post_id[0];
 		}
-		$events = new WP_Query( $event_args );
-		if ( 'tribe_events' === $post_type && class_exists( 'Tribe__Events__Query' ) ) {
-			if( method_exists( "Tribe__Events__Query", "pre_get_posts" ) ){
-				add_action( 'pre_get_posts', array( 'Tribe__Events__Query', 'pre_get_posts' ), 50 );
-			}
-		}
-		if ( $events->have_posts() ) {
-			while ( $events->have_posts() ) {
-				$events->the_post();
-				return get_the_ID();
-			}
-		}
-		wp_reset_postdata();
 		return false;
 	}
 
@@ -658,7 +667,7 @@ class Import_Facebook_Events_Common {
 		if ( ! empty( $ife_user_token_options ) ) {
 			$authorize_status = isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
 			if ( 0 === $authorize_status ) {
-				$ife_warnings[] = __( 'The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong>Settings</strong>.', 'import-facebook-events' );
+				$ife_warnings[] = __( 'The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong> <a style="text-decoration: none;" href="'. admin_url( 'admin.php?page=facebook_import&tab=settings' ) .'" >Settings</a> </strong>.', 'import-facebook-events' );
 			}
 		}
 	}
