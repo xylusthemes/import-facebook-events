@@ -647,7 +647,7 @@ class Import_Facebook_Events_Common {
 		if ( ! empty( $ife_user_token_options ) ) {
 			$authorize_status = isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
 			if ( 0 === $authorize_status ) {
-				$ife_warnings[] = __( 'The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong>Settings</strong>.', 'import-facebook-events' );
+				$ife_warnings[] = __( 'The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong> <a style="text-decoration: none;" href="'. admin_url( 'admin.php?page=facebook_import&tab=settings' ) .'" >Settings</a> </strong>.', 'import-facebook-events' );
 			}
 		}
 	}

@@ -291,7 +291,7 @@ class Import_Facebook_Events_Ical_Parser {
 		if( !empty( $ical_wp_images ) && !empty( $ical_wp_images[1]) ){
 			$event_image =  $ical_wp_images[1];
 		}
-		$timezone_name = $calendar_timezone;
+		$timezone_name = !empty( $timezone ) ? $timezone : $calendar_timezone;
 
 		// Only for facebook ical imports.
 		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
