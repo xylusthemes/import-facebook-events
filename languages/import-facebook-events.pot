@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-02-03T10:48:34+00:00\n"
+"POT-Creation-Date: 2023-02-03T12:52:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: import-facebook-events\n"
@@ -128,7 +128,7 @@ msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:62
 #: includes/class-import-facebook-events-admin.php:63
-#: templates/admin/facebook-import-events.php:30
+#: templates/admin/facebook-import-events.php:23
 msgid "Facebook Import"
 msgstr ""
 
@@ -456,43 +456,43 @@ msgstr ""
 msgid "Once a Month"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:503
+#: includes/class-import-facebook-events-common.php:536
 msgid "One-time Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:504
+#: includes/class-import-facebook-events-common.php:537
 msgid "Scheduled Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:563
+#: includes/class-import-facebook-events-common.php:596
 msgid "Status"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:568
+#: includes/class-import-facebook-events-common.php:601
 msgid "Published"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:571
+#: includes/class-import-facebook-events-common.php:604
 msgid "Pending"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:574
+#: includes/class-import-facebook-events-common.php:607
 msgid "Draft"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:653
+#: includes/class-import-facebook-events-common.php:686
 msgid "Your current \"Import Facebok Event Pro\" add-on is not competible with Free plugin. Please Upgrade Pro latest to work event importing Flawlessly."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:670
+#: includes/class-import-facebook-events-common.php:703
 msgid "The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong> <a style=\"text-decoration: none;\" href=\""
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:697
+#: includes/class-import-facebook-events-common.php:730
 msgid "Available in Pro version."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:697
+#: includes/class-import-facebook-events-common.php:730
 msgid "Upgrade to PRO"
 msgstr ""
 
@@ -989,7 +989,7 @@ msgstr ""
 msgid "Select Event source. %1$s, %2$s ( import events belonging to a Facebook organization or a Facebook page )."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:54
+#: templates/admin/facebook-import-events.php:46
 msgid "1. by Facebook Event ID"
 msgstr ""
 
@@ -1002,8 +1002,7 @@ msgstr ""
 msgid "%1$s (Import events from Facebook group)"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:64
-
+#: templates/admin/facebook-import-events.php:56
 msgid "3. Facebook Group"
 msgstr ""
 
