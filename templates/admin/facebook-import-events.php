@@ -19,13 +19,6 @@ if ( ! ife_is_pro() ) {
 ?>
 <div class="ife_container">
 	<div class="ife_row">
-		<div class="widefat ife_settings_notice">
-			<?php esc_attr_e( 'Currently, Facebook events are not being imported using the "My Events" option due to the changes in the Facebook API. We are still checking and working on it. meanwhile, you can import Facebook events using the Event iCal URL.', 'import-facebook-events' ); ?></br>
-			<?php 
-			if ( ! ife_is_pro() ) {
-				esc_attr_e( 'You can also schedule auto import on regular basis in Pro version.', 'import-facebook-events' );
-			} ?>
-		</div>
 		<div class="ife-column ife_well">
 			<h3><?php esc_attr_e( 'Facebook Import', 'import-facebook-events' ); ?></h3>
 			<form method="post" id="ife_facebook_form">
@@ -41,7 +34,6 @@ if ( ! ife_is_pro() ) {
 									<option value="facebook_organization"><?php esc_attr_e( 'Facebook Page', 'import-facebook-events' ); ?></option>
 									<?php if ( $ife_events->common->has_authorized_user_token() ) { ?>
 										<option value="facebook_group"><?php esc_attr_e( 'Facebook Group', 'import-facebook-events' ); ?></option>
-										<option value="my_events" <?php echo esc_attr( $disabled ); ?>><?php esc_attr_e( 'My Events', 'import-facebook-events' ); ?></option>
 									<?php } if ( ! empty( $user_fb_pages ) ) { ?>
 										<option value="my_pages"><?php esc_attr_e( 'My Pages', 'import-facebook-events' ); ?></option>
 									<?php } ?>
@@ -60,9 +52,8 @@ if ( ! ife_is_pro() ) {
 									if ( $ife_events->common->has_authorized_user_token() ) {
 										printf(
 											// translators: please ignore %1$s and  %2$s.
-											esc_attr__( '%1$s (Import events from Facebook group), %2$s (Import events which you have marked interested or going on Facebook, this also include your events on Facebook)', 'import-facebook-events' ),
+											esc_attr__( '%1$s (Import events from Facebook group)', 'import-facebook-events' ),
 											'<strong>' . esc_attr__( '3. Facebook Group', 'import-facebook-events' ) . '</strong>',
-											'<strong>' . esc_attr__( '4. My Events', 'import-facebook-events' ) . '</strong>'
 										);
 									}
 									?>

@@ -200,6 +200,13 @@ class Import_Facebook_Events_Event_Organizer {
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
 			update_post_meta( $inserted_event_id, 'ife_event_timezone_name', $timezone_name );
+			$is_all_day    = !empty( $centralize_array['is_all_day'] ) ? $centralize_array['is_all_day'] : 0;
+			$args = array(
+				'all_day' => $is_all_day,
+				'schedule' => 'once',
+				'frequency' => 1
+			);
+			update_post_meta( $inserted_event_id, '_eventorganiser_event_schedule', $args );
 
 			// Custom table Details.
 			$event_array = array(
@@ -241,8 +248,8 @@ class Import_Facebook_Events_Event_Organizer {
 				$city         = isset( $venue['city'] ) ? $venue['city'] : '';
 				$state        = isset( $venue['state'] ) ? $venue['state'] : '';
 				$zip          = isset( $venue['zip'] ) ? $venue['zip'] : '';
-				$lat          = isset( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
-				$lon          = isset( $venue['long'] ) ? round( $venue['long'], 6 ) : 0.000000;
+				$lat          = !empty( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
+				$lon          = !empty( $venue['long'] ) ? round( $venue['long'], 6 ) : 0.000000;
 				$country      = isset( $venue['country'] ) ? $venue['country'] : '';
 
 				$loc_term_meta   = array();

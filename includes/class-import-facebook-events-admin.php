@@ -42,6 +42,7 @@ class Import_Facebook_Events_Admin {
 		add_action( 'init', array( $this, 'register_scheduled_import_cpt' ) );
 		add_action( 'init', array( $this, 'register_history_cpt' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
+		add_filter( 'submenu_file', array( $this, 'get_selected_tab_submenu_ife' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_notices', array( $this, 'display_notices' ) );
@@ -56,8 +57,19 @@ class Import_Facebook_Events_Admin {
 	 * @return void
 	 */
 	public function add_menu_pages() {
+		global $submenu;
 
 		add_menu_page( __( 'Import Facebook Events', 'import-facebook-events' ), __( 'Facebook Import', 'import-facebook-events' ), 'manage_options', 'facebook_import', array( $this, 'admin_page' ), 'dashicons-calendar-alt', '30' );
+		$submenu['facebook_import'][] = array( __( 'Facebook Import', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=facebook' ) );
+		$submenu['facebook_import'][] = array( __( 'Facebook .ics Import', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=ics' ) );
+		$submenu['facebook_import'][] = array( __( 'Schedule Import', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=scheduled' ) );
+		$submenu['facebook_import'][] = array( __( 'Import History', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=history' ) );
+		$submenu['facebook_import'][] = array( __( 'Settings', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=settings' ));
+		$submenu['facebook_import'][] = array( __( 'Shortcodes', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=shortcodes' ));
+		$submenu['facebook_import'][] = array( __( 'Support & help', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=support' ));
+		if( !ife_is_pro() ){
+			$submenu['facebook_import'][] = array( '<li class="ife_upgrade_pro current">' . __( 'Upgrade to Pro', 'import-facebook-events' ) . '</li>', 'manage_options', esc_url( "https://xylusthemes.com/plugins/import-facebook-events/") );
+		}
 	}
 
 	/**
@@ -419,6 +431,23 @@ class Import_Facebook_Events_Admin {
 			}
 		}
 		return $plugin_data;
+	}
+
+	/**
+	 * Tab Submenu got selected.
+	 *
+	 * @since 1.7.1
+	 * @return void
+	 */
+	public function get_selected_tab_submenu_ife( $submenu_file ){
+		if( !empty( $_GET['page'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'facebook_import' ){
+			$allowed_tabs = array( 'facebook', 'ics', 'scheduled', 'history', 'settings', 'shortcodes', 'support' );
+			$tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'facebook';
+			if( in_array( $tab, $allowed_tabs ) ){
+				$submenu_file = admin_url( 'admin.php?page=facebook_import&tab='.$tab );
+			}
+		}
+		return $submenu_file;
 	}
 
 	/**
