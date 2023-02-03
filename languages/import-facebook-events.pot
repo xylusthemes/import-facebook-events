@@ -962,42 +962,30 @@ msgstr ""
 msgid "Get Premium"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:23
-msgid "Currently, Facebook events are not being imported using the \"My Events\" option due to the changes in the Facebook API. We are still checking and working on it. meanwhile, you can import Facebook events using the Event iCal URL."
-msgstr ""
-
-#: templates/admin/facebook-import-events.php:26
-msgid "You can also schedule auto import on regular basis in Pro version."
-msgstr ""
-
-#: templates/admin/facebook-import-events.php:36
+#: templates/admin/facebook-import-events.php:29
 #: templates/admin/ical-import-events.php:20
 msgid "Import by"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:40
+#: templates/admin/facebook-import-events.php:33
 msgid "Facebook Event ID"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:41
+#: templates/admin/facebook-import-events.php:34
 msgid "Facebook Page"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:43
+#: templates/admin/facebook-import-events.php:36
 msgid "Facebook Group"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:44
-msgid "My Events"
-msgstr ""
-
-#: templates/admin/facebook-import-events.php:46
-#: templates/admin/facebook-import-events.php:113
+#: templates/admin/facebook-import-events.php:38
+#: templates/admin/facebook-import-events.php:104
 msgid "My Pages"
 msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
-#: templates/admin/facebook-import-events.php:53
+#: templates/admin/facebook-import-events.php:45
 msgid "Select Event source. %1$s, %2$s ( import events belonging to a Facebook organization or a Facebook page )."
 msgstr ""
 
@@ -1005,73 +993,70 @@ msgstr ""
 msgid "1. by Facebook Event ID"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:55
+#: templates/admin/facebook-import-events.php:47
 msgid "2. Facebook Organization or Page"
 msgstr ""
 
 #. translators: please ignore %1$s and  %2$s.
-#: templates/admin/facebook-import-events.php:63
-msgid "%1$s (Import events from Facebook group), %2$s (Import events which you have marked interested or going on Facebook, this also include your events on Facebook)"
+#: templates/admin/facebook-import-events.php:55
+msgid "%1$s (Import events from Facebook group)"
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:64
+
 msgid "3. Facebook Group"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:65
-msgid "4. My Events"
-msgstr ""
-
-#: templates/admin/facebook-import-events.php:75
+#: templates/admin/facebook-import-events.php:66
 msgid "Facebook Event IDs"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:80
+#: templates/admin/facebook-import-events.php:71
 msgid "One event ID per line, ( Eg. Event ID for https://www.facebook.com/events/123456789/ is \"123456789\" )."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:87
+#: templates/admin/facebook-import-events.php:78
 msgid "Page username / ID to fetch events from"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:92
+#: templates/admin/facebook-import-events.php:83
 msgid " Eg. username for https://www.facebook.com/xylusinfo/ is \"xylusinfo\"."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:100
+#: templates/admin/facebook-import-events.php:91
 msgid "Facebook Group Numeric ID to fetch events from"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:105
+#: templates/admin/facebook-import-events.php:96
 msgid " Eg.Input value for group https://www.facebook.com/groups/123456789123456/ is \"123456789123456\""
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:118
+#: templates/admin/facebook-import-events.php:109
 msgid "Select Page"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:127
+#: templates/admin/facebook-import-events.php:118
 msgid "Select Page for import events from it."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:135
+#: templates/admin/facebook-import-events.php:126
 #: templates/admin/ical-import-events.php:70
 msgid "Import type"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:148
+#: templates/admin/facebook-import-events.php:139
 msgid "Author"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:151
+#: templates/admin/facebook-import-events.php:142
 msgid "Select Author"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:153
+#: templates/admin/facebook-import-events.php:144
 msgid "Select event author for imported events. Default event author is current loggedin user."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:164
+#: templates/admin/facebook-import-events.php:155
 #: templates/admin/ical-import-events.php:89
 msgid "Import Event"
 msgstr ""
