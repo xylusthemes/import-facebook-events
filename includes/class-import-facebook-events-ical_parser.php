@@ -8,6 +8,9 @@
  * @package    Import_Facebook_Events
  * @subpackage Import_Facebook_Events/includes
  */
+
+use Kigkonsult\Icalcreator\Vcalendar;
+
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -73,7 +76,7 @@ class Import_Facebook_Events_Ical_Parser {
 		$start_date  = strtotime( $start_date );
 		$end_date  = strtotime( $end_date );
 		if( ( $end_date - $start_date ) < 0 ){
-			$ife_errors[] = esc_html__( 'Please select end date bigger than start date.', 'wp-event-aggregator' );
+			$ife_errors[] = esc_html__( 'Please select end date bigger than start date.', 'import-facebook-events' );
 			return false;
 		}
 
@@ -81,48 +84,29 @@ class Import_Facebook_Events_Ical_Parser {
 		$start_month = date( 'm', $start_date );
 		$start_year  = date( 'Y', $start_date );
 		$start_day   = date( 'd', $start_date );
-		$end_month = date( 'm', $end_date );
-		$end_year  = date( 'Y', $end_date );
-		$end_day   = date( 'd', $end_date );
+		$end_month   = date( 'm', $end_date );
+		$end_year    = date( 'Y', $end_date );
+		$end_day     = date( 'd', $end_date );
 
 		// initiate vcalendar
 		//$config = array( 'unique_id' => 'Import_Facebook_Events_Ical_Parser' . microtime( true ) ); 
 		//$calendar = new vcalendar( $config );
-		$calendar = new vcalendar();
+		$calendar = new Vcalendar();
 		if ( ! $calendar ) {
 			return false;
 		}
 
+		// Parse ics Content.
 		$calendar->parse( $ics_content );
 
-		$calendar_name = $calendar->getProperty( 'X-WR-CALNAME' );		
-		$timezone = $calendar->getProperty( 'X-WR-TIMEZONE' );
+		$calendar_name = $calendar->getXprop( Vcalendar::X_WR_CALNAME );
+		$timezone = $calendar->getXprop( Vcalendar::X_WR_TIMEZONE );
 		if ( ! empty( $timezone[1] ) ) {
 			$this->timezone = $timezone[1];
 		}
 
 		$all_events = $calendar->selectComponents( $start_year, $start_month, $start_day, $end_year, $end_month, $end_day, 'vevent' );
 		$centralize_events = array();
-		/*
-		iCalCreator Example for parse
-
-		$events_arr = $vcalendar->selectComponents( 2007, 11, 1, 2007, 11, 30, "vevent" ); 
-		foreach( $events_arr as $year => $year_arr ) { 
-			foreach( $year_arr as $month => $month_arr ) { 
-				foreach( $month_arr as $day => $day_arr ) { 
-					foreach( $day_arr as $event ) { 
-						$currddate = $event->getProperty( "x-current-dtstart" ); 
-						// if member of a recurrence set, returns
-       					//array(" x-current-dtstart",
-       					// <(string) date("Y-m-d [H:i:s][timezone/UTC offset]")>) 
-       					$startDate = $event->getProperty( "dtstart" ); 
-       					$summary = $event->getProperty( "summary" );
-       					$description = $event->getProperty( "description" );
-       				}
-       			}
-       		}
-       	}
-       	*/
 
        	// Events per Year
 		foreach ( $all_events as $year => $year_arr ) {
@@ -187,7 +171,7 @@ class Import_Facebook_Events_Ical_Parser {
 	 * Format events arguments as per centralize event format
 	 *
 	 * @since    1.0.0
-	 * @param 	 array $event iCal vevent Object.
+	 * @param 	 Object $event iCal vevent Object.
 	 * @return 	 array
 	 */
 	public function generate_centralize_event_array( $event, $event_data = array()  ) {
@@ -195,52 +179,40 @@ class Import_Facebook_Events_Ical_Parser {
 			return false;
 		}
 		global $ife_events;
-		
-		$is_recurrence_event = $event->getProperty( 'X-RECURRENCE' );
-		$post_title = str_replace('\n', ' ', $event->getProperty( 'SUMMARY' ) );
-		$post_description = str_replace('\n', '<br/>', $event->getProperty( 'DESCRIPTION' ) );
-		$uid = $this->generate_uid_for_ical_event( $event );
-		$url = $event->getProperty( 'URL' );
-		$uid_old = $this->generate_uid_for_ical_event_old_support( $event );
-		$is_all_day = false;
-		
-		$system_timezone = date_default_timezone_get();
-		$wordpress_timezone = $this->wordpress_timezone();
-		$calendar_timezone = $this->timezone;
 
-		$start = $event->getProperty( 'dtstart', 1, true );
-		$end   = $event->getProperty( 'dtend',   1, true );
-				
+		$post_title = str_replace('\n', ' ', $event->getSummary() );
+		$post_description = str_replace('\n', '<br/>', $event->getDescription() );
+		$uid = $this->generate_uid_for_ical_event( $event );
+		$uid_old = $this->generate_uid_for_ical_event_old_support( $event );
+		$url = $event->getUrl();
+		$is_all_day = false;
+
+		$system_timezone    = date_default_timezone_get();
+		$wordpress_timezone = $this->wordpress_timezone();
+		$calendar_timezone  = $this->timezone;
+
+		$start = $event->getDtstart();
+		$end   = $event->getDtend();
 		if ( empty( $end ) ) {
 			$end = $start;
 		}
 
-		if( ! isset( $start['value']['hour'] ) ){
+		// Check if all day event.
+		if ( "000000" === $start->format('His') && "000000" === $end->format('His') ) {
 			$is_all_day = true;
 		}
 		// Also check the proprietary MS all-day field.
-		$ms_allday = $event->getProperty( 'X-MICROSOFT-CDO-ALLDAYEVENT' );
+		$ms_allday = $event->getXprop( 'X-MICROSOFT-CDO-ALLDAYEVENT');
 		if ( ! empty( $ms_allday ) && $ms_allday[1] == 'TRUE' ) {
 			$is_all_day = true;
 		}
 
 		// Setup timezone for event.
-		$timezone = null;
+		$timezone = $start->getTimezone()->getName();
         $force_timezone = false;
-		if ( isset( $start['value']['tz'] ) && 'Z' == $start['value']['tz'] ) {
-			$timezone = 'UTC';
-            if( !$is_all_day && $this->timezone != '' ){
-                $force_timezone = $this->timezone;
-                $timezone = $this->timezone;
-            }
-		} elseif ( isset( $start['params']['TZID'] ) ) {
-			// if there's a TZID set
-			$timezone    = $start['params']['TZID'];
-			$tzid_values = explode( ':', $timezone );
-			if ( 2 === count( $tzid_values ) &&	15 === strlen ( $tzid_values[1] ) ) {
-				$timezone    = $tzid_values[0];
-			}
-
+		if ( 'UTC' === $timezone && ! $is_all_day && $this->timezone != '' ){
+			$force_timezone = $this->timezone;
+			$timezone = $this->timezone;
 		} elseif ( ! empty( $this->timezone ) ) {
 			// if there is a global timezone in the iCal file, use that
 			$timezone = $this->timezone;
@@ -256,56 +228,16 @@ class Import_Facebook_Events_Ical_Parser {
 			$timezone = $system_timezone;
 		}*/
 
-		$start = $start['value'];
-		$end = $end['value'];
-		
-		if ( empty( $start['hour'] ) ) {
-			$start['hour'] = '00';
-		}
-
-		if ( empty( $start['min'] ) ) {
-			$start['min'] = '00';
-		}
-
-		if ( empty( $start['sec'] ) ) {
-			$start['sec'] = '00';
-		}
-
-		if ( empty( $end['hour'] ) ) {
-			$end['hour'] = '00';
-		}
-
-		if ( empty( $end['min'] ) ) {
-			$end['min'] = '00';
-		}
-
-		if ( empty( $end['sec'] ) ) {
-			$end['sec'] = '00';
-		}
-
-		if( $is_all_day == true ){
-			$start['hour'] = 00;
-			$start['min']  = 00;
-			$start['sec']  = 00;
-			$end['hour']   = 23;
-			$end['min']    = 59;
-			$end['sec']    = 59;
-			$end['day']  = $end['day'] - 1;
-		}
-
-		$start = sprintf( "%'.04d%'.02d%'.02dT%'.02d%'.02d%'.02d", $start['year'], $start['month'], $start['day'],$start['hour'],$start['min'],$start['sec'] );
-		$end = sprintf( "%'.04d%'.02d%'.02dT%'.02d%'.02d%'.02d", $end['year'], $end['month'], $end['day'],$end['hour'],$end['min'],$end['sec'] );
-
 		$start_time = strtotime( $this->convert_datetime_to_timezone_wise_datetime( $start, $force_timezone ) );
 		$end_time = strtotime( $this->convert_datetime_to_timezone_wise_datetime( $end, $force_timezone ) );
 		/*$start_time = strtotime( $start ); 
 		$end_time = strtotime( $end );*/
 
-		$x_start_str  = $event->getProperty( 'X-CURRENT-DTSTART' );
+		$x_start_str  = $event->getXprop( Vcalendar::X_CURRENT_DTSTART );
 		$x_start_time = strtotime( $this->convert_datetime_to_timezone_wise_datetime( end( $x_start_str ), $force_timezone ) );
 		//$x_start_time = strtotime( end( $x_start_str ) );
 		//$x_start_str  = $this->convert_date_to_according_timezone( end( $x_start_str ), $system_timezone, $timezone );
-		$x_end_str  = $event->getProperty( 'X-CURRENT-DTEND' );
+		$x_end_str = $event->getXprop( Vcalendar::X_CURRENT_DTEND );
 		$x_end_str = end( $x_end_str );
 		if( $x_end_str == '' ){
 			$x_end_str = end( $x_start_str );
@@ -340,9 +272,13 @@ class Import_Facebook_Events_Ical_Parser {
 			}		
 		}
 
-		$event_image       = '';
-		$event_venue       = null;
-		$ical_attachment = $event->getProperty( 'ATTACH', false, true );
+		if( $is_all_day === true ){
+			$end_time = $end_time-1;
+		}
+
+		$event_image     = '';
+		$event_venue     = null;
+		$ical_attachment = $event->getAttach( true, true );
 		if( isset($ical_attachment['params']) && isset($ical_attachment['params']['FMTTYPE']) ) {
 			$attachment_type = $ical_attachment['params']['FMTTYPE'];
 			$image_types = array('image/jpeg', 'image/gif', 'image/png', 'image/jpg');
@@ -351,30 +287,37 @@ class Import_Facebook_Events_Ical_Parser {
 			}
 		}
 
-		$ical_wp_images = $event->getProperty('X-WP-IMAGES-URL');
+		$ical_wp_images = $event->getXprop('X-WP-IMAGES-URL');
 		if( !empty( $ical_wp_images ) && !empty( $ical_wp_images[1]) ){
 			$event_image =  $ical_wp_images[1];
 		}
+		$timezone_name = !empty( $timezone ) ? $timezone : $calendar_timezone;
 
 		// Only for facebook ical imports.
-		$check_facebook = explode( '/', $url);
-		if( $check_facebook[2] == 'www.facebook.com' ){
-			$event_api_data = $this->get_event_image_and_location( $event_data['import_into'], $uid );
+		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
+		if( !empty( $ife_user_token_options ) ){
+			$authorize_status =	isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
+			if( 1 == $authorize_status ){
+				$check_facebook = explode( '/', $url);
+				if( $check_facebook[2] == 'www.facebook.com' ){
+					$event_api_data = $this->get_event_image_and_location( $event_data['import_into'], $uid );
 
-			if( !empty( $event_api_data ) ){
-				$event_image   = $event_api_data['image'];
-				$event_venue   = $event_api_data['location'];
-				$start_time    = $event_api_data['start_time'];
-				$end_time      = $event_api_data['end_time'];
-				$timezone      = $event_api_data['ical_timezone'];
-				$timezone_name = $event_api_data['ical_timezone_name'];
-			}
+					if( !empty( $event_api_data ) ){
+						$event_image   = $event_api_data['image'];
+						$event_venue   = $event_api_data['location'];
+						$start_time    = $event_api_data['start_time'];
+						$end_time      = $event_api_data['end_time'];
+						$timezone      = $event_api_data['ical_timezone'];
+						$timezone_name = $event_api_data['ical_timezone_name'];
+					}
 
-			if( empty( $event_api_data['start_time'] ) ){
-				$start_time = strtotime( $this->convert_fb_ical_timezone( $start, $event_api_data['ical_timezone_name'] ) );
-			}
-			if( empty( $event_api_data['end_time'] ) ){
-				$end_time   = strtotime( $this->convert_fb_ical_timezone( $end, $event_api_data['ical_timezone_name'] ) );
+					if( isset( $event_api_data['ical_timezone_name'] ) && empty( $event_api_data['start_time'] ) ){
+						$start_time = strtotime( $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
+					}
+					if( isset( $event_api_data['ical_timezone_name'] ) &&  empty( $event_api_data['end_time'] ) ){
+						$end_time   = strtotime( $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
+					}
+				}
 			}
 		}
 
@@ -402,7 +345,10 @@ class Import_Facebook_Events_Ical_Parser {
 		$oraganizer_data = null;
 		$event_location  = $this->get_location( $event, $event_venue );
 
-		$organizer = $event->getProperty( 'ORGANIZER' );
+
+		$organizer = $event->getOrganizer( true );
+		$organizer_params = isset($organizer['params']) ? $organizer['params'] : array();
+		$organizer = isset($organizer['value']) ? $organizer['value'] : '';
 		if ( !empty( $organizer ) ) {
 			$params = wp_parse_args( str_replace( ';', '&', $organizer ) );
 			foreach ( $params as $k => $param ) {
@@ -414,6 +360,17 @@ class Import_Facebook_Events_Ical_Parser {
 				} else {
 					if ( ! empty( $param ) ) {
 						$oraganizer_data[ $k ] = $param;
+					} else {
+						// Check if only email is there.
+						$oraganizer = explode( 'MAILTO:', $k);
+						if(isset($oraganizer[1]) && !empty($oraganizer[1])){
+							$oraganizer_data['ID'] = strtolower( str_replace( ' ','_', trim( preg_replace( '/^"(.*)"$/', '\1', $oraganizer[1] ) ) ) );
+							$oraganizer_data['name'] = preg_replace( '/^"(.*)"$/', '\1', $oraganizer[1] );
+							$oraganizer_data['email'] = preg_replace( '/^"(.*)"$/', '\1', trim( $oraganizer[1]) );
+							if(!empty($organizer_params['CN'])){
+								$oraganizer_data['name'] = $organizer_params['CN'];
+							}
+						}
 					}
 				}
 			}
@@ -451,7 +408,10 @@ class Import_Facebook_Events_Ical_Parser {
 				'image_url'    => '',
 			);	
 		} else {
-			$location = str_replace('\n', ' ', $event->getProperty( 'LOCATION' ) );
+			$geo       = $event->getGeo();
+			$latitude  = isset( $geo['latitude'] ) ? (float)$geo['latitude'] : '';	
+			$longitude = isset( $geo['longitude'] ) ? (float)$geo['longitude'] : '';
+			$location  = str_replace('\n', ' ', $event->getLocation() );
 			if ( empty( $location ) ) {
 				return null;
 			}
@@ -486,15 +446,22 @@ class Import_Facebook_Events_Ical_Parser {
 	 */
 	public function generate_uid_for_ical_event( $ical_event ) {
 
-		$recurrence_id = $ical_event->getProperty( 'RECURRENCE-ID' );
+		$recurrence_id = $ical_event->getRecurrenceid();
+		if ( is_a( $recurrence_id, 'DateTime' ) ) {
+			$recurrence_id = $recurrence_id->format('Y-m-d');
+		}
 		if ( is_array( $recurrence_id) ) {
 			$recurrence_id = implode('-', $recurrence_id);
 		}
-		if ( false === $recurrence_id && false !== $ical_event->getProperty( 'X-RECURRENCE' ) ) {
-			$current_dt_start = $ical_event->getProperty( 'X-CURRENT-DTSTART' );
-			$recurrence_id    = isset( $current_dt_start[1] ) ? $current_dt_start[1] : false;
+		if ( false === $recurrence_id && false !== $ical_event->getXprop( Vcalendar::X_RECURRENCE ) ) {
+			$current_dt_start = $ical_event->getXprop( Vcalendar::X_CURRENT_DTSTART );
+			if ( is_a( $current_dt_start, 'X-CURRENT-DTSTART' ) ) {
+					$recurrence_id = $recurrence_id->format('Y-m-d');
+			}elseif( !empty( $current_dt_start[1] ) ){
+				$recurrence_id    = isset( $current_dt_start[1] ) ? $current_dt_start[1] : false;
+			}
 		}
-		$event_id = $ical_event->getProperty( 'UID' ) . $recurrence_id;
+		$event_id = $ical_event->getUid() . $recurrence_id;
 		$event_id = explode( '@facebook', $event_id );
 		$ical_event_id = str_replace('e', '', $event_id[0]);
 		return $ical_event_id;
@@ -509,12 +476,22 @@ class Import_Facebook_Events_Ical_Parser {
 	 */
 	public function generate_uid_for_ical_event_old_support( $ical_event ) {
 
-		$recurrence_id = $ical_event->getProperty( 'RECURRENCE-ID' );
-		if ( false === $recurrence_id && false !== $ical_event->getProperty( 'X-RECURRENCE' ) ) {
-			$current_dt_start = $ical_event->getProperty( 'X-CURRENT-DTSTART' );
-			$recurrence_id    = isset( $current_dt_start[1] ) ? $current_dt_start[1] : false;
+		$recurrence_id = $ical_event->getRecurrenceid();
+		if ( is_a( $recurrence_id, 'DateTime' ) ) {
+			$recurrence_id = $recurrence_id->format('Y-m-d');
 		}
-		return $ical_event->getProperty( 'UID' ) . $recurrence_id . $ical_event->getProperty( 'SEQUENCE' );
+		if ( is_array( $recurrence_id) ) {
+			$recurrence_id = implode('-', $recurrence_id);
+		}
+		if ( false === $recurrence_id && false !== $ical_event->getXprop( Vcalendar::X_RECURRENCE ) ) {
+			$current_dt_start = $ical_event->getXprop( Vcalendar::X_CURRENT_DTSTART );
+			if ( is_a( $current_dt_start, 'X-CURRENT-DTSTART' ) ) {
+					$recurrence_id = $recurrence_id->format('Y-m-d');
+			}elseif( !empty( $current_dt_start[1] ) ){
+				$recurrence_id    = isset( $current_dt_start[1] ) ? $current_dt_start[1] : false;
+			}
+		}
+		return $ical_event->getUid() . $recurrence_id . $ical_event->getSequence();
 	}
 
 	/**
@@ -540,54 +517,6 @@ class Import_Facebook_Events_Ical_Parser {
 	}
 
 	/**
-	 * Convert a system timezone datetime string to the desired event datetime string
-	 *
-	 * A conversion only occurs if the system timezone is NOT UTC
-	 *
-	 * @param string $date_string     Date string to possibly convert
-	 * @param string $system_timezone System timezone
-	 * @param string $event_timezoen  Timezone of event in ical feed
-	 *
-	 * @return string
-	 */
-	public function convert_date_to_according_timezone( $date_string, $system_timezone, $event_timezone ) {
-		if ( 'UTC' === $system_timezone ) {
-			return $date_string;
-		}
-
-		$given_string = new DateTime( $date_string );
-		$given_string->setTimezone(new DateTimeZone( $event_timezone ) );
-		$date_string = $given_string->format('Ymd\THis');
-		return $date_string;
-	}
-
-    /**
-     * Convert datetime to desired timezone.
-     *
-     * @param string $date_string     Date string to possibly convert
-     * @param string $force_timezone timezone to be conterted
-     *
-     * @return string
-     *
-     * @since 1.0.0
-     */
-    public function convert_datetime_to_timezone_wise_datetime( $datetime, $force_timezone = false ) {
-        try {
-            $datetime = new DateTime( $datetime );
-            if( $force_timezone && $force_timezone !='' ){
-                try{
-                    $datetime->setTimezone(new DateTimeZone( $force_timezone ) );
-                }catch ( Exception $ee ){ }
-            }
-            return $datetime->format( 'Y-m-d H:i:s' );
-        }
-        catch ( Exception $e ) {
-            return $datetime;
-        }
-    }
-
-
-	/**
 	 * Convert datetime to desired timezone.
 	 *
 	 * @param string $event_datetime     Date string to possibly convert
@@ -597,10 +526,10 @@ class Import_Facebook_Events_Ical_Parser {
 	 * @since 1.0.0
 	 */
 	public function convert_fb_ical_timezone( $event_datetime = '', $timezone = '' ) {
-		
+
 		$timezone_string = get_option( 'timezone_string' );
 		$offset  = (float) get_option( 'gmt_offset' );
-		if( $timezone != '' ){
+		if( !empty( $timezone ) ){
 			$tz = $timezone;
 		}else{
 
@@ -643,7 +572,7 @@ class Import_Facebook_Events_Ical_Parser {
 	public function get_event_image_and_location( $import_into, $facebook_event_id = 0 ){
 		global $ife_events;
 		$event_api_data    = array();
-		$event_id          = array( 'ID' => $facebook_event_id );
+		$event_id          = $facebook_event_id;
 		$post_type         = $ife_events->{$import_into}->get_event_posttype();
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $post_type, $event_id );
 		$has_event_image   = get_post_meta( $is_exitsing_event, '_thumbnail_id', true );
@@ -651,7 +580,7 @@ class Import_Facebook_Events_Ical_Parser {
 		if ( empty( $has_event_image ) ){
 			$fetch_image = apply_filters( 'ife_ical_fetch_event_image', true );
 			if( $fetch_image ) {
-				$facebook_event = $ife_events->facebook->get_facebook_event_by_event_id( $event_id['ID'] );
+				$facebook_event = $ife_events->facebook->get_facebook_event_by_event_id( $event_id );
 				if ( ! empty( $facebook_event->cover )  ) {
 					$event_api_data['image']              = $facebook_event->cover->source;
 					$event_api_data['location']           = $facebook_event->place;
@@ -675,4 +604,52 @@ class Import_Facebook_Events_Ical_Parser {
 		return $event_api_data;
 	}
 
+	/**
+	 * Convert a system timezone datetime string to the desired event datetime string
+	 *
+	 * A conversion only occurs if the system timezone is NOT UTC
+	 *
+	 * @param string $date_string     Date string to possibly convert
+	 * @param string $system_timezone System timezone
+	 * @param string $event_timezoen  Timezone of event in ical feed
+	 *
+	 * @return string
+	 */
+	public function convert_date_to_according_timezone( $date_string, $system_timezone, $event_timezone ) {
+		if ( 'UTC' === $system_timezone ) {
+			return $date_string;
+		}
+
+		$given_string = new DateTime( $date_string );
+		$given_string->setTimezone(new DateTimeZone( $event_timezone ) );
+		$date_string = $given_string->format('Ymd\THis');
+		return $date_string;
+	}
+
+    /**
+     * Convert datetime to desired timezone.
+     *
+     * @param string $date_string     Date string to possibly convert
+     * @param string $force_timezone timezone to be conterted
+     *
+     * @return string
+     *
+     * @since 1.0.0
+     */
+    public function convert_datetime_to_timezone_wise_datetime( $datetime, $force_timezone = false ) {
+        try {
+			if ( ! is_a( $datetime, 'DateTime' ) ) {
+				$datetime = new DateTime( $datetime );
+			}
+            if( $force_timezone && $force_timezone !='' ){
+                try{
+                    $datetime->setTimezone(new DateTimeZone( $force_timezone ) );
+                }catch ( Exception $ee ){ }
+            }
+            return $datetime->format( 'Y-m-d H:i:s' );
+        }
+        catch ( Exception $e ) {
+            return $datetime;
+        }
+    }
 }

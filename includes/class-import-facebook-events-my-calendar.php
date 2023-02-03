@@ -359,7 +359,7 @@ class Import_Facebook_Events_My_Calendar {
 
 			$my_calendar_table = my_calendar_table();
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
-			$db_event_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_id` FROM {$my_calendar_table} WHERE `event_post`= %d LIMIT 1", $inserted_event_id ) ); // cache ok, db call ok.
+			$db_event_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_id` FROM {$my_calendar_table} WHERE `event_post`= %d LIMIT 1", $inserted_event_id ) );
 
 			if ( $db_event_id > 0 && is_numeric( $db_event_id ) && ! empty( $db_event_id ) ) {
 

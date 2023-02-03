@@ -185,7 +185,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 			$confirmation_message = esc_html__( "Warning!! Are you sure to delete all these import history? Import history will be permanatly deleted.", "import-facebook-events" );
 			?>
 			<a class="button apply" href="<?php echo $wp_delete_nonce_url; ?>" onclick="return confirm('<?php echo $confirmation_message; ?>')">
-				<?php esc_html_e( 'Clear Import History', 'wp-event-aggregator' ); ?>
+				<?php esc_html_e( 'Clear Import History', 'import-facebook-events' ); ?>
 			</a>
 			<?php
 		}
@@ -393,44 +393,50 @@ class IFE_Shortcode_List_Table extends WP_List_Table {
                     'shortcode'     => '<p class="ife_short_code">[facebook_events]</p>',
                     'action'     	=> '<button class="ife-btn-copy-shortcode button-primary"  data-value="[facebook_events]">Copy</button>',
                     );
+		$data[] = array(
+					'id'            => 2,
+					'how_to_use'    => 'New Grid Layouts <span style="color:green;font-weight: 900;">( PRO )</span>',
+					'shortcode'     => '<p class="ife_short_code">[facebook_events layout="style2"]</p>',
+					'action'     	=> "<button class='ife-btn-copy-shortcode button-primary'  data-value='[facebook_events layout=\"style2\"]'>Copy</button>",
+					);
         $data[] = array(            
-                    'id'            => 2,
+                    'id'            => 3,
                     'how_to_use'    => 'Display with column',
 					'shortcode'     => '<p class="ife_short_code">[facebook_events col="2"]</p>',
 					'action'     	=> "<button class='ife-btn-copy-shortcode button-primary' data-value='[facebook_events col=\"2\"]' >Copy</button>",
                     );
         $data[] = array(
-                    'id'            => 3,
+                    'id'            => 4,
                     'how_to_use'    => 'Limit for display events',
 					'shortcode'     => '<p class="ife_short_code">[facebook_events posts_per_page="12"]</p>',
 					'action'     	=> "<button class='ife-btn-copy-shortcode button-primary' data-value='[facebook_events posts_per_page=\"12\"]' >Copy</button>",
 		);
         $data[] = array(
-                    'id'            => 4,
+                    'id'            => 5,
                     'how_to_use'    => 'Display Events based on order',
 					'shortcode'     => '<p class="ife_short_code">[facebook_events order="asc"]</p>',
 					'action'     	=> "<button class='ife-btn-copy-shortcode button-primary' data-value='[facebook_events order=\"asc\"]' >Copy</button>",
                     );
         $data[] = array(
-                    'id'            => 5,
+                    'id'            => 6,
                     'how_to_use'    => 'Display events based on category',
 					'shortcode'     => '<p class="ife_short_code" >[facebook_events category="cat1"]</p>',
 					'action'     	=> "<button class='ife-btn-copy-shortcode button-primary' data-value='[facebook_events category=\"cat1\"]' >Copy</button>",
                     );
         $data[] = array(
-                    'id'            => 6,
+                    'id'            => 7,
                     'how_to_use'    => 'Display Past events',
 					'shortcode'     => '<p class="ife_short_code">[facebook_events past_events="yes"]</p>',
 					'action'     	=> "<button class='ife-btn-copy-shortcode button-primary' data-value='[facebook_events past_events=\"yes\"]' >Copy</button>",
                     );
         $data[] = array(
-                    'id'            => 7,
+                    'id'            => 8,
                     'how_to_use'    => 'Display Events based on orderby',
 					'shortcode'     => '<p class="ife_short_code">[facebook_events order="asc" orderby="post_title"]</p>',
 					'action'     	=> "<button class='ife-btn-copy-shortcode button-primary' data-value='[facebook_events order=\"asc\" orderby=\"post_title\"]' >Copy</button>",
                     );
         $data[] = array(
-                    'id'            => 8,
+                    'id'            => 9,
                     'how_to_use'    => 'Full Short-code',
 					'shortcode'     => '<p class="ife_short_code">[facebook_events  col="2" posts_per_page="12" category="cat1" past_events="yes" order="desc" orderby="post_title" start_date="YYYY-MM-DD" end_date="YYYY-MM-DD"]</p>',
 					'action'     	=> "<button class='ife-btn-copy-shortcode button-primary' data-value='[facebook_events col=\"2\" posts_per_page=\"12\" category=\"cat1\" past_events=\"yes\" order=\"desc\" orderby=\"post_title\" start_date=\"YYYY-MM-DD\" end_date=\"YYYY-MM-DD\"]' >Copy</button>",

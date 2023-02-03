@@ -141,15 +141,26 @@ class Import_Facebook_Events_TEC {
 		global $ife_events;
 
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array['ID'] );
-		$formated_args     = $this->format_event_args_for_tec( $centralize_array );
-		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
-			$formated_args['post_status'] = $event_args['event_status'];
+		if( function_exists( 'tribe_events' ) ){
+			$formated_args = $this->format_event_args_for_tec_orm( $centralize_array );
+			if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
+				$formated_args['status'] = $event_args['event_status'];
+			}
+		}else{
+			$formated_args = $this->format_event_args_for_tec( $centralize_array );
+			if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
+				$formated_args['post_status'] = $event_args['event_status'];
+			}
 		}
-        $formated_args['post_author'] = isset($event_args['event_author']) ? $event_args['event_author'] : get_current_user_id();
+		$formated_args['post_author'] = isset($event_args['event_author']) ? $event_args['event_author'] : get_current_user_id();
         
 		if ( $is_exitsing_event && is_numeric( $is_exitsing_event ) && $is_exitsing_event > 0 ) {
 			if ( ! $ife_events->common->ife_is_updatable( 'status' ) ) {
-				$formated_args['post_status'] = get_post_status( $is_exitsing_event );
+				if( function_exists( 'tribe_events' ) ){
+					$formated_args['status'] = get_post_status( $is_exitsing_event );
+				} else {
+					$formated_args['post_status'] = get_post_status( $is_exitsing_event );
+				}
 			}
 
 			$options       = ife_get_import_options( $centralize_array['origin'] );
@@ -180,9 +191,14 @@ class Import_Facebook_Events_TEC {
 	public function create_event( $centralize_array = array(), $formated_args = array(), $event_args = array() ) {
 		// Create event using TEC advanced functions.
 		global $ife_events;
-		$new_event_id = tribe_create_event( $formated_args );
+		if( function_exists( 'tribe_events' ) ){
+			$new_event_id = tribe_events()->set_args( $formated_args )->create()->ID;
+		}else{
+			if( function_exists( 'tribe_create_event' ) ){
+				$new_event_id = tribe_create_event( $formated_args );
+			}
+		}
 		if ( $new_event_id ) {
-
 			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
 			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
 
@@ -246,7 +262,15 @@ class Import_Facebook_Events_TEC {
 		// Update event using TEC advanced functions.
 		global $ife_events;
 
-		$update_event_id = tribe_update_event( $event_id, $formated_args );
+		if( function_exists( 'tribe_events' ) ){
+			$update_event_id = tribe_events()->where( 'id', $event_id )->set_args( $formated_args )->save();
+			$update_event_id = $event_id;
+		}else{
+			if( function_exists( 'tribe_update_event' ) ){
+				$update_event_id = tribe_update_event( $event_id, $formated_args );
+			}
+		}
+
 		if ( $update_event_id ) {
 
 			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
@@ -307,7 +331,48 @@ class Import_Facebook_Events_TEC {
 	 * Format events arguments as per TEC
 	 *
 	 * @since    1.0.0
-	 * @param array $centralize_array Eventbrite event.
+	 * @param array $centralize_array Facebook event.
+	 * @return array
+	 */
+	public function format_event_args_for_tec_orm( $centralize_array ) {
+
+		if ( empty( $centralize_array ) ) {
+			return;
+		}
+		$start_time = $centralize_array['starttime_local'];
+		$end_time   = $centralize_array['endtime_local'];
+		$timezone   = isset( $centralize_array['timezone'] ) ? $centralize_array['timezone'] : 'UTC'; 
+		$event_args = array(
+			'title'             => $centralize_array['name'],
+			'post_content'      => $centralize_array['description'],
+			'status'            => 'pending',
+			'url'               => $centralize_array['url'],
+			'timezone'          => $timezone,
+			'start_date'        => date( 'Y-m-d H:i:s', $start_time ),
+			'end_date'          => date( 'Y-m-d H:i:s', $end_time ),
+		);
+
+		if( isset( $centralize_array['is_all_day'] ) && true === $centralize_array['is_all_day'] ){
+			$event_args['_EventAllDay'] = 'yes';
+		}
+
+		if ( array_key_exists( 'organizer', $centralize_array ) ) {
+			$organizer               = $this->get_organizer_args( $centralize_array['organizer'] );      
+			$event_args['organizer'] = $organizer['OrganizerID'];
+		}
+
+		if ( array_key_exists( 'location', $centralize_array ) ) {
+			$venue               = $this->get_venue_args( $centralize_array['location'] );
+			$event_args['venue'] = $venue['VenueID'];
+		}
+		return $event_args;
+	}
+
+	/**
+	 * Format event arguments as per TEC less than V4.9  
+	 *
+	 * @since    1.6.20
+	 * @param array $centralize_array Facebook event.
 	 * @return array
 	 */
 	public function format_event_args_for_tec( $centralize_array ) {
@@ -337,6 +402,10 @@ class Import_Facebook_Events_TEC {
 			'EventShowMapLink'   => 1,
 		);
 
+		if( isset( $centralize_array['is_all_day'] ) && true === $centralize_array['is_all_day'] ){
+			$event_args['_EventAllDay']      = 'yes';
+		}
+
 		if ( array_key_exists( 'organizer', $centralize_array ) ) {
 			$event_args['organizer'] = $this->get_organizer_args( $centralize_array['organizer'] );
 		}
@@ -356,13 +425,13 @@ class Import_Facebook_Events_TEC {
 	 */
 	public function get_organizer_args( $centralize_org_array ) {
 
-		if ( ! isset( $centralize_org_array['ID'] ) ) {
+		if ( ! isset( $centralize_org_array['name'] ) ) {
 			return null;
 		}
-		$existing_organizer = $this->get_organizer_by_id( $centralize_org_array['ID'] );
+		$existing_organizer = $this->get_organizer_by_id( $centralize_org_array['name'] );
 		if ( $existing_organizer && is_numeric( $existing_organizer ) && $existing_organizer > 0 ) {
 			return array(
-				'OrganizerID' => $existing_organizer,
+				'OrganizerID' => $existing_organizer
 			);
 		}
 
@@ -376,9 +445,10 @@ class Import_Facebook_Events_TEC {
 		);
 
 		if ( $create_organizer ) {
+			update_post_meta( $create_organizer, 'ife_event_organizer_name', $centralize_org_array['name'] );
 			update_post_meta( $create_organizer, 'ife_event_organizer_id', $centralize_org_array['ID'] );
 			return array(
-				'OrganizerID' => $create_organizer,
+				'OrganizerID' => $create_organizer	
 			);
 		}
 		return null;
@@ -402,7 +472,7 @@ class Import_Facebook_Events_TEC {
 		}
 		if ( $existing_venue && is_numeric( $existing_venue ) && $existing_venue > 0 ) {
 			return array(
-				'VenueID' => $existing_venue,
+				'VenueID' => $existing_venue
 			);
 		}
 
@@ -427,8 +497,9 @@ class Import_Facebook_Events_TEC {
 		if ( $create_venue ) {
 			update_post_meta( $create_venue, 'ife_event_venue_name', $venue['name'] );
 			update_post_meta( $create_venue, 'ife_event_venue_id', $venue_id );
+			
 			return array(
-				'VenueID' => $create_venue,
+				'VenueID' => $create_venue
 			);
 		}
 		return false;
@@ -441,13 +512,13 @@ class Import_Facebook_Events_TEC {
 	 * @param int $organizer_id Organizer id.
 	 * @return int/boolean
 	 */
-	public function get_organizer_by_id( $organizer_id ) {
+	public function get_organizer_by_id( $organizer_name ) {
 		$existing_organizer = get_posts(
 			array(
 				'posts_per_page'   => 1,
 				'post_type'        => $this->oraganizer_posttype,
-				'meta_key'         => 'ife_event_organizer_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
-				'meta_value'       => $organizer_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
+				'meta_key'         => 'ife_event_organizer_name', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+				'meta_value'       => $organizer_name, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				'suppress_filters' => false,
 			)
 		);
