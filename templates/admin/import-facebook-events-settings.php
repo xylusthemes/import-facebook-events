@@ -149,9 +149,9 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
                         </th>
                         <td>
                             <?php
-                            $facebook_options = isset($facebook_options['dont_update'])? $facebook_options['dont_update'] : array();
-                            $sdontupdate = isset( $facebook_options['status'] ) ? $facebook_options['status'] : 'no';
-                            $cdontupdate = isset( $facebook_options['category'] ) ? $facebook_options['category'] : 'no';
+                            $donotupdate = isset($facebook_options['dont_update'])? $facebook_options['dont_update'] : array();
+                            $sdontupdate = isset( $donotupdate['status'] ) ? $donotupdate['status'] : 'no';
+                            $cdontupdate = isset( $donotupdate['category'] ) ? $donotupdate['category'] : 'no';
                             ?>
                             <input type="checkbox" name="facebook[dont_update][status]" value="yes" <?php checked( $sdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
                             <span class="xtei_small">
