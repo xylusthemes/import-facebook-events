@@ -685,7 +685,7 @@ class Import_Facebook_Events_Cpt {
 	 */
 	public function facebook_events_archive( $atts = array() ) {
 		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-		// [facebook_events col='2' posts_per_page='12' category="cat1,cat2" past_events="yes" order="desc" orderby="" start_date="" end_date="" ]
+		// [facebook_events layout="style2" col='2' posts_per_page='12' category="cat1,cat2" past_events="yes" order="desc" orderby="" start_date="" end_date="" ]
 		$current_date = current_time( 'timestamp' );
 		$paged        = ( get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1 );
 		if ( is_front_page() ) {
@@ -824,8 +824,8 @@ class Import_Facebook_Events_Cpt {
 			}
 		}
 
-		$col       = 3;
-		$css_class = 'col-ife-md-4';
+		$col       = 2;
+		$css_class = 'col-ife-md-6';
 		if ( isset( $atts['col'] ) && ! empty( $atts['col'] ) && is_numeric( $atts['col'] ) ) {
 			$col = $atts['col'];
 			switch ( $col ) {
@@ -878,7 +878,11 @@ class Import_Facebook_Events_Cpt {
 				while ( $facebook_events->have_posts() ) :
 					$facebook_events->the_post();
 
-					get_ife_template( 'ife-archive-content.php', $template_args );
+					if( isset( $atts['layout'] ) && $atts['layout'] == 'style2' && ife_is_pro() ){
+						get_ife_template( 'ife-archive-content2.php', $template_args );
+					}else{
+						get_ife_template( 'ife-archive-content.php', $template_args );
+					}
 
 				endwhile; // End of the loop.
 
