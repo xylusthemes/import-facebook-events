@@ -36,7 +36,7 @@ class Import_Facebook_Events_FB_Authorize {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		$this->api_version = 'v14.0';
+		$this->api_version = 'v15.0';
 		add_action( 'admin_post_ife_facebook_authorize_action', array( $this, 'ife_facebook_authorize_user' ) );
 		add_action( 'admin_post_ife_facebook_authorize_callback', array( $this, 'ife_facebook_authorize_user_callback' ) );
 	}
