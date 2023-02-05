@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-02-03T13:32:08+00:00\n"
+"POT-Creation-Date: 2023-02-05T05:08:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: import-facebook-events\n"
@@ -1039,7 +1039,7 @@ msgid "Select Page for import events from it."
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:126
-#: templates/admin/ical-import-events.php:70
+#: templates/admin/ical-import-events.php:73
 msgid "Import type"
 msgstr ""
 
@@ -1056,7 +1056,7 @@ msgid "Select event author for imported events. Default event author is current 
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:155
-#: templates/admin/ical-import-events.php:89
+#: templates/admin/ical-import-events.php:92
 msgid "Import Event"
 msgstr ""
 
@@ -1073,7 +1073,7 @@ msgid "Facebook iCal/.ics Import"
 msgstr ""
 
 #: templates/admin/ical-import-events.php:24
-#: templates/admin/ical-import-events.php:48
+#: templates/admin/ical-import-events.php:51
 msgid ".ics File"
 msgstr ""
 
@@ -1086,23 +1086,23 @@ msgstr ""
 msgid "Select Event source."
 msgstr ""
 
-#: templates/admin/ical-import-events.php:40
-msgid "Enter iCal URL ( Eg. https://www.facebook.com/events/ical/upcoming/?uid=XXXXXXXXXXXXXX&key=XXXXXXXXXXXXXX )"
-msgstr ""
-
-#: templates/admin/ical-import-events.php:57
-msgid "Events date range"
+#: templates/admin/ical-import-events.php:41
+msgid "You can get the iCal URL here "
 msgstr ""
 
 #: templates/admin/ical-import-events.php:60
-msgid "Select start date"
-msgstr ""
-
-#: templates/admin/ical-import-events.php:61
-msgid "Select end date"
+msgid "Events date range"
 msgstr ""
 
 #: templates/admin/ical-import-events.php:63
+msgid "Select start date"
+msgstr ""
+
+#: templates/admin/ical-import-events.php:64
+msgid "Select end date"
+msgstr ""
+
+#: templates/admin/ical-import-events.php:66
 msgid "Select date range from which you want to import events. Default startdate is Today"
 msgstr ""
 
