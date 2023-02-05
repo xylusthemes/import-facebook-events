@@ -37,7 +37,10 @@ global $ife_events;
 							<td>
 								<input class="ife_text ical_url" name="ical_url" type="text" <?php if( !ife_is_pro() ){ echo 'disabled="disabled"'; } ?>/>
 								<span class="ife_small">
-									<?php _e( 'Enter iCal URL ( Eg. https://www.facebook.com/events/ical/upcoming/?uid=XXXXXXXXXXXXXX&key=XXXXXXXXXXXXXX )', 'import-facebook-events' ); ?>
+									<?php 
+										esc_attr_e( 'You can get the iCal URL here ', 'import-facebook-events'  );
+										echo '<strong><a href="https://facebook.com/events/calendar/" target="_blank">https://facebook.com/events/calendar/</a></strong>';
+									?>
 								</span>
 								<?php do_action( 'ife_render_pro_notice' ); ?>
 							</td>
