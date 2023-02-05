@@ -265,6 +265,8 @@ class Import_Facebook_Events_TEC {
 		if( function_exists( 'tribe_events' ) ){
 			$update_event_id = tribe_events()->where( 'id', $event_id )->set_args( $formated_args )->save();
 			$update_event_id = $event_id;
+			$tec_event = array( 'ID' => $event_id, 'post_status' => $formated_args['status'] );
+			wp_update_post( $tec_event );
 		}else{
 			if( function_exists( 'tribe_update_event' ) ){
 				$update_event_id = tribe_update_event( $event_id, $formated_args );
