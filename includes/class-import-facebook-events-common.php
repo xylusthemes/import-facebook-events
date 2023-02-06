@@ -713,8 +713,14 @@ class Import_Facebook_Events_Common {
 	 * @return boolean
 	 */
 	public function ife_is_updatable( $field = '' ) {
-		// deprectated status & category update feature.
-		return false;
+		if ( empty( $field ) ){ return true; }
+		if ( !ife_is_pro() ){ return true; }
+		$ife_options = get_option( IFE_OPTIONS, array() );
+		$facebook_options = isset( $ife_options['dont_update'] ) ? $ife_options['dont_update'] : array();
+		if ( isset( $facebook_options[$field] ) &&  'yes' == $facebook_options[$field] ){
+			return false;
+		}
+		return true;
 	}
 
 	/**

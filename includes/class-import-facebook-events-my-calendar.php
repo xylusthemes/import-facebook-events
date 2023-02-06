@@ -114,8 +114,13 @@ class Import_Facebook_Events_My_Calendar {
 		if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
 			$mc_eventdata['post_status'] = $event_args['event_status'];
 		}
-		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable( 'status' ) ) {
+		$event_approved = '0';
+		if( $mc_eventdata['post_status'] == 'publish' ){
+			$event_approved = '1';
+		}
+		if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('status') ) {
 			$mc_eventdata['post_status'] = get_post_status( $is_exitsing_event );
+			$event_args['event_status'] = get_post_status( $is_exitsing_event );
 		}
 		$inserted_event_id = wp_insert_post( $mc_eventdata, true );
 
@@ -297,7 +302,7 @@ class Import_Facebook_Events_My_Calendar {
 				'event_category'     => $event_category,
 				'event_link_expires' => 0,
 				'event_zoom'         => $event_zoom,
-				'event_approved'     => 1,
+				'event_approved'     => $event_approved,
 				'event_host'         => $host,
 				'event_flagged'      => 0,
 				'event_fifth_week'   => 1,
@@ -358,12 +363,11 @@ class Import_Facebook_Events_My_Calendar {
 
 			if ( $db_event_id > 0 && is_numeric( $db_event_id ) && ! empty( $db_event_id ) ) {
 
-				if ( ! $ife_events->common->ife_is_updatable( 'category' ) ) {
-					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
-					$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_category` FROM {$my_calendar_table} WHERE `event_id`= %d", absint( $db_event_id ) ) ); // cache ok, db call ok.
-					if ( $cat_id ) {
-						$event_data['event_category'] = $cat_id;
-					}
+				if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('status') ) {
+					unset( $event_data['event_approved'] );
+				}
+				if ( $is_exitsing_event && ! $ife_events->common->ife_is_updatable('category') ) {
+					unset( $event_data['event_category'] );
 				}
 
 				$event_where = array( 'event_id' => absint( $db_event_id ) );
