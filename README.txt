@@ -1,11 +1,11 @@
 === Import Social Events ===
-Contributors: xylus,dharm1025
+Contributors: xylus, dharm1025, Rajat1192
 Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 6.1
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,8 @@ You can use `[facebook_events]` for display in-built facebook events list.
 **Additional [PRO Add-on](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=wprepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=wprepo-readme) Features**
 
 * Scheduled import events.
+* Upcoming Events Widget On Elementor Editor
+* Upcoming Events New Grid View Style
 * Import events from the facebook page 
 * Import events from the facebook group
 * Import events from Facebook Event
@@ -105,6 +107,18 @@ You can use `[facebook_events]` for display in-built facebook events list.
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.7.1 =
+* ADDED: Events Grid List New Layout ( PRO )
+* ADDED: Upcoming Events Elementor Widget ( PRO )
+* ADDED: Support for don't update status & category during auto-update. (Pro)
+* ADDED: Setting Page link in notice.
+* ADDED: Schedule import Edit Source Data.
+* ADDED: Admin Submenu Schedule Import, Import History, etc..
+* FIXED: iCal Outlook import Timezone issue.
+* FIXED: Duplicate Event issue in TEC.
+* FIXED: Duplicate Event issue in My Calendar.
+* IMPROVEMENTS: Updated Facebook API version to v15.0
 
 = 1.7.0 =
 * FIXED:  All Day events bug.
