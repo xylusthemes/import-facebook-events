@@ -760,6 +760,9 @@ class Import_Facebook_Events_Cpt {
 				);
 			}
 		} else {
+			if(  $atts['past_events'] === true ){
+				$atts['past_events'] = "yes";
+			}
 			if ( isset( $atts['past_events'] ) && 'yes' === $atts['past_events'] ) {
 				$eve_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					array(
@@ -817,6 +820,9 @@ class Import_Facebook_Events_Cpt {
 				$eve_args['order'] = sanitize_text_field( $atts['order'] );
 			}
 		} else {
+			if( $atts['past_events'] === true ){
+				$atts['past_events'] = "yes";
+			}
 			if ( isset( $atts['past_events'] ) && 'yes' === $atts['past_events'] && 'meta_value' === $eve_args['orderby'] ) {
 				$eve_args['order'] = 'DESC';
 			} else {
