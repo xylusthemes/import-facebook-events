@@ -1,2 +1,6 @@
 /node_modules/
 /vendor/
+composer.json
+composer.lock
+phpcs.xml
+phpunit.xml
