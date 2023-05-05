@@ -294,28 +294,31 @@ class Import_Facebook_Events_Ical_Parser {
 		$timezone_name = !empty( $timezone ) ? $timezone : $calendar_timezone;
 
 		// Only for facebook ical imports.
-		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
-		if( !empty( $ife_user_token_options ) ){
-			$authorize_status =	isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
-			if( 1 == $authorize_status ){
-				$check_facebook = explode( '/', $url);
-				if( $check_facebook[2] == 'www.facebook.com' ){
-					$event_api_data = $this->get_event_image_and_location( $event_data['import_into'], $uid );
+		$match = 'https://www.facebook.com/events/';
+		if ( strpos( $url, $match ) !== false ) {
+			$ife_user_token_options = get_option( 'ife_user_token_options', array() );
+			if( !empty( $ife_user_token_options ) ){
+				$authorize_status =	isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
+				if( 1 == $authorize_status ){
+					$check_facebook = explode( '/', $url);
+					if( $check_facebook[2] == 'www.facebook.com' ){
+						$event_api_data = $this->get_event_image_and_location( $event_data['import_into'], $uid );
 
-					if( !empty( $event_api_data ) ){
-						$event_image   = $event_api_data['image'];
-						$event_venue   = $event_api_data['location'];
-						$start_time    = $event_api_data['start_time'];
-						$end_time      = $event_api_data['end_time'];
-						$timezone      = $event_api_data['ical_timezone'];
-						$timezone_name = $event_api_data['ical_timezone_name'];
-					}
+						if( !empty( $event_api_data ) ){
+							$event_image   = $event_api_data['image'];
+							$event_venue   = $event_api_data['location'];
+							$start_time    = $event_api_data['start_time'];
+							$end_time      = $event_api_data['end_time'];
+							$timezone      = $event_api_data['ical_timezone'];
+							$timezone_name = $event_api_data['ical_timezone_name'];
+						}
 
-					if( isset( $event_api_data['ical_timezone_name'] ) && empty( $event_api_data['start_time'] ) ){
-						$start_time = strtotime( $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
-					}
-					if( isset( $event_api_data['ical_timezone_name'] ) &&  empty( $event_api_data['end_time'] ) ){
-						$end_time   = strtotime( $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
+						if( isset( $event_api_data['ical_timezone_name'] ) && empty( $event_api_data['start_time'] ) ){
+							$start_time = strtotime( $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
+						}
+						if( isset( $event_api_data['ical_timezone_name'] ) &&  empty( $event_api_data['end_time'] ) ){
+							$end_time   = strtotime( $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
+						}
 					}
 				}
 			}
