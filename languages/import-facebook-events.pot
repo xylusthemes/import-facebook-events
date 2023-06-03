@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-03T09:10:18+00:00\n"
+"POT-Creation-Date: 2023-06-03T11:35:05+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: import-facebook-events\n"
@@ -964,7 +964,7 @@ msgid "Get Premium"
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:29
-#: templates/admin/ical-import-events.php:20
+#: templates/admin/ical-import-events.php:23
 msgid "Import by"
 msgstr ""
 
@@ -1040,7 +1040,7 @@ msgid "Select Page for import events from it."
 msgstr ""
 
 #: templates/admin/facebook-import-events.php:126
-#: templates/admin/ical-import-events.php:73
+#: templates/admin/ical-import-events.php:76
 msgid "Import type"
 msgstr ""
 
@@ -1048,62 +1048,62 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:142
+#: templates/admin/facebook-import-events.php:145
 msgid "Select Author"
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:144
+#: templates/admin/facebook-import-events.php:152
 msgid "Select event author for imported events. Default event author is current loggedin user."
 msgstr ""
 
-#: templates/admin/facebook-import-events.php:155
-#: templates/admin/ical-import-events.php:92
+#: templates/admin/facebook-import-events.php:163
+#: templates/admin/ical-import-events.php:95
 msgid "Import Event"
 msgstr ""
 
-#: templates/admin/ical-import-events.php:9
+#: templates/admin/ical-import-events.php:12
 msgid "You can see the detailed documentation about how to get the Facebook iCal URL"
 msgstr ""
 
-#: templates/admin/ical-import-events.php:9
+#: templates/admin/ical-import-events.php:12
 msgid "Here."
 msgstr ""
 
-#: templates/admin/ical-import-events.php:13
+#: templates/admin/ical-import-events.php:16
 msgid "Facebook iCal/.ics Import"
 msgstr ""
 
-#: templates/admin/ical-import-events.php:24
-#: templates/admin/ical-import-events.php:51
+#: templates/admin/ical-import-events.php:27
+#: templates/admin/ical-import-events.php:54
 msgid ".ics File"
 msgstr ""
 
-#: templates/admin/ical-import-events.php:25
-#: templates/admin/ical-import-events.php:35
+#: templates/admin/ical-import-events.php:28
+#: templates/admin/ical-import-events.php:38
 msgid "iCal URL"
 msgstr ""
 
-#: templates/admin/ical-import-events.php:28
+#: templates/admin/ical-import-events.php:31
 msgid "Select Event source."
 msgstr ""
 
-#: templates/admin/ical-import-events.php:41
+#: templates/admin/ical-import-events.php:44
 msgid "You can get the iCal URL here "
 msgstr ""
 
-#: templates/admin/ical-import-events.php:60
+#: templates/admin/ical-import-events.php:63
 msgid "Events date range"
 msgstr ""
 
-#: templates/admin/ical-import-events.php:63
+#: templates/admin/ical-import-events.php:66
 msgid "Select start date"
 msgstr ""
 
-#: templates/admin/ical-import-events.php:64
+#: templates/admin/ical-import-events.php:67
 msgid "Select end date"
 msgstr ""
 
-#: templates/admin/ical-import-events.php:66
+#: templates/admin/ical-import-events.php:69
 msgid "Select date range from which you want to import events. Default startdate is Today"
 msgstr ""
 
