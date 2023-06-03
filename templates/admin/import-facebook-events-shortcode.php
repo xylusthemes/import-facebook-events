@@ -8,8 +8,8 @@ $shortcode_table->prepare_items();
 
 ?>
 <div class="ife_container">
-    <div class="ife_row">
-    <h3 class="setting_bar"><?php esc_attr_e( 'Facebook Shortcodes', 'import-facebook-events' ); ?></h3>
-        <?php $shortcode_table->display(); ?>
-    </div>
+	<div class="ife_row">
+	<h3 class="setting_bar"><?php esc_attr_e( 'Facebook Shortcodes', 'import-facebook-events' ); ?></h3>
+		<?php $shortcode_table->display(); ?>
+	</div>
 </div>
