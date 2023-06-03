@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-03-26T18:12:32+00:00\n"
+"POT-Creation-Date: 2023-06-03T09:10:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: import-facebook-events\n"
@@ -792,8 +792,8 @@ msgstr ""
 
 #: includes/class-import-facebook-events-facebook.php:83
 #: includes/class-import-facebook-events-facebook.php:171
-#: includes/class-import-facebook-events-manage-import.php:194
-msgid "Please insert Facebook app ID and app Secret."
+#: includes/class-import-facebook-events-manage-import.php:191
+msgid "Please authenticate with Facebook first."
 msgstr ""
 
 #: includes/class-import-facebook-events-facebook.php:92
@@ -814,11 +814,12 @@ msgstr ""
 msgid "We are not able to access Facebook event: %s. Possible reasons: - App Credentials are wrong - Facebook event is not public or some restrictions are there like age,country etc."
 msgstr ""
 
-#: includes/class-import-facebook-events-fb-authorize.php:68
+#: includes/class-import-facebook-events-fb-authorize.php:70
 msgid "Please insert Facebook App ID and Secret."
 msgstr ""
 
-#: includes/class-import-facebook-events-fb-authorize.php:71
+#: includes/class-import-facebook-events-fb-authorize.php:73
+#: includes/class-import-facebook-events-fb-authorize.php:242
 msgid "You have not access to doing this operations."
 msgstr ""
 
@@ -900,36 +901,36 @@ msgstr ""
 msgid "Something went wrong! please try again."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:203
+#: includes/class-import-facebook-events-manage-import.php:200
 msgid "Nothing to Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:229
+#: includes/class-import-facebook-events-manage-import.php:226
 msgid "Please upload .ics file"
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:240
+#: includes/class-import-facebook-events-manage-import.php:237
 msgid "Nothing to import."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:258
+#: includes/class-import-facebook-events-manage-import.php:255
 msgid "Scheduled import deleted successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:262
-#: includes/class-import-facebook-events-manage-import.php:278
+#: includes/class-import-facebook-events-manage-import.php:259
+#: includes/class-import-facebook-events-manage-import.php:275
 msgid "Scheduled imports are deleted successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:266
+#: includes/class-import-facebook-events-manage-import.php:263
 msgid "Scheduled import has been run successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:270
+#: includes/class-import-facebook-events-manage-import.php:267
 msgid "Import history deleted successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-manage-import.php:274
+#: includes/class-import-facebook-events-manage-import.php:271
 msgid "Import histories are deleted successfully."
 msgstr ""
 
@@ -1106,184 +1107,209 @@ msgstr ""
 msgid "Select date range from which you want to import events. Default startdate is Today"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:22
-msgid "Facebook Settings"
+#: templates/admin/import-facebook-events-settings.php:25
+msgid "Facebook Connection Settings"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:28
+#: templates/admin/import-facebook-events-settings.php:31
 msgid "It looks like you don't have HTTPS enabled on your website. Please enable it. HTTPS is required for authorize your Facebook account."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:28
-#: templates/admin/import-facebook-events-settings.php:34
-#: templates/admin/import-facebook-events-settings.php:37
+#: templates/admin/import-facebook-events-settings.php:31
+#: templates/admin/import-facebook-events-settings.php:99
+#: templates/admin/import-facebook-events-settings.php:102
 msgid "Click here"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:28
+#: templates/admin/import-facebook-events-settings.php:31
 msgid "for more information."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:34
-msgid "Note : "
-msgstr ""
-
-#: templates/admin/import-facebook-events-settings.php:34
-msgid "You have to create a Facebook application before filling the following details."
-msgstr ""
-
-#: templates/admin/import-facebook-events-settings.php:34
-msgid "to create new Facebook application."
-msgstr ""
-
-#: templates/admin/import-facebook-events-settings.php:36
-msgid "For detailed step by step instructions "
-msgstr ""
-
-#: templates/admin/import-facebook-events-settings.php:39
-msgid "Set the site url as :"
-msgstr ""
-
-#: templates/admin/import-facebook-events-settings.php:42
-msgid "Set Valid OAuth redirect URI :"
-msgstr ""
-
-#: templates/admin/import-facebook-events-settings.php:49
-msgid "Authorize your Facebook Account"
-msgstr ""
-
-#: templates/admin/import-facebook-events-settings.php:55
+#: templates/admin/import-facebook-events-settings.php:44
+#: templates/admin/import-facebook-events-settings.php:121
 msgid "Facebook Authorization"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:62
+#: templates/admin/import-facebook-events-settings.php:57
+msgid "Connected as: %s"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:60
+msgid "Remove Connection"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:66
+msgid "Log in\tWith Facebook"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:77
+msgid "Please authorize your Facebook account for import Facebook events from your Facebook page. (Supports import from Facebook page only, if you want to import Intersted/Going events, please continue by creating App as suggested below)."
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:88
+msgid " - OR -"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:99
+msgid "Note : "
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:99
+msgid "You have to create a Facebook application before filling the following details."
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:99
+msgid "to create new Facebook application."
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:101
+msgid "For detailed step by step instructions "
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:104
+msgid "Set the site url as :"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:107
+msgid "Set Valid OAuth redirect URI :"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:115
+msgid "Authorize your Facebook Account"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:128
 msgid "Authorize"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:64
+#: templates/admin/import-facebook-events-settings.php:130
 msgid "Reauthorize"
 msgstr ""
 
 #. translators: %s is user's name.
-#: templates/admin/import-facebook-events-settings.php:73
+#: templates/admin/import-facebook-events-settings.php:139
 msgid " ( Authorized as: %s )"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:80
+#: templates/admin/import-facebook-events-settings.php:146
 msgid "Please authorize your Facebook account for import Facebook events. Please authorize with account which you have used for create an Facebook app."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:96
+#: templates/admin/import-facebook-events-settings.php:163
 msgid "Facebook App ID"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:104
-#: templates/admin/import-facebook-events-settings.php:122
+#: templates/admin/import-facebook-events-settings.php:171
+#: templates/admin/import-facebook-events-settings.php:189
 msgid "You can view or create your Facebook Apps"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:105
-#: templates/admin/import-facebook-events-settings.php:123
+#: templates/admin/import-facebook-events-settings.php:172
+#: templates/admin/import-facebook-events-settings.php:190
 msgid "from here"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:114
+#: templates/admin/import-facebook-events-settings.php:181
 msgid "Facebook App secret"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:133
+#: templates/admin/import-facebook-events-settings.php:201
+msgid "Import Settings"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:206
 msgid "Update existing events"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:142
+#: templates/admin/import-facebook-events-settings.php:215
 msgid "Check to updates existing events."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:148
+#: templates/admin/import-facebook-events-settings.php:222
 msgid "Don't Update these data."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:158
+#: templates/admin/import-facebook-events-settings.php:232
 msgid "Status ( Publish, Pending, Draft etc.. )"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:162
+#: templates/admin/import-facebook-events-settings.php:236
 msgid "Event category"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:165
+#: templates/admin/import-facebook-events-settings.php:239
 msgid "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:173
+#: templates/admin/import-facebook-events-settings.php:247
 msgid "Direct link to Facebook"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:181
+#: templates/admin/import-facebook-events-settings.php:255
 msgid "Check to enable direct event link to Facebook instead of event detail page."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:189
+#: templates/admin/import-facebook-events-settings.php:263
 msgid "Advanced Synchronization"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:199
+#: templates/admin/import-facebook-events-settings.php:273
 msgid "Check to enable advanced synchronization, this will delete events which are removed from Facebook. Also, it deletes passed events."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:207
+#: templates/admin/import-facebook-events-settings.php:281
 msgid "Disable Facebook events"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:215
+#: templates/admin/import-facebook-events-settings.php:289
 msgid "Check to disable inbuilt event management system."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:222
+#: templates/admin/import-facebook-events-settings.php:296
 msgid "Accent Color"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:230
+#: templates/admin/import-facebook-events-settings.php:304
 msgid "Choose accent color for front-end event grid and event widget."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:237
+#: templates/admin/import-facebook-events-settings.php:311
 msgid "Event Slug"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:250
+#: templates/admin/import-facebook-events-settings.php:324
 msgid "Slug for the event."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:258
+#: templates/admin/import-facebook-events-settings.php:332
 msgid "Event Display Time Format"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:265
+#: templates/admin/import-facebook-events-settings.php:339
 msgid "12 Hours"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:266
+#: templates/admin/import-facebook-events-settings.php:340
 msgid "24 Hours"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:267
+#: templates/admin/import-facebook-events-settings.php:341
 msgid "WordPress Default"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:270
+#: templates/admin/import-facebook-events-settings.php:344
 msgid "Choose event display time format for front-end."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:277
+#: templates/admin/import-facebook-events-settings.php:351
 msgid "Delete Import Facebook Events data on Uninstall"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:285
+#: templates/admin/import-facebook-events-settings.php:359
 msgid "Delete Import Facebook Events data like settings, scheduled imports, import history on Uninstall."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:298
+#: templates/admin/import-facebook-events-settings.php:372
 msgid "Save Settings"
 msgstr ""
 
