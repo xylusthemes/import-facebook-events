@@ -220,8 +220,20 @@ class Import_Facebook_Events_Facebook {
 	 * @return string
 	 */
 	public function get_access_token() {
+		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
+		$is_direct_auth         = isset( $ife_user_token_options['direct_auth'] ) ? ( 1 === $ife_user_token_options['direct_auth'] ) : false;
+
+		// Skip debug token check if direct auth is enabled.
+		if ( $is_direct_auth ) {
+			$access_token     = isset( $ife_user_token_options['access_token'] ) ? $ife_user_token_options['access_token'] : '';
+			$is_authenticated = isset( $ife_user_token_options['authorize_status'] ) ? ( 1 === $ife_user_token_options['authorize_status'] ) : false;
+			if ( ! empty( $access_token ) && $is_authenticated ) {
+				return $access_token;
+			}
+		}
+
 		$token_transient_key = 'ife_facebook_access_token';
-		$access_token_cache = get_transient( 'ife_facebook_access_token' );
+		$access_token_cache  = get_transient( 'ife_facebook_access_token' );
 		if ( false === $access_token_cache ) {
 			$ife_user_token_options = get_option( 'ife_user_token_options', array() );
 			if ( ! empty( $ife_user_token_options ) ) {
