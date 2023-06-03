@@ -79,8 +79,8 @@ class Import_Facebook_Events_Facebook {
 		$imported_events    = array();
 		$facebook_event_ids = array();
 
-		if ( empty( $this->fb_app_id ) || empty( $this->fb_app_secret ) ) {
-			$ife_errors[] = __( 'Please insert Facebook app ID and app Secret.', 'import-facebook-events' );
+		if ( ! ife_is_authenticated() ) {
+			$ife_errors[] = __( 'Please authenticate with Facebook first.', 'import-facebook-events' );
 			return;
 		}
 
@@ -166,9 +166,9 @@ class Import_Facebook_Events_Facebook {
 		$options       = ife_get_import_options( 'facebook' );
 		$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
 
-		if ( empty( $facebook_event_id ) || empty( $this->fb_app_id ) || empty( $this->fb_app_secret ) ) {
-			if ( empty( $this->fb_app_id ) || empty( $this->fb_app_secret ) ) {
-				$ife_errors[] = esc_attr__( 'Please insert Facebook app ID and app Secret.', 'import-facebook-events' );
+		if ( empty( $facebook_event_id ) || ! ife_is_authenticated() ) {
+			if ( ! ife_is_authenticated() ) {
+				$ife_errors[] = __( 'Please authenticate with Facebook first.', 'import-facebook-events' );
 				return;
 			}
 			return false;
@@ -220,24 +220,26 @@ class Import_Facebook_Events_Facebook {
 	 * @return string
 	 */
 	public function get_access_token() {
-		$token_transient_key = 'ife_facebook_access_token';
-		$access_token_cache = get_transient( 'ife_facebook_access_token' );
-		if ( false === $access_token_cache ) {
-			$args                       = array(
-				'grant_type'    => 'client_credentials',
-				'client_id'     => $this->fb_app_id,
-				'client_secret' => $this->fb_app_secret,
-			);
-			$access_token_url           = add_query_arg( $args, $this->fb_graph_url . 'oauth/access_token' );
-			$access_token_response      = wp_remote_get( $access_token_url );
-			$access_token_response_body = wp_remote_retrieve_body( $access_token_response );
-			$access_token_data          = json_decode( $access_token_response_body );
-			$access_token               = ! empty( $access_token_data->access_token ) ? $access_token_data->access_token : null;
+		$ife_user_token_options = get_option( 'ife_user_token_options', array() );
+		$is_direct_auth         = isset( $ife_user_token_options['direct_auth'] ) ? ( 1 === $ife_user_token_options['direct_auth'] ) : false;
 
+		// Skip debug token check if direct auth is enabled.
+		if ( $is_direct_auth ) {
+			$access_token     = isset( $ife_user_token_options['access_token'] ) ? $ife_user_token_options['access_token'] : '';
+			$is_authenticated = isset( $ife_user_token_options['authorize_status'] ) ? ( 1 === $ife_user_token_options['authorize_status'] ) : false;
+			if ( ! empty( $access_token ) && $is_authenticated ) {
+				return $access_token;
+			}
+		}
+
+		$token_transient_key = 'ife_facebook_access_token';
+		$access_token_cache  = get_transient( 'ife_facebook_access_token' );
+		if ( false === $access_token_cache ) {
 			$ife_user_token_options = get_option( 'ife_user_token_options', array() );
-			if ( ! empty( $ife_user_token_options ) && ! empty( $access_token ) ) {
+			if ( ! empty( $ife_user_token_options ) ) {
 				$authorize_status  = isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
 				$user_access_token = isset( $ife_user_token_options['access_token'] ) ? $ife_user_token_options['access_token'] : '';
+				$access_token      = $user_access_token;
 				if ( 1 === $authorize_status && ! empty( $user_access_token ) ) {
 
 					$args                       = array(

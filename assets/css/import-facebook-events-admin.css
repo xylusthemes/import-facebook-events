@@ -14,7 +14,7 @@
 }
 .upgrade_to_pro h2{
 	font-size: 22px !important;
-	padding: 0px !important; 
+	padding: 0px !important;
 }
 .upgrade_button{
 	height: 36px !important;
@@ -91,7 +91,7 @@
 
 .import-facebook-events-page-content{
 	background-color: #fff;
-	border: 1px solid #ccc;	
+	border: 1px solid #ccc;
 	margin: 20px 0;
 }
 
@@ -347,7 +347,7 @@ table.ife_form_table tr td:nth-child(1) {
     right: 0;
     top: -30px;
   }
-} 
+}
 
 /* Support page CSS */
 .ife-support-features-card {
@@ -449,6 +449,25 @@ table.ife_form_table tr td:nth-child(1) {
 /*Upgrade to pro link CSS*/
 .ife_upgrade_pro {
   background: #1da867;
+}
+
+.ife_connection_wrapper .image_wrap img {
+    border-radius: 50%;
+    float: left;
+    margin-right: 15px;
+    max-width: 50px;
+}
+
+.ife_connection_wrapper .name_wrap {
+	padding: 7px;
+}
+
+.ife_connection_wrapper .name_wrap a{
+	color: #a94442;
+}
+
+.ife_connection_wrapper .name_wrap a:hover{
+	color: #f00;
 }
 
 #ife_edit_scheduled_import .form-table td input{

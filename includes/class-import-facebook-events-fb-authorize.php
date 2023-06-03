@@ -38,7 +38,9 @@ class Import_Facebook_Events_FB_Authorize {
 	public function __construct() {
 		$this->api_version = 'v15.0';
 		add_action( 'admin_post_ife_facebook_authorize_action', array( $this, 'ife_facebook_authorize_user' ) );
+		add_action( 'admin_post_ife_deauthorize_action', array( $this, 'ife_deauthorize_user' ) );
 		add_action( 'admin_post_ife_facebook_authorize_callback', array( $this, 'ife_facebook_authorize_user_callback' ) );
+		add_action( 'admin_post_ife_fb_login_action', array( $this, 'ife_fb_login_action' ) );
 	}
 
 	/**
@@ -154,6 +156,90 @@ class Import_Facebook_Events_FB_Authorize {
 			}
 		} else {
 			die( esc_attr__( 'You have not access to doing this operations.', 'import-facebook-events-pro' ) );
+		}
+	}
+
+	/**
+	 * Authorize facebook user using https://connect.xylusthemes.com/.
+	 *
+	 * @return void
+	 */
+	public function ife_fb_login_action() {
+		// phpcs:ignore WordPress.Security.NonceVerification
+		if ( ! empty( $_GET ) && isset( $_GET['ife_fb_login_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['ife_fb_login_nonce'] ) ), 'ife_fb_login_action' ) ) { // input var okay.
+			// phpcs:ignore WordPress.Security.NonceVerification
+
+			$access_token = isset( $_GET['access_token'] ) ? sanitize_text_field( wp_unslash( $_GET['access_token'] ) ) : '';
+
+			if ( ! empty( $access_token ) ) {
+				$ife_user_token_options = array();
+				$ife_fb_authorize_user  = array();
+
+				$ife_user_token_options['authorize_status'] = 1;
+				$ife_user_token_options['direct_auth']      = 1;
+				$ife_user_token_options['access_token']     = sanitize_text_field( $access_token );
+				$token_transient_key = 'ife_facebook_access_token';
+				delete_transient( $token_transient_key );
+				update_option( 'ife_user_token_options', $ife_user_token_options );
+
+				$profile_call = wp_remote_get( 'https://graph.facebook.com/' . $this->api_version . "/me?fields=id,name,picture&access_token=$access_token" );
+				$profile      = wp_remote_retrieve_body( $profile_call );
+				$profile      = json_decode( $profile );
+				if ( isset( $profile->id ) && isset( $profile->name ) ) {
+					$ife_fb_authorize_user['ID']   = sanitize_text_field( $profile->id );
+					$ife_fb_authorize_user['name'] = sanitize_text_field( $profile->name );
+					if ( isset( $profile->picture->data->url ) ) {
+						$ife_fb_authorize_user['avtar'] = esc_url_raw( $profile->picture->data->url );
+					}
+				}
+				update_option( 'ife_fb_authorize_user', $ife_fb_authorize_user );
+
+				$args          = array( 'timeout' => 15 );
+				$accounts_call = wp_remote_get( 'https://graph.facebook.com/' . $this->api_version . "/me/accounts?access_token=$access_token&limit=100&offset=0", $args );
+				$accounts      = wp_remote_retrieve_body( $accounts_call );
+				$accounts      = json_decode( $accounts );
+				$accounts      = isset( $accounts->data ) ? $accounts->data : array();
+				if ( ! empty( $accounts ) ) {
+					$pages = array();
+					foreach ( $accounts as $account ) {
+						$pages[ $account->id ] = array(
+							'id'           => $account->id,
+							'name'         => $account->name,
+							'access_token' => $account->access_token,
+						);
+					}
+					update_option( 'ife_fb_user_pages', $pages );
+				}
+
+				$redirect_url = admin_url( 'admin.php?page=facebook_import&tab=settings&authorize=1' );
+				wp_safe_redirect( $redirect_url );
+				exit();
+			} else {
+				$redirect_url = admin_url( 'admin.php?page=facebook_import&tab=settings&authorize=0' );
+				wp_safe_redirect( $redirect_url );
+				exit();
+			}
+		} else {
+			die( esc_attr__( 'You have not access to doing this operations.', 'import-facebook-events-pro' ) );
+		}
+	}
+
+	/**
+	 * Authorize facebook user to get access token.
+	 *
+	 * @return void
+	 */
+	public function ife_deauthorize_user() {
+		if ( ! empty( $_GET ) && isset( $_GET['ife_deauthorize_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['ife_deauthorize_nonce'] ) ), 'ife_deauthorize_action' ) ) { // input var okay.
+			delete_transient( 'ife_facebook_access_token' );
+			delete_option( 'ife_user_token_options' );
+			delete_option( 'ife_fb_authorize_user' );
+			delete_option( 'ife_fb_user_pages' );
+
+			$redirect_url = admin_url( 'admin.php?page=facebook_import&tab=settings&deauthorize=1' );
+			wp_safe_redirect( $redirect_url );
+		} else {
+			die( esc_attr__( 'You have not access to doing this operations.', 'import-facebook-events' ) );
 		}
 	}
 }

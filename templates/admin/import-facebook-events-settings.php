@@ -16,10 +16,13 @@ $facebook_app_id        = isset( $facebook_options['facebook_app_id'] ) ? $faceb
 $facebook_app_secret    = isset( $facebook_options['facebook_app_secret'] ) ? $facebook_options['facebook_app_secret'] : '';
 $ife_user_token_options = get_option( 'ife_user_token_options', array() );
 $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
+$is_direct_auth         = isset( $ife_user_token_options['direct_auth'] ) ? ( 1 === $ife_user_token_options['direct_auth'] ) : false;
+$is_authenticated       = isset( $ife_user_token_options['authorize_status'] ) ? ( 1 === $ife_user_token_options['authorize_status'] ) : false;
+$is_key_saved           = ( ! empty( $facebook_app_id ) && ! empty( $facebook_app_secret ) );
 ?>
 <div class="ife_container">
 	<div class="ife_row">
-		<h3 class="setting_bar"><?php esc_attr_e( 'Facebook Settings', 'import-facebook-events' ); ?></h3>
+		<h3 class="setting_bar"><?php esc_attr_e( 'Facebook Connection Settings', 'import-facebook-events' ); ?></h3>
 		<?php
 		$site_url = get_home_url();
 		if ( ! isset( $_SERVER['HTTPS'] ) && false === stripos( $site_url, 'https' ) ) { // WPCS: input var okay.
@@ -30,21 +33,84 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 			<?php
 		}
 		?>
-		<div class="widefat ife_settings_notice">
-			<?php printf( '<b>%1$s</b> %2$s <b><a href="https://developers.facebook.com/apps" target="_blank">%3$s</a></b> %4$s', esc_attr__( 'Note : ', 'import-facebook-events' ), esc_attr__( 'You have to create a Facebook application before filling the following details.', 'import-facebook-events' ), esc_attr__( 'Click here', 'import-facebook-events' ), esc_attr__( 'to create new Facebook application.', 'import-facebook-events' ) ); ?>
-			<br/>
-			<?php esc_attr_e( 'For detailed step by step instructions ', 'import-facebook-events' ); ?>
-			<strong><a href="http://docs.xylusthemes.com/docs/import-facebook-events/creating-facebook-application/" target="_blank"><?php esc_attr_e( 'Click here', 'import-facebook-events' ); ?></a></strong>.
-			<br/>
-			<strong><?php esc_attr_e( 'Set the site url as :', 'import-facebook-events' ); ?> </strong>
-			<span style="color: green;"><?php echo esc_url( get_site_url() ); ?></span>
-			<br/>
-			<strong><?php esc_attr_e( 'Set Valid OAuth redirect URI :', 'import-facebook-events' ); ?> </strong>
-			<span style="color: green;"><?php echo esc_url( admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' ) ); ?></span>
-		</div>
 
 		<?php
-		if ( ! empty( $facebook_app_id ) && ! empty( $facebook_app_secret ) ) {
+		if ( ! $is_key_saved ) {
+			?>
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'Facebook Authorization', 'import-facebook-events' ); ?> :
+						</th>
+						<td>
+							<?php
+							if ( ! empty( $ife_fb_authorize_user ) && isset( $ife_fb_authorize_user['name'] ) ) {
+								$name  = $ife_fb_authorize_user['name'];
+								$avtar = $ife_fb_authorize_user['avtar'];
+								?>
+								<div class="ife_connection_wrapper">
+									<div class="image_wrap">
+										<img src="<?php echo esc_url( $avtar ); ?>" alt="<?php echo esc_attr( $name ); ?>" />
+									</div>
+									<div class="name_wrap">
+										<?php printf( __( 'Connected as: %s', 'import-facebook-events' ), '<strong>' . esc_attr( $name ) . '</strong>' ); ?>
+										<br/>
+										<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'action', 'ife_deauthorize_action', admin_url( 'admin-post.php' ) ), 'ife_deauthorize_action', 'ife_deauthorize_nonce' ) ); ?>">
+											<?php esc_html_e( 'Remove Connection', 'import-facebook-events' ); ?>
+										</a>
+									</div>
+								</div>
+								<?php
+							} else {
+								$button_value = esc_attr__( 'Log in	With Facebook', 'import-facebook-events' );
+								$redirect_url = wp_nonce_url( add_query_arg( 'action', 'ife_fb_login_action', admin_url( 'admin-post.php' ) ), 'ife_fb_login_action', 'ife_fb_login_nonce' );
+								$fb_login_url = add_query_arg(
+									array(
+										'redirect' => rawurlencode( $redirect_url ),
+									),
+									'https://connect.xylusthemes.com/login/facebook'
+								);
+								?>
+								<a href="<?php echo esc_url( $fb_login_url ); ?>" class="button button-primary"><?php echo esc_attr( $button_value ); ?></a>
+								<span class="ife_small">
+									<?php esc_attr_e( 'Please authorize your Facebook account for import Facebook events from your Facebook page. (Supports import from Facebook page only, if you want to import Intersted/Going events, please continue by creating App as suggested below).', 'import-facebook-events' ); ?>
+								</span>
+								<?php
+							}
+							?>
+						</td>
+					</tr>
+
+					<?php if ( ! $is_key_saved && ! $is_direct_auth ) { ?>
+					<tr>
+						<th scope="row" style="text-align: center" colspan="2">
+							<?php esc_html_e( ' - OR -', 'import-facebook-events' ); ?>
+						</th>
+					</tr>
+					<?php } ?>
+
+				</tbody>
+			</table>
+		<?php } ?>
+
+		<?php if ( ! $is_direct_auth ) { ?>
+			<div class="widefat ife_settings_notice">
+				<?php printf( '<b>%1$s</b> %2$s <b><a href="https://developers.facebook.com/apps" target="_blank">%3$s</a></b> %4$s', esc_attr__( 'Note : ', 'import-facebook-events' ), esc_attr__( 'You have to create a Facebook application before filling the following details.', 'import-facebook-events' ), esc_attr__( 'Click here', 'import-facebook-events' ), esc_attr__( 'to create new Facebook application.', 'import-facebook-events' ) ); ?>
+				<br/>
+				<?php esc_attr_e( 'For detailed step by step instructions ', 'import-facebook-events' ); ?>
+				<strong><a href="http://docs.xylusthemes.com/docs/import-facebook-events/creating-facebook-application/" target="_blank"><?php esc_attr_e( 'Click here', 'import-facebook-events' ); ?></a></strong>.
+				<br/>
+				<strong><?php esc_attr_e( 'Set the site url as :', 'import-facebook-events' ); ?> </strong>
+				<span style="color: green;"><?php echo esc_url( get_site_url() ); ?></span>
+				<br/>
+				<strong><?php esc_attr_e( 'Set Valid OAuth redirect URI :', 'import-facebook-events' ); ?> </strong>
+				<span style="color: green;"><?php echo esc_url( admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' ) ); ?></span>
+			</div>
+		<?php } ?>
+
+		<?php
+		if ( $is_key_saved ) {
 			?>
 			<h4 class="setting_bar"><?php esc_attr_e( 'Authorize your Facebook Account', 'import-facebook-events' ); ?></h4>
 			<div class="fb_authorize">
@@ -88,6 +154,7 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 		}
 		?>
 		<form method="post" id="ife_setting_form">
+		<?php if ( ! $is_direct_auth ) { ?>
 			<table class="form-table">
 				<tbody>
 					<?php do_action( 'ife_before_settings_section' ); ?>
@@ -127,7 +194,13 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 						</td>
 					</tr>
 					<?php do_action( 'ife_after_app_settings' ); ?>
+				</tbody>
+			</table>
+		<?php } ?>
 
+			<h3 class="setting_bar"><?php esc_attr_e( 'Import Settings', 'import-facebook-events' ); ?></h3>
+			<table class="form-table">
+				<tbody>
 					<tr>
 						<th scope="row">
 							<?php esc_attr_e( 'Update existing events', 'import-facebook-events' ); ?> :
@@ -144,45 +217,46 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 						</td>
 					</tr>
 
-					<th scope="row">
-                            <?php _e( "Don't Update these data.", "import-facebook-events" ); ?> : 
-                        </th>
-                        <td>
-                            <?php
-                            $donotupdate = isset($facebook_options['dont_update'])? $facebook_options['dont_update'] : array();
-                            $sdontupdate = isset( $donotupdate['status'] ) ? $donotupdate['status'] : 'no';
-                            $cdontupdate = isset( $donotupdate['category'] ) ? $donotupdate['category'] : 'no';
-                            ?>
-                            <input type="checkbox" name="facebook[dont_update][status]" value="yes" <?php checked( $sdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
-                            <span class="xtei_small">
-                                <?php _e( 'Status ( Publish, Pending, Draft etc.. )', 'import-facebook-events' ); ?>
-                            </span><br/>
-                            <input type="checkbox" name="facebook[dont_update][category]" value="yes" <?php checked( $cdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
-                            <span class="xtei_small">
-                                <?php _e( 'Event category', 'import-facebook-events' ); ?>
-                            </span><br/>
-                            <span class="ife_small">
-                                <?php _e( "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')", 'import-facebook-events' ); ?>
-                            </span>
-                            <?php do_action('ife_render_pro_notice'); ?>
-                        </td>
-                    </tr>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( "Don't Update these data.", "import-facebook-events" ); ?> :
+						</th>
+						<td>
+							<?php
+							$donotupdate = isset( $facebook_options['dont_update'] ) ? $facebook_options['dont_update'] : array();
+							$sdontupdate = isset( $donotupdate['status'] ) ? $donotupdate['status'] : 'no';
+							$cdontupdate = isset( $donotupdate['category'] ) ? $donotupdate['category'] : 'no';
+							?>
+							<input type="checkbox" name="facebook[dont_update][status]" value="yes" <?php checked( $sdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
+							<span class="xtei_small">
+								<?php esc_html_e( 'Status ( Publish, Pending, Draft etc.. )', 'import-facebook-events' ); ?>
+							</span><br/>
+							<input type="checkbox" name="facebook[dont_update][category]" value="yes" <?php checked( $cdontupdate, 'yes' ); disabled( ife_is_pro(), false ); ?> />
+							<span class="xtei_small">
+								<?php esc_html_e( 'Event category', 'import-facebook-events' ); ?>
+							</span><br/>
+							<span class="ife_small">
+								<?php esc_html_e( "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')", 'import-facebook-events' ); ?>
+							</span>
+							<?php do_action( 'ife_render_pro_notice' ); ?>
+						</td>
+					</tr>
 
-                    <tr>
-                        <th scope="row">
-                            <?php _e('Direct link to Facebook', 'import-facebook-events'); ?> :
-                        </th>
-                        <td>
-                            <?php
-                            $direct_link = isset($facebook_options['direct_link']) ? $facebook_options['direct_link'] : 'no';
-                            ?>
-                            <input type="checkbox" name="facebook[direct_link]" value="yes" <?php if ($direct_link == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
-                            <span class="ife_small">
-                                <?php _e('Check to enable direct event link to Facebook instead of event detail page.', 'import-facebook-events'); ?>
-                            </span>
-                            <?php do_action('ife_render_pro_notice'); ?>
-                        </td>
-                    </tr>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e('Direct link to Facebook', 'import-facebook-events'); ?> :
+						</th>
+						<td>
+							<?php
+							$direct_link = isset( $facebook_options['direct_link'] ) ? $facebook_options['direct_link'] : 'no';
+							?>
+							<input type="checkbox" name="facebook[direct_link]" value="yes" <?php if ( $direct_link == 'yes' ) { echo 'checked="checked"'; }if (!ife_is_pro()) { echo 'disabled="disabled"'; } ?> />
+							<span class="ife_small">
+								<?php esc_html_e('Check to enable direct event link to Facebook instead of event detail page.', 'import-facebook-events'); ?>
+							</span>
+							<?php do_action('ife_render_pro_notice'); ?>
+						</td>
+					</tr>
 
 					<tr>
 						<th scope="row">
@@ -233,39 +307,39 @@ $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 					</tr>
 
 					<tr>
-                        <th scope="row">
-                            <?php _e('Event Slug', 'import-facebook-events'); ?> :
-                        </th>
-                        <td>
-                            <?php
-							$event_slug = isset($facebook_options['event_slug']) ? $facebook_options['event_slug'] : 'facebook-event';
-							if (!ife_is_pro()) {
+						<th scope="row">
+							<?php esc_html_e( 'Event Slug', 'import-facebook-events' ); ?> :
+						</th>
+						<td>
+							<?php
+							$event_slug = isset( $facebook_options['event_slug'] ) ? $facebook_options['event_slug'] : 'facebook-event';
+							if ( ! ife_is_pro() ) {
 								echo '<input type="text" name="" value="" disabled="disabled" />';
 							} else {
-                            	?>
-                            	<input type="text" name="facebook[event_slug]" value="<?php if ( $event_slug ) { echo $event_slug; } ?>" />
+								?>
+								<input type="text" name="facebook[event_slug]" value="<?php if ( $event_slug ) { echo $event_slug; } ?>" />
 								<?php
 							} ?>
-                            <span class="ife_small">
-                                <?php _e('Slug for the event.', 'import-facebook-events'); ?>
-                            </span>
-                            <?php do_action('ife_render_pro_notice'); ?>
-                        </td>
-                    </tr>
+							<span class="ife_small">
+								<?php _e('Slug for the event.', 'import-facebook-events'); ?>
+							</span>
+							<?php do_action( 'ife_render_pro_notice' ); ?>
+						</td>
+					</tr>
 
-                    <tr>
+					<tr>
 						<th scope="row">
 							<?php esc_attr_e( 'Event Display Time Format', 'import-facebook-events' ); ?> :
 						</th>
 						<td>
 						<?php
-                        $time_format = isset( $facebook_options['time_format'] ) ? $facebook_options['time_format'] : '12hours';
+						$time_format = isset( $facebook_options['time_format'] ) ? $facebook_options['time_format'] : '12hours';
 						?>
-                        <select name="facebook[time_format]">
+						<select name="facebook[time_format]">
 							<option value="12hours" <?php selected('12hours', $time_format); ?>><?php esc_attr_e( '12 Hours', 'import-facebook-events' );  ?></option>
 							<option value="24hours" <?php selected('24hours', $time_format); ?>><?php esc_attr_e( '24 Hours', 'import-facebook-events' ); ?></option>
 							<option value="wordpress_default" <?php selected('wordpress_default', $time_format); ?>><?php esc_attr_e( 'WordPress Default', 'import-facebook-events' ); ?></option>
-                        </select>
+						</select>
 						<span class="ife_small">
 							<?php esc_attr_e( 'Choose event display time format for front-end.', 'import-facebook-events' ); ?>
 						</span>

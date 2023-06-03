@@ -1254,3 +1254,14 @@ function ife_get_next_run_times(){
 	}
 	return $next_runs;
 }
+
+/**
+ * Get Facebook Authentication status.
+ *
+ * @return boolean
+ */
+function ife_is_authenticated() {
+	$ife_user_token_options = get_option( 'ife_user_token_options', array() );
+	$is_authenticated       = isset( $ife_user_token_options['authorize_status'] ) ? ( 1 === $ife_user_token_options['authorize_status'] ) : false;
+	return $is_authenticated;
+}
