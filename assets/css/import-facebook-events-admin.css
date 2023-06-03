@@ -469,3 +469,10 @@ table.ife_form_table tr td:nth-child(1) {
 .ife_connection_wrapper .name_wrap a:hover{
 	color: #f00;
 }
+
+#ife_edit_scheduled_import .form-table td input{
+  width: 100%;
+}
+#ife_edit_scheduled_import .form-table td select{
+  width: 100%;
+}

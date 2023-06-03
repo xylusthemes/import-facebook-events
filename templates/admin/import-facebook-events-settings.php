@@ -219,7 +219,32 @@ $is_key_saved           = ( ! empty( $facebook_app_id ) && ! empty( $facebook_ap
 
 					<tr>
 						<th scope="row">
-							<?php esc_html_e( 'Direct link to Facebook', 'import-facebook-events' ); ?> :
+							<?php _e( "Don't Update these data.", "import-facebook-events" ); ?> :
+						</th>
+						<td>
+							<?php
+							$donotupdate = isset($facebook_options['dont_update'])? $facebook_options['dont_update'] : array();
+							$sdontupdate = isset( $donotupdate['status'] ) ? $donotupdate['status'] : 'no';
+							$cdontupdate = isset( $donotupdate['category'] ) ? $donotupdate['category'] : 'no';
+							?>
+							<input type="checkbox" name="facebook[dont_update][status]" value="yes" <?php checked( $sdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
+							<span class="xtei_small">
+								<?php _e( 'Status ( Publish, Pending, Draft etc.. )', 'import-facebook-events' ); ?>
+							</span><br/>
+							<input type="checkbox" name="facebook[dont_update][category]" value="yes" <?php checked( $cdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
+							<span class="xtei_small">
+								<?php _e( 'Event category', 'import-facebook-events' ); ?>
+							</span><br/>
+							<span class="ife_small">
+								<?php _e( "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')", 'import-facebook-events' ); ?>
+							</span>
+							<?php do_action('ife_render_pro_notice'); ?>
+						</td>
+                    </tr>
+
+					<tr>
+						<th scope="row">
+							<?php _e('Direct link to Facebook', 'import-facebook-events'); ?> :
 						</th>
 						<td>
 							<?php

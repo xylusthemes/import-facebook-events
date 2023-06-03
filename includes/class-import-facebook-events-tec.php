@@ -194,7 +194,9 @@ class Import_Facebook_Events_TEC {
 		if( function_exists( 'tribe_events' ) ){
 			$new_event_id = tribe_events()->set_args( $formated_args )->create()->ID;
 		}else{
-			$new_event_id = tribe_create_event( $formated_args );
+			if( function_exists( 'tribe_create_event' ) ){
+				$new_event_id = tribe_create_event( $formated_args );
+			}
 		}
 		if ( $new_event_id ) {
 			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
@@ -263,8 +265,12 @@ class Import_Facebook_Events_TEC {
 		if( function_exists( 'tribe_events' ) ){
 			$update_event_id = tribe_events()->where( 'id', $event_id )->set_args( $formated_args )->save();
 			$update_event_id = $event_id;
+			$tec_event = array( 'ID' => $event_id, 'post_status' => $formated_args['status'] );
+			wp_update_post( $tec_event );
 		}else{
-			$update_event_id = tribe_update_event( $event_id, $formated_args );
+			if( function_exists( 'tribe_update_event' ) ){
+				$update_event_id = tribe_update_event( $event_id, $formated_args );
+			}
 		}
 
 		if ( $update_event_id ) {
@@ -348,6 +354,10 @@ class Import_Facebook_Events_TEC {
 			'end_date'          => date( 'Y-m-d H:i:s', $end_time ),
 		);
 
+		if( isset( $centralize_array['is_all_day'] ) && true === $centralize_array['is_all_day'] ){
+			$event_args['_EventAllDay'] = 'yes';
+		}
+
 		if ( array_key_exists( 'organizer', $centralize_array ) ) {
 			$organizer               = $this->get_organizer_args( $centralize_array['organizer'] );      
 			$event_args['organizer'] = $organizer['OrganizerID'];
@@ -393,6 +403,10 @@ class Import_Facebook_Events_TEC {
 			'EventShowMap'       => 1,
 			'EventShowMapLink'   => 1,
 		);
+
+		if( isset( $centralize_array['is_all_day'] ) && true === $centralize_array['is_all_day'] ){
+			$event_args['_EventAllDay']      = 'yes';
+		}
 
 		if ( array_key_exists( 'organizer', $centralize_array ) ) {
 			$event_args['organizer'] = $this->get_organizer_args( $centralize_array['organizer'] );

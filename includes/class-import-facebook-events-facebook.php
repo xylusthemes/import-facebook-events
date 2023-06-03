@@ -62,7 +62,7 @@ class Import_Facebook_Events_Facebook {
 		$options             = ife_get_import_options( 'facebook' );
 		$this->fb_app_id     = isset( $options['facebook_app_id'] ) ? $options['facebook_app_id'] : '';
 		$this->fb_app_secret = isset( $options['facebook_app_secret'] ) ? $options['facebook_app_secret'] : '';
-		$this->fb_graph_url  = 'https://graph.facebook.com/v7.0/';
+		$this->fb_graph_url  = 'https://graph.facebook.com/v15.0/';
 
 	}
 
