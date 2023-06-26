@@ -192,3 +192,72 @@
 	});
 
 })( jQuery );
+
+jQuery(document).ready(function($){
+
+	const ife_tab_link = document.querySelectorAll('.ife_tab_link');
+	const ife_tabcontents = document.querySelectorAll('.ife_tab_content');
+
+	ife_tab_link.forEach(function(link) {
+		link.addEventListener('click', function() {
+		const ife_tabId = this.dataset.tab;
+
+		ife_tab_link.forEach(function(link) {
+			link.classList.remove('active');
+		});
+
+		ife_tabcontents.forEach(function(content) {
+			content.classList.remove('active');
+		});
+
+		this.classList.add('active');
+		document.getElementById(ife_tabId).classList.add('active');
+		});
+	});
+
+	const ife_gm_apikey_input = document.querySelector('.ife_google_maps_api_key');
+	const ife_checkkeylink = document.querySelector('.ife_check_key a');
+	ife_gm_apikey_input.addEventListener('input', function() {
+		const ife_check_key = document.querySelector('.ife_check_key');
+		if (ife_gm_apikey_input.value.trim() !== '') {
+			ife_check_key.style.display = 'contents';
+		} else {
+			ife_check_key.style.display = 'none';
+		}
+	});
+
+
+	ife_checkkeylink.addEventListener('click', function(event) {
+		event.preventDefault();
+		const ife_gm_apikey = ife_gm_apikey_input.value.trim();
+
+		if ( ife_gm_apikey !== '' ) {
+			ife_check_gmap_apikey(ife_gm_apikey);
+		}
+	});
+
+	function ife_check_gmap_apikey(ife_gm_apikey) {
+		const ife_xhr = new XMLHttpRequest();
+		ife_xhr.open('GET', 'https://www.google.com/maps/embed/v1/place?q=New+York&key=' + encodeURIComponent(ife_gm_apikey), true);
+		const ife_loader = document.getElementById('ife_loader');
+		ife_loader.style.display = 'inline-block';
+		ife_xhr.onreadystatechange = function() {
+			if ( ife_xhr.readyState === XMLHttpRequest.DONE ) {
+				ife_loader.style.display = 'none';
+				if (ife_xhr.status === 200) {
+					const response = ife_xhr.responseText;
+					var ife_gm_success_notice = jQuery("#ife_gmap_success_message");
+						ife_gm_success_notice.html('<span class="ife_gmap_success_message">Valid Google Maps License Key</span>');
+						setTimeout(function(){ ife_gm_success_notice.empty(); }, 2000);
+				} else {
+					var ife_gm_error_notice = jQuery("#ife_gmap_error_message");
+					ife_gm_error_notice.html( '<span class="ife_gmap_error_message" >Inalid Google Maps License Key</span>' );
+						setTimeout(function(){ ife_gm_error_notice.empty(); }, 2000);
+				}
+			}
+		};
+
+		ife_xhr.send();
+	}
+
+});
