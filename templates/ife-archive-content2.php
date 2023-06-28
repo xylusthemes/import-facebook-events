@@ -12,9 +12,6 @@
 global $ife_events;
 $start_date_str      = get_post_meta( get_the_ID(), 'start_ts', true );
 $start_date_formated = date_i18n( 'F j, Y ', $start_date_str );
-if ( $event_date != '' ) {
-	$event_date = strtotime( $event_date );
-}
 $event_address = get_post_meta( get_the_ID(), 'venue_name', true );
 $venue_address = get_post_meta( get_the_ID(), 'venue_address', true );
 if ( $event_address != '' && $venue_address != '' ) {
@@ -38,7 +35,7 @@ $image_url = array();
 if ( '' !== get_the_post_thumbnail() ) {
 	$image_url = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full' );
 } else {
-	$image_date  = date_i18n( 'F+d', $event_date );
+	$image_date  = date_i18n( 'F+d', $start_date_str );
 	$image_url[] = 'https://dummyimage.com/420x210/ccc/969696.png&text=' . $image_date;
 }
 
