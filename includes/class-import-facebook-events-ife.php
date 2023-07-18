@@ -216,6 +216,11 @@ class Import_Facebook_Events_IFE {
 			$organizer_email = isset( $organizer_array['email'] ) ? sanitize_text_field( $organizer_array['email'] ) : '';
 			$organizer_phone = isset( $organizer_array['phone'] ) ? sanitize_text_field( $organizer_array['phone'] ) : '';
 			$organizer_url   = isset( $organizer_array['url'] ) ? sanitize_text_field( $organizer_array['url'] ) : '';
+			
+			//is online event
+			if( $centralize_array['is_online'] == true ){
+				$venue_name = 'Online Event';
+			}
 
 			// Save Event Data.
 			// Date & Time.

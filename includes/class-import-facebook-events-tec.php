@@ -363,6 +363,9 @@ class Import_Facebook_Events_TEC {
 			$event_args['organizer'] = $organizer['OrganizerID'];
 		}
 
+		if( isset( $centralize_array['is_online'] ) && $centralize_array['is_online'] == true ){
+			$centralize_array['location']['name'] = 'Online Event';
+		}
 		if ( array_key_exists( 'location', $centralize_array ) ) {
 			$venue               = $this->get_venue_args( $centralize_array['location'] );
 			$event_args['venue'] = $venue['VenueID'];

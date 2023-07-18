@@ -179,6 +179,10 @@ class Import_Facebook_Events_My_Calendar {
 			}
 
 			// Location Args for.
+			$is_online = isset( $centralize_array['is_online'] )  ? $centralize_array['is_online'] : false;
+			if( $is_online == true ){
+				$centralize_array['location']['name'] = 'Online Event';
+			}
 			$venue = isset( $centralize_array['location'] ) ? $centralize_array['location'] : array();
 
 			$event_label     = '';
