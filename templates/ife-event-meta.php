@@ -149,6 +149,9 @@ $venue['lon']     = get_post_meta( $event_id, 'venue_lon', true );
 $venue_url        = esc_url( get_post_meta( $event_id, 'venue_url', true ) );
 
 if ( ! empty( $venue_name  ) || ! empty( $venue_address  ) || ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) ) {
+	if( $venue_name == 'Online Event' ){
+		return;
+	}
 	?>
 	<div class="organizermain library">
 		<div class="venue">
