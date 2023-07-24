@@ -229,13 +229,14 @@ class Import_Facebook_Events_EM {
 			}
 
 			$location_id = 0;
+			$is_online = isset( $centralize_array['is_online'] )  ? $centralize_array['is_online'] : false;
 			if ( $is_exitsing_event ) {
-				if ( isset( $centralize_array['location'] ) ) {
-					$location_id = $this->get_location_args( $centralize_array['location'], $inserted_event_id );
+				if ( isset( $centralize_array['location'] ) || $is_online == true ) {
+					$location_id = $this->get_location_args( $centralize_array['location'], $inserted_event_id, $is_online );
 				}
 			} else {
-				if ( isset( $centralize_array['location'] ) ) {
-					$location_id = $this->get_location_args( $centralize_array['location'], false );
+				if ( isset( $centralize_array['location'] ) || $is_online == true ) {
+					$location_id = $this->get_location_args( $centralize_array['location'], false, $is_online );
 				}
 			}
 
@@ -337,13 +338,18 @@ class Import_Facebook_Events_EM {
 	 * @param int   $event_id Event id.
 	 * @return array
 	 */
-	public function get_location_args( $venue, $event_id = false ) {
+	public function get_location_args( $venue, $event_id = false, $is_online ) {
 		global $wpdb, $ife_events;
 
-		if ( ! isset( $venue['ID'] ) ) {
-			return null;
+		if( $is_online == true ){
+			$venue['name'] = 'Online Event';
+			$existing_venue = $this->get_venue_by_name( 'Online Event' );
+		}else{
+			if ( ! isset( $venue['ID'] ) ) {
+				return null;
+			}
+			$existing_venue = $this->get_venue_by_id( $venue['ID'] );
 		}
-		$existing_venue = $this->get_venue_by_id( $venue['ID'] );
 
 		if ( $existing_venue && is_numeric( $existing_venue ) && $existing_venue > 0 && ! $event_id ) {
 			return get_post_meta( $existing_venue, '_location_id', true );
@@ -382,6 +388,8 @@ class Import_Facebook_Events_EM {
 			$lat     = !empty( $venue['lat'] ) ? round( $venue['lat'], 6 ) : 0.000000;
 			$lon     = !empty( $venue['long'] ) ? round( $venue['long'], 6 ) : 0.000000;
 
+			$location_name = isset( $venue['ID'] ) ? $venue['ID'] : $venue['name'];
+			
 			// Save metas.
 			update_post_meta( $location_id, '_blog_id', $blog_id );
 			update_post_meta( $location_id, '_location_address', $address );
@@ -393,7 +401,7 @@ class Import_Facebook_Events_EM {
 			update_post_meta( $location_id, '_location_latitude', $lat );
 			update_post_meta( $location_id, '_location_longitude', $lon );
 			update_post_meta( $location_id, '_location_status', 1 );
-			update_post_meta( $location_id, 'ife_event_venue_id', $venue['ID'] );
+			update_post_meta( $location_id, 'ife_event_venue_id', $location_name );
 
 			global $wpdb;
 			$location_array  = array(
@@ -465,6 +473,30 @@ class Import_Facebook_Events_EM {
 				'post_type'        => $this->venue_posttype,
 				'meta_key'         => 'ife_event_venue_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
 				'meta_value'       => $venue_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
+				'suppress_filters' => false,
+			)
+		);
+
+		if ( is_array( $existing_venue ) && ! empty( $existing_venue ) ) {
+			return $existing_venue[0]->ID;
+		}
+		return false;
+	}
+
+	/**
+	 * Check for Existing EM Venue
+	 *
+	 * @since    1.7.3
+	 * @param int $venue_name Venue id.
+	 * @return int/boolean
+	 */
+	public function get_venue_by_name( $venue_name ) {
+		$existing_venue = get_posts(
+			array(
+				'posts_per_page'   => 1,
+				'post_type'        => $this->venue_posttype,
+				'meta_key'         => 'ife_event_venue_id',
+				'meta_value'       => $venue_name,
 				'suppress_filters' => false,
 			)
 		);

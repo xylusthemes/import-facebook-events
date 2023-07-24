@@ -416,7 +416,7 @@ class Import_Facebook_Events_Ical_Parser {
 			$longitude = isset( $geo['longitude'] ) ? (float)$geo['longitude'] : '';
 			$location  = str_replace('\n', ' ', $event->getLocation() );
 			if ( empty( $location ) ) {
-				return null;
+				$location = 'Online Event';
 			}
 
 			$event_location = array(
