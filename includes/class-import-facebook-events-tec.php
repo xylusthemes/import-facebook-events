@@ -430,7 +430,8 @@ class Import_Facebook_Events_TEC {
 		if ( ! isset( $centralize_org_array['name'] ) ) {
 			return null;
 		}
-		$existing_organizer = $this->get_organizer_by_id( $centralize_org_array['name'] );
+		$organizer_name = str_replace( '\\', '', $centralize_org_array['name'] );
+		$existing_organizer = $this->get_organizer_by_id( $organizer_name );
 		if ( $existing_organizer && is_numeric( $existing_organizer ) && $existing_organizer > 0 ) {
 			return array(
 				'OrganizerID' => $existing_organizer
