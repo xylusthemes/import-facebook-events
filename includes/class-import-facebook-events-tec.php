@@ -165,6 +165,14 @@ class Import_Facebook_Events_TEC {
 
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
+			$skip_trash    = isset( $options['skip_trash'] ) ? $options['skip_trash'] : 'no';
+			$post_status   = get_post_status( $is_exitsing_event );
+			if ( 'trash' == $post_status && $skip_trash == 'yes' ) {
+				return array(
+					'status' => 'skip_trash',
+					'id'     => $is_exitsing_event,
+				);
+			}
 			if ( 'yes' === $update_events ) {
 				return $this->update_event( $is_exitsing_event, $centralize_array, $formated_args, $event_args );
 			} else {
@@ -433,7 +441,8 @@ class Import_Facebook_Events_TEC {
 		if ( ! isset( $centralize_org_array['name'] ) ) {
 			return null;
 		}
-		$existing_organizer = $this->get_organizer_by_id( $centralize_org_array['name'] );
+		$organizer_name = str_replace( '\\', '', $centralize_org_array['name'] );
+		$existing_organizer = $this->get_organizer_by_id( $organizer_name );
 		if ( $existing_organizer && is_numeric( $existing_organizer ) && $existing_organizer > 0 ) {
 			return array(
 				'OrganizerID' => $existing_organizer
