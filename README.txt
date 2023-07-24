@@ -4,8 +4,8 @@ Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
 Requires at least: 4.0
 Requires PHP: 5.3
-Tested up to: 6.2
-Stable tag: 1.7.2
+Tested up to: 6.3
+Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,22 @@ You can use `[facebook_events]` for display in-built facebook events list.
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.7.3 =
+* ADDED: Reduced Facebook API Calls in iCal.
+* ADDED: Online Event Location Support in suported plugin.
+* ADDED: Google Map API key Option.
+* ADDED: Responsive grid view style 1 Support
+* ADDED: Skip Trashed Events Option
+* ADDED: Time Format support in grid view style 2
+* ADDED: Grig View Style 2 Option in Elementor Block (PRO)
+* ADDED: Renew License button in the license section. (PRO)
+* FIXED: iCal Event Organizer Email Address Format.
+* FIXED: iCal Organizer Duplicate Issue in TEC.
+* FIXED: iCal URL Saving Bug in Schedule import (PRO).
+* FIXED: Delete WP Cron queue when you delete schedule delete.(PRO)
+* IMPROVEMENTS: Security and GUI changes
+* IMPROVEMENTS: Support for WP 6.3
 
 = 1.7.2 =
 * FIXED: Timezone Name issue.
