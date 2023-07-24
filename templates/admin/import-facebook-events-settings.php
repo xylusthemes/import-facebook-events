@@ -361,9 +361,16 @@ $ife_google_maps_api_key = get_option( 'ife_google_maps_api_key', array() );
 				<?php if( ife_is_pro() ){ ?>
 				<div id="license" class="ife_tab_content">
 					<?php
-						if( class_exists( 'Import_Facebook_Events_Pro_Common' ) ){
-							$ife_events->common_pro->ife_licence_page_in_setting(); 
-						}
+						if( class_exists( 'Import_Facebook_Events_Pro_Common' ) && method_exists( $ife_events->common_pro, 'ife_licence_page_in_setting' ) ){
+                            $ife_events->common_pro->ife_licence_page_in_setting(); 
+                        }else{
+                            $license_section = sprintf(
+                                '<h3 class="setting_bar" >Once you have updated the plugin Pro version <a href="%s">%s</a>, you will be able to access this section.</h3>',
+                                esc_url( admin_url( 'plugins.php?s=import+facebook+events+pro' ) ),
+                                esc_html__( 'Here', 'import-facebook-events' )
+                            );
+                            echo $license_section;
+                        }
 					?>
 				</div>
 				<?php } ?>
