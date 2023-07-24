@@ -121,6 +121,14 @@ class Import_Facebook_Events_EventON {
 			// Update event or not?
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
+			$skip_trash    = isset( $options['skip_trash'] ) ? $options['skip_trash'] : 'no';
+			$post_status   = get_post_status( $is_exitsing_event );
+			if ( 'trash' == $post_status && $skip_trash == 'yes' ) {
+				return array(
+					'status' => 'skip_trash',
+					'id'     => $is_exitsing_event,
+				);
+			}
 			if ( 'yes' !== $update_events ) {
 				return array(
 					'status' => 'skipped',
@@ -189,6 +197,7 @@ class Import_Facebook_Events_EventON {
 			$timezone = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
 			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
 			$is_all_day    = !empty( $centralize_array['is_all_day'] ) ? $centralize_array['is_all_day'] : 0;
+			$is_online     = isset( $centralize_array['is_online'] ) ? $centralize_array['is_online'] : false;
 
 			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
@@ -201,6 +210,10 @@ class Import_Facebook_Events_EventON {
 			update_post_meta( $inserted_event_id, 'evcal_allday', $is_all_day );
 
 			$location_name = isset( $centralize_array['location']['name'] ) ? sanitize_text_field( $centralize_array['location']['name'] ) : '';
+			if( $is_online == true ){
+				update_post_meta( $inserted_event_id, '_virtual', 'yes' );
+				$location_name = 'Online Event';
+			}
 			if ( ! empty( $location_name ) ) {
 				$loc_term = term_exists( $location_name, $this->location_taxonomy );
 				if ( 0 !== $loc_term && null !== $loc_term ) {

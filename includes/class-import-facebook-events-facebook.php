@@ -320,6 +320,7 @@ class Import_Facebook_Events_Facebook {
 			'ticket_uri',
 			'timezone',
 			'place',
+			'is_online',
 		);
 		$include_owner = apply_filters( 'ife_import_owner', false );
 		if ( $include_owner ) {
@@ -408,6 +409,12 @@ class Import_Facebook_Events_Facebook {
 			}
 		}
 
+		if( isset( $facebook_event->is_online ) && $facebook_event->is_online == 1 ){
+			$is_online = '1';
+		}else{
+			$is_online = '0';
+		}
+
 		$xt_event = array(
 			'origin'          => 'facebook',
 			'ID'              => $facebook_id,
@@ -424,6 +431,7 @@ class Import_Facebook_Events_Facebook {
 			'is_all_day'      => '',
 			'url'             => $ticket_uri,
 			'image_url'       => $cover_image,
+			'is_online'       => $is_online
 		);
 
 		if ( isset( $facebook_event->owner ) ) {

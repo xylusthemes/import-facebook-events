@@ -106,6 +106,14 @@ class Import_Facebook_Events_EE4 {
 			// Update event or not?
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
+			$skip_trash    = isset( $options['skip_trash'] ) ? $options['skip_trash'] : 'no';
+			$post_status   = get_post_status( $is_exitsing_event );
+			if ( 'trash' == $post_status && $skip_trash == 'yes' ) {
+				return array(
+					'status' => 'skip_trash',
+					'id'     => $is_exitsing_event,
+				);
+			}
 			if ( 'yes' !== $update_events ) {
 				return array(
 					'status' => 'skipped',
@@ -217,7 +225,8 @@ class Import_Facebook_Events_EE4 {
 			/*
 			 * Add Venue.
 			 */
-			$venue_id = $this->add_ee4_venue( $centralize_array['location'], $inserted_event_id );
+			$is_online = isset( $centralize_array['is_online'] )  ? $centralize_array['is_online'] : false;
+			$venue_id = $this->add_ee4_venue( $centralize_array['location'], $inserted_event_id, $is_online );
 
 			if ( ! empty( $venue_id ) && $venue_id > 0 ) {
 				// Connect venue with Event.
@@ -279,20 +288,25 @@ class Import_Facebook_Events_EE4 {
 	 * @param int   $event_id Event id.
 	 * @return int|bool venue ID on success or false on failure
 	 */
-	public function add_ee4_venue( $venue_array, $event_id ) {
+	public function add_ee4_venue( $venue_array, $event_id, $is_online ) {
 		global $wpdb;
 
-		if ( empty( $venue_array ) ) {
-			return false;
-		}
 		$venue_id = isset( $venue_array['ID'] ) ? $venue_array['ID'] : '';
-		if ( empty( $venue_id ) ) {
-			return false;
-		}
+		$venue_name = 'Online Event';
+		if( $is_online == 1 ){
+			$is_exitsing_venue = $this->get_ee4_venue_by_name( $venue_name );
+			if ( $is_exitsing_venue ) {
+				return $is_exitsing_venue;
+			}
+		}else{
+			if ( empty( $venue_id ) ) {
+				return false;
+			}
 
-		$is_exitsing_venue = $this->get_ee4_venue_by_id( $venue_id );
-		if ( $is_exitsing_venue ) {
-			return $is_exitsing_venue;
+			$is_exitsing_venue = $this->get_ee4_venue_by_id( $venue_id );
+			if ( $is_exitsing_venue ) {
+				return $is_exitsing_venue;
+			}
 		}
 
 		// Venue Deatails.
@@ -308,6 +322,11 @@ class Import_Facebook_Events_EE4 {
 		$venue_lat     = isset( $venue_array['lat'] ) ? sanitize_text_field( $venue_array['lat'] ) : '';
 		$venue_lon     = isset( $venue_array['long'] ) ? sanitize_text_field( $venue_array['long'] ) : '';
 		$venue_url     = isset( $venue_array['url'] ) ? esc_url( $venue_array['url'] ) : '';
+
+		if( $is_online == 1 ){
+			$venue_name = 'Online Event';
+			$venue_id   = 'Online Event';
+		}
 
 		$venuedata = array(
 			'post_title'   => $venue_name,
@@ -395,6 +414,34 @@ class Import_Facebook_Events_EE4 {
 				'post_type'        => $this->venue_posttype,
 				'meta_key'         => 'ife_ee4_venue_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
 				'meta_value'       => $venue_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
+				'suppress_filters' => false,
+			)
+		);
+
+		if ( is_array( $existing_venue ) && ! empty( $existing_venue ) ) {
+			return $existing_venue[0]->ID;
+		}
+		return false;
+	}
+
+	/**
+	 * Check for Existing EE4 Venue
+	 *
+	 * @since    1.7.3
+	 * @param int $venue_id Venue id.
+	 * @return int/boolean
+	 */
+	public function get_ee4_venue_by_name( $venue_name ) {
+		if ( empty( $venue_name ) ) {
+			return false;
+		}
+
+		$existing_venue = get_posts(
+			array(
+				'posts_per_page'   => 1,
+				'post_type'        => $this->venue_posttype,
+				'meta_key'         => 'ife_ee4_venue_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
+				'meta_value'       => $venue_name, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Ignore.
 				'suppress_filters' => false,
 			)
 		);

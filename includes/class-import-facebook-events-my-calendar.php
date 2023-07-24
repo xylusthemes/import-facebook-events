@@ -86,6 +86,14 @@ class Import_Facebook_Events_My_Calendar {
 			// Update event or not?
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
+			$skip_trash    = isset( $options['skip_trash'] ) ? $options['skip_trash'] : 'no';
+			$post_status   = get_post_status( $is_exitsing_event );
+			if ( 'trash' == $post_status && $skip_trash == 'yes' ) {
+				return array(
+					'status' => 'skip_trash',
+					'id'     => $is_exitsing_event,
+				);
+			}
 			if ( 'yes' !== $update_events ) {
 				return array(
 					'status' => 'skipped',
@@ -179,6 +187,10 @@ class Import_Facebook_Events_My_Calendar {
 			}
 
 			// Location Args for.
+			$is_online = isset( $centralize_array['is_online'] )  ? $centralize_array['is_online'] : false;
+			if( $is_online == true ){
+				$centralize_array['location']['name'] = 'Online Event';
+			}
 			$venue = isset( $centralize_array['location'] ) ? $centralize_array['location'] : array();
 
 			$event_label     = '';

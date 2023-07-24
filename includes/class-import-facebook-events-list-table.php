@@ -93,6 +93,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 		$created           = get_post_meta( $item['ID'], 'created', true );
 		$updated           = get_post_meta( $item['ID'], 'updated', true );
 		$skipped           = get_post_meta( $item['ID'], 'skipped', true );
+		$skip_trash        = get_post_meta( $item['ID'], 'skip_trash', true );
 		$nothing_to_import = get_post_meta( $item['ID'], 'nothing_to_import', true );
 
 		$success_message = '<span style="color: silver"><strong>';
@@ -107,6 +108,10 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 		if ( $skipped > 0 ) {
 			// translators: %d is numbers of event skipped.
 			$success_message .= sprintf( esc_attr__( '%d Skipped', 'import-facebook-events' ), $skipped ) . '<br>';
+		}
+		if ( $skip_trash > 0 ) {
+			// translators: %d is numbers of event skipped Trashed .
+			$success_message .= sprintf( esc_attr__( '%d Skipped (Already exists in Trash)', 'import-facebook-events' ), $skip_trash ) . '<br>';
 		}
 		if ( $nothing_to_import ) {
 			$success_message .= esc_attr__( 'No events are imported.', 'import-facebook-events' ) . '<br>';
