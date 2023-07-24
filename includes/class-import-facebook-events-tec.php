@@ -494,10 +494,11 @@ class Import_Facebook_Events_TEC {
 		if ( strlen( $country ) > 2 && ! empty( $country ) ) {
 			$country = $ife_events->common->ife_get_country_code( $country );
 		}
+		$address_1    = isset( $venue['address_1'] ) ? $venue['address_1'] : '';
 		$create_venue = tribe_create_venue(
 			array(
 				'Venue'       => isset( $venue['name'] ) ? $venue['name'] : '',
-				'Address'     => isset( $venue['full_address'] ) ? $venue['full_address'] : $venue['address_1'],
+				'Address'     => isset( $venue['full_address'] ) ? $venue['full_address'] : $address_1,
 				'City'        => isset( $venue['city'] ) ? $venue['city'] : '',
 				'State'       => isset( $venue['state'] ) ? $venue['state'] : '',
 				'Country'     => $country,
