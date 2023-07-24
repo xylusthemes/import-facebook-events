@@ -142,6 +142,22 @@ $ife_google_maps_api_key = get_option( 'ife_google_maps_api_key', array() );
 											</td>
 										</tr>
 										<?php do_action( 'ife_after_app_settings' ); ?>
+                    
+					            <tr>
+                        <th scope="row">
+                            <?php _e('Skip Trashed Events', 'import-facebook-events'); ?> :
+                        </th>
+                        <td>
+                            <?php
+                            $skip_trash = isset($facebook_options['skip_trash']) ? $facebook_options['skip_trash'] : 'no';
+                            ?>
+                            <input type="checkbox" name="facebook[skip_trash]" value="yes" <?php if ($skip_trash == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
+                            <span class="ife_small">
+                                <?php _e('Check to enable skip-the-trash events during importing.', 'import-facebook-events'); ?>
+                            </span>
+                            <?php do_action('ife_render_pro_notice'); ?>
+                        </td>
+                    </tr>
 
 										<tr>
 											<th scope="row">

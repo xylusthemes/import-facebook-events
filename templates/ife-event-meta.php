@@ -156,6 +156,9 @@ if ( ife_is_pro() && empty( $get_gmap_key ) ) {
 }
 
 if ( ! empty( $venue_name  ) || ! empty( $venue_address  ) || ( ! empty( $venue['lat'] ) && ! empty( $venue['lon'] ) ) ) {
+	if( $venue_name == 'Online Event' ){
+		return;
+	}
 	?>
 	<div class="organizermain library">
 		<div class="venue">
