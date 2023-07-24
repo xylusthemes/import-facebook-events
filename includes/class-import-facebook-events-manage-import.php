@@ -32,6 +32,7 @@ class Import_Facebook_Events_Manage_Import {
 		add_action( 'init', array( $this, 'setup_success_messages' ) );
 		add_action( 'admin_init', array( $this, 'handle_import_form_submit' ), 99 );
 		add_action( 'admin_init', array( $this, 'handle_import_settings_submit' ), 99 );
+		add_action( 'admin_init', array( $this, 'handle_gma_settings_submit' ), 99 );
 		add_action( 'admin_init', array( $this, 'handle_listtable_oprations' ), 99 );
 	}
 
@@ -91,6 +92,25 @@ class Import_Facebook_Events_Manage_Import {
 			$is_update = update_option( IFE_OPTIONS, $ife_options['facebook'] );
 			if ( $is_update ) {
 				$ife_success_msg[] = __( 'Import settings has been saved successfully.', 'import-facebook-events' );
+			} else {
+				$ife_errors[] = __( 'Something went wrong! please try again.', 'import-facebook-events' );
+			}
+		}
+	}
+
+	/**
+	 * Process insert google maps api key for embed maps
+	 *
+	 * @since    1.0.0
+	 */
+	public function handle_gma_settings_submit() {
+		global $ife_errors, $ife_success_msg;
+		if ( isset( $_POST['ife_gma_action'] ) && 'ife_save_gma_settings' === sanitize_text_field( wp_unslash( $_POST['ife_gma_action'] ) ) && check_admin_referer( 'ife_gma_setting_form_nonce_action', 'ife_gma_setting_form_nonce' ) ) { // input var okay.
+			$gma_option = array();
+			$gma_option['ife_google_maps_api_key'] = isset( $_POST['ife_google_maps_api_key'] ) ? wp_unslash( $_POST['ife_google_maps_api_key'] ) : ''; // input var okay.
+			$is_update = update_option( 'ife_google_maps_api_key', $gma_option['ife_google_maps_api_key'] );
+			if ( $is_update ) {
+				$ife_success_msg[] = __( 'Google Maps API Key has been saved successfully.', 'import-facebook-events' );
 			} else {
 				$ife_errors[] = __( 'Something went wrong! please try again.', 'import-facebook-events' );
 			}

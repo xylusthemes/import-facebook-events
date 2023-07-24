@@ -457,3 +457,104 @@ table.ife_form_table tr td:nth-child(1) {
 #ife_edit_scheduled_import .form-table td select{
   width: 100%;
 }
+
+.ife_google_maps_api_key{
+  width: 50%;
+}
+
+.ife_tab_container {
+  margin: 20px 10px;
+}
+
+.ife_nav_tabs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ife_nav_tabs li {
+  display: inline-block;
+  margin-right: 10px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.ife_tab_content {
+  display: none;
+  padding: 10px;
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.ife_tab_content.active {
+  display: block;
+}
+
+.ife_navbar {
+  background-color: #f2f2f2;
+  padding: 10px;
+}
+
+.ife_nav_tabs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.ife_nav_tabs li {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px 5px 0 0;
+  background-color: #dcdcde;
+  color: #333;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  margin-bottom: -1px;
+}
+
+.ife_nav_tabs li.active {
+  font-weight: bold;
+  background-color: unset;
+  border-bottom: 1px solid #f0f0f1;
+}
+
+.ife_gmap_error_message{
+  font-weight: bold;
+  color: red;
+  margin-left: 10px;
+}
+.ife_gmap_success_message{
+  font-weight: bold;
+  color: green;
+  margin-left: 10px;
+}
+
+.ife_loader {
+  position: relative;
+  display: none;
+}
+
+.ife_loader::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: -20px;
+  width: 10px;
+  height: 10px;
+  background-color: #333;
+  border-radius: 50%;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(0); }
+}
