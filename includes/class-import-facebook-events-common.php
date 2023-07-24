@@ -368,6 +368,8 @@ class Import_Facebook_Events_Common {
 					$import_status['updated'][] = $value;
 				} elseif ( 'skipped' === $value['status'] ) {
 					$import_status['skipped'][] = $value;
+				} elseif ( 'skip_trash' === $value['status'] ) {
+					$import_status['skip_trash'][] = $value;
 				}
 
 				if ( isset( $value['id'] ) ) {
@@ -379,9 +381,11 @@ class Import_Facebook_Events_Common {
 		$created = 0;
 		$updated = 0;
 		$skipped = 0;
+		$skip_trash = 0;
 		$created = isset( $import_status['created'] ) ? count( $import_status['created'] ) : 0;
 		$updated = isset( $import_status['updated'] ) ? count( $import_status['updated'] ) : 0;
 		$skipped = isset( $import_status['skipped'] ) ? count( $import_status['skipped'] ) : 0;
+		$skip_trash = isset( $import_status['skip_trash'] ) ? count( $import_status['skip_trash'] ) : 0;
 
 		$success_message = esc_html__( 'Event(s) are imported successfully.', 'import-facebook-events' ) . '<br>';
 		if ( $created > 0 ) {
@@ -396,6 +400,10 @@ class Import_Facebook_Events_Common {
 			// translators: %d is numbers of event skipped.
 			$success_message .= '<strong>' . sprintf( __( '%d Skipped (Already exists)', 'import-facebook-events' ), $skipped ) . '</strong><br>';
 		}
+		if ( $skip_trash > 0 ) {
+			// translators: %d is numbers of event skipped Trashed.
+			$success_message .= '<strong>' . sprintf( __( '%d Skipped (Already exists in Trash)', 'import-facebook-events' ), $skip_trash ) . '</strong><br>';
+		}
 		$ife_success_msg[] = $success_message;
 
 		if ( ! empty( $schedule_post ) && $schedule_post > 0 ) {
@@ -404,11 +412,11 @@ class Import_Facebook_Events_Common {
 			$temp_title = esc_attr__( 'Manual Import', 'import-facebook-events' );
 		}
 		$nothing_to_import = false;
-		if ( 0 === $created && 0 === $updated && 0 === $skipped ) {
+		if ( 0 === $created && 0 === $updated && 0 === $skipped && 0 === $skip_trash ) {
 			$nothing_to_import = true;
 		}
 
-		if ( $created > 0 || $updated > 0 || $skipped > 0 || $nothing_to_import ) {
+		if ( $created > 0 || $updated > 0 || $skipped > 0 || $skip_trash > 0 || $nothing_to_import ) {
 			$insert_args = array(
 				'post_type'   => 'ife_import_history',
 				'post_status' => 'publish',
@@ -421,6 +429,7 @@ class Import_Facebook_Events_Common {
 				update_post_meta( $insert, 'created', $created );
 				update_post_meta( $insert, 'updated', $updated );
 				update_post_meta( $insert, 'skipped', $skipped );
+				update_post_meta( $insert, 'skip_trash', $skip_trash );
 				update_post_meta( $insert, 'nothing_to_import', $nothing_to_import );
 				update_post_meta( $insert, 'imported_data', $import_data );
 				update_post_meta( $insert, 'import_data', $import_args );
@@ -638,16 +647,29 @@ class Import_Facebook_Events_Common {
 	 */
 	public function get_event_by_event_id( $post_type, $event_id ) {
 		global $wpdb;
-		
-		$get_post_id = $wpdb->get_col(
-			$wpdb->prepare(
-				'SELECT ' . $wpdb->prefix . 'posts.ID FROM ' . $wpdb->prefix . 'posts, ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'posts.post_type = %s AND ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.ID AND ' . $wpdb->prefix . 'posts.post_status != %s AND (' . $wpdb->prefix . 'postmeta.meta_key = %s AND ' . $wpdb->prefix . 'postmeta.meta_value = %s ) LIMIT 1',
-				$post_type,
-				'trash',
-				'ife_facebook_event_id',
-				$event_id
-			)
-		);
+		$ife_options = get_option( IFE_OPTIONS );
+		$skip_trash = isset( $ife_options['skip_trash'] ) ? $ife_options['skip_trash'] : 'no';
+
+		if( $skip_trash == 'yes' ){
+			$get_post_id = $wpdb->get_col(
+				$wpdb->prepare(
+					'SELECT ' . $wpdb->prefix . 'posts.ID FROM ' . $wpdb->prefix . 'posts, ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'posts.post_type = %s AND ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.ID AND (' . $wpdb->prefix . 'postmeta.meta_key = %s AND ' . $wpdb->prefix . 'postmeta.meta_value = %s ) LIMIT 1',
+					$post_type,
+					'ife_facebook_event_id',
+					$event_id
+				)
+			);
+		}else{
+			$get_post_id = $wpdb->get_col(
+				$wpdb->prepare(
+					'SELECT ' . $wpdb->prefix . 'posts.ID FROM ' . $wpdb->prefix . 'posts, ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'posts.post_type = %s AND ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.ID AND ' . $wpdb->prefix . 'posts.post_status != %s AND (' . $wpdb->prefix . 'postmeta.meta_key = %s AND ' . $wpdb->prefix . 'postmeta.meta_value = %s ) LIMIT 1',
+					$post_type,
+					'trash',
+					'ife_facebook_event_id',
+					$event_id
+				)
+			);
+		}
 
 		if ( !empty( $get_post_id[0] ) ) {
 			return $get_post_id[0];
