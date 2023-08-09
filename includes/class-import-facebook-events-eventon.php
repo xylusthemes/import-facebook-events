@@ -194,8 +194,8 @@ class Import_Facebook_Events_EventON {
 			$city    = isset( $centralize_array['location']['city'] ) ? sanitize_text_field( $centralize_array['location']['city'] ) : '';
 			$state   = isset( $centralize_array['location']['state'] ) ? sanitize_text_field( $centralize_array['location']['state'] ) : '';
 			$country = isset( $centralize_array['location']['country'] ) ? sanitize_text_field( $centralize_array['location']['country'] ) : '';
-			$timezone = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
-			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+			$timezone = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : 'UTC';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : 'Africa/Abidjan';
 			$is_all_day    = !empty( $centralize_array['is_all_day'] ) ? $centralize_array['is_all_day'] : 0;
 			$is_online     = isset( $centralize_array['is_online'] ) ? $centralize_array['is_online'] : false;
 
@@ -208,6 +208,7 @@ class Import_Facebook_Events_EventON {
 			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
 			update_post_meta( $inserted_event_id, 'ife_event_timezone_name', $timezone_name );
 			update_post_meta( $inserted_event_id, 'evcal_allday', $is_all_day );
+			update_post_meta( $inserted_event_id, '_evo_tz', $timezone_name );
 
 			$location_name = isset( $centralize_array['location']['name'] ) ? sanitize_text_field( $centralize_array['location']['name'] ) : '';
 			if( $is_online == true ){
