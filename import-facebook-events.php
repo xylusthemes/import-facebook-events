@@ -34,6 +34,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @var object Instance of Import_Facebook_Events
 		 */
 		private static $instance;
+		public $common, $cpt, $facebook, $admin, $manage_import, $ife, $tec, $em, $eventon, $event_organizer, $aioec, $my_calendar, $ee4, $ical_parser, $ical;
 
 		/**
 		 * Main Import Facebook Events Instance.
