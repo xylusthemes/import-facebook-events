@@ -67,6 +67,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				self::$instance->admin    = new Import_Facebook_Events_Admin();
 				
 				self::$instance->ical_parser 	   = new Import_Facebook_Events_Ical_Parser();
+				self::$instance->ical_parser_aioec = new Import_Facebook_Events_Ical_Parser_AIOEC();
 				self::$instance->ical 			   = new Import_Facebook_Events_Ical();
 				if ( ife_is_pro() ) {
 					self::$instance->manage_import = new Import_Facebook_Events_Pro_Manage_Import();
@@ -181,6 +182,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				require_once IFE_PLUGIN_DIR . 'includes/lib/icalcreator/autoload.php';
 			}
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ical_parser.php';
+			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ical_parser_aioec.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ical.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-cpt.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-facebook.php';

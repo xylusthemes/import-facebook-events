@@ -85,8 +85,14 @@ class Import_Facebook_Events_Ical {
 			return array();
 		}
 
-		$imported_events = $ife_events->ical_parser->parse_import_events( $event_data, $ics_content );
-		return $imported_events;
+		if( ife_aioec_active() && post_type_exists( 'ai1ec_event' ) ){
+			$imported_events = $ife_events->ical_parser_aioec->parse_import_events( $event_data, $ics_content );
+			return $imported_events;
+		}else{
+			$imported_events = $ife_events->ical_parser->parse_import_events( $event_data, $ics_content );
+			return $imported_events;
+		}
+
 	}
 
 	/**
