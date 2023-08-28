@@ -161,7 +161,7 @@ class Import_Facebook_Events_EM {
 		$start_time       = $centralize_array['starttime_local'];
 		$end_time         = $centralize_array['endtime_local'];
 		$ticket_uri       = $centralize_array['url'];
-		$timezone_name    = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : '';
+		$timezone_name    = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : 'Africa/Abidjan';
 		if ( empty( $timezone_name ) ) {
 			$timezone_name = isset( $centralize_array['timezone'] ) ? $centralize_array['timezone'] : 'UTC';
 		}
@@ -338,7 +338,7 @@ class Import_Facebook_Events_EM {
 	 * @param int   $event_id Event id.
 	 * @return array
 	 */
-	public function get_location_args( $venue, $event_id = false, $is_online ) {
+	public function get_location_args( $venue, $event_id = false, $is_online = false ) {
 		global $wpdb, $ife_events;
 
 		if( $is_online == true ){
