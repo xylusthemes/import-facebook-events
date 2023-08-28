@@ -328,19 +328,25 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 						$event_api_data = $this->get_event_image_and_location( $event_data['import_into'], $uid );
 
 						if( !empty( $event_api_data ) ){
-							$event_image   = $event_api_data['image'];
-							$event_venue   = $event_api_data['location'];
-							$start_time    = $event_api_data['start_time'];
-							$end_time      = $event_api_data['end_time'];
-							$timezone      = $event_api_data['ical_timezone'];
-							$timezone_name = $event_api_data['ical_timezone_name'];
+							$event_image   = isset( $event_api_data['image'] ) ? $event_api_data['image'] : '';
+							$event_venue   = isset( $event_api_data['location'] ) ? $event_api_data['location'] : '';
+							$start_time    = isset( $event_api_data['start_time'] ) ? $event_api_data['start_time'] : '';
+							$end_time      = isset( $event_api_data['end_time'] ) ? $event_api_data['end_time'] : '';
+							$timezone      = isset( $event_api_data['ical_timezone'] ) ? $event_api_data['ical_timezone'] : '';
+							$timezone_name = isset( $event_api_data['ical_timezone_name'] ) ? $event_api_data['ical_timezone_name'] : '';
 						}
 
-						if( isset( $event_api_data['ical_timezone_name'] ) && empty( $event_api_data['start_time'] ) ){
-							$start_time = strtotime( $this->convert_fb_ical_timezone( $start, $event_api_data['ical_timezone_name'] ) );
+						if( empty( $event_api_data['start_time'] ) ){
+							$cwt_start     = $this->convert_fb_ical_timezone( $start, $event_api_data['ical_timezone_name'] );
+							$timezone      = $wordpress_timezone;
+							$timezone_name = $cwt_start['timezone_name'];
+							$start_time    = strtotime( $cwt_start['date_format'] );
 						}
-						if( isset( $event_api_data['ical_timezone_name'] ) &&  empty( $event_api_data['end_time'] ) ){
-							$end_time   = strtotime( $this->convert_fb_ical_timezone( $end, $event_api_data['ical_timezone_name'] ) );
+						if( empty( $event_api_data['end_time'] ) ){
+							$cwt_end       = $this->convert_fb_ical_timezone( $end, $event_api_data['ical_timezone_name'] );
+							$timezone      = $wordpress_timezone;
+							$timezone_name = $cwt_end['timezone_name'];
+							$end_time      = strtotime( $cwt_end['date_format'] );
 						}
 					}
 				}
@@ -569,7 +575,12 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 		$event_timezone = new DateTimeZone( $tz );
 		$datetime->setTimezone( $event_timezone );
 
-		return $datetime->format('Y-m-d H:i:s');
+		$date_format    = $datetime->format('Y-m-d H:i:s');
+		$return_args = array(
+			'timezone_name' => $tz,
+			'date_format'   => $date_format,
+		);
+		return $return_args;
 	}
 
 	/**
