@@ -207,9 +207,10 @@ class Import_Facebook_Events_TEC {
 			}
 		}
 		if ( $new_event_id ) {
-			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
-			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : 'UTC';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : 'Africa/Abidjan';
 
+			update_post_meta( $new_event_id, '_EventTimezone', $timezone_name );
 			update_post_meta( $new_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $new_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $new_event_id, 'ife_event_link', esc_url( $centralize_array['url'] ) );
@@ -283,8 +284,14 @@ class Import_Facebook_Events_TEC {
 
 		if ( $update_event_id ) {
 
-			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
-			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
+			$start_time    = $centralize_array['starttime_local'];
+			$end_time      = $centralize_array['endtime_local'];
+			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : 'UTC';
+			$timezone_name = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : 'Africa/Abidjan';
+
+			update_post_meta( $update_event_id, '_EventStartDate',  date( 'Y-m-d H:i:s', $start_time ) );
+			update_post_meta( $update_event_id, '_EventEndDate', date( 'Y-m-d H:i:s', $end_time ) );
+			update_post_meta( $update_event_id, '_EventTimezone', $timezone_name );
 
 			update_post_meta( $update_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $update_event_id, 'ife_event_origin', $event_args['import_origin'] );
@@ -351,13 +358,13 @@ class Import_Facebook_Events_TEC {
 		}
 		$start_time = $centralize_array['starttime_local'];
 		$end_time   = $centralize_array['endtime_local'];
-		$timezone   = isset( $centralize_array['timezone'] ) ? $centralize_array['timezone'] : 'UTC'; 
+		$timezone_name = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : 'Africa/Abidjan'; 
 		$event_args = array(
 			'title'             => $centralize_array['name'],
 			'post_content'      => $centralize_array['description'],
 			'status'            => 'pending',
 			'url'               => $centralize_array['url'],
-			'timezone'          => $timezone,
+			'timezone'          => $timezone_name,
 			'start_date'        => date( 'Y-m-d H:i:s', $start_time ),
 			'end_date'          => date( 'Y-m-d H:i:s', $end_time ),
 		);

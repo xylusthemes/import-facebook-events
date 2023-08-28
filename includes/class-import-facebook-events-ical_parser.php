@@ -313,11 +313,17 @@ class Import_Facebook_Events_Ical_Parser {
 							$timezone_name = $event_api_data['ical_timezone_name'];
 						}
 
-						if( isset( $event_api_data['ical_timezone_name'] ) && empty( $event_api_data['start_time'] ) ){
-							$start_time = strtotime( $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
+						if( empty( $event_api_data['start_time'] ) ){
+							$cwt_start     = $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] );
+							$timezone      = $wordpress_timezone;
+							$timezone_name = $cwt_start['timezone_name'];
+							$start_time    = strtotime( $cwt_start['date_format'] );
 						}
-						if( isset( $event_api_data['ical_timezone_name'] ) &&  empty( $event_api_data['end_time'] ) ){
-							$end_time   = strtotime( $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] ) );
+						if( empty( $event_api_data['end_time'] ) ){
+							$cwt_end       = $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] );
+							$timezone      = $wordpress_timezone;
+							$timezone_name = $cwt_end['timezone_name'];
+							$end_time      = strtotime( $cwt_end['date_format'] );
 						}
 					}
 				}
@@ -562,7 +568,12 @@ class Import_Facebook_Events_Ical_Parser {
 		$event_timezone = new DateTimeZone( $tz );
 		$datetime->setTimezone( $event_timezone );
 
-		return $datetime->format('Y-m-d H:i:s');
+		$date_format    = $datetime->format('Y-m-d H:i:s');
+		$return_args = array(
+			'timezone_name' => $tz,
+			'date_format'   => $date_format,
+		);
+		return $return_args;
 	}
 
 	/**
