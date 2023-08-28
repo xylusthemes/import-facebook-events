@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event, facebook import, faceb
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 6.3
-Stable tag: 1.7.3
+Stable tag: 1.7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,12 @@ You can use `[facebook_events]` for display in-built facebook events list.
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.7.4 =
+* ADDED: All In One Event Calendar iCal support.
+* ADDED: Time zone support in supported plugin.
+* FIXED: Delete WP Cron multiple queue when you delete schedule delete.(PRO)
+* IMPROVEMENTS: Added Support for PHP 8.2 and some design and security fixes
 
 = 1.7.3 =
 * ADDED: Reduced Facebook API Calls in iCal.
