@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="upgrade_to_pro">
 	<h2><?php esc_html_e( 'Upgrade to Pro', 'import-facebook-events' ); ?></h2>
 	<p><?php esc_html_e( 'Unlock more power to events import operation, enable scheduled imports today, Upgrade today!!', 'import-facebook-events' ); ?></p>
-	<a class="button button-primary upgrade_button" href="<?php echo esc_url( IFE_PLUGIN_BUY_NOW_URL ); ?>" target="_blank">
+	<a class="button button-primary ife-lh upgrade_button" href="<?php echo esc_url( IFE_PLUGIN_BUY_NOW_URL ); ?>" target="_blank">
 		<?php esc_html_e( 'Upgrade to Pro', 'import-facebook-events' ); ?>
 	</a>
 </div>
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="upgrade_to_pro">
 	<h2><?php esc_html_e( 'Custom WordPress Development Services', 'import-facebook-events' ); ?></h2>
 	<p><?php esc_html_e( 'From small blog to complex web apps, we push the limits of what\'s possible with WordPress.', 'import-facebook-events' ); ?></p>
-	<a class="button button-primary upgrade_button" href="<?php echo esc_url( 'https://xylusthemes.com/contact/?utm_source=insideplugin&utm_medium=web&utm_content=sidebar&utm_campaign=freeplugin' ); ?>" target="_blank">
+	<a class="button button-primary ife-lh upgrade_button" href="<?php echo esc_url( 'https://xylusthemes.com/contact/?utm_source=insideplugin&utm_medium=web&utm_content=sidebar&utm_campaign=freeplugin' ); ?>" target="_blank">
 		<?php esc_html_e( 'Hire Us', 'import-facebook-events' ); ?>
 	</a>
 </div>
