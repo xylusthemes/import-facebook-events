@@ -1040,6 +1040,22 @@ function ife_is_pro() {
 	return false;
 }
 
+/**
+ * Check is pro active or not.
+ *
+ * @since  1.5.0
+ * @return boolean
+ */
+function ife_aioec_active() {
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+	if ( is_plugin_active( 'all-in-one-event-calendar/all-in-one-event-calendar.php' ) ) {
+		return true;
+	}
+	return false;
+}
+
 
 /**
  * Template Functions
