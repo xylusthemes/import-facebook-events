@@ -125,6 +125,14 @@ class Import_Facebook_Events_Ical {
 			$ife_errors[] = esc_html__( 'Unable to retrieve content from the provided URL.', 'import-facebook-events');
 			return false;
 		}
+
+		$content_type = wp_remote_retrieve_header( $response, 'content-type' );
+		if ( $content_type !== false ) {
+			if ( strpos( $content_type, 'text/calendar' ) === false && strpos( $content_type, 'application/calendar+xml' ) === false ) {
+				$ife_errors[] = esc_html__( 'The provided URL does not contain iCal format data.', 'import-facebook-events' );
+				return false;
+			}
+		}
 		return $response['body'];
 	}
 
