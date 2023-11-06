@@ -837,6 +837,10 @@ msgstr ""
 msgid "Unable to retrieve content from the provided URL."
 msgstr ""
 
+#: includes/class-import-facebook-events-ical.php:132
+msgid "The provided URL does not contain iCal format data."
+msgstr ""
+
 #: includes/class-import-facebook-events-ical_parser.php:79
 #: includes/class-import-facebook-events-ical_parser_aioec.php:66
 msgid "Please select end date bigger than start date."
