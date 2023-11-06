@@ -109,11 +109,11 @@ You can use `[facebook_events]` for display in-built facebook events list.
 == Changelog ==
 
 = 1.7.5 =
-ADDED: ICal Data Validation.
-ADDED: Event Image compared by Its Name.
-FIXED: Javascript Exceptions.
-IMPROVEMENTS: EventOn Event Metadata.
-IMPROVEMENTS: Support for WP 6.4
+* ADDED: ICal Data Validation.
+* ADDED: Event Image compared by Its Name.
+* FIXED: Javascript Exceptions.
+* IMPROVEMENTS: EventOn Event Metadata.
+* IMPROVEMENTS: Support for WP 6.4
 
 = 1.7.4 =
 * ADDED: All In One Event Calendar iCal support.
