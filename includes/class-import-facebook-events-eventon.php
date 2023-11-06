@@ -210,6 +210,22 @@ class Import_Facebook_Events_EventON {
 			update_post_meta( $inserted_event_id, 'evcal_allday', $is_all_day );
 			update_post_meta( $inserted_event_id, '_evo_tz', $timezone_name );
 
+			$start_ampm = date("a", $start_time);
+			$start_hour = date("h", $start_time);
+			$start_minute = date("i", $start_time);
+			$end_ampm = date("a", $end_time);
+			$end_hour = date("h", $end_time);
+			$end_minute = date("i", $end_time);
+
+			// Update post meta fields
+			update_post_meta($inserted_event_id, '_start_ampm', $start_ampm);
+			update_post_meta($inserted_event_id, '_start_hour', $start_hour);
+			update_post_meta($inserted_event_id, '_start_minute', $start_minute);
+			update_post_meta($inserted_event_id, '_end_ampm', $end_ampm);
+			update_post_meta($inserted_event_id, '_end_hour', $end_hour);
+			update_post_meta($inserted_event_id, '_end_minute', $end_minute);
+			update_post_meta( $inserted_event_id, '_status', 'scheduled' );
+
 			$location_name = isset( $centralize_array['location']['name'] ) ? sanitize_text_field( $centralize_array['location']['name'] ) : '';
 			if( $is_online == true ){
 				update_post_meta( $inserted_event_id, '_virtual', 'yes' );
