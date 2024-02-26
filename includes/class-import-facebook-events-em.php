@@ -192,6 +192,9 @@ class Import_Facebook_Events_EM {
 			if ( empty( $inserted_event ) ) {
 				return '';}
 
+			//Event ID
+			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
+
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
 			if ( ! empty( $ife_cats ) ) {
@@ -267,7 +270,6 @@ class Import_Facebook_Events_EM {
 			update_post_meta( $inserted_event_id, '_event_private', 0 );
 			update_post_meta( $inserted_event_id, '_start_ts', str_pad( $start_time, 10, 0, STR_PAD_LEFT ) );
 			update_post_meta( $inserted_event_id, '_end_ts', str_pad( $end_time, 10, 0, STR_PAD_LEFT ) );
-			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $ticket_uri ) );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
