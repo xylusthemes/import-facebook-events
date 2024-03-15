@@ -986,3 +986,143 @@
     width: calc( 100% - 55px );
   }
 }
+
+/* Grid View Style 3 */
+.ife-card {
+  --bs-card-spacer-y: 1.25rem;
+  --bs-card-spacer-x: 1.25rem;
+  --bs-card-title-spacer-y: 0.5rem;
+  --bs-card-border-width: 0;
+  --bs-card-border-color: #e7e7e8;
+  --bs-card-border-radius: 0.375rem;
+  --bs-card-height: ;
+  --bs-card-color: ;
+  --bs-card-bg: #fff;
+  word-wrap: break-word;
+  background-clip: border-box;
+  background-color: var(--bs-card-bg);
+  border: var(--bs-card-border-width) solid var(--bs-card-border-color);
+  border-radius: var(--bs-card-border-radius);
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: var(--bs-card-height);
+  min-width: 0;
+  position: relative;
+  background-clip: padding-box;
+  box-shadow: 0 0.5rem 3rem 0 rgba(58, 53, 65, .12), 0 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.ife-card-body {
+  color: var(--bs-card-color);
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+  outline: none !important;
+}
+
+.ife-card-title {
+  margin-bottom: var(--bs-card-title-spacer-y);
+}
+.ife-d-flex {
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+
+.ife-border-bottom {
+  border-bottom: 1px solid #e7e7e8 !important;
+}
+
+.ife-pb-3 {
+  padding-bottom: 1rem !important;
+}
+
+.ife-flex-column {
+  -ms-flex-direction: column !important;
+  flex-direction: column !important;
+}
+
+.ife-justify-content-center {
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+}
+
+.ife-px-3 {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.ife-rounded-3 {
+  border-radius: .375rem !important;
+}
+
+.ife-me-3 {
+  margin-right: 1rem !important;
+}
+
+.ife-mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+.ife-mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.ife-w-75 {
+  width: 75% !important;
+}
+
+.ife-mt-3{
+  margin-top: 1rem !important;
+}
+
+.ife-card-title{
+  -ms-flex-align: center;
+  align-items: center;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.ife-mb-1{
+  margin-bottom: .25rem !important;
+}
+
+.ife-gap-2{
+  gap: .5rem !important;
+}
+
+.ife-small{
+  font-size: 85%;
+}
+
+.ife-align-items{
+  align-items: center;
+}
+
+.ife-fw-bold{
+  font-weight: bold;
+}
+
+.ife-fs-20{
+  font-size: 20px;
+}
+
+.ife-text-limit{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ife-w-90{
+  width:90%;
+}
+.ife-h-60{
+  height: 60px;
+}
+.ife-mt-0{
+  margin-top: 0;
+}
