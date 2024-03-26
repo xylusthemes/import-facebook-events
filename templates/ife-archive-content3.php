@@ -47,11 +47,11 @@ if ( 'yes' === $direct_link ){
         <div class="ife-card-body" >
             <div class="ife-d-flex ife-border-bottom ife-pb-3 ife-align-items" >
                 <div class="ife-badge ife-bg-label ife-d-flex ife-flex-column ife-justify-content-center ife-px-3 ife-rounded-3 ife-me-3 ife-align-items" >
-                    <h6 class="ife-mb-2 ife-fw-bold ife-fs-20" ><?php echo esc_attr( date_i18n( 'M', $start_date_str ) ); ?></h6>
-                    <h5 class="ife-fw-bold ife-fs-20 ife-mt-0" ><?php echo esc_attr( date_i18n( 'd', $start_date_str ) ); ?></h5>
+                    <span class="ife-fw-bold ife-fs-20 ife-mt-5" ><?php echo esc_attr( date_i18n( 'M', $start_date_str ) ); ?></span>
+                    <span class="ife-fw-bold ife-fs-20 ife-mt-0 ife-mb-5 " ><?php echo esc_attr( date_i18n( 'd', $start_date_str ) ); ?></span>
                 </div>
-                <div class="ife-w-75 ife-text-limit ife-fw-bold ife-fs-20" >
-                    <a href="<?php echo $event_url; ?>" <?php echo $target; ?>><span class="ife-card-title ife-mb-1" ><?php the_title(); ?></span></a>
+                <div class="ife-w-75 ife-text-limit ife-fw-bold ife-fs-20 ife_event_title_style2" >
+                    <a class="ife-text-deco" style="color:<?php echo esc_attr( $accent_color ); ?>;" href="<?php echo $event_url; ?>" <?php echo $target; ?> ><span class="ife-card-title ife-mb-1" ><?php the_title(); ?></span></a>
                 </div>
             </div>
 
@@ -59,7 +59,7 @@ if ( 'yes' === $direct_link ){
                 <div class="ife-d-flex ife-mt-3 ife-gap-2 ife-align-items" >
                     <span class="ife-d-flex" >
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M12 20a8 8 0 0 0 8-8a8 8 0 0 0-8-8a8 8 0 0 0-8 8a8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10a10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67l-.75 1.23L11 13V7z"/>
+                            <path fill="<?php echo esc_attr( $accent_color ); ?>" d="M12 20a8 8 0 0 0 8-8a8 8 0 0 0-8-8a8 8 0 0 0-8 8a8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10a10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67l-.75 1.23L11 13V7z"/>
                         </svg>
                     </span>
                     <div >
@@ -70,7 +70,7 @@ if ( 'yes' === $direct_link ){
                     <?php if( !empty( $event_address ) ){ ?>
                         <span class="ife-d-flex" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7m0 2a5 5 0 0 0-5 5c0 1 0 3 5 9.71C17 12 17 10 17 9a5 5 0 0 0-5-5"/>
+                                <path fill="<?php echo esc_attr( $accent_color ); ?>" d="M12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7m0 2a5 5 0 0 0-5 5c0 1 0 3 5 9.71C17 12 17 10 17 9a5 5 0 0 0-5-5"/>
                             </svg>
                         </span>
                         <div class="ife-w-90" >

@@ -1126,3 +1126,12 @@
 .ife-mt-0{
   margin-top: 0;
 }
+.ife-text-deco{
+  text-decoration: none !important;
+}
+.ife-mt-5{
+  margin-top: 5px;
+}
+.ife-mb-5{
+  margin-bottom: 5px;
+}
