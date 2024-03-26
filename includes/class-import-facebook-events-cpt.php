@@ -886,6 +886,8 @@ class Import_Facebook_Events_Cpt {
 
 					if( isset( $atts['layout'] ) && $atts['layout'] == 'style2' && ife_is_pro() ){
 						get_ife_template( 'ife-archive-content2.php', $template_args );
+					}elseif( isset( $atts['layout'] ) && $atts['layout'] == 'style3' ){
+						get_ife_template( 'ife-archive-content3.php', $template_args );
 					}else{
 						get_ife_template( 'ife-archive-content.php', $template_args );
 					}
