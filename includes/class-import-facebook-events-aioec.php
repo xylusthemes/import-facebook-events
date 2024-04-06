@@ -160,6 +160,9 @@ class Import_Facebook_Events_Aioec {
 			if ( empty( $inserted_event ) ) {
 				return '';}
 
+			//Event ID
+			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
+
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
 			if ( ! empty( $ife_cats ) ) {
@@ -186,7 +189,6 @@ class Import_Facebook_Events_Aioec {
 			$timezone      = isset( $centralize_array['timezone'] ) ? sanitize_text_field( $centralize_array['timezone'] ) : '';
 
 			// Save Meta.
-			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $event_uri ) );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
