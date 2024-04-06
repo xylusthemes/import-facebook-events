@@ -314,13 +314,13 @@ class Import_Facebook_Events_Ical_Parser {
 						}
 
 						if( empty( $event_api_data['start_time'] ) ){
-							$cwt_start     = $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] );
+							$cwt_start     = $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s'), $timezone_name );
 							$timezone      = $wordpress_timezone;
 							$timezone_name = $cwt_start['timezone_name'];
 							$start_time    = strtotime( $cwt_start['date_format'] );
 						}
 						if( empty( $event_api_data['end_time'] ) ){
-							$cwt_end       = $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s'), $event_api_data['ical_timezone_name'] );
+							$cwt_end       = $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s'), $timezone_name );
 							$timezone      = $wordpress_timezone;
 							$timezone_name = $cwt_end['timezone_name'];
 							$end_time      = strtotime( $cwt_end['date_format'] );

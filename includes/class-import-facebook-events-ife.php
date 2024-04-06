@@ -229,7 +229,7 @@ class Import_Facebook_Events_IFE {
 			$organizer_url   = isset( $organizer_array['url'] ) ? sanitize_text_field( $organizer_array['url'] ) : '';
 			
 			//is online event
-			if( $centralize_array['is_online'] == true ){
+			if( isset( $centralize_array['is_online'] ) && $centralize_array['is_online'] == true ){
 				$venue_name = 'Online Event';
 			}
 
