@@ -316,43 +316,6 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 
 		$timezone_name = !empty( $timezone ) ? $timezone : $calendar_timezone;
 
-		// Only for facebook ical imports.
-		$match = 'https://www.facebook.com/events/';
-		if ( strpos( $url, $match ) !== false ) {
-			$ife_user_token_options = get_option( 'ife_user_token_options', array() );
-			if( !empty( $ife_user_token_options ) ){
-				$authorize_status =	isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
-				if( 1 == $authorize_status ){
-					$check_facebook = explode( '/', $url);
-					if( $check_facebook[2] == 'www.facebook.com' ){
-						$event_api_data = $this->get_event_image_and_location( $event_data['import_into'], $uid );
-
-						if( !empty( $event_api_data ) ){
-							$event_image   = isset( $event_api_data['image'] ) ? $event_api_data['image'] : '';
-							$event_venue   = isset( $event_api_data['location'] ) ? $event_api_data['location'] : '';
-							$start_time    = isset( $event_api_data['start_time'] ) ? $event_api_data['start_time'] : '';
-							$end_time      = isset( $event_api_data['end_time'] ) ? $event_api_data['end_time'] : '';
-							$timezone      = isset( $event_api_data['ical_timezone'] ) ? $event_api_data['ical_timezone'] : '';
-							$timezone_name = isset( $event_api_data['ical_timezone_name'] ) ? $event_api_data['ical_timezone_name'] : '';
-						}
-
-						if( empty( $event_api_data['start_time'] ) ){
-							$cwt_start     = $this->convert_fb_ical_timezone( $start, $event_api_data['ical_timezone_name'] );
-							$timezone      = $wordpress_timezone;
-							$timezone_name = $cwt_start['timezone_name'];
-							$start_time    = strtotime( $cwt_start['date_format'] );
-						}
-						if( empty( $event_api_data['end_time'] ) ){
-							$cwt_end       = $this->convert_fb_ical_timezone( $end, $event_api_data['ical_timezone_name'] );
-							$timezone      = $wordpress_timezone;
-							$timezone_name = $cwt_end['timezone_name'];
-							$end_time      = strtotime( $cwt_end['date_format'] );
-						}
-					}
-				}
-			}
-		}
-		
 		$xt_event = array(
 			'origin'          => 'ical',
 			'ID'              => $uid,
@@ -581,51 +544,6 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 			'date_format'   => $date_format,
 		);
 		return $return_args;
-	}
-
-	/**
-     * Check and Update event image.
-     *
-     * @param string $import_into
-     * @param int $event_id
-     *
-     * @return array
-     *
-     * @since 1.0.0
-     */
-	public function get_event_image_and_location( $import_into, $facebook_event_id = 0 ){
-		global $ife_events;
-		$event_api_data    = array();
-		$event_id          = $facebook_event_id;
-		$post_type         = $ife_events->{$import_into}->get_event_posttype();
-		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $post_type, $event_id );
-		$has_event_image   = get_post_meta( $is_exitsing_event, '_thumbnail_id', true );
-
-		if ( empty( $has_event_image ) ){
-			$fetch_image = apply_filters( 'ife_ical_fetch_event_image', true );
-			if( $fetch_image ) {
-				$facebook_event = $ife_events->facebook->get_facebook_event_by_event_id( $event_id );
-				if ( ! empty( $facebook_event->cover )  ) {
-					$event_api_data['image']              = $facebook_event->cover->source;
-					$event_api_data['location']           = $facebook_event->place;
-					$event_api_data['ical_timezone_name'] = $facebook_event->timezone;
-					$event_api_data['start_time']         = isset( $facebook_event->start_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->start_time ) ) :'';
-					$event_api_data['end_time']           = isset( $facebook_event->end_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->end_time ) ) : $event_api_data['start_time'] ;
-					$event_api_data['ical_timezone']      = $ife_events->common->get_utc_offset( $facebook_event->start_time );
-				}
-			}
-		} else {
-			$attachment_id = get_post_thumbnail_id( $is_exitsing_event );
-			$imagesource = get_post_meta( $attachment_id, '_ife_attachment_source', true );				
-			if( !empty( $imagesource ) ){
-				$event_api_data['image'] = $imagesource;
-			}
-			$event_timezone   = get_post_meta( $is_exitsing_event, 'ife_event_timezone_name', true );
-			if( !empty( $event_timezone ) ){
-				$event_api_data['ical_timezone_name'] = $event_timezone;
-			}
-		}
-		return $event_api_data;
 	}
 
 	/**
