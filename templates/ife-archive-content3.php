@@ -47,10 +47,10 @@ if ( 'yes' === $direct_link ){
         <div class="ife-card-body" >
             <div class="ife-d-flex ife-border-bottom ife-pb-3 ife-align-items" >
                 <div class="ife-badge ife-bg-label ife-d-flex ife-flex-column ife-justify-content-center ife-px-3 ife-rounded-3 ife-me-3 ife-align-items" >
-                    <span class="ife-fw-bold ife-fs-20 ife-mt-5" ><?php echo esc_attr( date_i18n( 'M', $start_date_str ) ); ?></span>
-                    <span class="ife-fw-bold ife-fs-20 ife-mt-0 ife-mb-5 " ><?php echo esc_attr( date_i18n( 'd', $start_date_str ) ); ?></span>
+                    <span class="ife-fw-bold ife-mt-5" ><?php echo esc_attr( date_i18n( 'M', $start_date_str ) ); ?></span>
+                    <span class="ife-fw-bold ife-mt-0 ife-mb-5 " ><?php echo esc_attr( date_i18n( 'd', $start_date_str ) ); ?></span>
                 </div>
-                <div class="ife-w-75 ife-text-limit ife-fw-bold ife-fs-20 ife_event_title_style2" >
+                <div class="ife-w-75 ife-text-limit ife-fw-bold" >
                     <a class="ife-text-deco" style="color:<?php echo esc_attr( $accent_color ); ?>;" href="<?php echo $event_url; ?>" <?php echo $target; ?> ><span class="ife-card-title ife-mb-1" ><?php the_title(); ?></span></a>
                 </div>
             </div>
