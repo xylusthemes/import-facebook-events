@@ -25,11 +25,11 @@ $accent_color = isset( $ife_options['accent_color'] ) ? $ife_options['accent_col
 $time_format  = isset( $ife_options['time_format'] ) ? $ife_options['time_format'] : '12hours';
 // Define the time format string based on the selected option
 if ($time_format === '12hours') {
-    $time_format_string = 'h:i A';
+	$time_format_string = 'h:i A';
 } elseif ($time_format === '24hours') {
-    $time_format_string = 'H:i';
+	$time_format_string = 'H:i';
 } else {
-    $time_format_string = get_option('time_format');
+	$time_format_string = get_option('time_format');
 }
 
 // Format the start and end dates
@@ -51,10 +51,9 @@ if ( 'yes' === $direct_link ){
                     <span class="ife-fw-bold ife-mt-0 ife-mb-5 " ><?php echo esc_attr( date_i18n( 'd', $start_date_str ) ); ?></span>
                 </div>
                 <div class="ife-w-75 ife-text-limit ife-fw-bold" >
-                    <a class="ife-text-deco" style="color:<?php echo esc_attr( $accent_color ); ?>;" href="<?php echo $event_url; ?>" <?php echo $target; ?> ><span class="ife-card-title ife-mb-1" ><?php the_title(); ?></span></a>
+                    <a class="ife-text-deco" style="color:<?php echo esc_attr( $accent_color ); ?>;" href="<?php echo esc_url( $event_url ); ?>" <?php echo esc_attr( $target ); ?> ><span class="ife-card-title ife-mb-1" ><?php the_title(); ?></span></a>
                 </div>
             </div>
-
             <div class="ife-h-60">
                 <div class="ife-d-flex ife-mt-3 ife-gap-2 ife-align-items" >
                     <span class="ife-d-flex" >
@@ -63,7 +62,7 @@ if ( 'yes' === $direct_link ){
                         </svg>
                     </span>
                     <div >
-                        <p class="ife-mb-0"><?php echo $start_date; ?></p>
+                        <p class="ife-mb-0"><?php echo esc_attr( $start_date ); ?></p>
                     </div>
                 </div>
                 <div class="ife-d-flex ife-gap-2 ife-align-items" >
@@ -84,12 +83,12 @@ if ( 'yes' === $direct_link ){
 </div>
 <style>
 .ife-bg-label {
-    background-color: <?php echo esc_attr( $accent_color ); ?>;
-    color: #fff;
+	background-color: <?php echo esc_attr( $accent_color ); ?>;
+	color: #fff;
 }
 .ife-badge {
-    background: <?php echo esc_attr( $accent_color ); ?>;
-    border-color: <?php echo esc_attr( $accent_color ); ?>;
-    color: #fff;
+	background: <?php echo esc_attr( $accent_color ); ?>;
+	border-color: <?php echo esc_attr( $accent_color ); ?>;
+	color: #fff;
 }
 </style>
