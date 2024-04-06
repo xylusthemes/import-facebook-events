@@ -141,27 +141,8 @@ class Import_Facebook_Events_TEC {
 		global $ife_events;
 
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array['ID'] );
-		if( function_exists( 'tribe_events' ) ){
-			$formated_args = $this->format_event_args_for_tec_orm( $centralize_array );
-			if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
-				$formated_args['status'] = $event_args['event_status'];
-			}
-		}else{
-			$formated_args = $this->format_event_args_for_tec( $centralize_array );
-			if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
-				$formated_args['post_status'] = $event_args['event_status'];
-			}
-		}
-		$formated_args['post_author'] = isset($event_args['event_author']) ? $event_args['event_author'] : get_current_user_id();
         
 		if ( $is_exitsing_event && is_numeric( $is_exitsing_event ) && $is_exitsing_event > 0 ) {
-			if ( ! $ife_events->common->ife_is_updatable( 'status' ) ) {
-				if( function_exists( 'tribe_events' ) ){
-					$formated_args['status'] = get_post_status( $is_exitsing_event );
-				} else {
-					$formated_args['post_status'] = get_post_status( $is_exitsing_event );
-				}
-			}
 
 			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
@@ -174,6 +155,27 @@ class Import_Facebook_Events_TEC {
 				);
 			}
 			if ( 'yes' === $update_events ) {
+
+				if( function_exists( 'tribe_events' ) ){
+					$formated_args = $this->format_event_args_for_tec_orm( $centralize_array );
+					if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
+						$formated_args['status'] = $event_args['event_status'];
+					}
+				}else{
+					$formated_args = $this->format_event_args_for_tec( $centralize_array );
+					if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
+						$formated_args['post_status'] = $event_args['event_status'];
+					}
+				}
+				$formated_args['post_author'] = isset($event_args['event_author']) ? $event_args['event_author'] : get_current_user_id();
+				if ( ! $ife_events->common->ife_is_updatable( 'status' ) ) {
+					if( function_exists( 'tribe_events' ) ){
+						$formated_args['status'] = get_post_status( $is_exitsing_event );
+					} else {
+						$formated_args['post_status'] = get_post_status( $is_exitsing_event );
+					}
+				}
+
 				return $this->update_event( $is_exitsing_event, $centralize_array, $formated_args, $event_args );
 			} else {
 				return array(
@@ -182,6 +184,29 @@ class Import_Facebook_Events_TEC {
 				);
 			}
 		} else {
+
+			if( function_exists( 'tribe_events' ) ){
+				$formated_args = $this->format_event_args_for_tec_orm( $centralize_array );
+				if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
+					$formated_args['status'] = $event_args['event_status'];
+				}
+			}else{
+				$formated_args = $this->format_event_args_for_tec( $centralize_array );
+				if ( isset( $event_args['event_status'] ) && ! empty( $event_args['event_status'] ) ) {
+					$formated_args['post_status'] = $event_args['event_status'];
+				}
+			}
+			$formated_args['post_author'] = isset($event_args['event_author']) ? $event_args['event_author'] : get_current_user_id();
+
+
+			if ( ! $ife_events->common->ife_is_updatable( 'status' ) ) {
+				if( function_exists( 'tribe_events' ) ){
+					$formated_args['status'] = get_post_status( $is_exitsing_event );
+				} else {
+					$formated_args['post_status'] = get_post_status( $is_exitsing_event );
+				}
+			}
+
 			return $this->create_event( $centralize_array, $formated_args, $event_args );
 		}
 
