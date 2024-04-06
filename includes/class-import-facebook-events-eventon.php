@@ -169,6 +169,9 @@ class Import_Facebook_Events_EventON {
 			if ( empty( $inserted_event ) ) {
 				return '';}
 
+			//Event ID
+			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
+
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
 			if ( ! empty( $ife_cats ) ) {
@@ -199,7 +202,6 @@ class Import_Facebook_Events_EventON {
 			$is_all_day    = !empty( $centralize_array['is_all_day'] ) ? $centralize_array['is_all_day'] : 0;
 			$is_online     = isset( $centralize_array['is_online'] ) ? $centralize_array['is_online'] : false;
 
-			update_post_meta( $inserted_event_id, 'ife_facebook_event_id', $centralize_array['ID'] );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $inserted_event_id, 'ife_event_link', $centralize_array['url'] );
 			update_post_meta( $inserted_event_id, 'evcal_srow', $start_time );
