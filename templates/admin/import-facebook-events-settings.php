@@ -18,6 +18,7 @@ $ife_user_token_options = get_option( 'ife_user_token_options', array() );
 $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
 $stab = isset( $_GET['stab'] ) ? sanitize_text_field( wp_unslash( $_GET['stab'] ) ) : 'setting';
 $ife_google_maps_api_key = get_option( 'ife_google_maps_api_key', array() );
+$ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', array() );
 ?>
 		<div id="postbox-container-2" class="postbox-container">
 			<div class="ife_tab_container">
@@ -335,7 +336,7 @@ $ife_google_maps_api_key = get_option( 'ife_google_maps_api_key', array() );
 				<div id="google_maps_key" class="ife_tab_content">
 					<div class="ife_container">
 						<div class="ife_row">
-							<h3 class="setting_bar"><?php esc_attr_e( 'Google Maps API Settings', 'import-facebook-events' ); ?></h3>
+							<h3 class="setting_bar"><?php esc_attr_e( 'Google Maps API', 'import-facebook-events' ); ?></h3>
 							<form method="post" id="ife_gma_setting_form">
 								<table class="form-table">
 									<tbody>
@@ -364,6 +365,34 @@ $ife_google_maps_api_key = get_option( 'ife_google_maps_api_key', array() );
 									</tbody>
 								</table>
 								<br/>
+
+								<h3 class="setting_bar"><?php esc_attr_e( 'Google GeoLocation API', 'import-facebook-events' ); ?></h3>
+								<table class="form-table">
+									<tbody>
+										<?php do_action( 'ife_before_settings_section' ); ?>
+										<tr>
+											<th scope="row">
+												<?php esc_attr_e( 'Google GeoLocation API', 'import-facebook-events' ); ?> :
+											</th>
+											<td>
+												<input class="ife_google_geolocation_api_key" name="ife_google_geolocation_api_key" Placeholder="Enter Google Maps API Key Here..." type="text" value="<?php echo( ! empty( $ife_google_geolocation_api_key ) ? esc_attr( $ife_google_geolocation_api_key ) : '' ); ?>" />
+												<span class="ife_ggl_check_key"><a href="javascript:void(0)" > Check Google GeoLocation Key</a><span class="ife_ggl_loader" id="ife_ggl_loader"></span></span>
+												<span id="ife_ggl_error_message"></span>
+												<span id="ife_ggl_success_message"></span>
+												<span class="ife_small">
+													<?php
+														printf(
+															'%s <a href="https://developers.google.com/maps/documentation/geolocation/get-api-key" target="_blank">%s</a> / %s',
+															esc_attr__( 'Google GeoLocation API Key (Required)', 'import-facebook-events' ),
+															esc_attr__( 'How to get an API Key', 'import-facebook-events' ),
+															'<a href="https://developers.google.com/maps/documentation/geolocation/get-api-key#restrict_key" target="_blank">' . esc_attr__( 'Find out more about API Key restrictions', 'import-facebook-events' ) . '</a>'
+														);
+													?>
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
 
 								<div class="ife_element">
 									<input type="hidden" name="ife_gma_action" value="ife_save_gma_settings" />

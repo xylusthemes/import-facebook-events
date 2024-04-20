@@ -458,7 +458,7 @@ table.ife_form_table tr td:nth-child(1) {
   width: 100%;
 }
 
-.ife_google_maps_api_key{
+.ife_google_maps_api_key, .ife_google_geolocation_api_key{
   width: 50%;
 }
 

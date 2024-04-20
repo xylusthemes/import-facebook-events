@@ -262,4 +262,52 @@ jQuery(document).ready(function($){
 		ife_xhr.send();
 	}
 
+	const ife_ggl_apikey_input = document.querySelector('.ife_google_geolocation_api_key');
+	if ( ife_ggl_apikey_input ) {
+		ife_ggl_apikey_input.addEventListener('input', function() {
+			const ife_ggl_check_key = document.querySelector('.ife_ggl_check_key');
+			if (ife_ggl_apikey_input.value.trim() !== '') {
+				ife_ggl_check_key.style.display = 'contents';
+			} else {
+				ife_ggl_check_key.style.display = 'none';
+			}
+		});
+	}
+  
+	const ife_ggl_checkkeylink = document.querySelector('.ife_ggl_check_key a');
+	if ( ife_ggl_checkkeylink ) { 
+		ife_ggl_checkkeylink.addEventListener('click', function(event) { 
+			event.preventDefault(); 
+			const ife_ggl_apikey = ife_ggl_apikey_input.value.trim(); 
+			if ( ife_ggl_apikey !== '' ) { 
+				ife_check_geolocation_apikey(ife_ggl_apikey); 
+			} 
+		}); 
+	}
+
+	function ife_check_geolocation_apikey(ife_ggl_apikey) {
+		const ife_ggl_xhr = new XMLHttpRequest();
+		ife_ggl_xhr.open('GET', 'https://maps.googleapis.com/maps/api/geocode/json?address=kalupur+swamianarayan+mandir&key=' + encodeURIComponent(ife_ggl_apikey), true);
+		const ife_ggl_loader = document.getElementById('ife_ggl_loader');
+		ife_ggl_loader.style.display = 'inline-block';
+		ife_ggl_xhr.onreadystatechange = function() {
+			if ( ife_ggl_xhr.readyState === XMLHttpRequest.DONE ) {
+				ife_ggl_loader.style.display = 'none';
+				var responseObject = JSON.parse( ife_ggl_xhr.response );
+				console.log( responseObject );
+				if (ife_ggl_xhr.status === 200 && responseObject.status === "OK" ) {
+					var ife_gm_success_notice = jQuery("#ife_ggl_success_message");
+						ife_gm_success_notice.html('<span class="ife_gmap_success_message">Valid Google GeoLocation License Key</span>');
+						setTimeout(function(){ ife_gm_success_notice.empty(); }, 2000);
+				} else {
+					var ife_gm_error_notice = jQuery("#ife_ggl_error_message");
+					ife_gm_error_notice.html( '<span class="ife_gmap_error_message" >Inalid Google GeoLocation License Key</span>' );
+						setTimeout(function(){ ife_gm_error_notice.empty(); }, 2000);
+				}
+			}
+		};
+		
+		ife_ggl_xhr.send();
+	}
+
 });

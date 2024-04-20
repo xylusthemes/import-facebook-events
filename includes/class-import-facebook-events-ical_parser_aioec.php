@@ -404,8 +404,8 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 				'full_address' => isset( $event_venue->location->street ) ? $event_venue->location->street : '',
 				'url'          => '',
 				'image_url'    => '',
-			);	
-			return $event_location;
+			);
+
 		}else{
 			$geo       = $event->getProperty( 'GEO' );
 			$latitude  = isset( $geo['latitude'] ) ? (float)$geo['latitude'] : '';	
@@ -414,7 +414,59 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 			if ( empty( $location ) ) {
 				return null;
 			}
-			if ( !empty( $location ) || !empty( $geo ) ) {
+
+			//Get Geo Location API Key
+			$api_key = get_option( 'ife_google_geolocation_api_key', false );
+			if( !empty( $api_key ) && !empty( $location ) ){
+
+				$url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode( $location ) . '&key=' . $api_key;
+				$response_data = file_get_contents($url);
+				$data = json_decode($response_data);
+
+				// Extracting relevant data
+				$result = $data->results[0];
+				$address_components = $result->address_components;
+				$geometry = $result->geometry;
+
+				$street_number = $route = $city = $state = $country = $postal_code = '';
+				foreach ($address_components as $component) {
+					if (in_array('street_number', $component->types)) {
+						$street_number = $component->long_name;
+					} elseif (in_array('route', $component->types)) {
+						$route = $component->long_name;
+					} elseif (in_array('locality', $component->types)) {
+						$city = $component->long_name;
+					} elseif (in_array('administrative_area_level_1', $component->types)) {
+						$state = $component->long_name;
+					} elseif (in_array('country', $component->types)) {
+						$country = $component->long_name;
+					} elseif (in_array('postal_code', $component->types)) {
+						$postal_code = $component->long_name;
+					}
+				}
+
+				// Extracting geometry
+				$latitude = $geometry->location->lat;
+				$longitude = $geometry->location->lng;
+				$id = strtolower(str_replace(' ', '_', $location_name ) );
+
+				$event_location = array(
+					'ID'           => $id,
+					'name'         => isset( $location_name ) ? stripslashes( $location_name ) : '',
+					'description'  => '',
+					'address_1'    => $street_number . ' ' . $route,
+					'address_2'    => '',
+					'city'         => $city,
+					'state'        => $state,
+					'country'      => $country,
+					'zip'	       => $postal_code,
+					'lat'     	   => $latitude,
+					'long'		   => $longitude,
+					'full_address' => $result->formatted_address,
+					'url'          => '',
+					'image_url'    => ''
+				);
+			}else{
 				$event_location = array(
 					'ID'           => strtolower( trim( stripslashes( $location ) ) ),
 					'name'         => isset( $location ) ? stripslashes( $location ) : '',
@@ -427,13 +479,14 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 					'zip'	       => '',
 					'lat'     	   => $latitude,
 					'long'		   => $longitude,
-					'full_address' => '',
+					'full_address' => isset( $location ) ? stripslashes( $location ) : '',
 					'url'          => '',
 					'image_url'    => ''
 				);
 			}
-		return $event_location;
 		}
+
+		return $event_location;
 	}
 
 	/**
