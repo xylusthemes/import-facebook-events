@@ -726,6 +726,20 @@
     
 }
 
+.ife_event .event_details .event_date_style4{
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ife_event .event_desc .widget_event_sdate{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 90%;
+}
+
 .ife_event .event_date .month {
     display: block;
     font-size: 1.2em;
@@ -839,7 +853,7 @@
 .ife_widget_style1 .event_desc {
     float: left;
     width: calc( 100% - 75px );
-    padding: 8px 10px;
+    padding: 6px 10px;
 }
 
 .ife_widget_style1 .event_desc .event_address{
