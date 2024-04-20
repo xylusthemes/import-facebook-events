@@ -1,20 +1,19 @@
 <?php 
-
 $start_date_str = get_post_meta( get_the_ID(), 'start_ts', true );
 $event_address  = get_post_meta( get_the_ID(), 'venue_name', true );
 $venue_address  = get_post_meta( get_the_ID(), 'venue_address', true );
-if ( $event_address != '' && $venue_address != '' ) {
+if ( '' != $event_address && '' != $venue_address ) {
 	$event_address .= ' - ' . $venue_address;
-} elseif ( $venue_address != '' ) {
+} elseif ( '' != $venue_address ) {
 	$event_address = $venue_address;
 }
 
 $ife_options  = get_option( IFE_OPTIONS );
 $accent_color = isset( $ife_options['accent_color'] ) ? $ife_options['accent_color'] : '#039ED7';
 $time_format  = isset( $ife_options['time_format'] ) ? $ife_options['time_format'] : '12hours';
-if ($time_format === '12hours') {
+if ( '12hours' === $time_format ) {
 	$time_format_string = 'h:i A';
-} elseif ($time_format === '24hours') {
+} elseif ( '24hours' === $time_format ) {
 	$time_format_string = 'H:i';
 } else {
 	$time_format_string = get_option('time_format');
@@ -25,7 +24,7 @@ $event_url         = get_permalink();
 $target            = '';
 if ( 'yes' === $direct_link ){
 	$event_url = get_post_meta( get_the_ID(), 'ife_event_link', true );
-	$target = 'target="_blank"';
+	$target    = 'target="_blank"';
 }
 
 ?>
@@ -34,8 +33,8 @@ if ( 'yes' === $direct_link ){
         <div class="event_details" style="height: auto;">
             <div class="event_date event_date_style4" >
                 <div>
-                    <span class="month"><?php echo date_i18n('M', $start_date_str); ?></span>
-                    <span class="date"> <?php echo date_i18n('d', $start_date_str); ?> </span>
+                    <span class="month"><?php echo esc_attr( date_i18n( 'M', $start_date_str ) ); ?></span>
+                    <span class="date"> <?php echo esc_attr( date_i18n( 'd', $start_date_str ) ); ?> </span>
                 </div>
             </div>				
             
