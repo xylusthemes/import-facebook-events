@@ -888,6 +888,8 @@ class Import_Facebook_Events_Cpt {
 						get_ife_template( 'ife-archive-content2.php', $template_args );
 					}elseif( isset( $atts['layout'] ) && $atts['layout'] == 'style3' ){
 						get_ife_template( 'ife-archive-content3.php', $template_args );
+					}elseif( isset( $atts['layout'] ) && $atts['layout'] == 'style4' ){
+						get_ife_template( 'ife-archive-content4.php', $template_args );
 					}else{
 						get_ife_template( 'ife-archive-content.php', $template_args );
 					}
