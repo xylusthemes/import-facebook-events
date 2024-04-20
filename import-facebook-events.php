@@ -3,7 +3,7 @@
  * Plugin Name:       Import Social Events
  * Plugin URI:        http://xylusthemes.com/plugins/import-facebook-events/
  * Description:       Import Social Events allows you to import Facebook ( facebook.com ) events into your WordPress site.
- * Version:           1.7.7
+ * Version:           1.7.8
  * Author:            Xylus Themes
  * Author URI:        http://xylusthemes.com
  * License:           GPL-2.0+
@@ -105,7 +105,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @since 1.0.0
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.7.7' ); }
+			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.7.8' ); }
 
 		/**
 		 * A dummy magic method to prevent Import_Facebook_Events from being unserialized.
@@ -113,7 +113,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @since 1.0.0
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.7.7' ); }
+			_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'import-facebook-events' ), '1.7.8' ); }
 
 
 		/**
@@ -127,12 +127,12 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 
 			// Plugin version.
 			if ( ! defined( 'IFE_VERSION' ) ) {
-				define( 'IFE_VERSION', '1.7.7' );
+				define( 'IFE_VERSION', '1.7.8' );
 			}
 
 			// Minimum Pro plugin version.
 			if ( ! defined( 'IFE_MIN_PRO_VERSION' ) ) {
-				define( 'IFE_MIN_PRO_VERSION', '1.7.3' );
+				define( 'IFE_MIN_PRO_VERSION', '1.7.5' );
 			}
 
 			// Plugin folder Path.
