@@ -316,6 +316,18 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 
 		$timezone_name = !empty( $timezone ) ? $timezone : $calendar_timezone;
 
+		// Only for facebook ical imports.
+		$match = 'https://www.facebook.com/events/';
+		if ( strpos( $url, $match ) !== false ) {
+			$timezone      = $wordpress_timezone;
+			$cwt_start     = $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s') );
+			$cwt_end       = $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s') );
+			$timezone_name = $cwt_start['timezone_name'];
+			$start_time    = strtotime( $cwt_start['date_format'] );
+			$timezone_name = $cwt_end['timezone_name'];
+			$end_time      = strtotime( $cwt_end['date_format'] );
+		}
+
 		$xt_event = array(
 			'origin'          => 'ical',
 			'ID'              => $uid,
