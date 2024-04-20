@@ -319,9 +319,13 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 		// Only for facebook ical imports.
 		$match = 'https://www.facebook.com/events/';
 		if ( strpos( $url, $match ) !== false ) {
+			
+			$startDateTime = new DateTime( $start );
+			$endDateTime   = new DateTime( $end );
+			
 			$timezone      = $wordpress_timezone;
-			$cwt_start     = $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s') );
-			$cwt_end       = $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s') );
+			$cwt_start     = $this->convert_fb_ical_timezone( $startDateTime->format('Y-m-d H:i:s') );
+			$cwt_end       = $this->convert_fb_ical_timezone( $endDateTime->format('Y-m-d H:i:s') );
 			$timezone_name = $cwt_start['timezone_name'];
 			$start_time    = strtotime( $cwt_start['date_format'] );
 			$timezone_name = $cwt_end['timezone_name'];
@@ -460,11 +464,11 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 				// Extracting geometry
 				$latitude = $geometry->location->lat;
 				$longitude = $geometry->location->lng;
-				$id = strtolower(str_replace(' ', '_', $location_name ) );
+				$id = strtolower(str_replace(' ', '_', $location ) );
 
 				$event_location = array(
 					'ID'           => $id,
-					'name'         => isset( $location_name ) ? stripslashes( $location_name ) : '',
+					'name'         => isset( $location ) ? stripslashes( $location ) : '',
 					'description'  => '',
 					'address_1'    => $street_number . ' ' . $route,
 					'address_2'    => '',

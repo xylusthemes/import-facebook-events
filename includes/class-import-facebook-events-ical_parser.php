@@ -436,11 +436,11 @@ class Import_Facebook_Events_Ical_Parser {
 				// Extracting geometry
 				$latitude = $geometry->location->lat;
 				$longitude = $geometry->location->lng;
-				$id = strtolower(str_replace(' ', '_', $location_name ) );
+				$id = strtolower(str_replace(' ', '_', $location ) );
 
 				$event_location = array(
 					'ID'           => $id,
-					'name'         => isset( $location_name ) ? stripslashes( $location_name ) : '',
+					'name'         => isset( $location ) ? stripslashes( $location ) : '',
 					'description'  => '',
 					'address_1'    => $street_number . ' ' . $route,
 					'address_2'    => '',
