@@ -107,33 +107,33 @@ class Import_Facebook_Events_Ical {
 		$ical_url = str_replace( 'webcal://', 'http://', $ical_url );
 		$timeout_in_seconds = 10;
 		$response = null;
+	
+		// Initialize cURL session
+		$ch = curl_init($ical_url);
+	
+		// Set cURL options
+		curl_setopt($ch, CURLOPT_TIMEOUT, $timeout_in_seconds);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_USERAGENT, 'WordPress/' . $wp_version . '; ' . home_url());
 
-		$request_args = array(
-			'timeout'     => $timeout_in_seconds,
-			'sslverify'   => false,
-			'method'      => 'GET',
-			'user-agent'  => 'WordPress/' . $wp_version . '; ' . home_url(),
-		);
-
-		$response = wp_remote_get( $ical_url, $request_args );
-		if ( is_wp_error( $response ) ) {
-			$request_args['sslverify'] = true;
-			$response = wp_remote_head( $ical_url, $request_args );
-		}
-
-		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) != 200 ) {
-			$ife_errors[] = esc_html__( 'Unable to retrieve content from the provided URL.', 'import-facebook-events');
+		$response = curl_exec($ch);
+	
+		// Check for cURL errors
+		if (curl_errno($ch)) {
+			error_log('cURL Error: ' . curl_error($ch));
 			return false;
-		}
-
-		$content_type = wp_remote_retrieve_header( $response, 'content-type' );
-		if ( $content_type !== false ) {
-			if ( strpos( $content_type, 'text/calendar' ) === false && strpos( $content_type, 'application/calendar+xml' ) === false ) {
-				$ife_errors[] = esc_html__( 'The provided URL does not contain iCal format data.', 'import-facebook-events' );
+		} else {
+			$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	
+			if ($http_code != 200) {
+				error_log('HTTP Error: ' . $http_code);
 				return false;
+			} else {
+				curl_close($ch);
+				return $response;
 			}
 		}
-		return $response['body'];
 	}
 
 }
