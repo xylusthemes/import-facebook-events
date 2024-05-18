@@ -54,9 +54,11 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 								<br/>
 								<strong><?php esc_attr_e( 'Set the site url as :', 'import-facebook-events' ); ?> </strong>
 								<span style="color: green;"><?php echo esc_url( get_site_url() ); ?></span>
+								<span class="dashicons dashicons-admin-page ife-btn-copy-shortcode ife_link_cp" data-value='<?php echo esc_url( get_site_url() ); ?>' ></span>
 								<br/>
 								<strong><?php esc_attr_e( 'Set Valid OAuth redirect URI :', 'import-facebook-events' ); ?> </strong>
 								<span style="color: green;"><?php echo esc_url( admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' ) ); ?></span>
+								<span class="dashicons dashicons-admin-page ife-btn-copy-shortcode ife_link_cp" data-value='<?php echo esc_url( admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' ) ); ?>' ></span>
 							</div>
 
 							<?php
