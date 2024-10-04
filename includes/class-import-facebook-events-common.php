@@ -234,11 +234,13 @@ class Import_Facebook_Events_Common {
 	 * @return array
 	 */
 	public function ife_convert_text_to_hyperlink( $post_description = '' ){
-		
-		if( !empty($post_description ) ){
-			$url = '@(http(s)?)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
-			$post_description = preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $post_description );
-		
+		if( !empty( $post_description ) ){
+
+			$url_pattern = '/\b(https?:\/\/[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/)))/i';
+			
+			// Replace URLs with clickable links
+			$post_description = preg_replace($url_pattern, '<a href="$0" target="_blank" title="$0">$0</a>', $post_description);
+	
 			$search  = ['  ', '_ ', ' _'];
 			$replace = ['<br />', '<br />', '<br />'];
 			$post_description = str_replace($search, $replace, $post_description);
