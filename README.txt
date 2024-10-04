@@ -109,7 +109,6 @@ You can use `[facebook_events]` for display in-built facebook events list.
 
 = 1.8.0 =
 * ADDED: Default Event Feature image option( Grid View ).
-* ADDED: Guternburg Editor support.
 * ADDED: Hyperlink in event description.
 * REMOVE: Group ID option.
 * REMOVE: facebook event link in the event description( iCal import ).
