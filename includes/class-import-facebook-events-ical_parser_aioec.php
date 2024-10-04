@@ -332,6 +332,9 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 			$end_time      = strtotime( $cwt_end['date_format'] );
 		}
 
+		$post_description = $ife_events->common->ife_remove_facebook_link_in_event_description( $post_description, $uid );
+		$post_description = $ife_events->common->ife_convert_text_to_hyperlink( $post_description );
+
 		$xt_event = array(
 			'origin'          => 'ical',
 			'ID'              => $uid,
