@@ -798,7 +798,7 @@ msgstr ""
 msgid "Event Date"
 msgstr ""
 
-#: includes/class-import-facebook-events-cpt.php:914
+#: includes/class-import-facebook-events-cpt.php:916
 msgid "No Events are found."
 msgstr ""
 
@@ -1285,68 +1285,84 @@ msgstr ""
 msgid "Slug for the event."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:292
+#: templates/admin/import-facebook-events-settings.php:291
+msgid "Default Event Thumbnail"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:317
+msgid "Event Thumbnail"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:327
+msgid "Remove Event Thumbnail"
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:331
+msgid "This option will display this image in the event's grid view if the event does not have a featured image."
+msgstr ""
+
+#: templates/admin/import-facebook-events-settings.php:339
 msgid "Event Display Time Format"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:299
+#: templates/admin/import-facebook-events-settings.php:346
 msgid "12 Hours"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:300
+#: templates/admin/import-facebook-events-settings.php:347
 msgid "24 Hours"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:301
+#: templates/admin/import-facebook-events-settings.php:348
 msgid "WordPress Default"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:304
+#: templates/admin/import-facebook-events-settings.php:351
 msgid "Choose event display time format for front-end."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:311
+#: templates/admin/import-facebook-events-settings.php:358
 msgid "Delete Import Facebook Events data on Uninstall"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:319
+#: templates/admin/import-facebook-events-settings.php:366
 msgid "Delete Import Facebook Events data like settings, scheduled imports, import history on Uninstall."
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:332
-#: templates/admin/import-facebook-events-settings.php:402
+#: templates/admin/import-facebook-events-settings.php:379
+#: templates/admin/import-facebook-events-settings.php:449
 msgid "Save Settings"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:341
-#: templates/admin/import-facebook-events-settings.php:348
+#: templates/admin/import-facebook-events-settings.php:388
+#: templates/admin/import-facebook-events-settings.php:395
 msgid "Google Maps API"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:359
+#: templates/admin/import-facebook-events-settings.php:406
 msgid "Google maps API Key (Required)"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:360
-#: templates/admin/import-facebook-events-settings.php:389
+#: templates/admin/import-facebook-events-settings.php:407
+#: templates/admin/import-facebook-events-settings.php:436
 msgid "How to get an API Key"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:361
-#: templates/admin/import-facebook-events-settings.php:390
+#: templates/admin/import-facebook-events-settings.php:408
+#: templates/admin/import-facebook-events-settings.php:437
 msgid "Find out more about API Key restrictions"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:371
-#: templates/admin/import-facebook-events-settings.php:377
+#: templates/admin/import-facebook-events-settings.php:418
+#: templates/admin/import-facebook-events-settings.php:424
 msgid "Google GeoLocation API"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:388
+#: templates/admin/import-facebook-events-settings.php:435
 msgid "Google GeoLocation API Key (Required)"
 msgstr ""
 
-#: templates/admin/import-facebook-events-settings.php:417
+#: templates/admin/import-facebook-events-settings.php:464
 msgid "Here"
 msgstr ""
 
