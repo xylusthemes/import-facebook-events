@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event, facebook import, faceb
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 6.6
-Stable tag: 1.7.9
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,7 +51,6 @@ You can use `[facebook_events]` for display in-built facebook events list.
 * Upcoming Events Widget On Elementor Editor
 * Upcoming Events New Grid View Style
 * Import events from the facebook page 
-* Import events from the facebook group
 * Import events from Facebook Event
 * Import My Events will import all events you marked as Interested/Going 
 * Sync events with facebook automatically
@@ -107,6 +106,12 @@ You can use `[facebook_events]` for display in-built facebook events list.
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
 
 == Changelog ==
+
+= 1.8.0 =
+* ADDED: Default Event Feature image option( Grid View ).
+* ADDED: Hyperlink in event description.
+* REMOVE: Group ID option.
+* REMOVE: facebook event link in the event description( iCal import ).
 
 = 1.7.9 =
 * ADDED: Copy-Paste button in the settings page.
