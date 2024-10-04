@@ -288,6 +288,53 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										</tr>
 
 										<tr>
+											<th scope="row"><?php esc_attr_e( 'Default Event Thumbnail', 'import-facebook-events' ); ?>:</th>
+											<td>
+												<?php
+												wp_enqueue_media();
+												
+												$ife_cfulb     = ' upload-button button-add-media button-add-site-icon ';
+												$ife_cfub      = ' button ';
+												$ife_cfw       = '';
+											
+												if ( has_site_icon() ) {
+													$ife_cfw  .= ' has-site-icon';
+													$ife_cfb   = $ife_cfub;
+													$ife_cfboc = $ife_cfulb;
+												} else {
+													$ife_cfw  .= ' hidden';
+													$ife_cfb   = $ife_cfulb;
+													$ife_cfboc = $ife_cfub;
+												}
+
+												$ife_edt_id    = isset( $facebook_options['ife_event_default_thumbnail'] ) ? $facebook_options['ife_event_default_thumbnail'] : '';
+												$ife_edt_url   = !empty( $ife_edt_id ) ? wp_get_attachment_url( $ife_edt_id ) : '';
+												$button_text   = empty( $ife_edt_url ) ? 'Choose Event Thumbnail' : 'Change Event Thumbnail';
+												$remove_class  = empty( $ife_edt_url ) ? 'hidden' : '';
+												?>
+
+												<div id="ife-event-thumbnail-preview" class="wp-clearfix settings-page-preview <?php echo esc_attr( ! empty( $ife_edt_url ) ? '' : 'hidden' ); ?>">
+													<img id="ife-event-thumbnail-img" src="<?php echo esc_url( $ife_edt_url ); ?>" alt="<?php esc_attr_e( 'Event Thumbnail', 'import-facebook-events' ); ?>" style="max-width:100%;width: 15%;height: auto;" >
+												</div>
+
+												<input type="hidden" name="facebook[ife_event_default_thumbnail]" id="ife-event_thumbnail_hidden_field" value="<?php echo esc_attr( $ife_edt_id ); ?>" />
+
+												<div class="action-buttons">
+													<button type="button" id="ife-choose-from-library-button" class="<?php echo esc_attr( $ife_cfb ); ?>" data-alt-classes="<?php echo esc_attr( $ife_cfboc ); ?>" >
+														<?php echo $button_text; ?>
+													</button>
+													<button id="ife-js-remove-thumbnail" type="button" data-alt-classes="<?php echo esc_attr( $ife_cfboc ); ?>" class="reset <?php echo esc_attr( $remove_class ); ?><?php echo esc_attr( $ife_cfb ); ?>" >
+														<?php _e( 'Remove Event Thumbnail', 'import-facebook-events' ); ?>
+													</button>
+												</div>
+												<span class="ife_small">
+													<?php esc_attr_e( "This option will display this image in the event's grid view if the event does not have a featured image.", 'import-facebook-events' ); ?>
+												</span>
+											</td>
+										</tr>
+
+
+										<tr>
 											<th scope="row">
 												<?php esc_attr_e( 'Event Display Time Format', 'import-facebook-events' ); ?> :
 											</th>

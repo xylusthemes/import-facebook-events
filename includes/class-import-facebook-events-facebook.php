@@ -414,6 +414,8 @@ class Import_Facebook_Events_Facebook {
 		}else{
 			$is_online = '0';
 		}
+		
+		$post_description = $ife_events->common->ife_convert_text_to_hyperlink( $post_description );
 
 		$xt_event = array(
 			'origin'          => 'facebook',

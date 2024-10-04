@@ -153,7 +153,7 @@ class Import_Facebook_Events_Cpt {
 			'label'               => __( 'Events', 'import-facebook-events' ),
 			'description'         => __( 'Post type for Events', 'import-facebook-events' ),
 			'labels'              => $event_labels,
-			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions' ),
+			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
 			'taxonomies'          => array( $this->event_category, $this->event_tag ),
 			'hierarchical'        => false,
 			'public'              => true,
@@ -167,6 +167,7 @@ class Import_Facebook_Events_Cpt {
 			'has_archive'         => true,
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
+			'show_in_rest'        => true,
 			'rewrite'             => $rewrite,
 		);
 		register_post_type( $this->event_posttype, $event_cpt_args );
@@ -205,6 +206,7 @@ class Import_Facebook_Events_Cpt {
 				'show_admin_column' => true,
 				'hierarchical'      => true,
 				'query_var'         => true,
+				'show_in_rest'      => true,
 			)
 		);
 
@@ -220,6 +222,7 @@ class Import_Facebook_Events_Cpt {
 				'show_admin_column' => true,
 				'hierarchical'      => false,
 				'query_var'         => $this->event_tag,
+				'show_in_rest'      => true,
 				/* Labels used when displaying taxonomy and terms. */
 				'labels'            => array(
 					'name'                       => __( 'Event Tags', 'import-facebook-events' ),
@@ -870,6 +873,7 @@ class Import_Facebook_Events_Cpt {
 		$ife_options  = get_option( IFE_OPTIONS );
 		$accent_color = isset( $ife_options['accent_color'] ) ? $ife_options['accent_color'] : '#039ED7';
 		$direct_link  = isset( $ife_options['direct_link'] ) ? $ife_options['direct_link'] : 'no';
+		$ife_ed_image = isset( $ife_options['ife_event_default_thumbnail'] ) ? $ife_options['ife_event_default_thumbnail'] : '';
 		if ( ! ife_is_pro() ) {
 			$direct_link = 'no';
 		}
@@ -877,9 +881,10 @@ class Import_Facebook_Events_Cpt {
 		?>
 		<div class="row_grid">
 			<?php
-			$template_args                = array();
-			$template_args['css_class']   = $css_class;
-			$template_args['direct_link'] = $direct_link;
+			$template_args                 = array();
+			$template_args['css_class']    = $css_class;
+			$template_args['direct_link']  = $direct_link;
+			$template_args['ife_ed_image'] = $ife_ed_image;
 			if ( $facebook_events->have_posts() ) :
 				while ( $facebook_events->have_posts() ) :
 					$facebook_events->the_post();
