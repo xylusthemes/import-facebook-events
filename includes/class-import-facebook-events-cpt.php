@@ -167,7 +167,6 @@ class Import_Facebook_Events_Cpt {
 			'has_archive'         => true,
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
-			'show_in_rest'        => true,
 			'rewrite'             => $rewrite,
 		);
 		register_post_type( $this->event_posttype, $event_cpt_args );
@@ -206,7 +205,6 @@ class Import_Facebook_Events_Cpt {
 				'show_admin_column' => true,
 				'hierarchical'      => true,
 				'query_var'         => true,
-				'show_in_rest'      => true,
 			)
 		);
 
@@ -222,7 +220,6 @@ class Import_Facebook_Events_Cpt {
 				'show_admin_column' => true,
 				'hierarchical'      => false,
 				'query_var'         => $this->event_tag,
-				'show_in_rest'      => true,
 				/* Labels used when displaying taxonomy and terms. */
 				'labels'            => array(
 					'name'                       => __( 'Event Tags', 'import-facebook-events' ),
