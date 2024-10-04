@@ -32,9 +32,10 @@ if ( ! ife_is_pro() ) {
 								<select name="facebook_import_by" id="facebook_import_by">
 									<option value="facebook_event_id"><?php esc_attr_e( 'Facebook Event ID', 'import-facebook-events' ); ?></option>
 									<option value="facebook_organization"><?php esc_attr_e( 'Facebook Page', 'import-facebook-events' ); ?></option>
-									<?php if ( $ife_events->common->has_authorized_user_token() ) { ?>
-										<option value="facebook_group"><?php esc_attr_e( 'Facebook Group', 'import-facebook-events' ); ?></option>
-									<?php } if ( ! empty( $user_fb_pages ) ) { ?>
+									<?php //if ( $ife_events->common->has_authorized_user_token() ) { ?>
+										<!-- <option value="facebook_group"><?php //esc_attr_e( 'Facebook Group', 'import-facebook-events' ); ?></option> -->
+									<?php //} ?>
+									<?php if ( ! empty( $user_fb_pages ) ) { ?>
 										<option value="my_pages"><?php esc_attr_e( 'My Pages', 'import-facebook-events' ); ?></option>
 									<?php } ?>
 								</select>
@@ -49,13 +50,13 @@ if ( ! ife_is_pro() ) {
 									?>
 									<br/>
 									<?php
-									if ( $ife_events->common->has_authorized_user_token() ) {
-										printf(
-											// translators: please ignore %1$s and  %2$s.
-											esc_attr__( '%1$s (Import events from Facebook group)', 'import-facebook-events' ),
-											'<strong>' . esc_attr__( '3. Facebook Group', 'import-facebook-events' ) . '</strong>',
-										);
-									}
+									// if ( $ife_events->common->has_authorized_user_token() ) {
+									// 	printf(
+									// 		// translators: please ignore %1$s and  %2$s.
+									// 		esc_attr__( '%1$s (Import events from Facebook group)', 'import-facebook-events' ),
+									// 		'<strong>' . esc_attr__( '3. Facebook Group', 'import-facebook-events' ) . '</strong>',
+									// 	);
+									// }
 									?>
 								</span>
 							</td>
@@ -86,18 +87,18 @@ if ( ! ife_is_pro() ) {
 							</td>
 						</tr>
 
-						<tr class="facebook_group_wrapper" style="display: none;">
+						<!-- <tr class="facebook_group_wrapper" style="display: none;">
 							<th scope="row">
-								<?php esc_attr_e( 'Facebook Group Numeric ID to fetch events from', 'import-facebook-events' ); ?> :
+								<?php //esc_attr_e( 'Facebook Group Numeric ID to fetch events from', 'import-facebook-events' ); ?> :
 							</th>
 							<td>
-								<input class="ife_text facebook_group" name="facebook_group_id" type="text" <?php echo esc_attr( $disabled ); ?>/>
+								<input class="ife_text facebook_group" name="facebook_group_id" type="text" <?php //echo esc_attr( $disabled ); ?>/>
 								<span class="ife_small">
-									<?php esc_attr__( ' Eg.Input value for group https://www.facebook.com/groups/123456789123456/ is "123456789123456"', 'import-facebook-events' ); ?>
+									<?php //esc_attr__( ' Eg.Input value for group https://www.facebook.com/groups/123456789123456/ is "123456789123456"', 'import-facebook-events' ); ?>
 								</span>
-								<?php do_action( 'ife_render_pro_notice' ); ?>
+								<?php //do_action( 'ife_render_pro_notice' ); ?>
 							</td>
-						</tr>
+						</tr> -->
 
 						<tr class="facebook_account_wrapper" style="display: none;">
 							<th scope="row">
