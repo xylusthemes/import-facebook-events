@@ -873,6 +873,7 @@ class Import_Facebook_Events_Cpt {
 		$ife_options  = get_option( IFE_OPTIONS );
 		$accent_color = isset( $ife_options['accent_color'] ) ? $ife_options['accent_color'] : '#039ED7';
 		$direct_link  = isset( $ife_options['direct_link'] ) ? $ife_options['direct_link'] : 'no';
+		$ife_ed_image = isset( $ife_options['ife_event_default_thumbnail'] ) ? $ife_options['ife_event_default_thumbnail'] : '';
 		if ( ! ife_is_pro() ) {
 			$direct_link = 'no';
 		}
@@ -880,9 +881,10 @@ class Import_Facebook_Events_Cpt {
 		?>
 		<div class="row_grid">
 			<?php
-			$template_args                = array();
-			$template_args['css_class']   = $css_class;
-			$template_args['direct_link'] = $direct_link;
+			$template_args                 = array();
+			$template_args['css_class']    = $css_class;
+			$template_args['direct_link']  = $direct_link;
+			$template_args['ife_ed_image'] = $ife_ed_image;
 			if ( $facebook_events->have_posts() ) :
 				while ( $facebook_events->have_posts() ) :
 					$facebook_events->the_post();
