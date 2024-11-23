@@ -146,21 +146,21 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										</tr>
 										<?php do_action( 'ife_after_app_settings' ); ?>
                     
-					            <tr>
-                        <th scope="row">
-                            <?php _e('Skip Trashed Events', 'import-facebook-events'); ?> :
-                        </th>
-                        <td>
-                            <?php
-                            $skip_trash = isset($facebook_options['skip_trash']) ? $facebook_options['skip_trash'] : 'no';
-                            ?>
-                            <input type="checkbox" name="facebook[skip_trash]" value="yes" <?php if ($skip_trash == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
-                            <span class="ife_small">
-                                <?php _e('Check to enable skip-the-trash events during importing.', 'import-facebook-events'); ?>
-                            </span>
-                            <?php do_action('ife_render_pro_notice'); ?>
-                        </td>
-                    </tr>
+					            		<tr>
+											<th scope="row">
+												<?php _e('Skip Trashed Events', 'import-facebook-events'); ?> :
+											</th>
+											<td>
+												<?php
+												$skip_trash = isset($facebook_options['skip_trash']) ? $facebook_options['skip_trash'] : 'no';
+												?>
+												<input type="checkbox" name="facebook[skip_trash]" value="yes" <?php if ($skip_trash == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
+												<span class="ife_small">
+													<?php _e('Check to enable skip-the-trash events during importing.', 'import-facebook-events'); ?>
+												</span>
+												<?php do_action('ife_render_pro_notice'); ?>
+											</td>
+										</tr>
 
 										<tr>
 											<th scope="row">
@@ -174,6 +174,21 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 												<?php echo( ( 'yes' === $update_facebook_events ) ? 'checked="checked"' : '' ); ?> />
 												<span class="ife_small">
 													<?php esc_attr_e( 'Check to updates existing events.', 'import-facebook-events' ); ?>
+												</span>
+											</td>
+										</tr>
+
+										<tr>
+											<th scope="row">
+												<?php _e( 'Move past events in trash', 'import-facebook-events' ); ?> : 
+											</th>
+											<td>
+												<?php
+												$move_peit_events = isset( $facebook_options['move_peit'] ) ? $facebook_options['move_peit'] : 'no';
+												?>
+												<input type="checkbox" name="facebook[move_peit]" value="yes" <?php if ( $move_peit_events == 'yes' ) { echo 'checked="checked"'; } ?> />
+												<span class="ife_small">
+													<?php _e( 'Check to move past events in the trash, Automatically move events to the trash 24 hours after their end date using wp-cron. This runs once daily in the background.', 'import-facebook-events' ); ?>
 												</span>
 											</td>
 										</tr>
