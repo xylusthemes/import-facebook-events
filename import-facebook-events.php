@@ -224,6 +224,15 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @return void
 		 */
 		public function ife_setting_doc_links ( $links ) {
+			$upgrate_to_pro = '';
+			if( !ife_is_pro() ){
+				$upgrate_to_pro = sprintf(
+                    '<a href="%s" target="_blank" style="color:#1da867;font-weight: 900;">%s</a>',
+                    esc_url( 'https://xylusthemes.com/plugins/import-facebook-events/' ),
+                    esc_html__( 'Upgrade to Pro', 'import-facebook-events' )
+                );
+			}
+
 			$ife_setting_doc_link = array(
                 'ife-event-setting' => sprintf(
                     '<a href="%s">%s</a>',
@@ -235,6 +244,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
                     esc_url( 'https://docs.xylusthemes.com/docs/import-facebook-events/' ),
                     esc_html__( 'Docs', 'import-facebook-events' )
                 ),
+				'ife-event-pro-link' => $upgrate_to_pro,
             );
             return array_merge( $links, $ife_setting_doc_link );
 		}
