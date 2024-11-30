@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-04T11:26:43+00:00\n"
+"POT-Creation-Date: 2024-11-30T06:44:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: import-facebook-events\n"
@@ -85,45 +85,53 @@ msgstr ""
 msgid "Other reasons"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:169
+#: includes/class-ife-plugin-deactivation.php:166
 msgid "Submit & Deactivate"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:196
-msgid "Skip"
+#: includes/class-ife-plugin-deactivation.php:193
+msgid "Skip & Deactivate"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:213
+#: includes/class-ife-plugin-deactivation.php:210
 msgid "Finding it confusing? let us know so that we can improve the interface"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:216
+#: includes/class-ife-plugin-deactivation.php:213
 msgid "Can you let us know the reason for deactivation (Required)"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:220
+#: includes/class-ife-plugin-deactivation.php:217
 msgid "Can you please let us know about the bug/issue in detail?"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:223
+#: includes/class-ife-plugin-deactivation.php:220
 msgid "Can you please let us know which plugin you found helpful"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:226
+#: includes/class-ife-plugin-deactivation.php:223
 msgid "Can you please let us know more about the feature you want"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:229
+#: includes/class-ife-plugin-deactivation.php:226
 msgid "Can you please let us know more about your requirement"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:232
-#: includes/class-ife-plugin-deactivation.php:270
+#: includes/class-ife-plugin-deactivation.php:229
+#: includes/class-ife-plugin-deactivation.php:273
 msgid "Write your query here"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:257
-msgid "If you have a moment, please let us know why you are deactivating:"
+#: includes/class-ife-plugin-deactivation.php:256
+msgid "Quick Feedback"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:260
+msgid "Could you please share why you are deactivating Import Facebook Events plugin ?"
+msgstr ""
+
+#: includes/class-ife-plugin-deactivation.php:277
+msgid "* By submitting this form, you will also be sending us your email address &amp; website URL."
 msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:62
