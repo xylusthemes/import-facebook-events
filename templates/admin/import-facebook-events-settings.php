@@ -178,6 +178,22 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 											</td>
 										</tr>
 
+										<tr>
+											<th scope="row">
+												<?php esc_attr_e( 'Import Past Events', 'import-facebook-events' ); ?> :
+											</th>
+											<td>
+												<?php
+												$import_past_events = isset( $facebook_options['import_past_events'] ) ? $facebook_options['import_past_events'] : 'no';
+												?>
+												<input type="checkbox" id="import_past_events" name="facebook[import_past_events]" value="yes" <?php echo( ( 'yes' === $import_past_events ) ? 'checked="checked"' : '' ); if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
+												<span class="ife_small">
+													<?php esc_attr_e( 'Check to import past events this option will import events from the last 2 years and upcoming events..', 'import-facebook-events' ); ?>
+												</span>
+												<?php do_action('ife_render_pro_notice'); ?>
+											</td>
+										</tr>
+
 										<th scope="row">
 												<?php _e( "Don't Update these data.", "import-facebook-events" ); ?> : 
 											</th>
