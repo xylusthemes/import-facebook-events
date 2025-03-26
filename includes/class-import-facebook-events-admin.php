@@ -41,10 +41,10 @@ class Import_Facebook_Events_Admin {
 
 		add_action( 'init', array( $this, 'register_scheduled_import_cpt' ) );
 		add_action( 'init', array( $this, 'register_history_cpt' ) );
-
 		add_action( 'admin_notices', array( $this,'remove_default_notices' ), 1 );
 		add_action( 'ife_display_all_notice', array( $this, 'display_notices' ) );
-
+		add_action( 'admin_init', array( $this, 'ife_check_delete_pst_event_cron_status' ) );
+		add_action( 'ife_delete_past_events_cron', array( $this, 'ife_delete_past_events' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
 		add_filter( 'submenu_file', array( $this, 'get_selected_tab_submenu_ife' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
@@ -563,5 +563,56 @@ class Import_Facebook_Events_Admin {
 		<?php
 		iframe_footer();
 		exit;
+	}
+
+	/**
+	 * Render Delete Past Event in the facebook_events post type
+	 * @return void
+	 */
+	public function ife_delete_past_events() {
+
+		$current_time = current_time('timestamp');
+		$args         = array(
+			'post_type'       => 'facebook_events',
+			'posts_per_page'  => 100,
+			'post_status'     => 'publish',
+			'fields'          => 'ids',
+			'meta_query'      => array(
+				array(
+					'key'     => 'end_ts',
+					'value'   => current_time( 'timestamp' ) - ( 24 * 3600 ),
+					'compare' => '<',      
+					'type'    => 'NUMERIC',
+				),
+			),
+		);
+		$events = get_posts( $args );
+
+		if ( empty( $events ) ) {
+			return;
+		}
+
+		foreach ( $events as $event_id ) {
+			wp_trash_post( $event_id );
+		}
+	}
+
+	/**
+	 * re-create if the past event cron is delete
+	 */
+	public function ife_check_delete_pst_event_cron_status(){
+
+		$ife_options        = get_option( IFE_OPTIONS );
+		$move_peit_ieevents = isset( $ife_options['move_peit'] ) ? $ife_options['move_peit'] : 'no';
+		if ( $move_peit_ieevents == 'yes' ) {
+			if ( !wp_next_scheduled( 'ife_delete_past_events_cron' ) ) {
+				wp_schedule_event( time(), 'daily', 'ife_delete_past_events_cron' );
+			}
+		}else{
+			if ( wp_next_scheduled( 'ife_delete_past_events_cron' ) ) {
+				wp_clear_scheduled_hook( 'ife_delete_past_events_cron' );
+			}
+		}
+
 	}
 }

@@ -228,6 +228,20 @@ class Import_Facebook_Events_Ical_Parser {
 			$timezone = $system_timezone;
 		}*/
 
+		//get calendar timezone
+		$sstartime = $start->format( 'Y-m-d H:i:s' );
+		$sendtime  = $end->format( 'Y-m-d H:i:s' );
+
+		if( $timezone == 'UTC' ){
+			$startime_utc = $sstartime;
+			$endtime_utc  = $sendtime;
+		}else{
+			$utc_start_time = $ife_events->common->ife_convert_to_utc_timestamp( $sstartime, $timezone );
+			$startime_utc   =  date('Y-m-d H:i:s', $utc_start_time );
+			$end_time_utc   = $ife_events->common->ife_convert_to_utc_timestamp( $sendtime, $timezone );
+			$endtime_utc    =  date('Y-m-d H:i:s', $end_time_utc );
+		}
+
 		$start_time = strtotime( $this->convert_datetime_to_timezone_wise_datetime( $start, $force_timezone ) );
 		$end_time = strtotime( $this->convert_datetime_to_timezone_wise_datetime( $end, $force_timezone ) );
 		/*$start_time = strtotime( $start ); 
@@ -297,8 +311,8 @@ class Import_Facebook_Events_Ical_Parser {
 		$match = 'https://www.facebook.com/events/';
 		if ( strpos( $url, $match ) !== false ) {
 			$timezone      = $wordpress_timezone;
-			$cwt_start     = $this->convert_fb_ical_timezone( $start->format('Y-m-d H:i:s') );
-			$cwt_end       = $this->convert_fb_ical_timezone( $end->format('Y-m-d H:i:s') );
+			$cwt_start     = $this->convert_fb_ical_timezone( $sstartime );
+			$cwt_end       = $this->convert_fb_ical_timezone( $sendtime );
 			$timezone_name = $cwt_start['timezone_name'];
 			$start_time    = strtotime( $cwt_start['date_format'] );
 			$timezone_name = $cwt_end['timezone_name'];
@@ -318,8 +332,8 @@ class Import_Facebook_Events_Ical_Parser {
 			'endtime_local'   => $end_time,
 			'starttime'       => date('Ymd\THis', $start_time),
 			'endtime'         => date('Ymd\THis', $end_time),
-			'startime_utc'    => '',
-			'endtime_utc'     => '',
+			'startime_utc'    => $startime_utc,
+			'endtime_utc'     => $endtime_utc,
 			'timezone'        => $timezone,
 			'timezone_name'   => $timezone_name,
 			'utc_offset'      => '',
@@ -363,7 +377,7 @@ class Import_Facebook_Events_Ical_Parser {
 			}
 		}
 		if( $oraganizer_data['email'] == 'noreply@facebookmail_com' ){
-			$oraganizer_data['email'] = 'noreply@facebookmail.com';
+			$oraganizer_data['email'] = '';
 		}
 		
 		$xt_event['organizer'] = $oraganizer_data;

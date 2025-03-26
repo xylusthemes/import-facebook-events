@@ -115,8 +115,6 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 								}
 								?>
 								<form method="post" id="ife_setting_form">
-
-
 								<?php do_action( 'ife_before_settings_section' ); ?>
 
 								<div class="ife-inner-main-section"  >
@@ -189,6 +187,46 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 									</div>
 								</div>
 
+								<div class="ife-inner-main-section"  >
+									<div class="ife-inner-section-1" >
+										<span class="ife-title-text" ><?php esc_attr_e( 'Move past events in trash', 'import-facebook-events' ); ?></span>
+									</div>
+									<div class="ife-inner-section-2">
+										<?php
+										$move_peit_events = isset( $facebook_options['move_peit'] ) ? $facebook_options['move_peit'] : 'no';
+										?>
+										<input type="checkbox" name="facebook[move_peit]" value="yes" <?php if ( $move_peit_events == 'yes' ) { echo 'checked="checked"'; } ?> />
+										<span class="ife_small">
+											<?php _e( 'Check to move past events in the trash, Automatically move events to the trash 24 hours after their end date using wp-cron. This runs once daily in the background.', 'import-facebook-events' ); ?>
+										</span>
+									</div>
+								</div>
+
+
+								<div class="ife-inner-main-section"  >
+									<div class="ife-inner-section-1" >
+										<span class="ife-title-text" ><?php esc_attr_e( "Don't Update these data.", 'import-facebook-events' ); ?></span>
+									</div>
+									<div class="ife-inner-section-2">
+										<?php
+										$donotupdate = isset($facebook_options['dont_update'])? $facebook_options['dont_update'] : array();
+										$sdontupdate = isset( $donotupdate['status'] ) ? $donotupdate['status'] : 'no';
+										$cdontupdate = isset( $donotupdate['category'] ) ? $donotupdate['category'] : 'no';
+										?>
+										<input type="checkbox" name="facebook[dont_update][status]" value="yes" <?php checked( $sdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
+										<span class="xtei_small">
+											<?php _e( 'Status ( Publish, Pending, Draft etc.. )', 'import-facebook-events' ); ?>
+										</span><br/>
+										<input type="checkbox" name="facebook[dont_update][category]" value="yes" <?php checked( $cdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
+										<span class="xtei_small">
+											<?php _e( 'Event category', 'import-facebook-events' ); ?>
+										</span><br/>
+										<span class="ife_small">
+											<?php _e( "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')", 'import-facebook-events' ); ?>
+										</span>
+										<?php do_action('ife_render_pro_notice'); ?>
+									</div>
+								</div>
 
 								<div class="ife-inner-main-section"  >
 									<div class="ife-inner-section-1" >
