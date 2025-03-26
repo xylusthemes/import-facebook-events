@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-26T11:40:04+00:00\n"
+"POT-Creation-Date: 2025-03-26T11:41:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: import-facebook-events\n"
@@ -45,11 +45,18 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: import-facebook-events.php:231
+#: import-facebook-events.php:232
+#: includes/class-import-facebook-events-admin.php:73
+#: templates/admin/admin-sidebar.php:18
+#: templates/admin/admin-sidebar.php:21
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: import-facebook-events.php:240
 msgid "Setting"
 msgstr ""
 
-#: import-facebook-events.php:236
+#: import-facebook-events.php:245
 msgid "Docs"
 msgstr ""
 
@@ -172,12 +179,6 @@ msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:71
 msgid "Support & help"
-msgstr ""
-
-#: includes/class-import-facebook-events-admin.php:73
-#: templates/admin/admin-sidebar.php:18
-#: templates/admin/admin-sidebar.php:21
-msgid "Upgrade to Pro"
 msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:148
