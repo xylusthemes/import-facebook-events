@@ -116,10 +116,10 @@ class Import_Facebook_Events_EventON {
 		}
 
 		$is_exitsing_event = $ife_events->common->get_event_by_event_id( $this->event_posttype, $centralize_array['ID'] );
+		$options           = ife_get_import_options( $centralize_array['origin'] );
 
 		if ( $is_exitsing_event ) {
 			// Update event or not?
-			$options       = ife_get_import_options( $centralize_array['origin'] );
 			$update_events = isset( $options['update_events'] ) ? $options['update_events'] : 'no';
 			$skip_trash    = isset( $options['skip_trash'] ) ? $options['skip_trash'] : 'no';
 			$post_status   = get_post_status( $is_exitsing_event );
@@ -189,6 +189,11 @@ class Import_Facebook_Events_EventON {
 			$event_image = $centralize_array['image_url'];
 			if ( ! empty( $event_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
+			}else{
+				$default_thumb  = isset( $options['ife_event_default_thumbnail'] ) ? $options['ife_event_default_thumbnail'] : '';
+				if( !empty( $default_thumb ) ){
+					set_post_thumbnail( $inserted_event_id, $default_thumb );
+				}
 			}
 			$address      = isset( $centralize_array['location']['address_1'] ) ? sanitize_text_field( $centralize_array['location']['address_1'] ) : '';
 			$full_address = isset( $centralize_array['location']['full_address'] ) ? sanitize_text_field( $centralize_array['location']['full_address'] ) : '';
