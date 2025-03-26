@@ -335,5 +335,6 @@ function ife_activate_import_facebook_events() {
 	global $ife_events;
 	$ife_events->cpt->register_event_post_type();
 	flush_rewrite_rules();
+	add_option( 'ife_plugin_activated', true );
 }
 register_activation_hook( __FILE__, 'ife_activate_import_facebook_events' );

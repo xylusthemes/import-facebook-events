@@ -41,12 +41,14 @@ class Import_Facebook_Events_Admin {
 
 		add_action( 'init', array( $this, 'register_scheduled_import_cpt' ) );
 		add_action( 'init', array( $this, 'register_history_cpt' ) );
+
+		add_action( 'admin_notices', array( $this,'remove_default_notices' ), 1 );
+		add_action( 'ife_display_all_notice', array( $this, 'display_notices' ) );
+
 		add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
 		add_filter( 'submenu_file', array( $this, 'get_selected_tab_submenu_ife' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
-		add_action( 'admin_notices', array( $this, 'display_notices' ) );
-		add_filter( 'admin_footer_text', array( $this, 'add_import_facebook_events_credit' ) );
 		add_action( 'admin_action_ife_view_import_history', array( $this, 'ife_view_import_history_handler' ) );
 	}
 
@@ -60,16 +62,23 @@ class Import_Facebook_Events_Admin {
 		global $submenu;
 
 		add_menu_page( __( 'Import Facebook Events', 'import-facebook-events' ), __( 'Facebook Import', 'import-facebook-events' ), 'manage_options', 'facebook_import', array( $this, 'admin_page' ), 'dashicons-calendar-alt', '30' );
+		$submenu['facebook_import'][] = array( __( 'Dashboard', 'import-facebook-events' ), 'manage_options',  admin_url( 'admin.php?page=facebook_import&tab=dashboard' )  );
 		$submenu['facebook_import'][] = array( __( 'Facebook Import', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=facebook' ) );
 		$submenu['facebook_import'][] = array( __( 'Facebook .ics Import', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=ics' ) );
 		$submenu['facebook_import'][] = array( __( 'Schedule Import', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=scheduled' ) );
 		$submenu['facebook_import'][] = array( __( 'Import History', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=history' ) );
-		$submenu['facebook_import'][] = array( __( 'Settings', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=settings' ));
+		$submenu['facebook_import'][] = array( __( 'Settings', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=settings' ) );
 		$submenu['facebook_import'][] = array( __( 'Shortcodes', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=shortcodes' ));
-		$submenu['facebook_import'][] = array( __( 'Support & help', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=support' ));
+		$submenu['facebook_import'][] = array( __( 'Wizard', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=ife_setup_wizard' ) );
 		if( !ife_is_pro() ){
 			$submenu['facebook_import'][] = array( '<li class="ife_upgrade_pro current">' . __( 'Upgrade to Pro', 'import-facebook-events' ) . '</li>', 'manage_options', esc_url( "https://xylusthemes.com/plugins/import-facebook-events/") );
 		}
+	}
+
+	public function remove_default_notices() {
+		// Remove default notices display.
+		remove_action( 'admin_notices', 'wp_admin_notices' );
+		remove_action( 'all_admin_notices', 'wp_admin_notices' );
 	}
 
 	/**
@@ -82,7 +91,6 @@ class Import_Facebook_Events_Admin {
 	 * @return void
 	 */
 	public function enqueue_admin_scripts( $hook ) {
-
 		$js_dir = IFE_PLUGIN_URL . 'assets/js/';
 		wp_register_script( 'import-facebook-events', $js_dir . 'import-facebook-events-admin.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'wp-color-picker' ), IFE_VERSION, true );
 		$params = array(
@@ -91,6 +99,10 @@ class Import_Facebook_Events_Admin {
 		wp_localize_script( 'import-facebook-events', 'ife_ajax', $params );
 		wp_enqueue_script( 'import-facebook-events' );
 
+		if( isset( $_GET['tab'] ) && $_GET['tab'] == 'ife_setup_wizard' ){
+			wp_register_script( 'ife-wizard-js', $js_dir . 'wizard.js',  array( 'jquery', 'jquery-ui-core' ), IFE_VERSION  );
+			wp_enqueue_script( 'ife-wizard-js' );
+		}
 	}
 
 	/**
@@ -105,11 +117,17 @@ class Import_Facebook_Events_Admin {
 	public function enqueue_admin_styles( $hook ) {
 		global $pagenow;
 		$current_screen = get_current_screen();
-		if ( 'toplevel_page_facebook_import' === $current_screen->id || 'widgets.php' === $pagenow || 'post.php' === $pagenow || 'post-new.php' === $pagenow ) {
-			$css_dir = IFE_PLUGIN_URL . 'assets/css/';
-			wp_enqueue_style( 'jquery-ui', $css_dir . 'jquery-ui.css', false, '1.12.0' );
-			wp_enqueue_style( 'import-facebook-events', $css_dir . 'import-facebook-events-admin.css', false, IFE_VERSION );
-			wp_enqueue_style( 'wp-color-picker' );
+		if( isset( $_GET['page'] ) && $_GET['page'] == 'facebook_import' ){
+			if ( 'toplevel_page_facebook_import' === $current_screen->id || 'widgets.php' === $pagenow || 'post.php' === $pagenow || 'post-new.php' === $pagenow ) {
+				$css_dir = IFE_PLUGIN_URL . 'assets/css/';
+				wp_enqueue_style( 'jquery-ui', $css_dir . 'jquery-ui.css', false, '1.12.0' );
+				wp_enqueue_style( 'import-facebook-events', $css_dir . 'import-facebook-events-admin.css', false, IFE_VERSION );
+				wp_enqueue_style( 'wp-color-picker' );
+
+				if( isset( $_GET['tab'] ) && $_GET['tab'] == 'ife_setup_wizard' ){
+					wp_enqueue_style( 'ife-wizard-css', $css_dir . 'wizard.css', false, IFE_VERSION  );
+				}
+			}
 		}
 	}
 
@@ -120,97 +138,135 @@ class Import_Facebook_Events_Admin {
 	 * @return void
 	 */
 	public function admin_page() {
-		?>
-		<div class="wrap">
-			<h2><?php esc_html_e( 'Import Facebook Events', 'import-facebook-events' ); ?></h2>
-			<?php
-			// Set Default Tab to Import.
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'facebook'; // input var okay.
-			?>
-			<div id="poststuff">
-				<div id="post-body" class="metabox-holder columns-2">
+		global $ife_events;
 
-					<div id="postbox-container-1" class="postbox-container">
-						<?php
-						if ( ! ife_is_pro() ) {
-							require_once IFE_PLUGIN_DIR . '/templates/admin/admin-sidebar.php';
-						}
-						?>
-					</div>
-					<div id="postbox-container-2" class="postbox-container">
+			$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) )  : 'facebook';
+			$gettab     = str_replace( 'by_', '', $active_tab );
+			$gettab     = ucwords( str_replace( '_', ' & ', $gettab ) );
+			if( $active_tab == 'support' ){
+				$page_title = 'Support & Help';
+			}elseif( $active_tab == 'facebook' ){
+				$page_title = 'Facebook Import';
+			}elseif( $active_tab == 'ics' ){
+				$page_title = 'ICS Import';
+			}elseif( $active_tab == 'scheduled' ){
+				$page_title = 'Scheduled Import';
+			}else{
+				$page_title = $gettab;
+			}
 
-						<h1 class="nav-tab-wrapper">
+			if( $active_tab == 'ife_setup_wizard' ){
+				require_once IFE_PLUGIN_DIR . '/templates/admin/ife-setup-wizard.php';
+				exit();
+			}
 
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'facebook', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'facebook' === $tab ) ? 'nav-tab-active' : '' ); ?>">
-								<?php esc_html_e( 'Import', 'import-facebook-events' ); ?>
-							</a>
+			$posts_header_result = $ife_events->common->ife_render_common_header( $page_title );
+			echo esc_attr_e( $posts_header_result );
 
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'ics', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'ics' === $tab ) ? 'nav-tab-active' : '' ); ?>">
-		                        <?php esc_html_e( 'Facebook .ics Import', 'import-facebook-events' ); ?>
-		                    </a>
+			if( $active_tab != 'dashboard' ){
+				?>
+					<div class="ife-container" style="margin-top: 60px;">
+						<div class="ife-wrap" >
+							<div id="poststuff">
+								<div id="post-body" class="metabox-holder columns-2">
+									<?php 
+										do_action( 'ife_display_all_notice' );
+									?>
+									<div class="delete_notice"></div>
+									<div id="postbox-container-2" class="postbox-container">
+										<div class="ife-app">
+											<div class="ife-tabs">
+												<div class="tabs-scroller">
+													<div class="var-tabs var-tabs--item-horizontal var-tabs--layout-horizontal-padding">
+														<div class="var-tabs__tab-wrap var-tabs--layout-horizontal">
+															<a href="?page=facebook_import&tab=facebook" class="var-tab <?php echo $active_tab == 'facebook' ? 'var-tab--active' : 'var-tab--inactive'; ?>">
+																<span class="tab-label"><?php esc_attr_e( 'Import', 'import-facebook-events' ); ?></span>
+															</a>
+															<a href="?page=facebook_import&tab=ics" class="var-tab <?php echo $active_tab == 'ics' ? 'var-tab--active' : 'var-tab--inactive'; ?>">
+																<span class="tab-label"><?php esc_attr_e( 'ICS Import', 'import-facebook-events' ); ?></span>
+															</a>
+															<a href="?page=facebook_import&tab=scheduled" class="var-tab <?php echo ( $active_tab == 'scheduled' || $active_tab == 'scheduled' )  ? 'var-tab--active' : 'var-tab--inactive'; ?>">
+																<span class="tab-label"><?php esc_attr_e( 'Schedule Import', 'import-facebook-events' ); if( !ife_is_pro() ){ echo '<div class="ife-pro-badge"> PRO </div>'; } ?></span>
+															</a>
+															<a href="?page=facebook_import&tab=history" class="var-tab <?php echo $active_tab == 'history' ? 'var-tab--active' : 'var-tab--inactive'; ?>">
+																<span class="tab-label"><?php esc_attr_e( 'History', 'import-facebook-events' ); ?></span>
+															</a>
+															<a href="?page=facebook_import&tab=settings" class="var-tab <?php echo $active_tab == 'settings' ? 'var-tab--active' : 'var-tab--inactive'; ?>">
+																<span class="tab-label"><?php esc_attr_e( 'Setting', 'import-facebook-events' ); ?></span>
+															</a>
+															<a href="?page=facebook_import&tab=shortcodes" class="var-tab <?php echo $active_tab == 'shortcodes' ? 'var-tab--active' : 'var-tab--inactive'; ?>">
+																<span class="tab-label"><?php esc_attr_e( 'Shortcodes', 'import-facebook-events' ); ?></span>
+															</a>
+															<a href="?page=facebook_import&tab=support" class="var-tab <?php echo $active_tab == 'support' ? 'var-tab--active' : 'var-tab--inactive'; ?>">
+																<span class="tab-label"><?php esc_attr_e( 'Support & Help', 'import-facebook-events' ); ?></span>
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'scheduled', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'scheduled' === $tab ) ? 'nav-tab-active' : '' ); ?>">
-								<?php esc_html_e( 'Scheduled Imports', 'import-facebook-events' ); ?>
-							</a>
-
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'history', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'history' === $tab ) ? 'nav-tab-active' : '' ); ?>">
-								<?php esc_html_e( 'Import History', 'import-facebook-events' ); ?>
-							</a>
-
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'settings', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'settings' === $tab ) ? 'nav-tab-active' : '' ); ?>">
-								<?php esc_html_e( 'Settings', 'import-facebook-events' ); ?>
-							</a>
-
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'shortcodes', $this->adminpage_url ) ); ?>" class="nav-tab <?php if ( 'shortcodes' == $tab) { echo 'nav-tab-active'; } ?>">
-								<?php esc_html_e( 'Shortcodes', 'import-facebook-events' ); ?>
-							</a>
-
-							<a href="<?php echo esc_url( add_query_arg( 'tab', 'support', $this->adminpage_url ) ); ?>" class="nav-tab <?php echo ( ( 'support' === $tab ) ? 'nav-tab-active' : '' ); ?>">
-								<?php esc_html_e( 'Support & Help', 'import-facebook-events' ); ?>
-							</a>
-						</h1>
-
-						<div class="import-facebook-events-page">
-
-							<?php
-							if ( 'facebook' === $tab ) {
-
-								require_once IFE_PLUGIN_DIR . '/templates/admin/facebook-import-events.php';
-
-							} elseif ( 'ics' === $tab ) {
-
-								require_once IFE_PLUGIN_DIR . '/templates/admin/ical-import-events.php';
-
-							} elseif ( 'settings' === $tab ) {
-
-								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-settings.php';
-
-							} elseif ( 'scheduled' === $tab ) {
-								if ( ife_is_pro() ) {
-									require_once IFEPRO_PLUGIN_DIR . '/templates/admin/scheduled-import-events.php';
-								} else {
-									do_action( 'ife_render_pro_notice' );
-								}
-							} elseif ( 'history' === $tab ) {
-
-								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-history.php';
-
-							} elseif ( 'support' === $tab ) {
-
-								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-support.php';
-
-							}elseif ( 'shortcodes' === $tab ) {
-								require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-shortcode.php';
-							}
-							?>
-							<div style="clear: both"></div>
+										<?php
+											if ( 'facebook' === $active_tab ) {
+												?>
+												<form method="post" id="ife_facebook_form">
+													<?php
+														require_once IFE_PLUGIN_DIR . '/templates/admin/facebook-import-events.php';
+													?>
+													<div class="ife_element">
+														<input type="hidden" name="import_origin" value="facebook" />
+														<input type="hidden" name="ife_action" value="ife_import_submit" />
+														<?php wp_nonce_field( 'ife_import_form_nonce_action', 'ife_import_form_nonce' ); ?>
+														<input type="submit" class="ife_button" style=""  value="<?php esc_attr_e( 'Import Event', 'import-facebook-events' ); ?>" />
+													</div>
+												</form>
+												<?php
+											} elseif ( 'ics' === $active_tab ) {
+												?>
+													<form method="post" enctype="multipart/form-data" id="ife_ics_form">
+														<?php
+															require_once IFE_PLUGIN_DIR . '/templates/admin/ical-import-events.php';
+														?>
+														<div class="ife_element">
+															<input type="hidden" name="import_origin" value="ical" />
+															<input type="hidden" name="ife_action" value="ife_import_submit" />
+															<?php wp_nonce_field( 'ife_import_form_nonce_action', 'ife_import_form_nonce' ); ?>
+															<input type="submit" class="ife_button" style=""  value="<?php esc_attr_e( 'Import Event', 'import-facebook-events' ); ?>" />
+														</div>
+													</form>
+												<?php
+											} elseif ( 'settings' === $active_tab ) {
+												require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-settings.php';
+											} elseif ( 'scheduled' === $active_tab ) {
+												if ( ife_is_pro() ) {
+													require_once IFEPRO_PLUGIN_DIR . '/templates/admin/scheduled-import-events.php';
+												} else {
+													?>
+														<div class="ife-blur-filter" >
+															<?php do_action( 'ife_render_pro_notice' ); ?>
+														</div>
+													<?php
+												}
+											} elseif ( 'history' === $active_tab ) {
+												require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-history.php';
+											} elseif ( 'support' === $active_tab ) {
+												require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-support.php';
+											}elseif ( 'shortcodes' === $active_tab ) {
+												require_once IFE_PLUGIN_DIR . '/templates/admin/import-facebook-events-shortcode.php';
+											}
+										?>
+									</div>
+								</div>
+								<br class="clear">
+							</div>
 						</div>
-
-				</div>
-			</div>
-		</div>
-		<?php
+					</div>
+				<?php
+			}else{
+				require_once IFE_PLUGIN_DIR . '/templates/admin/ife-dashboard.php';
+			}
+			$posts_footer_result = $ife_events->common->ife_render_common_footer();
+			echo esc_attr_e( $posts_footer_result );
 	}
 
 
@@ -352,29 +408,6 @@ class Import_Facebook_Events_Admin {
 		register_post_type( 'ife_import_history', $args );
 	}
 
-
-	/**
-	 * Add Import Facebook Events ratting text
-	 *
-	 * @since 1.0
-	 * @param string $footer_text Current footer text.
-	 * @return string
-	 */
-	public function add_import_facebook_events_credit( $footer_text ) {
-		$current_screen = get_current_screen();
-		if ( 'toplevel_page_facebook_import' === $current_screen->id ) {
-			$rate_url     = 'https://wordpress.org/support/plugin/import-facebook-events/reviews/?rate=5#new-post';
-			$footer_text .= sprintf(
-				// translators: %1$s, %2$s and %3$s are html tags.
-				esc_html__( ' Rate %1$sImport Facebook Events%2$s %3$s', 'import-facebook-events' ),
-				'<strong>',
-				'</strong>',
-				'<a href="' . $rate_url . '" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
-			);
-		}
-		return $footer_text;
-	}
-
 	/**
 	 * Get Plugin array
 	 *
@@ -383,11 +416,12 @@ class Import_Facebook_Events_Admin {
 	 */
 	public function get_xyuls_themes_plugins() {
 		return array(
-			'wp-event-aggregator'      => esc_html__( 'WP Event Aggregator', 'import-facebook-events' ),
-			'import-eventbrite-events' => esc_html__( 'Import Eventbrite Events', 'import-facebook-events' ),
-			'import-meetup-events'     => esc_html__( 'Import Meetup Events', 'import-facebook-events' ),
-			'wp-bulk-delete'           => esc_html__( 'WP Bulk Delete', 'import-facebook-events' ),
-			'event-schema'             => esc_html__( 'Event Schema / Structured Data', 'import-facebook-events' ),
+			'wp-event-aggregator' => array( 'plugin_name' => esc_html__( 'WP Event Aggregator', 'import-facebook-events' ), 'description' => 'WP Event Aggregator: Easy way to import Facebook Events, Eventbrite events, MeetUp events into your WordPress Event Calendar.' ),
+			'import-eventbrite-events' => array( 'plugin_name' => esc_html__( 'Import Eventbrite Events', 'import-facebook-events' ), 'description' => 'Import Eventbrite Events into WordPress website and/or Event Calendar. Nice Display with shortcode & Event widget.' ),
+			'import-meetup-events' => array( 'plugin_name' => esc_html__( 'Import Meetup Events', 'import-facebook-events' ), 'description' => 'Import Meetup Events allows you to import Meetup (meetup.com) events into your WordPress site effortlessly.' ),
+			'wp-bulk-delete' => array( 'plugin_name' => esc_html__( 'WP Bulk Delete', 'import-facebook-events' ), 'description' => 'Bulk delete and cleanup anything like posts, comments, users, meta fields, taxonomy terms. with powerful filter options.' ),
+			'event-schema' => array( 'plugin_name' => esc_html__( 'Event Schema / Structured Data', 'import-facebook-events' ), 'description' => 'Automatically Google Event Rich Snippet Schema Generator. This plug-in generates complete JSON-LD based schema (structured data for Rich Snippet) for events.' ),
+			'wp-smart-import' => array( 'plugin_name' => esc_html__( 'WP Smart Import : Import any XML File to WordPress', 'import-facebook-events' ), 'description' => 'The most powerful solution for importing any CSV files to WordPress. Create Posts and Pages any Custom Posttype with content from any CSV file.' ),
 		);
 	}
 
@@ -441,7 +475,7 @@ class Import_Facebook_Events_Admin {
 	 */
 	public function get_selected_tab_submenu_ife( $submenu_file ){
 		if( !empty( $_GET['page'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'facebook_import' ){
-			$allowed_tabs = array( 'facebook', 'ics', 'scheduled', 'history', 'settings', 'shortcodes', 'support' );
+			$allowed_tabs = array( 'dashboard', 'facebook', 'ics', 'scheduled', 'history', 'settings', 'shortcodes', 'support' );
 			$tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'facebook';
 			if( in_array( $tab, $allowed_tabs ) ){
 				$submenu_file = admin_url( 'admin.php?page=facebook_import&tab='.$tab );

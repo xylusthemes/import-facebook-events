@@ -42,7 +42,7 @@
 				jQuery('.import_type_wrapper').hide();
 
 				jQuery('.facebook_page_wrapper').hide();
-				jQuery('.facebook_page_wrapper .facebook_page_username').removeAttr( 'required' );
+				jQuery('.facebook_page_wrapper .ife-inner-section-2 .facebook_page_username').removeAttr( 'required' );
 
 				jQuery('.facebook_group_wrapper').hide();
 				jQuery('.facebook_group_wrapper .facebook_group').removeAttr( 'required' );
@@ -60,7 +60,7 @@
 				jQuery('.facebook_eventid_wrapper .facebook_event_ids').removeAttr( 'required' );
 
 				jQuery('.facebook_page_wrapper').hide();
-				jQuery('.facebook_page_wrapper input.facebook_page_username').removeAttr( 'required' );
+				jQuery('.facebook_page_wrapper .ife-inner-section-2 input.facebook_page_username').removeAttr( 'required' );
 
 				jQuery('.facebook_account_wrapper').hide();
 				jQuery('.facebook_account_wrapper .my_page').removeAttr( 'required' );
@@ -202,16 +202,25 @@ jQuery(document).ready(function($){
 		link.addEventListener('click', function() {
 		const ife_tabId = this.dataset.tab;
 
-		ife_tab_link.forEach(function(link) {
-			link.classList.remove('active');
-		});
+			// Loop through all links to update classes
+			ife_tab_link.forEach(function (link) {
+				if (link === this) {
+					link.classList.add('var-tab--active');
+					link.classList.remove('var-tab--inactive');
+				} else {
+					link.classList.remove('var-tab--active');
+					link.classList.add('var-tab--inactive');
+				}
+			}, this);
 
-		ife_tabcontents.forEach(function(content) {
-			content.classList.remove('active');
-		});
-
-		this.classList.add('active');
-		document.getElementById(ife_tabId).classList.add('active');
+			// Loop through all tab contents to show/hide
+			ife_tabcontents.forEach(function (content) {
+				if (content.id === ife_tabId) {
+					content.classList.add('var-tab--active');
+				} else {
+					content.classList.remove('var-tab--active');
+				}
+			});
 		});
 	});
 
