@@ -80,64 +80,83 @@ $twitter_url  = 'https://twitter.com/XylusThemes/';
 		<?php
 		$org_plugins = array();
 		$plugin_list = $ife_events->admin->get_xyuls_themes_plugins();
-		if ( ! empty( $plugin_list ) ) {
-			foreach ( $plugin_list as $key => $value ) {
-				$org_plugins[] = $ife_events->admin->get_wporg_plugin( $key );
-			}
-		}
 		?>
 		<div class="" style="margin-top: 20px;">
-			<h3 class="setting_bar"><?php esc_attr_e( 'Plugins you should try', 'import-facebook-events' ); ?></h3>
-			<?php
-			if ( ! empty( $org_plugins ) ) {
-				foreach ( $org_plugins as $plugin ) {
+			<h3 class="setting_bar"><?php esc_html_e( 'Plugins you should try','wp-bulk-delete' ); ?></h3>
+			<div class="ife-about-us-plugins">
+				<!-- <div class="ife-row"> -->
+				<div class="ife-support-features2">
+				
+					<?php 
+						if( !empty( $plugin_list ) ){
+							foreach ( $plugin_list as $key => $plugin ) {
+
+								$plugin_slug = ucwords( str_replace( '-', ' ', $key ) );
+								$plugin_name =  $plugin['plugin_name'];
+								$plugin_description =  $plugin['description'];
+								if( $key == 'wp-event-aggregator' ){
+									$plugin_icon = 'https://ps.w.org/'.$key.'/assets/icon-256x256.jpg';
+								} else {
+									$plugin_icon = 'https://ps.w.org/'.$key.'/assets/icon-256x256.png';
+								}
+
+								// Check if the plugin is installed
+								$plugin_installed = false;
+								$plugin_active = false;
+								include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+								$all_plugins = get_plugins();
+								$plugin_path = $key . '/' . $key . '.php';
+
+								if (isset($all_plugins[$plugin_path])) {
+									$plugin_installed = true;
+									$plugin_active = is_plugin_active($plugin_path);
+								}
+
+								// Determine the status text
+								$status_text = 'Not Installed';
+								if ($plugin_installed) {
+									$status_text = $plugin_active ? 'Active' : 'Installed (Inactive)';
+								}
+								
+								?>
+								<div class="ife-support-features-card2 ife-plugin">
+									<div class="ife-plugin-main">
+										<div>
+											<img alt="<?php esc_html_e( $plugin_slug . ' Image', 'wp-bulk-delete' ); ?>" src="<?php echo esc_url( $plugin_icon ); ?>">
+										</div>
+										<div>
+											<div class="ife-main-name"><?php esc_html_e( $plugin_slug, 'wp-bulk-delete' ); ?></div>
+											<div><?php esc_html_e( $plugin_description, 'wp-bulk-delete' ); ?></div>
+										</div>
+									</div>
+									<div class="ife-plugin-footer">
+										<div class="ife-footer-status">
+											<div class="ife-footer-status-label"><?php esc_html_e( 'Status : ', 'wp-bulk-delete' ); ?></div>
+											<div class="ife-footer-status ife-footer-status-<?php echo esc_attr__( strtolower(str_replace(' ', '-', $status_text) ) ); ?>">
+												<span <?php echo ( $status_text == 'Active' ) ? 'style="color:green;"' : ''; ?>>
+													<?php echo esc_attr__( $status_text ); ?>
+												</span>
+											</div>
+										</div>
+										<div class="ife-footer-action">
+											<?php if (!$plugin_installed): ?>
+												<a href="<?php echo esc_url( admin_url( 'plugin-install.php?s=xylus&tab=search&type=term' ) ); ?>" type="button" class="button button-primary">Install Free Plugin</a>
+											<?php elseif (!$plugin_active): ?>
+												<?php 
+													$activate_nonce = wp_create_nonce('activate_plugin_' . $plugin_slug); 
+													$activation_url = add_query_arg(array( 'action' => 'activate_plugin', 'plugin_slug' => $plugin_slug, 'nonce' => $activate_nonce, ), admin_url('admin.php?page=delete_all_actions&tab=by_support_help'));
+												?>
+												<a href="<?php echo esc_url( admin_url( 'plugins.php?s='. $plugin_name ) ); ?>" class="button button-primary">Activate Plugin</a>
+											<?php endif; ?>
+										</div>
+									</div>
+								</div>
+								<?php
+							}
+						}
 					?>
-					<div class="plugin_box">
-						<?php if ( ! empty( $plugin->banners['low'] ) ) { ?>
-							<img src="<?php echo esc_url( $plugin->banners['low'] ); ?>" class="plugin_img" title="<?php echo esc_attr( $plugin->name ); ?>">
-						<?php } ?>
-						<div class="plugin_content">
-							<h3><?php echo esc_attr( $plugin->name ); ?></h3>
-
-							<?php
-							wp_star_rating(
-								array(
-									'rating' => $plugin->rating,
-									'type'   => 'percent',
-									'number' => $plugin->num_ratings,
-								)
-							);
-							?>
-
-							<?php if ( ! empty( $plugin->version ) ) { ?>
-								<p><strong><?php esc_attr_e( 'Version:', 'import-facebook-events' ); ?> </strong><?php echo esc_attr( $plugin->version ); ?></p>
-							<?php } ?>
-
-							<?php if ( ! empty( $plugin->requires ) ) { ?>
-								<p><strong><?php esc_attr_e( 'Requires:', 'import-facebook-events' ); ?> </strong>
-									<?php
-									esc_attr_e( 'WordPress ', 'import-facebook-events' );
-									echo esc_attr( $plugin->requires ) . '+';
-									?>
-								</p>
-							<?php } ?>
-
-							<?php if ( ! empty( $plugin->active_installs ) ) { ?>
-								<p><strong><?php esc_attr_e( 'Active Installs:', 'import-facebook-events' ); ?> </strong><?php echo esc_attr( $plugin->active_installs ); ?>+</p>
-							<?php } ?>
-
-							<a class="button button-secondary" href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=' . esc_attr( $plugin->slug ) . '&TB_iframe=1&width=772&height=600' ) ); ?>" target="_blank">
-								<?php esc_attr_e( 'Install Now', 'import-facebook-events' ); ?>
-							</a>
-							<a class="button button-primary" href="<?php echo esc_url( $plugin->homepage ) . '?utm_source=crosssell&utm_medium=web&utm_content=supportpage&utm_campaign=freeplugin'; ?>" target="_blank">
-								<?php esc_attr_e( 'Buy Now', 'import-facebook-events' ); ?>
-							</a>
-						</div>
-					</div>
-					<?php
-				}
-			}
-			?>
+				</div>
+			</div>
 			<div style="clear: both;">
 		</div>
 	</div>
