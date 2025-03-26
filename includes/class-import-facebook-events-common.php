@@ -614,7 +614,7 @@ class Import_Facebook_Events_Common {
 		}
 		?>
 		<td>
-			<input type="text" name="<?php echo $name; ?>" required="required" value="<?php echo $event_source; ?>">
+			<input type="text" name="<?php echo $name; ?>" required="required" value="<?php echo $event_source; ?>" style="width: 100%;">
 			<span><?php echo $event_origins; ?></span>
 		</td>
 		<?php
