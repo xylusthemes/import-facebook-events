@@ -255,6 +255,7 @@ class Import_Facebook_Events_TEC {
 			if ( ! empty( $event_featured_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $new_event_id, $event_featured_image );
 			}else{
+				$options        = ife_get_import_options( $centralize_array['origin'] );
 				$default_thumb  = isset( $options['ife_event_default_thumbnail'] ) ? $options['ife_event_default_thumbnail'] : '';
 				if( !empty( $default_thumb ) ){
 					set_post_thumbnail( $new_event_id, $default_thumb );
@@ -346,6 +347,7 @@ class Import_Facebook_Events_TEC {
 			}
 
 			update_post_meta( $update_event_id, 'ife_event_origin', $event_args['import_origin'] );
+			delete_post_meta( $update_event_id, '_tribe_is_classic_editor' );
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? (array) $event_args['event_cats'] : array();
@@ -377,6 +379,7 @@ class Import_Facebook_Events_TEC {
 			if ( ! empty( $event_featured_image ) ) {
 				$ife_events->common->setup_featured_image_to_event( $update_event_id, $event_featured_image );
 			}else{
+				$options        = ife_get_import_options( $centralize_array['origin'] );
 				$default_thumb  = isset( $options['ife_event_default_thumbnail'] ) ? $options['ife_event_default_thumbnail'] : '';
 				if( !empty( $default_thumb ) ){
 					set_post_thumbnail( $update_event_id, $default_thumb );

@@ -110,7 +110,7 @@ class Import_Facebook_Events_Common {
 	public function ife_redirect_after_activation() {
 		if ( get_option( 'ife_plugin_activated' ) ) {
 			delete_option( 'ife_plugin_activated' );
-			wp_safe_redirect( admin_url( 'admin.php?page=facebook_import&tab=dashboard' ) );
+			wp_safe_redirect( admin_url( 'admin.php?page=facebook_import&tab=ife_setup_wizard' ) );
 			exit;
 		}
 	}

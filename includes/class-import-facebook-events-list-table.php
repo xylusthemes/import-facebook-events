@@ -344,7 +344,7 @@ class IFE_Shortcode_List_Table extends WP_List_Table {
         $sortable 	= $this->get_sortable_columns();
         $data 		= $this->table_data();
 
-        $perPage 		= 10;
+        $perPage 		= 25;
         $currentPage 	= $this->get_pagenum();
         $totalItems 	= count( $data );
 
