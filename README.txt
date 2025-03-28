@@ -1,7 +1,7 @@
 === Import Social Events ===
 Contributors: xylus, dharm1025, Rajat1192
 Donate link: http://xylusthemes.com/
-Tags: facebook, events, import, calendar, facebook event, facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
+Tags: facebook, events, import, calendar, facebook event
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 6.7
@@ -22,6 +22,8 @@ Import Facebook events into your WordPress website and/or Event Calendar. Nice D
 >* You need to mark events as interested or going on facebook to get imported
 >
 
+facebook import, facebook events, the events calendar, event import, events manager, import events, event, import event, my calendar, eventon, all in one event calendar, timely, event organiser, event management, event calendar, event manager, facebook-events-importer
+
 
 <h3>Import Facebook Events into WordPress :</h3>
 
@@ -38,12 +40,14 @@ Using This plugin you can import facebook event into below listed leading Event 
 * [Event Organiser](https://wordpress.org/plugins/event-organiser/)
 * [EventON](https://codecanyon.net/item/eventon-wordpress-event-calendar-plugin/1211017)
 * [My Calendar](https://wordpress.org/plugins/my-calendar/)
+* [Event Espresso](https://wordpress.org/plugins/event-espresso-decaf/)
 * In-built Events
 
 You can use `[facebook_events]` for display in-built facebook events list.
 
 <strong>Full short-code example:</strong> 
-`[facebook_events col="2" posts_per_page="12" category="cat1,cat2" past_events="yes" order="desc" orderby="post_title" start_date="2017-12-25" end_date="2018-12-25" ]`
+**Full Shortcode Example:**  
+`[facebook_events col=&quot;2&quot; posts_per_page=&quot;12&quot; category=&quot;cat1,cat2&quot; past_events=&quot;yes&quot; order=&quot;desc&quot; orderby=&quot;post_title&quot; start_date=&quot;2017-12-25&quot; end_date=&quot;2018-12-25&quot;]`
 
 **Additional [PRO Add-on](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=wprepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=wprepo-readme) Features**
 
@@ -104,6 +108,10 @@ You can use `[facebook_events]` for display in-built facebook events list.
 10. Upcoming Facebook Events widget in the backend (Pro)
 11. Upcoming Facebook Events widget in front-end with Event image(Pro)
 12. Upcoming Facebook Events widget in front-end without Event image(Pro)
+13. Plugin's Shortcode.
+14. Events page using '[facebook_events layout="style2"]' shortcode
+15. Events page using '[facebook_events layout="style3"]' shortcode
+16. Events page using '[facebook_events layout="style4"]' shortcode
 
 == Changelog ==
 
