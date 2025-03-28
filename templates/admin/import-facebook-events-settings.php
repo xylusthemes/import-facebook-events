@@ -189,42 +189,19 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 
 								<div class="ife-inner-main-section"  >
 									<div class="ife-inner-section-1" >
-										<span class="ife-title-text" ><?php esc_attr_e( 'Move past events in trash', 'import-facebook-events' ); ?></span>
+										<span class="ife-title-text" ><?php esc_attr_e( 'Advanced Synchronization', 'import-facebook-events' ); ?></span>
 									</div>
 									<div class="ife-inner-section-2">
 										<?php
-										$move_peit_events = isset( $facebook_options['move_peit'] ) ? $facebook_options['move_peit'] : 'no';
+										$advanced_sync = isset( $facebook_options['advanced_sync'] ) ? $facebook_options['advanced_sync'] : 'no';
+										$checked       = ( 'yes' === $advanced_sync ) ? 'checked' : '';
+										$disabled      = ( ! ife_is_pro() ) ? 'disabled' : '';
 										?>
-										<input type="checkbox" name="facebook[move_peit]" value="yes" <?php if ( $move_peit_events == 'yes' ) { echo 'checked="checked"'; } ?> />
+										<input type="checkbox" name="facebook[advanced_sync]" value="yes" <?php echo esc_attr( $checked . ' ' . $disabled ); ?> />
 										<span class="ife_small">
-											<?php _e( 'Check to move past events in the trash, Automatically move events to the trash 24 hours after their end date using wp-cron. This runs once daily in the background.', 'import-facebook-events' ); ?>
+											<?php esc_attr_e( 'Check to enable advanced synchronization, this will delete events which are removed from Facebook. Also, it deletes passed events.', 'import-facebook-events' ); ?>
 										</span>
-									</div>
-								</div>
-
-
-								<div class="ife-inner-main-section"  >
-									<div class="ife-inner-section-1" >
-										<span class="ife-title-text" ><?php esc_attr_e( "Don't Update these data.", 'import-facebook-events' ); ?></span>
-									</div>
-									<div class="ife-inner-section-2">
-										<?php
-										$donotupdate = isset($facebook_options['dont_update'])? $facebook_options['dont_update'] : array();
-										$sdontupdate = isset( $donotupdate['status'] ) ? $donotupdate['status'] : 'no';
-										$cdontupdate = isset( $donotupdate['category'] ) ? $donotupdate['category'] : 'no';
-										?>
-										<input type="checkbox" name="facebook[dont_update][status]" value="yes" <?php checked( $sdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
-										<span class="xtei_small">
-											<?php _e( 'Status ( Publish, Pending, Draft etc.. )', 'import-facebook-events' ); ?>
-										</span><br/>
-										<input type="checkbox" name="facebook[dont_update][category]" value="yes" <?php checked( $cdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
-										<span class="xtei_small">
-											<?php _e( 'Event category', 'import-facebook-events' ); ?>
-										</span><br/>
-										<span class="ife_small">
-											<?php _e( "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')", 'import-facebook-events' ); ?>
-										</span>
-										<?php do_action('ife_render_pro_notice'); ?>
+										<?php do_action( 'ife_render_pro_notice' ); ?>
 									</div>
 								</div>
 
@@ -239,6 +216,37 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										<input type="checkbox" id="import_past_events" name="facebook[import_past_events]" value="yes" <?php echo( ( 'yes' === $import_past_events ) ? 'checked="checked"' : '' ); if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
 										<span class="ife_small">
 											<?php esc_attr_e( 'Check to import past events this option will import events from the last 2 years and upcoming events..', 'import-facebook-events' ); ?>
+										</span>
+										<?php do_action('ife_render_pro_notice'); ?>
+									</div>
+								</div>
+
+								<div class="ife-inner-main-section"  >
+									<div class="ife-inner-section-1" >
+										<span class="ife-title-text" ><?php esc_attr_e( 'Move past events in trash', 'import-facebook-events' ); ?></span>
+									</div>
+									<div class="ife-inner-section-2">
+										<?php
+										$move_peit_events = isset( $facebook_options['move_peit'] ) ? $facebook_options['move_peit'] : 'no';
+										?>
+										<input type="checkbox" name="facebook[move_peit]" value="yes" <?php if ( $move_peit_events == 'yes' ) { echo 'checked="checked"'; } ?> />
+										<span class="ife_small">
+											<?php _e( 'Check to move past events in the trash, Automatically move events to the trash 24 hours after their end date using wp-cron. This runs once daily in the background.', 'import-facebook-events' ); ?>
+										</span>
+									</div>
+								</div>
+
+								<div class="ife-inner-main-section"  >
+									<div class="ife-inner-section-1" >
+										<span class="ife-title-text" ><?php esc_attr_e( 'Direct link to Facebook', 'import-facebook-events' ); ?></span>
+									</div>
+									<div class="ife-inner-section-2">
+										<?php
+										$direct_link = isset($facebook_options['direct_link']) ? $facebook_options['direct_link'] : 'no';
+										?>
+										<input type="checkbox" name="facebook[direct_link]" value="yes" <?php if ($direct_link == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
+										<span class="ife_small">
+											<?php _e('Check to enable direct event link to Facebook instead of event detail page.', 'import-facebook-events'); ?>
 										</span>
 										<?php do_action('ife_render_pro_notice'); ?>
 									</div>
@@ -266,55 +274,6 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 											<?php _e( "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')", 'import-facebook-events' ); ?>
 										</span>
 										<?php do_action('ife_render_pro_notice'); ?>
-									</div>
-								</div>
-
-								<div class="ife-inner-main-section"  >
-									<div class="ife-inner-section-1" >
-										<span class="ife-title-text" ><?php esc_attr_e( 'Direct link to Facebook', 'import-facebook-events' ); ?></span>
-									</div>
-									<div class="ife-inner-section-2">
-										<?php
-										$direct_link = isset($facebook_options['direct_link']) ? $facebook_options['direct_link'] : 'no';
-										?>
-										<input type="checkbox" name="facebook[direct_link]" value="yes" <?php if ($direct_link == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
-										<span class="ife_small">
-											<?php _e('Check to enable direct event link to Facebook instead of event detail page.', 'import-facebook-events'); ?>
-										</span>
-										<?php do_action('ife_render_pro_notice'); ?>
-									</div>
-								</div>
-
-								<div class="ife-inner-main-section"  >
-									<div class="ife-inner-section-1" >
-										<span class="ife-title-text" ><?php esc_attr_e( 'Advanced Synchronization', 'import-facebook-events' ); ?></span>
-									</div>
-									<div class="ife-inner-section-2">
-										<?php
-										$advanced_sync = isset( $facebook_options['advanced_sync'] ) ? $facebook_options['advanced_sync'] : 'no';
-										$checked       = ( 'yes' === $advanced_sync ) ? 'checked' : '';
-										$disabled      = ( ! ife_is_pro() ) ? 'disabled' : '';
-										?>
-										<input type="checkbox" name="facebook[advanced_sync]" value="yes" <?php echo esc_attr( $checked . ' ' . $disabled ); ?> />
-										<span class="ife_small">
-											<?php esc_attr_e( 'Check to enable advanced synchronization, this will delete events which are removed from Facebook. Also, it deletes passed events.', 'import-facebook-events' ); ?>
-										</span>
-										<?php do_action( 'ife_render_pro_notice' ); ?>
-									</div>
-								</div>
-
-								<div class="ife-inner-main-section"  >
-									<div class="ife-inner-section-1" >
-										<span class="ife-title-text" ><?php esc_attr_e( 'Disable Facebook events', 'import-facebook-events' ); ?></span>
-									</div>
-									<div class="ife-inner-section-2">
-										<?php
-										$deactive_fbevents = isset( $facebook_options['deactive_fbevents'] ) ? $facebook_options['deactive_fbevents'] : 'no';
-										?>
-										<input type="checkbox" name="facebook[deactive_fbevents]" value="yes" <?php echo( ( 'yes' === $deactive_fbevents ) ? 'checked="checked"' : '' ); ?> />
-										<span class="ife_small">
-											<?php esc_attr_e( 'Check to disable inbuilt event management system.', 'import-facebook-events' ); ?>
-										</span>
 									</div>
 								</div>
 
@@ -417,6 +376,21 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										</select>
 										<span class="ife_small">
 											<?php esc_attr_e( 'Choose event display time format for front-end.', 'import-facebook-events' ); ?>
+										</span>
+									</div>
+								</div>
+
+								<div class="ife-inner-main-section"  >
+									<div class="ife-inner-section-1" >
+										<span class="ife-title-text" ><?php esc_attr_e( 'Disable Facebook events', 'import-facebook-events' ); ?></span>
+									</div>
+									<div class="ife-inner-section-2">
+										<?php
+										$deactive_fbevents = isset( $facebook_options['deactive_fbevents'] ) ? $facebook_options['deactive_fbevents'] : 'no';
+										?>
+										<input type="checkbox" name="facebook[deactive_fbevents]" value="yes" <?php echo( ( 'yes' === $deactive_fbevents ) ? 'checked="checked"' : '' ); ?> />
+										<span class="ife_small">
+											<?php esc_attr_e( 'Check to disable inbuilt event management system.', 'import-facebook-events' ); ?>
 										</span>
 									</div>
 								</div>
