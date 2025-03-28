@@ -37,8 +37,8 @@ $counts = $ife_events->common->ife_get_facebook_events_counts();
                                                 <iframe width="850" height="450" src="https://www.youtube.com/embed/OtiUJlZ4R4E?si=QO0qStRnwyscKBzX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
                                             </div>
                                             <div class="ife-intro-section-links wp-core-ui" >
-                                                <a class="ife-intro-section-link-tag button ife-button-primary button-hero" href="https://plugindevelopment.in/wp-admin/post-new.php?post_type=facebook_events" target="_blank"><?php esc_attr_e( 'Add New Event', 'import-facebook-events' ); ?></a>
-                                                <a class="ife-intro-section-link-tag button ife-button-secondary button-hero" href="https://plugindevelopment.in/wp-admin/admin.php?page=facebook_import&tab=settings"target="_blank"><?php esc_attr_e( 'Settings', 'import-facebook-events' ); ?></a>
+                                                <a class="ife-intro-section-link-tag button ife-button-primary button-hero" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=facebook_events' ) ); ?>" target="_blank"><?php esc_attr_e( 'Add New Event', 'import-facebook-events' ); ?></a>
+                                                <a class="ife-intro-section-link-tag button ife-button-secondary button-hero" href="<?php echo esc_url( admin_url( 'admin.php?page=facebook_import&tab=settings' ) ); ?>"target="_blank"><?php esc_attr_e( 'Settings', 'import-facebook-events' ); ?></a>
                                                 <a class="ife-intro-section-link-tag button ife-button-secondary button-hero" href="https://docs.xylusthemes.com/docs/import-facebook-events/" target="_blank"><?php esc_attr_e( 'Documentation', 'import-facebook-events' ); ?></a>
                                             </div>
                                         </div>
