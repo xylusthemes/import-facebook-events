@@ -449,11 +449,11 @@ class Import_Facebook_Events_TEC {
 		$esource_id    = $centralize_array['ID'];
 
 		$event_args = array(
-			'_EventStartDate'     => date( 'Y-m-d', $start_time ),
+			'_EventStartDate'     => date( 'Y-m-d H:i:s', $start_time ),
 			'_EventStartHour'     => date( 'h', $start_time ),
 			'_EventStartMinute'   => date( 'i', $start_time ),
 			'_EventStartMeridian' => date( 'a', $start_time ),
-			'_EventEndDate'       => date( 'Y-m-d', $end_time ),
+			'_EventEndDate'       => date( 'Y-m-d H:i:s', $end_time ),
 			'_EventEndHour'       => date( 'h', $end_time ),
 			'_EventEndMinute'     => date( 'i', $end_time ),
 			'_EventEndMeridian'   => date( 'a', $end_time ),
