@@ -9,14 +9,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-31T12:38:59+00:00\n"
+"POT-Creation-Date: 2025-04-09T06:04:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: import-facebook-events\n"
 
 #. Plugin Name of the plugin
 #: import-facebook-events.php
-#: includes/class-ife-plugin-deactivation.php:38
 msgid "Import Social Events"
 msgstr ""
 
@@ -61,84 +60,84 @@ msgstr ""
 msgid "Docs"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:49
+#: includes/class-ife-plugin-deactivation.php:47
 msgid "I couldn't understand how to make it work"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:50
+#: includes/class-ife-plugin-deactivation.php:48
 msgid "I found a better plugin"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:51
-msgid "The plugin is great, but I need specific feature that you don't support"
+#: includes/class-ife-plugin-deactivation.php:49
+msgid "The plugin is great, but I need a specific feature that you don't support"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:52
+#: includes/class-ife-plugin-deactivation.php:50
 msgid "Plugin has bugs and it's not working"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:53
+#: includes/class-ife-plugin-deactivation.php:51
 msgid "It's not what I was looking for"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:54
+#: includes/class-ife-plugin-deactivation.php:52
 msgid "Plugin didn't work as expected"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:55
-msgid "It's temporary deactivatation, for debug an issue"
+#: includes/class-ife-plugin-deactivation.php:53
+msgid "It's temporary deactivation, for debugging an issue"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:56
+#: includes/class-ife-plugin-deactivation.php:54
 msgid "Other reasons"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:166
+#: includes/class-ife-plugin-deactivation.php:164
 msgid "Submit & Deactivate"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:193
+#: includes/class-ife-plugin-deactivation.php:191
 msgid "Skip & Deactivate"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:210
+#: includes/class-ife-plugin-deactivation.php:208
 msgid "Finding it confusing? let us know so that we can improve the interface"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:213
+#: includes/class-ife-plugin-deactivation.php:211
 msgid "Can you let us know the reason for deactivation (Required)"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:217
+#: includes/class-ife-plugin-deactivation.php:215
 msgid "Can you please let us know about the bug/issue in detail?"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:220
+#: includes/class-ife-plugin-deactivation.php:218
 msgid "Can you please let us know which plugin you found helpful"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:223
+#: includes/class-ife-plugin-deactivation.php:221
 msgid "Can you please let us know more about the feature you want"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:226
+#: includes/class-ife-plugin-deactivation.php:224
 msgid "Can you please let us know more about your requirement"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:229
-#: includes/class-ife-plugin-deactivation.php:273
+#: includes/class-ife-plugin-deactivation.php:227
+#: includes/class-ife-plugin-deactivation.php:271
 msgid "Write your query here"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:256
+#: includes/class-ife-plugin-deactivation.php:254
 msgid "Quick Feedback"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:260
+#: includes/class-ife-plugin-deactivation.php:258
 msgid "Could you please share why you are deactivating Import Facebook Events plugin ?"
 msgstr ""
 
-#: includes/class-ife-plugin-deactivation.php:277
+#: includes/class-ife-plugin-deactivation.php:275
 msgid "* By submitting this form, you will also be sending us your email address &amp; website URL."
 msgstr ""
 

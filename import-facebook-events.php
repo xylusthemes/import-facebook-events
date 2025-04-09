@@ -55,7 +55,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				self::$instance = new Import_Facebook_Events();
 				self::$instance->setup_constants();
 
-				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
+				add_action( 'init', array( self::$instance, 'load_textdomain' ) );
 				add_action( 'plugins_loaded', array( self::$instance, 'load_authorize_class' ), 20 );
 				add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_style' ) );
 				add_action( 'wp_enqueue_scripts', array( self::$instance, 'ife_enqueue_script' ) );

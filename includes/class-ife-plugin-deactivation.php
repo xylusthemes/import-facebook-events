@@ -25,7 +25,6 @@ if ( ! class_exists( 'IFE_Plugin_Deactivation' ) ) {
 
         private $prefix = 'ife_';
         private $slug = 'import-facebook-events';
-        private $plugin_name;
         private $plugin_version = '1.0.0';
         private $api_url = 'https://api.xylusthemes.com/api/v1/';
 
@@ -35,7 +34,6 @@ if ( ! class_exists( 'IFE_Plugin_Deactivation' ) ) {
          * @since    1.0.0
          */
         public function __construct() {
-			$this->plugin_name =  __('Import Social Events', 'import-facebook-events' );
 			if ( defined( 'IFE_VERSION' ) ) {
 				$this->plugin_version = IFE_VERSION;
 			}
@@ -45,15 +43,15 @@ if ( ! class_exists( 'IFE_Plugin_Deactivation' ) ) {
 		}
 
 		public function get_deactivation_reasons() {
-			return array(
-				'confusing' => __('I couldn\'t understand how to make it work', 'import-facebook-events' ),
-				'better_plugin' => __('I found a better plugin', 'import-facebook-events' ),
-				'feature_request' => __('The plugin is great, but I need specific feature that you don\'t support', 'import-facebook-events' ),
-				'buggy' => __('Plugin has bugs and it\'s not working', 'import-facebook-events' ),
-				'wrong_plugin' => __('It\'s not what I was looking for', 'import-facebook-events' ),
-				'not_working' => __('Plugin didn\'t work as expected', 'import-facebook-events' ),
-				'temporary' => __('It\'s temporary deactivatation, for debug an issue', 'import-facebook-events' ),
-				'other' => __('Other reasons', 'import-facebook-events' ),
+            return array(
+				'confusing' => esc_attr__('I couldn\'t understand how to make it work', 'import-facebook-events' ),
+				'better_plugin' => esc_attr__('I found a better plugin', 'import-facebook-events' ),
+				'feature_request' => esc_attr__('The plugin is great, but I need a specific feature that you don\'t support', 'import-facebook-events' ),
+				'buggy' => esc_attr__('Plugin has bugs and it\'s not working', 'import-facebook-events' ),
+				'wrong_plugin' => esc_attr__('It\'s not what I was looking for', 'import-facebook-events' ),
+				'not_working' => esc_attr__('Plugin didn\'t work as expected', 'import-facebook-events' ),
+				'temporary' => esc_attr__('It\'s temporary deactivation, for debugging an issue', 'import-facebook-events' ),
+				'other' => esc_attr__('Other reasons', 'import-facebook-events' ),
 			);
         }
 
@@ -104,7 +102,7 @@ if ( ! class_exists( 'IFE_Plugin_Deactivation' ) ) {
                 "customer_name" => $customer_name,
                 "customer_email" => $customer_email,
                 "plugin" => $this->slug,
-                "plugin_name" => $this->plugin_name,
+                "plugin_name" => 'Import Social Events',
                 "plugin_version" => $this->plugin_version,
                 "plugin_version" => $this->plugin_version,
                 "deactivation_reason" => $deactivation_reason,
