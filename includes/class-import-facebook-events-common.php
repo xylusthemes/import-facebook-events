@@ -1234,6 +1234,65 @@ class Import_Facebook_Events_Common {
 			</div>
 		<?php   
 	}
+
+	/**
+	 * Insert or update TEC custom tables: tec_events and tec_occurrences.
+	 *
+	 * @param array $centralize_array Centralized event data (with local and UTC timings, timezone, etc.).
+	 * @param int   $event_post_id    The WordPress post ID associated with the event.
+	 */
+	public function ife_sync_event_to_tec_custom_tables( $centralize_array, $event_post_id ) {
+		global $wpdb;
+
+		$esource_id     = $centralize_array['ID'];
+		$start_time     = date( 'Y-m-d H:i:s', $centralize_array['starttime_local'] );
+		$end_time       = date( 'Y-m-d H:i:s', $centralize_array['endtime_local'] );
+		if( $centralize_array['origin'] == 'ical' ){
+			$start_date_utc = $centralize_array['startime_utc'];
+			$end_date_utc   = $centralize_array['endtime_utc'];
+		}else{
+			$start_date_utc = date( 'Y-m-d H:i:s', $centralize_array['startime_utc'] );
+			$end_date_utc   = date( 'Y-m-d H:i:s', $centralize_array['endtime_utc'] );
+		}
+		$timezone       = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : 'Africa/Abidjan';
+		$duration       = 0;
+		$hash           = sha1( $event_post_id . $duration . $start_time . $end_time . $start_date_utc . $end_date_utc . $timezone );
+
+		$tec_events_table      = $wpdb->prefix . 'tec_events';
+		$tec_occurrences_table = $wpdb->prefix . 'tec_occurrences';
+
+		// Check if event already exists
+		$existing_event_id = $wpdb->get_var( $wpdb->prepare( "SELECT event_id FROM $tec_events_table WHERE post_id = %d", $event_post_id ) );
+
+		$event_data = array(
+			'post_id'        => $event_post_id,
+			'start_date'     => $start_time,
+			'end_date'       => $end_time,
+			'timezone'       => $timezone,
+			'start_date_utc' => $start_date_utc,
+			'end_date_utc'   => $end_date_utc,
+		);
+
+		$occurrence_data = array(
+			'post_id'        => $event_post_id,
+			'start_date'     => $start_time,
+			'start_date_utc' => $start_date_utc,
+			'end_date'       => $end_time,
+			'end_date_utc'   => $end_date_utc,
+		);
+
+		if ( $existing_event_id ) {
+			// Update
+			$wpdb->update( $tec_events_table, $event_data, array( 'post_id' => $event_post_id ) );
+			$wpdb->update( $tec_occurrences_table, $occurrence_data, array( 'post_id' => $event_post_id ) );
+		} else {
+			// Insert
+			$wpdb->insert( $tec_events_table, $event_data );
+			$occurrence_data['event_id'] = $wpdb->insert_id;
+			$occurrence_data['hash']     = $hash;
+			$wpdb->insert( $tec_occurrences_table, $occurrence_data );
+		}
+	}
 }
 
 /**

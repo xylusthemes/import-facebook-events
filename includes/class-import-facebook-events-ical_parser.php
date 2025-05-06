@@ -429,30 +429,32 @@ class Import_Facebook_Events_Ical_Parser {
 				$data = json_decode($response_data);
 
 				// Extracting relevant data
-				$result = $data->results[0];
-				$address_components = $result->address_components;
-				$geometry = $result->geometry;
+				$result = isset( $data->results[0] ) ? $data->results[0] : '';
+				$address_components = isset( $result->address_components ) ? $result->address_components : '';
+				$geometry = isset( $result->geometry ) ? $result->geometry : '';
 
 				$street_number = $route = $city = $state = $country = $postal_code = '';
-				foreach ($address_components as $component) {
-					if (in_array('street_number', $component->types)) {
-						$street_number = $component->long_name;
-					} elseif (in_array('route', $component->types)) {
-						$route = $component->long_name;
-					} elseif (in_array('locality', $component->types)) {
-						$city = $component->long_name;
-					} elseif (in_array('administrative_area_level_1', $component->types)) {
-						$state = $component->long_name;
-					} elseif (in_array('country', $component->types)) {
-						$country = $component->long_name;
-					} elseif (in_array('postal_code', $component->types)) {
-						$postal_code = $component->long_name;
+				if( !empty( $address_components ) ){
+					foreach ( $address_components as $component ) {
+						if (in_array('street_number', $component->types)) {
+							$street_number = $component->long_name;
+						} elseif (in_array('route', $component->types)) {
+							$route = $component->long_name;
+						} elseif (in_array('locality', $component->types)) {
+							$city = $component->long_name;
+						} elseif (in_array('administrative_area_level_1', $component->types)) {
+							$state = $component->long_name;
+						} elseif (in_array('country', $component->types)) {
+							$country = $component->long_name;
+						} elseif (in_array('postal_code', $component->types)) {
+							$postal_code = $component->long_name;
+						}
 					}
 				}
 
 				// Extracting geometry
-				$latitude = $geometry->location->lat;
-				$longitude = $geometry->location->lng;
+				$latitude  = isset( $geometry->location->lat ) ? (float)$geometry->location->lat : '';
+				$longitude = isset( $geometry->location->lng ) ? (float)$geometry->location->lng : '';
 				$id = strtolower(str_replace(' ', '_', $location ) );
 
 				$event_location = array(
@@ -467,7 +469,7 @@ class Import_Facebook_Events_Ical_Parser {
 					'zip'	       => $postal_code,
 					'lat'     	   => $latitude,
 					'long'		   => $longitude,
-					'full_address' => $result->formatted_address,
+					'full_address' => isset( $result->formatted_address ) ? stripslashes( $result->formatted_address ) : '',
 					'url'          => '',
 					'image_url'    => ''
 				);

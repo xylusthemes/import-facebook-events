@@ -263,33 +263,7 @@ class Import_Facebook_Events_TEC {
 			}
 
 			//Insert in Custom Table 
-			$esource_id     = $centralize_array['ID'];
-			$start_time     = date( 'Y-m-d H:i:s', $centralize_array['starttime_local'] );
-			$end_time       = date( 'Y-m-d H:i:s', $centralize_array['endtime_local'] );
-			
-			if( $centralize_array['origin'] == 'ical' ){
-				$start_date_utc = $allmetas['_EventStartDateUTC'];
-				$end_date_utc   = $allmetas['_EventEndDateUTC'];
-			}else{
-				$start_date_utc = date( 'Y-m-d H:i:s', $allmetas['_EventStartDateUTC'] );
-				$end_date_utc   = date( 'Y-m-d H:i:s', $allmetas['_EventEndDateUTC'] );
-			}
-
-			$timezone       = isset( $allmetas['timezone'] ) ? $allmetas['timezone'] : 'UTC';
-			$duration       = 0;
-
-			$hash = sha1( $new_event_id . $duration . $start_time . $end_time . $start_date_utc . $end_date_utc . $timezone );
-
-			$totable_name   = $wpdb->prefix . 'tec_occurrences';
-			$todata         = array( 'event_id' => $esource_id, 'post_id' => $new_event_id, 'start_date' => $start_time, 'start_date_utc' => $start_date_utc, 'end_date' => $end_time, 'end_date_utc' => $end_date_utc, 'duration' => $duration, 'hash' => $hash, 'has_recurrence' => 0, 'is_rdate' => 0, );
-			$wpdb->insert( $totable_name, $todata );
-
-			$tetable_name   = $wpdb->prefix . 'tec_events';
-			$tedata         = array(
-				'event_id'  => $esource_id, 'post_id' => $new_event_id, 'start_date' => $start_time, 'end_date' => $end_time, 'timezone' => $timezone, 'start_date_utc' => $start_date_utc, 'end_date_utc' => $end_date_utc, 'duration' => $duration, 'rset' => null,
-			);
-			$wpdb->insert( $tetable_name, $tedata );
-
+			$ife_events->common->ife_sync_event_to_tec_custom_tables( $centralize_array, $new_event_id );
 
 			do_action( 'ife_after_create_tec_' . $centralize_array['origin'] . '_event', $new_event_id, $formated_args, $centralize_array );
 			return array(
@@ -388,35 +362,8 @@ class Import_Facebook_Events_TEC {
 				}
 			}
 
-
-
-			//Update in Custom Table 
-			$esource_id     = $centralize_array['ID'];
-			$start_time     = date( 'Y-m-d H:i:s', $centralize_array['starttime_local'] );
-			$end_time       = date( 'Y-m-d H:i:s', $centralize_array['endtime_local'] );
-
-
-			if( $centralize_array['origin'] == 'ical' ){
-				$start_date_utc = $allmetas['_EventStartDateUTC'];
-				$end_date_utc   = $allmetas['_EventEndDateUTC'];
-			}else{
-				$start_date_utc = date( 'Y-m-d H:i:s', $allmetas['_EventStartDateUTC'] );
-				$end_date_utc   = date( 'Y-m-d H:i:s', $allmetas['_EventEndDateUTC'] );
-			}
-			
-			$timezone       = isset( $allmetas['timezone'] ) ? $allmetas['timezone'] : 'UTC';
-
-			$totable_name   = $wpdb->prefix . 'tec_occurrences';
-			$todata         = array( 'event_id' => $esource_id, 'post_id' => $update_event_id, 'start_date' => $start_time, 'start_date_utc' => $start_date_utc, 'end_date' => $end_time, 'end_date_utc' => $end_date_utc );
-			$where          = array( 'event_id' => $esource_id, 'post_id' => $update_event_id );
-			$wpdb->update( $totable_name, $todata, $where );
-
-			// Update the wp_tec_events table
-			$tetable_name   = $wpdb->prefix . 'tec_events';
-			$tedata         = array( 'event_id' => $esource_id, 'post_id' => $update_event_id, 'start_date' => $start_time, 'end_date' => $end_time, 'timezone' => $timezone, 'start_date_utc' => $start_date_utc, 'end_date_utc' => $end_date_utc );
-			$where          = array( 'event_id' => $esource_id, 'post_id' => $update_event_id );
-			$wpdb->update( $tetable_name, $tedata, $where );
-
+			//Update in Custom Table
+			$ife_events->common->ife_sync_event_to_tec_custom_tables( $centralize_array, $update_event_id );
 
 			do_action( 'ife_after_update_tec_' . $centralize_array['origin'] . '_event', $update_event_id, $formated_args, $centralize_array );
 			return array(
