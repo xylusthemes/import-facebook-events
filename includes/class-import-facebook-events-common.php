@@ -147,7 +147,7 @@ class Import_Facebook_Events_Common {
 		$terms = array();
 		if ( ! empty( $event_taxonomy ) ) {
 			if ( taxonomy_exists( $event_taxonomy ) ) {
-				$terms = get_terms( $event_taxonomy, array( 'hide_empty' => false ) );
+				$terms = get_terms( array( 'taxonomy' => $event_taxonomy, 'hide_empty' => false, ) );
 			}
 		}
 		if ( ! empty( $terms ) ) {
@@ -175,7 +175,7 @@ class Import_Facebook_Events_Common {
 		$tag_terms = array();
 		if ( ! empty( $event_tag_taxonomy ) ) {
 			if ( taxonomy_exists( $event_tag_taxonomy ) ) {
-				$tag_terms = get_terms( $event_tag_taxonomy, array( 'hide_empty' => false ) );
+				$tag_terms = get_terms( array( 'taxonomy' => $event_tag_taxonomy, 'hide_empty' => false, ) );
 			}
 		}
 
@@ -614,8 +614,8 @@ class Import_Facebook_Events_Common {
 		}
 		?>
 		<td>
-			<input type="text" name="<?php echo $name; ?>" required="required" value="<?php echo $event_source; ?>" style="width: 100%;">
-			<span><?php echo $event_origins; ?></span>
+			<input type="text" name="<?php echo esc_attr( $name ); ?>" required="required" value="<?php echo esc_attr( $event_source ); ?>" style="width: 100%;">
+			<span><?php echo esc_attr( $event_origins ); ?></span>
 		</td>
 		<?php
 	}
@@ -736,17 +736,19 @@ class Import_Facebook_Events_Common {
 		$current_time = current_time( 'timestamp' );
 	
 		// Single query to get all counts
-		$counts = $wpdb->get_row("
-			SELECT 
+		$sql = "SELECT 
 				COUNT( p.ID ) AS all_posts_count,
-				SUM( CASE WHEN pm.meta_value > $current_time THEN 1 ELSE 0 END ) AS upcoming_events_count,
-				SUM( CASE WHEN pm.meta_value <= $current_time THEN 1 ELSE 0 END ) AS past_events_count
-			FROM $posts_table AS p
-			INNER JOIN $postmeta_table AS pm ON p.ID = pm.post_id
-			WHERE p.post_type = 'facebook_events'
-			AND p.post_status = 'publish'
-			AND pm.meta_key = 'end_ts'
-		");
+				SUM( CASE WHEN pm.meta_value > %d THEN 1 ELSE 0 END ) AS upcoming_events_count,
+				SUM( CASE WHEN pm.meta_value <= %d THEN 1 ELSE 0 END ) AS past_events_count
+			FROM {$posts_table} AS p
+			INNER JOIN {$postmeta_table} AS pm ON p.ID = pm.post_id
+			WHERE p.post_type = %s
+			AND p.post_status = %s
+			AND pm.meta_key = %s";
+
+		$prepared_sql = $wpdb->prepare( $sql, $current_time, $current_time, 'facebook_events', 'publish', 'end_ts' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+		$counts       = $wpdb->get_row( $prepared_sql );
 	
 		// Return the counts as an array
 		return [
@@ -786,6 +788,7 @@ class Import_Facebook_Events_Common {
 		$skip_trash = isset( $ife_options['skip_trash'] ) ? $ife_options['skip_trash'] : 'no';
 
 		if( $skip_trash == 'yes' ){
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$get_post_id = $wpdb->get_col(
 				$wpdb->prepare(
 					'SELECT ' . $wpdb->prefix . 'posts.ID FROM ' . $wpdb->prefix . 'posts, ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'posts.post_type = %s AND ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.ID AND (' . $wpdb->prefix . 'postmeta.meta_key = %s AND ' . $wpdb->prefix . 'postmeta.meta_value = %s ) LIMIT 1',
@@ -795,6 +798,7 @@ class Import_Facebook_Events_Common {
 				)
 			);
 		}else{
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$get_post_id = $wpdb->get_col(
 				$wpdb->prepare(
 					'SELECT ' . $wpdb->prefix . 'posts.ID FROM ' . $wpdb->prefix . 'posts, ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'posts.post_type = %s AND ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.ID AND ' . $wpdb->prefix . 'posts.post_status != %s AND (' . $wpdb->prefix . 'postmeta.meta_key = %s AND ' . $wpdb->prefix . 'postmeta.meta_value = %s ) LIMIT 1',
@@ -857,7 +861,12 @@ class Import_Facebook_Events_Common {
 		if ( ! empty( $ife_user_token_options ) ) {
 			$authorize_status = isset( $ife_user_token_options['authorize_status'] ) ? $ife_user_token_options['authorize_status'] : 0;
 			if ( 0 === $authorize_status ) {
-				$ife_warnings[] = __( 'The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong> <a style="text-decoration: none;" href="'. admin_url( 'admin.php?page=facebook_import&tab=settings' ) .'" >Settings</a> </strong>.', 'import-facebook-events' );
+				$settings_url = esc_url( admin_url( 'admin.php?page=facebook_import&tab=settings' ) );
+				$ife_warnings[] = sprintf(
+					/* translators: %s: Settings page URL */
+					__( 'The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong><a style="text-decoration: none;" href="%s">Settings</a></strong>.', 'import-facebook-events' ),
+					$settings_url
+				);
 			}
 		}
 	}
@@ -1169,9 +1178,9 @@ class Import_Facebook_Events_Common {
 		<div class="ife-header" >
 			<div class="ife-container" >
 				<div class="ife-header-content" >
-					<span style="font-size:18px;"><?php esc_html_e('Dashboard','import-facebook-events'); ?></span>
+					<span style="font-size:18px;"><?php esc_attr_e('Dashboard','import-facebook-events'); ?></span>
 					<span class="spacer"></span>
-					<span class="page-name"><?php esc_html_e( $page_title,'import-facebook-events'); ?></span></span>
+					<span class="page-name"><?php echo esc_attr( $page_title ); ?></span></span>
 					<div class="header-actions" >
 						<span class="round">
 							<a href="<?php echo esc_url( 'https://docs.xylusthemes.com/docs/import-facebook-events/' ); ?>" target="_blank">
@@ -1197,13 +1206,13 @@ class Import_Facebook_Events_Common {
 		?>
 			<div id="ife-footer-links" >
 				<div class="ife-footer">
-					<div><?php esc_attr_e( 'Made with ♥ by the Xylus Themes','wp-bulk-delete'); ?></div>
+					<div><?php esc_attr_e( 'Made with ♥ by the Xylus Themes','import-facebook-events'); ?></div>
 					<div class="ife-links" >
-						<a href="<?php echo esc_url( 'https://xylusthemes.com/support/' ); ?>" target="_blank" ><?php esc_attr_e( 'Support','wp-bulk-delete'); ?></a>
+						<a href="<?php echo esc_url( 'https://xylusthemes.com/support/' ); ?>" target="_blank" ><?php esc_attr_e( 'Support','import-facebook-events'); ?></a>
 						<span>/</span>
-						<a href="<?php echo esc_url( 'https://docs.xylusthemes.com/docs/import-facebook-events' ); ?>" target="_blank" ><?php esc_attr_e( 'Docs','wp-bulk-delete'); ?></a>
+						<a href="<?php echo esc_url( 'https://docs.xylusthemes.com/docs/import-facebook-events' ); ?>" target="_blank" ><?php esc_attr_e( 'Docs','import-facebook-events'); ?></a>
 						<span>/</span>
-						<a href="<?php echo esc_url( admin_url( 'plugin-install.php?s=xylus&tab=search&type=term' ) ); ?>" ><?php esc_attr_e( 'Free Plugins','wp-bulk-delete'); ?></a>
+						<a href="<?php echo esc_url( admin_url( 'plugin-install.php?s=xylus&tab=search&type=term' ) ); ?>" ><?php esc_attr_e( 'Free Plugins','import-facebook-events'); ?></a>
 					</div>
 					<div class="ife-social-links">
 						<a href="<?php echo esc_url( 'https://www.facebook.com/xylusinfo/' ); ?>" target="_blank" >
@@ -1245,14 +1254,14 @@ class Import_Facebook_Events_Common {
 		global $wpdb;
 
 		$esource_id     = $centralize_array['ID'];
-		$start_time     = date( 'Y-m-d H:i:s', $centralize_array['starttime_local'] );
-		$end_time       = date( 'Y-m-d H:i:s', $centralize_array['endtime_local'] );
+		$start_time     = gmdate( 'Y-m-d H:i:s', $centralize_array['starttime_local'] );
+		$end_time       = gmdate( 'Y-m-d H:i:s', $centralize_array['endtime_local'] );
 		if( $centralize_array['origin'] == 'ical' ){
 			$start_date_utc = $centralize_array['startime_utc'];
 			$end_date_utc   = $centralize_array['endtime_utc'];
 		}else{
-			$start_date_utc = date( 'Y-m-d H:i:s', $centralize_array['startime_utc'] );
-			$end_date_utc   = date( 'Y-m-d H:i:s', $centralize_array['endtime_utc'] );
+			$start_date_utc = gmdate( 'Y-m-d H:i:s', $centralize_array['startime_utc'] );
+			$end_date_utc   = gmdate( 'Y-m-d H:i:s', $centralize_array['endtime_utc'] );
 		}
 		$timezone       = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : 'Africa/Abidjan';
 		$duration       = 0;
@@ -1262,6 +1271,7 @@ class Import_Facebook_Events_Common {
 		$tec_occurrences_table = $wpdb->prefix . 'tec_occurrences';
 
 		// Check if event already exists
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 		$existing_event_id = $wpdb->get_var( $wpdb->prepare( "SELECT event_id FROM $tec_events_table WHERE post_id = %d", $event_post_id ) );
 
 		$event_data = array(
@@ -1283,13 +1293,17 @@ class Import_Facebook_Events_Common {
 
 		if ( $existing_event_id ) {
 			// Update
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$wpdb->update( $tec_events_table, $event_data, array( 'post_id' => $event_post_id ) );
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$wpdb->update( $tec_occurrences_table, $occurrence_data, array( 'post_id' => $event_post_id ) );
 		} else {
 			// Insert
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$wpdb->insert( $tec_events_table, $event_data );
 			$occurrence_data['event_id'] = $wpdb->insert_id;
 			$occurrence_data['hash']     = $hash;
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$wpdb->insert( $tec_occurrences_table, $occurrence_data );
 		}
 	}
@@ -1417,8 +1431,10 @@ function get_ife_template_part( $slug, $name = '', $template_path = 'import-face
  */
 function ife_get_inprogress_import() {
 	global $wpdb;
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 	$batches = $wpdb->get_results( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE '%ife_import_batch_%' ORDER BY option_id ASC" ); // db call ok; no-cache ok.
 	if ( is_multisite() ) {
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 		$batches = $wpdb->get_results( "SELECT * FROM {$wpdb->sitemeta} WHERE meta_key LIKE '%ife_import_batch_%' ORDER BY meta_id ASC" ); // db call ok; no-cache ok.
 	}
 	return $batches;
@@ -1433,7 +1449,7 @@ function ife_get_inprogress_import() {
 function ife_get_hour_mins($scheduledDate) {
 	try{
 		if($scheduledDate){
-			$scheduledDate = date('Hi', $scheduledDate);
+			$scheduledDate = gmdate('Hi', $scheduledDate);
 		}
 		return $scheduledDate;
 	} catch (Exception $e) {
@@ -1472,8 +1488,8 @@ function ife_get_schedule_time(){
 		if(!function_exists('_get_cron_array') ){
 			return $current_time;
 		}
-		$current_hour = date('Hi', $current_time);
-		$current_hour_formated = date('H:i:s', $current_time);
+		$current_hour = gmdate('Hi', $current_time);
+		$current_hour_formated = gmdate('H:i:s', $current_time);
 		$ife_scheduled = ife_get_crons();
 		if(empty($ife_scheduled)){
 			return $current_time;

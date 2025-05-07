@@ -50,7 +50,7 @@ global $ife_events;
 				<input type="text" name="start_date" class="ife_datepicker start_date" placeholder="<?php esc_html_e('Select start date', 'import-facebook-events' ); ?>"> - 
 				<input type="text" name="end_date" class="ife_datepicker end_date" placeholder="<?php esc_html_e('Select end date', 'import-facebook-events' ); ?>">
 				<span class="ife_small">
-					<?php _e( 'Select date range from which you want to import events. Default startdate is Today', 'import-facebook-events' ); ?>
+					<?php esc_attr_e( 'Select date range from which you want to import events. Default startdate is Today', 'import-facebook-events' ); ?>
 				</span>
 			</div>
 		</div>

@@ -441,9 +441,9 @@ class Import_Facebook_Events_Cpt {
 		</thead>
 			<tbody>
 				<tr>
-					<td><?php _e( 'Source Link', 'import-facebook-events' ); ?>:</td>
+					<td><?php esc_attr_e( 'Source Link', 'import-facebook-events' ); ?>:</td>
 				<td>
-					<input type="text" name="ife_event_link" id="ife_event_link" value="<?php echo get_post_meta( $post->ID, 'ife_event_link', true ); ?>" />
+					<input type="text" name="ife_event_link" id="ife_event_link" value="<?php echo esc_url( get_post_meta( $post->ID, 'ife_event_link', true ) ); ?>" />
 				</td>
 			</tr>
 			</tbody>
@@ -632,7 +632,7 @@ class Import_Facebook_Events_Cpt {
 				$start_date = get_post_meta( $post_id, 'event_start_date', true );
 				if ( ! empty( $start_date ) ) {
 					$start_date = strtotime( $start_date );
-					echo esc_attr( date( 'F j, Y', $start_date ) );
+					echo esc_attr( gmdate( 'F j, Y', $start_date ) );
 				} else {
 					echo '-';
 				}
@@ -750,7 +750,7 @@ class Import_Facebook_Events_Cpt {
 					array(
 						'key'     => 'end_ts',
 						'compare' => '>=',
-						'value'   => strtotime( date( 'Y-m-d' ) ),
+						'value'   => strtotime( gmdate( 'Y-m-d' ) ),
 					),
 					array(
 						'key'     => 'end_ts',

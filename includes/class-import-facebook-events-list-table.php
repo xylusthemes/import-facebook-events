@@ -179,8 +179,8 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 			return;
 		}	
 		$ife_url_all_delete_args = array(
-			'page'       => wp_unslash( $_REQUEST['page'] ),
-			'tab'        => wp_unslash( $_REQUEST['tab'] ),
+			'page'       => isset( $_REQUEST['page'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) ) : 'facebook_import', // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			'tab'        => isset( $_REQUEST['tab'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['tab'] ) ) ) : 'history' , // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			'ife_action' => 'ife_all_history_delete',
 		);
 
@@ -189,7 +189,7 @@ class Import_Facebook_Events_History_List_Table extends WP_List_Table {
 			$wp_delete_nonce_url = esc_url( wp_nonce_url( add_query_arg( $ife_url_all_delete_args, admin_url( 'admin.php' ) ),'ife_delete_all_history_nonce' ) );
 			$confirmation_message = esc_html__( "Warning!! Are you sure to delete all these import history? Import history will be permanatly deleted.", "import-facebook-events" );
 			?>
-			<a class="button apply" href="<?php echo $wp_delete_nonce_url; ?>" onclick="return confirm('<?php echo $confirmation_message; ?>')">
+			<a class="button apply" href="<?php echo esc_url( $wp_delete_nonce_url ); ?>" onclick="return confirm('<?php echo esc_attr( $confirmation_message ); ?>')">
 				<?php esc_html_e( 'Clear Import History', 'import-facebook-events' ); ?>
 			</a>
 			<?php
@@ -478,7 +478,7 @@ class IFE_Shortcode_List_Table extends WP_List_Table {
                 return $item[ $column_name ];
 
             default:
-                return print_r( $item, true ) ;
+                return print_r( $item, true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
         }
     }
 }

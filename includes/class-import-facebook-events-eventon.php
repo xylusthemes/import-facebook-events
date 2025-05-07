@@ -217,12 +217,12 @@ class Import_Facebook_Events_EventON {
 			update_post_meta( $inserted_event_id, 'evcal_allday', $is_all_day );
 			update_post_meta( $inserted_event_id, '_evo_tz', $timezone_name );
 
-			$start_ampm = date("a", $start_time);
-			$start_hour = date("h", $start_time);
-			$start_minute = date("i", $start_time);
-			$end_ampm = date("a", $end_time);
-			$end_hour = date("h", $end_time);
-			$end_minute = date("i", $end_time);
+			$start_ampm = gmdate("a", $start_time);
+			$start_hour = gmdate("h", $start_time);
+			$start_minute = gmdate("i", $start_time);
+			$end_ampm = gmdate("a", $end_time);
+			$end_hour = gmdate("h", $end_time);
+			$end_minute = gmdate("i", $end_time);
 
 			// Update post meta fields
 			update_post_meta($inserted_event_id, '_start_ampm', $start_ampm);

@@ -206,11 +206,11 @@ class Import_Facebook_Events_Event_Organizer {
 			$timezone_name = isset( $centralize_array['timezone_name'] ) ? sanitize_text_field( $centralize_array['timezone_name'] ) : '';
 			
 			// Save Meta.
-			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_until', date( 'Y-m-d H:i:s', $start_time ) );
-			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_start_start', date( 'Y-m-d H:i:s', $start_time ) );
-			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_start_finish', date( 'Y-m-d H:i:s', $end_time ) );
-			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_last_start', date( 'Y-m-d H:i:s', $start_time ) );
-			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_last_finish', date( 'Y-m-d H:i:s', $end_time ) );
+			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_until', gmdate( 'Y-m-d H:i:s', $start_time ) );
+			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_start_start', gmdate( 'Y-m-d H:i:s', $start_time ) );
+			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_start_finish', gmdate( 'Y-m-d H:i:s', $end_time ) );
+			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_last_start', gmdate( 'Y-m-d H:i:s', $start_time ) );
+			update_post_meta( $inserted_event_id, '_eventorganiser_schedule_last_finish', gmdate( 'Y-m-d H:i:s', $end_time ) );
 			update_post_meta( $inserted_event_id, 'ife_event_link', esc_url( $ticket_uri ) );
 			update_post_meta( $inserted_event_id, 'ife_event_origin', $event_args['import_origin'] );
 			update_post_meta( $inserted_event_id, 'ife_event_timezone', $timezone );
@@ -226,18 +226,20 @@ class Import_Facebook_Events_Event_Organizer {
 			// Custom table Details.
 			$event_array = array(
 				'post_id'          => $inserted_event_id,
-				'StartDate'        => date( 'Y-m-d', $start_time ),
-				'EndDate'          => date( 'Y-m-d', $end_time ),
-				'StartTime'        => date( 'H:i:s', $start_time ),
-				'FinishTime'       => date( 'H:i:s', $end_time ),
+				'StartDate'        => gmdate( 'Y-m-d', $start_time ),
+				'EndDate'          => gmdate( 'Y-m-d', $end_time ),
+				'StartTime'        => gmdate( 'H:i:s', $start_time ),
+				'FinishTime'       => gmdate( 'H:i:s', $end_time ),
 				'event_occurrence' => 0,
 			);
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$event_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $this->event_db_table WHERE `post_id` = %d", absint( $inserted_event_id ) ) ); // db call ok; no-cache ok.
 			if ( $event_count > 0 && is_numeric( $event_count ) ) {
 				$where = array( 'post_id' => absint( $inserted_event_id ) );
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$wpdb->update( $this->event_db_table, $event_array, $where );  // db call ok; no-cache ok.
 			} else {
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$wpdb->insert( $this->event_db_table, $event_array );  // db call ok;.
 			}
 
@@ -309,6 +311,7 @@ class Import_Facebook_Events_Event_Organizer {
 				);
 
 				if ( ! empty( $loc_term_meta ) ) {
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$meta_keys = $wpdb->get_col( $wpdb->prepare( "SELECT `meta_key` FROM {$wpdb->prefix}eo_venuemeta WHERE `eo_venue_id` = %d", $loc_term_id ) ); // db call ok; no-cache ok.
 					foreach ( $loc_term_meta as $loc_value ) {
 						if ( in_array( $loc_value['meta_key'], $meta_keys, true ) ) { // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
@@ -316,8 +319,10 @@ class Import_Facebook_Events_Event_Organizer {
 								'eo_venue_id' => absint( $loc_term_id ),
 								'meta_key'    => $loc_value['meta_key'], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Ignore.
 							);
+							// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 							$wpdb->update( $this->venue_db_table, $loc_value, $where );  // db call ok; no-cache ok.
 						} else {
+							// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 							$wpdb->insert( $this->venue_db_table, $loc_value );  // db call ok;.
 						}
 					}

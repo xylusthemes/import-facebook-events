@@ -385,7 +385,7 @@ class Import_Facebook_Events_Facebook {
 		$post_title       = isset( $facebook_event->name ) ? $facebook_event->name : '';
 		$post_description = isset( $facebook_event->description ) ? $facebook_event->description : '';
 
-		$start_time = isset( $facebook_event->start_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->start_time ) ) : date( 'Y-m-d H:i:s' );
+		$start_time = isset( $facebook_event->start_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->start_time ) ) : gmdate( 'Y-m-d H:i:s' );
 		$end_time   = isset( $facebook_event->end_time ) ? strtotime( $ife_events->common->convert_datetime_to_db_datetime( $facebook_event->end_time ) ) : $start_time;
 
 		$ticket_uri    = isset( $facebook_event->ticket_uri ) ? esc_url( $facebook_event->ticket_uri ) : 'https://www.facebook.com/events/' . $facebook_id;

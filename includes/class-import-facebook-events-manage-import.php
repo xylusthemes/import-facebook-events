@@ -67,7 +67,7 @@ class Import_Facebook_Events_Manage_Import {
 			$event_data['page_username'] = '';
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             $event_data['event_ids'] = isset( $_POST['facebook_event_ids'] ) ? array_map( 'trim', array_map( 'sanitize_text_field', explode( "\n", preg_replace( "/^\n+|^[\t\s]*\n+/m", '', wp_unslash( $_POST['facebook_event_ids'] ) ) ) ) ) : array(); // input var okay.
-            $event_data['event_author']     = !empty( $_POST['event_author'] ) ? $_POST['event_author'] : get_current_user_id();
+            $event_data['event_author']     = !empty( $_POST['event_author'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_POST['event_author'] ) ) ) : get_current_user_id();
             
 			if( 'ical' === $event_origin ){
 				$this->handle_ical_import_form_submit( $event_data );
@@ -107,8 +107,8 @@ class Import_Facebook_Events_Manage_Import {
 		global $ife_errors, $ife_success_msg;
 		if ( isset( $_POST['ife_gma_action'] ) && 'ife_save_gma_settings' === sanitize_text_field( wp_unslash( $_POST['ife_gma_action'] ) ) && check_admin_referer( 'ife_gma_setting_form_nonce_action', 'ife_gma_setting_form_nonce' ) ) { // input var okay.
 			$gma_option = array();
-			$gma_option['ife_google_maps_api_key'] = isset( $_POST['ife_google_maps_api_key'] ) ? wp_unslash( $_POST['ife_google_maps_api_key'] ) : '';
-			$gma_option['ife_google_geolocation_api_key'] = isset( $_POST['ife_google_geolocation_api_key'] ) ? wp_unslash( $_POST['ife_google_geolocation_api_key'] ) : '';
+			$gma_option['ife_google_maps_api_key'] = isset( $_POST['ife_google_maps_api_key'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_POST['ife_google_maps_api_key'] ) ) ) : '';
+			$gma_option['ife_google_geolocation_api_key'] = isset( $_POST['ife_google_geolocation_api_key'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_POST['ife_google_geolocation_api_key'] ) ) )  : '';
 			$is_gm_update  = update_option( 'ife_google_maps_api_key', $gma_option['ife_google_maps_api_key'] );
 			$is_ggl_update = update_option( 'ife_google_geolocation_api_key', $gma_option['ife_google_geolocation_api_key'] );
 			if ( $is_gm_update || $is_ggl_update ) {
@@ -179,9 +179,9 @@ class Import_Facebook_Events_Manage_Import {
 		}
 
 		// Delete All History Data 
-		if ( isset( $_GET['ife_action'] ) && esc_attr( $_GET['ife_action'] ) === 'ife_all_history_delete' && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ife_delete_all_history_nonce' ) ) {
-			$page        = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'facebook_import';
-			$tab         = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'history';
+		if ( isset( $_GET['ife_action'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['ife_action'] ) ) ) === 'ife_all_history_delete' && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( esc_attr( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) ), 'ife_delete_all_history_nonce' ) ) {
+			$page        = isset( $_GET['page'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) : 'facebook_import';
+			$tab         = isset( $_GET['tab'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) : 'history';
 			$wp_redirect = admin_url( 'admin.php?page=' . $page );
 
 			$delete_ids  = get_posts( array( 'numberposts' => -1,'fields' => 'ids', 'post_type' => 'ife_import_history' ) );
@@ -239,20 +239,20 @@ class Import_Facebook_Events_Manage_Import {
 		$event_data['import_origin'] = 'ical';
 		$event_data['import_by'] = 'ics_file';
 		$event_data['ical_url'] = '';
-		$event_data['start_date'] = isset( $_POST['start_date'] ) ? $_POST['start_date'] : '';
-		$event_data['end_date'] = isset( $_POST['end_date'] ) ? $_POST['end_date'] : '';
+		$event_data['start_date'] = isset( $_POST['start_date'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_POST['start_date'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$event_data['end_date'] = isset( $_POST['end_date'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_POST['end_date'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if( $event_data['import_by'] == 'ics_file' ){
 
-			$file_ext = pathinfo( $_FILES['ics_file']['name'], PATHINFO_EXTENSION );
-			$file_type = $_FILES['ics_file']['type'];
+			$file_ext = pathinfo( $_FILES['ics_file']['name'], PATHINFO_EXTENSION ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$file_type = $_FILES['ics_file']['type']; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			if( $file_type != 'text/calendar' && $file_ext != 'ics' ){
 				$ife_errors[] = esc_html__( 'Please upload .ics file', 'import-facebook-events');
 				return;
 			}
 
-			$ics_content =  file_get_contents( $_FILES['ics_file']['tmp_name'] );
+			$ics_content =  file_get_contents( $_FILES['ics_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$import_events = $ife_events->ical->import_events_from_ics_content( $event_data, $ics_content );
 
 			if( $import_events && !empty( $import_events ) ){

@@ -63,8 +63,8 @@ class Import_Facebook_Events_Ical_Parser {
 		}
 		$imported_events = array();
 
-		$start_date = date('Y-m-d' );
-		$end_date = date('Y-m-d', strtotime('+2 years') );
+		$start_date = gmdate('Y-m-d' );
+		$end_date   = gmdate('Y-m-d', strtotime('+2 years') );
 		
 		if( isset( $event_data['start_date'] ) && $event_data['start_date'] != '' ){
 			$start_date = $event_data['start_date'];
@@ -81,12 +81,12 @@ class Import_Facebook_Events_Ical_Parser {
 		}
 
 		// Get Start and End date  day,month,year
-		$start_month = date( 'm', $start_date );
-		$start_year  = date( 'Y', $start_date );
-		$start_day   = date( 'd', $start_date );
-		$end_month   = date( 'm', $end_date );
-		$end_year    = date( 'Y', $end_date );
-		$end_day     = date( 'd', $end_date );
+		$start_month = gmdate( 'm', $start_date );
+		$start_year  = gmdate( 'Y', $start_date );
+		$start_day   = gmdate( 'd', $start_date );
+		$end_month   = gmdate( 'm', $end_date );
+		$end_year    = gmdate( 'Y', $end_date );
+		$end_day     = gmdate( 'd', $end_date );
 
 		// initiate vcalendar
 		//$config = array( 'unique_id' => 'Import_Facebook_Events_Ical_Parser' . microtime( true ) ); 
@@ -237,9 +237,9 @@ class Import_Facebook_Events_Ical_Parser {
 			$endtime_utc  = $sendtime;
 		}else{
 			$utc_start_time = $ife_events->common->ife_convert_to_utc_timestamp( $sstartime, $timezone );
-			$startime_utc   =  date('Y-m-d H:i:s', $utc_start_time );
+			$startime_utc   =  gmdate('Y-m-d H:i:s', $utc_start_time );
 			$end_time_utc   = $ife_events->common->ife_convert_to_utc_timestamp( $sendtime, $timezone );
-			$endtime_utc    =  date('Y-m-d H:i:s', $end_time_utc );
+			$endtime_utc    =  gmdate('Y-m-d H:i:s', $end_time_utc );
 		}
 
 		$start_time = strtotime( $this->convert_datetime_to_timezone_wise_datetime( $start, $force_timezone ) );
@@ -330,8 +330,8 @@ class Import_Facebook_Events_Ical_Parser {
 			'description'     => $post_description,
 			'starttime_local' => $start_time,
 			'endtime_local'   => $end_time,
-			'starttime'       => date('Ymd\THis', $start_time),
-			'endtime'         => date('Ymd\THis', $end_time),
+			'starttime'       => gmdate('Ymd\THis', $start_time),
+			'endtime'         => gmdate('Ymd\THis', $end_time),
 			'startime_utc'    => $startime_utc,
 			'endtime_utc'     => $endtime_utc,
 			'timezone'        => $timezone,
