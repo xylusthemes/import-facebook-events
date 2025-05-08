@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 6.8
-Stable tag: 1.8.5
+Stable tag: 1.8.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,9 @@ You can use `[facebook_events]` for display in-built facebook events list.
 16. Events page using '[facebook_events layout="style4"]' shortcode
 
 == Changelog ==
+
+= 1.8.6 =
+* IMPROVEMENTS: Improved security and compatibility with WordPress coding standards.
 
 = 1.8.5 =
 * FIXED: Issue with incorrect text domain usage
