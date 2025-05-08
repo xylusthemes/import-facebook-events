@@ -16,7 +16,7 @@ $facebook_app_id        = isset( $facebook_options['facebook_app_id'] ) ? $faceb
 $facebook_app_secret    = isset( $facebook_options['facebook_app_secret'] ) ? $facebook_options['facebook_app_secret'] : '';
 $ife_user_token_options = get_option( 'ife_user_token_options', array() );
 $ife_fb_authorize_user  = get_option( 'ife_fb_authorize_user', array() );
-$stab = isset( $_GET['stab'] ) ? sanitize_text_field( wp_unslash( $_GET['stab'] ) ) : 'setting';
+$stab = isset( $_GET['stab'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_GET['stab'] ) ) ) : 'setting'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $ife_google_maps_api_key = get_option( 'ife_google_maps_api_key', array() );
 $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', array() );
 ?>
@@ -31,14 +31,14 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 							<div class="var-tabs var-tabs--item-horizontal var-tabs--layout-horizontal-padding ife_navbar nav-tab-wrapper">
 								<div class="var-tabs__tab-wrap var-tabs--layout-horizontal ife_nav_tabs">
 									<a href="javascript:void(0)" class="var-tab var-tab--active ife_tab_link"  data-tab="settings">
-										<span class="tab-label"><?php esc_attr_e( 'General Settings', 'wp-bulk-delete' ); ?></span>
+										<span class="tab-label"><?php esc_attr_e( 'General Settings', 'import-facebook-events' ); ?></span>
 									</a>
 									<a href="javascript:void(0)"  class="var-tab var-tab--inactive ife_tab_link" data-tab="google_maps_key" >
-										<span class="tab-label"><?php esc_attr_e( 'Google Maps API', 'wp-bulk-delete' ); ?></span>
+										<span class="tab-label"><?php esc_attr_e( 'Google Maps API', 'import-facebook-events' ); ?></span>
 									</a>
 									<?php if( ife_is_pro() ){ ?>
 										<a href="javascript:void(0)"  class="var-tab var-tab--inactive ife_tab_link" data-tab="license">
-											<span class="tab-label"><?php esc_attr_e( 'License', 'wp-bulk-delete' ); ?></span>
+											<span class="tab-label"><?php esc_attr_e( 'License', 'import-facebook-events' ); ?></span>
 										</a>
 									<?php } ?>
 								</div>
@@ -165,7 +165,7 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										?>
 										<input type="checkbox" name="facebook[skip_trash]" value="yes" <?php if ($skip_trash == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
 										<span class="ife_small">
-											<?php _e('Check to enable skip-the-trash events during importing.', 'import-facebook-events'); ?>
+											<?php esc_attr_e('Check to enable skip-the-trash events during importing.', 'import-facebook-events'); ?>
 										</span>
 										<?php do_action('ife_render_pro_notice'); ?>
 									</div>
@@ -231,7 +231,7 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										?>
 										<input type="checkbox" name="facebook[move_peit]" value="yes" <?php if ( $move_peit_events == 'yes' ) { echo 'checked="checked"'; } ?> />
 										<span class="ife_small">
-											<?php _e( 'Check to move past events in the trash, Automatically move events to the trash 24 hours after their end date using wp-cron. This runs once daily in the background.', 'import-facebook-events' ); ?>
+											<?php esc_attr_e( 'Check to move past events in the trash, Automatically move events to the trash 24 hours after their end date using wp-cron. This runs once daily in the background.', 'import-facebook-events' ); ?>
 										</span>
 									</div>
 								</div>
@@ -246,7 +246,7 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										?>
 										<input type="checkbox" name="facebook[direct_link]" value="yes" <?php if ($direct_link == 'yes') {echo 'checked="checked"';}if (!ife_is_pro()) {echo 'disabled="disabled"'; } ?> />
 										<span class="ife_small">
-											<?php _e('Check to enable direct event link to Facebook instead of event detail page.', 'import-facebook-events'); ?>
+											<?php esc_attr_e('Check to enable direct event link to Facebook instead of event detail page.', 'import-facebook-events'); ?>
 										</span>
 										<?php do_action('ife_render_pro_notice'); ?>
 									</div>
@@ -264,14 +264,14 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										?>
 										<input type="checkbox" name="facebook[dont_update][status]" value="yes" <?php checked( $sdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
 										<span class="xtei_small">
-											<?php _e( 'Status ( Publish, Pending, Draft etc.. )', 'import-facebook-events' ); ?>
+											<?php esc_attr_e( 'Status ( Publish, Pending, Draft etc.. )', 'import-facebook-events' ); ?>
 										</span><br/>
 										<input type="checkbox" name="facebook[dont_update][category]" value="yes" <?php checked( $cdontupdate, 'yes' ); disabled( ife_is_pro(), false );?> />
 										<span class="xtei_small">
-											<?php _e( 'Event category', 'import-facebook-events' ); ?>
+											<?php esc_attr_e( 'Event category', 'import-facebook-events' ); ?>
 										</span><br/>
 										<span class="ife_small">
-											<?php _e( "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')", 'import-facebook-events' ); ?>
+											<?php esc_attr_e( "Select data which you don't want to update during existing events update. (This is applicable only if you have checked 'update existing events')", 'import-facebook-events' ); ?>
 										</span>
 										<?php do_action('ife_render_pro_notice'); ?>
 									</div>
@@ -303,11 +303,11 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 											echo '<input type="text" name="" value="" disabled="disabled" />';
 										} else {
 											?>
-											<input type="text" name="facebook[event_slug]" value="<?php if ( $event_slug ) { echo $event_slug; } ?>" />
+											<input type="text" name="facebook[event_slug]" value="<?php if ( $event_slug ) { echo esc_attr( $event_slug ); } ?>" />
 											<?php
 										} ?>
 										<span class="ife_small">
-											<?php _e('Slug for the event.', 'import-facebook-events'); ?>
+											<?php esc_attr_e('Slug for the event.', 'import-facebook-events'); ?>
 										</span>
 										<?php do_action('ife_render_pro_notice'); ?>
 									</div>
@@ -342,6 +342,7 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										?>
 
 										<div id="ife-event-thumbnail-preview" class="wp-clearfix settings-page-preview <?php echo esc_attr( ! empty( $ife_edt_url ) ? '' : 'hidden' ); ?>">
+											<?php // phpcs:disable PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage  ?>
 											<img id="ife-event-thumbnail-img" src="<?php echo esc_url( $ife_edt_url ); ?>" alt="<?php esc_attr_e( 'Event Thumbnail', 'import-facebook-events' ); ?>" style="max-width:100%;width: 15%;height: auto;" >
 										</div>
 
@@ -349,10 +350,10 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 
 										<div class="action-buttons">
 											<button type="button" id="ife-choose-from-library-button" class="<?php echo esc_attr( $ife_cfb ); ?>" data-alt-classes="<?php echo esc_attr( $ife_cfboc ); ?>" >
-												<?php echo $button_text; ?>
+												<?php echo esc_attr( $button_text ); ?>
 											</button>
 											<button id="ife-js-remove-thumbnail" type="button" data-alt-classes="<?php echo esc_attr( $ife_cfboc ); ?>" class="reset <?php echo esc_attr( $remove_class ); ?><?php echo esc_attr( $ife_cfb ); ?>" >
-												<?php _e( 'Remove Event Thumbnail', 'import-facebook-events' ); ?>
+												<?php esc_attr_e( 'Remove Event Thumbnail', 'import-facebook-events' ); ?>
 											</button>
 										</div>
 										<span class="ife_small">
@@ -491,7 +492,7 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										esc_url( admin_url( 'plugins.php?s=import+facebook+events+pro' ) ),
 										esc_html__( 'Here', 'import-facebook-events' )
 									);
-									echo $license_section;
+									echo wp_kses_post( $license_section );
 								}
 							?>
 						</div>

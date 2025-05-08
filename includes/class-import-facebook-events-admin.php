@@ -99,8 +99,8 @@ class Import_Facebook_Events_Admin {
 		wp_localize_script( 'import-facebook-events', 'ife_ajax', $params );
 		wp_enqueue_script( 'import-facebook-events' );
 
-		if( isset( $_GET['tab'] ) && $_GET['tab'] == 'ife_setup_wizard' ){
-			wp_register_script( 'ife-wizard-js', $js_dir . 'wizard.js',  array( 'jquery', 'jquery-ui-core' ), IFE_VERSION  );
+		if( isset( $_GET['tab'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) == 'ife_setup_wizard' ){ // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			wp_register_script( 'ife-wizard-js', $js_dir . 'wizard.js',  array( 'jquery', 'jquery-ui-core' ), IFE_VERSION, true  );
 			wp_enqueue_script( 'ife-wizard-js' );
 		}
 	}
@@ -117,14 +117,16 @@ class Import_Facebook_Events_Admin {
 	public function enqueue_admin_styles( $hook ) {
 		global $pagenow;
 		$current_screen = get_current_screen();
-		if( isset( $_GET['page'] ) && $_GET['page'] == 'facebook_import' ){
+		$css_dir = IFE_PLUGIN_URL . 'assets/css/';
+		wp_enqueue_style( 'jquery-ui', $css_dir . 'jquery-ui.css', false, '1.12.0' );
+		wp_enqueue_style( 'import-facebook-events-global', $css_dir . 'import-facebook-events-admin-global.css', false, IFE_VERSION );
+		
+		if( isset( $_GET['page'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) == 'facebook_import' ){ // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if ( 'toplevel_page_facebook_import' === $current_screen->id || 'widgets.php' === $pagenow || 'post.php' === $pagenow || 'post-new.php' === $pagenow ) {
-				$css_dir = IFE_PLUGIN_URL . 'assets/css/';
-				wp_enqueue_style( 'jquery-ui', $css_dir . 'jquery-ui.css', false, '1.12.0' );
 				wp_enqueue_style( 'import-facebook-events', $css_dir . 'import-facebook-events-admin.css', false, IFE_VERSION );
 				wp_enqueue_style( 'wp-color-picker' );
 
-				if( isset( $_GET['tab'] ) && $_GET['tab'] == 'ife_setup_wizard' ){
+				if( isset( $_GET['tab'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) == 'ife_setup_wizard' ){ // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					wp_enqueue_style( 'ife-wizard-css', $css_dir . 'wizard.css', false, IFE_VERSION  );
 				}
 			}
@@ -140,7 +142,7 @@ class Import_Facebook_Events_Admin {
 	public function admin_page() {
 		global $ife_events;
 
-			$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) )  : 'facebook';
+			$active_tab = isset( $_GET['tab'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) )  : 'facebook'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$gettab     = str_replace( 'by_', '', $active_tab );
 			$gettab     = ucwords( str_replace( '_', ' & ', $gettab ) );
 			if( $active_tab == 'support' ){
@@ -161,7 +163,6 @@ class Import_Facebook_Events_Admin {
 			}
 
 			$posts_header_result = $ife_events->common->ife_render_common_header( $page_title );
-			echo esc_attr_e( $posts_header_result );
 
 			if( $active_tab != 'dashboard' ){
 				?>
@@ -266,7 +267,6 @@ class Import_Facebook_Events_Admin {
 				require_once IFE_PLUGIN_DIR . '/templates/admin/ife-dashboard.php';
 			}
 			$posts_footer_result = $ife_events->common->ife_render_common_footer();
-			echo esc_attr_e( $posts_footer_result );
 	}
 
 
@@ -474,9 +474,9 @@ class Import_Facebook_Events_Admin {
 	 * @return void
 	 */
 	public function get_selected_tab_submenu_ife( $submenu_file ){
-		if( !empty( $_GET['page'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'facebook_import' ){
+		if( !empty( $_GET['page'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) == 'facebook_import' ){ // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$allowed_tabs = array( 'dashboard', 'facebook', 'ics', 'scheduled', 'history', 'settings', 'shortcodes', 'support' );
-			$tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'facebook';
+			$tab = isset( $_GET['tab'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) : 'facebook'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if( in_array( $tab, $allowed_tabs ) ){
 				$submenu_file = admin_url( 'admin.php?page=facebook_import&tab='.$tab );
 			}
@@ -577,7 +577,7 @@ class Import_Facebook_Events_Admin {
 			'posts_per_page'  => 100,
 			'post_status'     => 'publish',
 			'fields'          => 'ids',
-			'meta_query'      => array(
+			'meta_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 				array(
 					'key'     => 'end_ts',
 					'value'   => current_time( 'timestamp' ) - ( 24 * 3600 ),

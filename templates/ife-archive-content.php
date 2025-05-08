@@ -37,7 +37,7 @@ if ( 'yes' === $direct_link ) {
 	$target            = 'target="_blank"';
 }
 ?>
-<a href="<?php echo $ticket_uri; ?>" <?php echo $target; ?>>
+<a href="<?php echo esc_url( $ticket_uri ); ?>" <?php echo esc_attr( $target ); ?> >
 	<div <?php post_class( array( $css_class, 'archive-event' ) ); ?>>
 		<div class="ife_event" >
 			<div class="img_placeholder" style=" background: url('<?php echo esc_url( $image_url[0] ); ?>') no-repeat left top;"></div>
@@ -47,7 +47,7 @@ if ( 'yes' === $direct_link ) {
 					<span class="date"> <?php echo esc_attr( date_i18n( 'd', $event_date ) ); ?> </span>
 				</div>
 				<div class="event_desc">
-					<a href="<?php echo $ticket_uri; ?>" <?php echo $target; ?> rel="bookmark">
+					<a href="<?php echo esc_url( $ticket_uri ); ?>" <?php echo esc_attr( $target ); ?> rel="bookmark">
 					<?php the_title( '<div class="event_title">', '</div>' ); ?>
 					</a>
 					<?php if ( ! empty( $event_address ) ) { ?>

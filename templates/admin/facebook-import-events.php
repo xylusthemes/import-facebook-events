@@ -31,6 +31,7 @@ if ( ! ife_is_pro() ) {
 							<span class="ife-popper">
 								<?php 
 									$text = sprintf(
+										/* translators: 1: First option (by Facebook Event ID), 2: Second option (Facebook Page) */
 										esc_html__( 'Select Event source. %1$s, %2$s.', 'import-facebook-events' ),
 										'<br><strong>' . esc_html__( '1. by Facebook Event ID', 'import-facebook-events' ) . '</strong>',
 										'<br><strong>' . esc_html__( '2. Facebook Page', 'import-facebook-events' ) . '</strong>'
@@ -127,7 +128,7 @@ if ( ! ife_is_pro() ) {
 			<div class="ife-inner-section-2">
 				<?php wp_dropdown_users( array( 'show_option_none' => esc_attr__( 'Select Author','import-facebook-events'), 'name' => 'event_author', 'option_none_value' => get_current_user_id() ) ); ?>
 				<span class="ife_small">
-					<?php _e( 'Select event author for imported events. Default event author is current loggedin user.', 'import-facebook-events' ); ?>
+					<?php esc_attr_e( 'Select event author for imported events. Default event author is current loggedin user.', 'import-facebook-events' ); ?>
 				</span>
 			</div>
 		</div>

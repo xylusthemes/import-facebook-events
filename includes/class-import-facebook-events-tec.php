@@ -396,14 +396,14 @@ class Import_Facebook_Events_TEC {
 		$esource_id    = $centralize_array['ID'];
 
 		$event_args = array(
-			'_EventStartDate'     => date( 'Y-m-d H:i:s', $start_time ),
-			'_EventStartHour'     => date( 'h', $start_time ),
-			'_EventStartMinute'   => date( 'i', $start_time ),
-			'_EventStartMeridian' => date( 'a', $start_time ),
-			'_EventEndDate'       => date( 'Y-m-d H:i:s', $end_time ),
-			'_EventEndHour'       => date( 'h', $end_time ),
-			'_EventEndMinute'     => date( 'i', $end_time ),
-			'_EventEndMeridian'   => date( 'a', $end_time ),
+			'_EventStartDate'     => gmdate( 'Y-m-d H:i:s', $start_time ),
+			'_EventStartHour'     => gmdate( 'h', $start_time ),
+			'_EventStartMinute'   => gmdate( 'i', $start_time ),
+			'_EventStartMeridian' => gmdate( 'a', $start_time ),
+			'_EventEndDate'       => gmdate( 'Y-m-d H:i:s', $end_time ),
+			'_EventEndHour'       => gmdate( 'h', $end_time ),
+			'_EventEndMinute'     => gmdate( 'i', $end_time ),
+			'_EventEndMeridian'   => gmdate( 'a', $end_time ),
 			'_EventStartDateUTC'  => ! empty( $centralize_array['startime_utc'] ) ? $centralize_array['startime_utc'] : '',
 			'_EventEndDateUTC'    => ! empty( $centralize_array['endtime_utc'] ) ? $centralize_array['endtime_utc'] : '',
 			'_EventURL'           => $centralize_array['url'],

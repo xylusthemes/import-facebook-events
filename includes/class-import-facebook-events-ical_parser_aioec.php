@@ -50,8 +50,8 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 
 		$imported_events = array();
 
-		$start_date = date('Y-m-d' );
-		$end_date = date('Y-m-d', strtotime('+2 years') );
+		$start_date = gmdate('Y-m-d' );
+		$end_date = gmdate('Y-m-d', strtotime('+2 years') );
 		
 		if( isset( $event_data['start_date'] ) && $event_data['start_date'] != '' ){
 			$start_date = $event_data['start_date'];
@@ -67,12 +67,12 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 			return false;
 		}
 		// Get Start and End date  day,month,year
-		$start_month = date( 'm', $start_date );
-		$start_year  = date( 'Y', $start_date );
-		$start_day   = date( 'd', $start_date );
-		$end_month = date( 'm', $end_date );
-		$end_year  = date( 'Y', $end_date );
-		$end_day   = date( 'd', $end_date );
+		$start_month = gmdate( 'm', $start_date );
+		$start_year  = gmdate( 'Y', $start_date );
+		$start_day   = gmdate( 'd', $start_date );
+		$end_month   = gmdate( 'm', $end_date );
+		$end_year    = gmdate( 'Y', $end_date );
+		$end_day     = gmdate( 'd', $end_date );
 
 		// initiate Vcalendar
 		$calendar = new Vcalendar();
@@ -343,8 +343,8 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 			'description'     => $post_description,
 			'starttime_local' => $start_time,
 			'endtime_local'   => $end_time,
-			'starttime'       => date('Ymd\THis', $start_time),
-			'endtime'         => date('Ymd\THis', $end_time),
+			'starttime'       => gmdate('Ymd\THis', $start_time),
+			'endtime'         => gmdate('Ymd\THis', $end_time),
 			'startime_utc'    => $start_time,
 			'endtime_utc'     => $end_time,
 			'timezone'        => $timezone,

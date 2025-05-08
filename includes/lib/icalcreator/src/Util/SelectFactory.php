@@ -193,7 +193,7 @@ class SelectFactory
             $isFreebusyCompType = ( Vcalendar::VFREEBUSY === $compType );
             /**
              * Component with recurrence-id sorted before any rDate/rRule comp
-             * to alter date(time) when found in dtstart/recurlist.
+             * to alter gmdate(time) when found in dtstart/recurlist.
              * (Note, a missing sequence (expected here) is the same as sequence=0 so don't test for sequence.)
              * Highest sequence always last, will replace any previous
              */
@@ -894,13 +894,13 @@ class SelectFactory
         }
         else {
             if( empty( $startY )) {
-                $startY = (int) date( $Y );
+                $startY = (int) gmdate( $Y );
             }
             if( empty( $startM )) {
-                $startM = (int) date( $M );
+                $startM = (int) gmdate( $M );
             }
             if( empty( $startD )) {
-                $startD = (int) date( $D );
+                $startD = (int) gmdate( $D );
             }
             if( empty( $endY )) {
                 $endY = $startY;
@@ -968,7 +968,7 @@ class SelectFactory
     }
 
     /**
-     * Return comp end date(time) from dtend/due/duration properties
+     * Return comp end gmdate(time) from dtend/due/duration properties
      *
      * @param CalendarComponent $component
      * @param string            $dtStartTz

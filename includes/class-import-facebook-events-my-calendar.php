@@ -176,17 +176,17 @@ class Import_Facebook_Events_My_Calendar {
 			update_post_meta( $inserted_event_id, 'ife_event_timezone_name', $timezone_name );
 
 			// Setup Variables for insert into table.
-			$begin   = date( 'Y-m-d', $start_time );
-			$end     = date( 'Y-m-d', $end_time );
-			$time    = date( 'H:i:s', $start_time );
-			$endtime = date( 'H:i:s', $end_time );
+			$begin   = gmdate( 'Y-m-d', $start_time );
+			$end     = gmdate( 'Y-m-d', $end_time );
+			$time    = gmdate( 'H:i:s', $start_time );
+			$endtime = gmdate( 'H:i:s', $end_time );
 
 			$event_author = $host = isset($event_args['event_author']) ? $event_args['event_author'] : get_current_user_id();
 			$event_category = 1;
 			if ( ! empty( $ife_cats ) ) {
 				$event_cat                    = $ife_cats[0];
 				$my_calendar_categories_table = my_calendar_categories_table();
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$temp_event_cat = $wpdb->get_var( $wpdb->prepare( "SELECT `category_id` FROM {$my_calendar_categories_table} WHERE `category_term` = %d LIMIT 1", absint( $event_cat ) ) ); // cache ok, db call ok.
 				if ( $temp_event_cat > 0 && is_numeric( $temp_event_cat ) && ! empty( $temp_event_cat ) ) {
 					$event_category = $temp_event_cat;
@@ -275,14 +275,16 @@ class Import_Facebook_Events_My_Calendar {
 				);
 
 				$location_table = my_calendar_locations_table();
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$location_id = $wpdb->get_var( $wpdb->prepare( "SELECT `location_id` FROM {$location_table} WHERE `location_label` = %s", esc_sql( $event_label ) ) ); // cache ok, db call ok.
 				if ( $location_id > 0 && is_numeric( $location_id ) && ! empty( $location_id ) ) {
 
 					$where            = array( 'location_id' => (int) $location_id );
 					$loc_where_format = array( '%d' );
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$wpdb->update( my_calendar_locations_table(), $location_data, $where, $loc_formats, $loc_where_format ); // db call ok; no-cache ok.
 				} else {
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$wpdb->insert( my_calendar_locations_table(), $location_data, $loc_formats ); // db call ok;.
 					$location_id = $wpdb->insert_id;
 				}
@@ -377,7 +379,7 @@ class Import_Facebook_Events_My_Calendar {
 			);
 
 			$my_calendar_table = my_calendar_table();
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$db_event_id = $wpdb->get_var( $wpdb->prepare( "SELECT `event_id` FROM {$my_calendar_table} WHERE `event_post`= %d LIMIT 1", $inserted_event_id ) );
 
 			if ( $db_event_id > 0 && is_numeric( $db_event_id ) && ! empty( $db_event_id ) ) {
@@ -390,8 +392,10 @@ class Import_Facebook_Events_My_Calendar {
 				}
 
 				$event_where = array( 'event_id' => absint( $db_event_id ) );
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$wpdb->update( my_calendar_table(), $event_data, $event_where, $event_formats ); // db call ok; no-cache ok.
 			} else {
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$wpdb->insert( my_calendar_table(), $event_data, $event_formats ); // db call ok;.
 				$db_event_id = $wpdb->insert_id;
 			}
@@ -400,20 +404,22 @@ class Import_Facebook_Events_My_Calendar {
 
 				$occur_data = array(
 					'occur_event_id' => $db_event_id,
-					'occur_begin'    => date( 'Y-m-d H:i:s', $start_time ),
-					'occur_end'      => date( 'Y-m-d H:i:s', $end_time ),
+					'occur_begin'    => gmdate( 'Y-m-d H:i:s', $start_time ),
+					'occur_end'      => gmdate( 'Y-m-d H:i:s', $end_time ),
 					'occur_group_id' => 0,
 				);
 
 				$my_calendar_event_table = my_calendar_event_table();
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared --Ignore.
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$occur_id     = $wpdb->get_var( $wpdb->prepare( "SELECT `occur_id` FROM {$my_calendar_event_table} WHERE `occur_event_id`= %d", absint( $db_event_id ) ) ); // cache ok, db call ok.
 				$occur_format = array( '%d', '%s', '%s', '%d' );
 				if ( $occur_id > 0 && is_numeric( $occur_id ) && ! empty( $occur_id ) ) {
 
 					$occur_where = array( 'occur_id' => absint( $occur_id ) );
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$wpdb->update( my_calendar_event_table(), $occur_data, $occur_where, $occur_format ); // db call ok; no-cache ok.
 				} else {
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$wpdb->insert( my_calendar_event_table(), $occur_data, $occur_format ); // db call ok;.
 					$occur_id = $wpdb->insert_id;
 				}

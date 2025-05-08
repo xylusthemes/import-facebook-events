@@ -187,8 +187,8 @@ class Import_Facebook_Events_EE4 {
 			}
 
 			// Event Date & time Details.
-			$event_start_date = date( 'Y-m-d H:i:s', $start_time );
-			$event_end_date   = date( 'Y-m-d H:i:s', $end_time );
+			$event_start_date = gmdate( 'Y-m-d H:i:s', $start_time );
+			$event_end_date   = gmdate( 'Y-m-d H:i:s', $end_time );
 
 			$datetime_table   = $wpdb->prefix . 'esp_datetime';
 			$event_meta_table = $wpdb->prefix . 'esp_event_meta';
@@ -201,8 +201,10 @@ class Import_Facebook_Events_EE4 {
 
 			if ( $is_exitsing_event ) {
 				$where     = array( 'EVT_ID' => $inserted_event_id );
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$is_insert = $wpdb->update( $datetime_table, $datetime_data, $where ); // db call ok; no-cache ok.
 			} else {
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$is_insert = $wpdb->insert( $datetime_table, $datetime_data ); // db call ok;.
 			}
 
@@ -211,11 +213,12 @@ class Import_Facebook_Events_EE4 {
 				$event_meta_data = array(
 					'EVT_display_desc'            => 0,
 					'EVT_display_ticket_selector' => 0,
-					'EVT_visible_on'              => date( 'Y-m-d H:i:s' ),
+					'EVT_visible_on'              => gmdate( 'Y-m-d H:i:s' ),
 				);
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$event_meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT `EVTM_ID` FROM {$event_meta_table} WHERE EVT_ID = %d", $inserted_event_id ) ); // cache ok, db call ok.
 				if ( ! empty( $event_meta_id ) && $event_meta_id > 0 ) {
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$wpdb->update(
 						$event_meta_table,
 						$event_meta_data,
@@ -226,6 +229,7 @@ class Import_Facebook_Events_EE4 {
 					); // db call ok; no-cache ok.
 				} else {
 					$event_meta_data['EVT_ID'] = $inserted_event_id;
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$wpdb->insert( $event_meta_table, $event_meta_data ); // db call ok;.
 				}
 			}
@@ -239,11 +243,13 @@ class Import_Facebook_Events_EE4 {
 			if ( ! empty( $venue_id ) && $venue_id > 0 ) {
 				// Connect venue with Event.
 				$event_venue_table = $wpdb->prefix . 'esp_event_venue';
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$result = $wpdb->get_col( $wpdb->prepare( "SELECT * FROM {$event_venue_table} WHERE EVT_ID = %d", $inserted_event_id ) ); // cache ok, db call ok.
 				if ( count( $result ) > 0 ) {
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$wpdb->update( $event_venue_table, array( 'VNU_ID' => $venue_id ), array( 'EVT_ID' => $inserted_event_id ) ); // db call ok; no-cache ok.
 				} else {
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$wpdb->insert(
 						$event_venue_table,
 						array(
@@ -351,20 +357,22 @@ class Import_Facebook_Events_EE4 {
 		$country_table = $wpdb->prefix . 'esp_country';
 		$state_table   = $wpdb->prefix . 'esp_state';
 		if ( ! empty( $venue_country ) ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$cnt_country = $wpdb->get_row( $wpdb->prepare( "SELECT `CNT_ISO`,`CNT_active` FROM {$country_table} WHERE `CNT_name` = %s OR `CNT_ISO` = %s OR `CNT_ISO3` = %s", $venue_country, $venue_country, $venue_country ) ); // cache ok, db call ok.
 			if ( ! empty( $cnt_country ) && isset( $cnt_country->CNT_ISO ) ) { // @codingStandardsIgnoreLine.
 				$cnt_iso = $cnt_country->CNT_ISO; // @codingStandardsIgnoreLine.
 				if ( 0 === $cnt_country->CNT_active ) { // @codingStandardsIgnoreLine.
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 					$active_con = $wpdb->update( $country_table, array( 'CNT_active' => 1 ), array( 'CNT_ISO' => $cnt_iso ) ); // db call ok; no-cache ok.
 				}
 			}
 		}
 
 		if ( ! empty( $venue_state ) && ! empty( $cnt_iso ) ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 			$sta_id = $wpdb->get_var( $wpdb->prepare( "SELECT `STA_ID` FROM {$state_table} WHERE `CNT_ISO` = %s AND (`STA_abbrev` = %s OR `STA_name` = %s)", $cnt_iso, $venue_state, $venue_state ) ); // cache ok, db call ok.
 			if ( empty( $sta_id ) || is_null( $sta_id ) ) {
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 				$inserted = $wpdb->insert(
 					$state_table,
 					array(
@@ -398,6 +406,7 @@ class Import_Facebook_Events_EE4 {
 
 		$venue_table = $wpdb->prefix . 'esp_venue_meta';
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 		$wpdb->insert( $venue_table, $venue_data ); // db call ok;.
 
 		return $ivenue_id;

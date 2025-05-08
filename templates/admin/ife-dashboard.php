@@ -46,25 +46,25 @@ $counts = $ife_events->common->ife_get_facebook_events_counts();
                                         <div class="ife-counter-main-container" >
                                             <div class="ife-col-sm-3" >
                                                 <div class="ife-w-box " >
-                                                    <p class="ife_dash_count"><?php echo $counts['all']; ?></p>
+                                                    <p class="ife_dash_count"><?php echo esc_attr( $counts['all'] ); ?></p>
                                                     <span><strong><?php esc_attr_e( 'Total Events', 'import-facebook-events' ); ?></strong></span>
                                                 </div>
                                             </div>
                                             <div class="ife-col-sm-3" >
                                                 <div class="ife-w-box " >
-                                                    <p class="ife_dash_count"><?php echo $counts['upcoming']; ?></p>
+                                                    <p class="ife_dash_count"><?php echo esc_attr( $counts['upcoming'] ); ?></p>
                                                     <span><strong><?php esc_attr_e( 'Upcoming Events', 'import-facebook-events' ); ?></strong></span>
                                                 </div>
                                             </div>
                                             <div class="ife-col-sm-3" >
                                                 <div class="ife-w-box " >
-                                                    <p class="ife_dash_count"><?php echo $counts['past']; ?></p>
+                                                    <p class="ife_dash_count"><?php echo esc_attr( $counts['past'] ); ?></p>
                                                     <span><strong><?php esc_attr_e( 'Past Events', 'import-facebook-events' ); ?></strong></span>
                                                 </div>
                                             </div>
                                             <div class="ife-col-sm-3" >
                                                 <div class="ife-w-box " >
-                                                    <p class="ife_dash_count"><?php echo IFE_VERSION; ?></p>
+                                                    <p class="ife_dash_count"><?php echo esc_attr( IFE_VERSION ); ?></p>
                                                     <span><strong><?php esc_attr_e( 'Version', 'import-facebook-events' ); ?></strong></span>
                                                 </div>
                                             </div>
