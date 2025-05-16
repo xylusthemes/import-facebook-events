@@ -223,6 +223,11 @@ class Import_Facebook_Events_Common {
 			$supported_plugins['em'] = __( 'Events Manager', 'import-facebook-events' );
 		}
 
+		// check EventPrime.
+		if ( class_exists( 'Eventprime_Event_Calendar_Management_Admin' ) ) {
+			$supported_plugins['eventprime'] = __( 'EventPrime', 'import-facebook-events' );
+		}
+
 		// Check event_organizer.
 		if ( defined( 'EVENT_ORGANISER_VER' ) && defined( 'EVENT_ORGANISER_DIR' ) ) {
 			$supported_plugins['event_organizer'] = __( 'Event Organiser', 'import-facebook-events' );
