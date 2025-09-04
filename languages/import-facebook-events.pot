@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-16T13:30:51+00:00\n"
+"POT-Creation-Date: 2025-09-04T12:01:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: import-facebook-events\n"
@@ -57,7 +57,7 @@ msgid "Setting"
 msgstr ""
 
 #: import-facebook-events.php:247
-#: includes/class-import-facebook-events-common.php:1218
+#: includes/class-import-facebook-events-common.php:1219
 msgid "Docs"
 msgstr ""
 
@@ -144,7 +144,7 @@ msgid "Facebook Import"
 msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:65
-#: includes/class-import-facebook-events-common.php:1186
+#: includes/class-import-facebook-events-common.php:1187
 msgid "Dashboard"
 msgstr ""
 
@@ -431,13 +431,13 @@ msgstr ""
 msgid "Invalid image URL"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:482
+#: includes/class-import-facebook-events-common.php:483
 msgid "Event(s) are imported successfully."
 msgstr ""
 
 #. translators: %d is numbers of event created.
 #. translators: %d is numbers of event Created.
-#: includes/class-import-facebook-events-common.php:485
+#: includes/class-import-facebook-events-common.php:486
 #: includes/class-import-facebook-events-list-table.php:102
 #, php-format
 msgid "%d Created"
@@ -445,101 +445,101 @@ msgstr ""
 
 #. translators: %d is numbers of event updated.
 #. translators: %d is numbers of event Updated.
-#: includes/class-import-facebook-events-common.php:489
+#: includes/class-import-facebook-events-common.php:490
 #: includes/class-import-facebook-events-list-table.php:106
 #, php-format
 msgid "%d Updated"
 msgstr ""
 
 #. translators: %d is numbers of event skipped.
-#: includes/class-import-facebook-events-common.php:493
+#: includes/class-import-facebook-events-common.php:494
 #, php-format
 msgid "%d Skipped (Already exists)"
 msgstr ""
 
 #. translators: %d is numbers of event skipped Trashed.
 #. translators: %d is numbers of event skipped Trashed .
-#: includes/class-import-facebook-events-common.php:497
+#: includes/class-import-facebook-events-common.php:498
 #: includes/class-import-facebook-events-list-table.php:114
 #, php-format
 msgid "%d Skipped (Already exists in Trash)"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:504
+#: includes/class-import-facebook-events-common.php:505
 msgid "Manual Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:577
+#: includes/class-import-facebook-events-common.php:578
 msgid "Once Hourly"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:580
+#: includes/class-import-facebook-events-common.php:581
 msgid "Twice Daily"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:583
+#: includes/class-import-facebook-events-common.php:584
 msgid "Once Daily"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:586
+#: includes/class-import-facebook-events-common.php:587
 msgid "Once Weekly"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:589
+#: includes/class-import-facebook-events-common.php:590
 msgid "Once a Month"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:637
+#: includes/class-import-facebook-events-common.php:638
 msgid "One-time Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:638
+#: includes/class-import-facebook-events-common.php:639
 msgid "Scheduled Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:714
+#: includes/class-import-facebook-events-common.php:715
 msgid "Status"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:719
+#: includes/class-import-facebook-events-common.php:720
 msgid "Published"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:722
+#: includes/class-import-facebook-events-common.php:723
 msgid "Pending"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:725
+#: includes/class-import-facebook-events-common.php:726
 msgid "Draft"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:852
+#: includes/class-import-facebook-events-common.php:853
 msgid "Your current \"Import Facebok Event Pro\" add-on is not competible with Free plugin. Please Upgrade Pro latest to work event importing Flawlessly."
 msgstr ""
 
 #. translators: %s: Settings page URL
-#: includes/class-import-facebook-events-common.php:872
+#: includes/class-import-facebook-events-common.php:873
 #, php-format
 msgid "The Access Token has been invalidated because the user changed their password or Facebook has changed the session for security reasons. Can you please Authorize/Reauthorize your Facebook account from <strong>Facebook Import</strong> > <strong><a style=\"text-decoration: none;\" href=\"%s\">Settings</a></strong>."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:907
+#: includes/class-import-facebook-events-common.php:908
 msgid "Available in Pro version."
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:907
+#: includes/class-import-facebook-events-common.php:908
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:1214
+#: includes/class-import-facebook-events-common.php:1215
 msgid "Made with ♥ by the Xylus Themes"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:1216
+#: includes/class-import-facebook-events-common.php:1217
 msgid "Support"
 msgstr ""
 
-#: includes/class-import-facebook-events-common.php:1220
+#: includes/class-import-facebook-events-common.php:1221
 msgid "Free Plugins"
 msgstr ""
 
