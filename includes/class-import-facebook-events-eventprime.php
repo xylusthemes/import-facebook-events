@@ -189,6 +189,8 @@ class Import_Facebook_Events_EventPrime {
 			
 			if( !empty( $is_all_day ) ){
 				update_post_meta( $inserted_event_id, 'em_all_day', '1' );
+			}else{
+				update_post_meta( $inserted_event_id, 'em_all_day', '0' );
 			}
 
 			// Update post meta fields
