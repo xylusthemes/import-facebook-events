@@ -620,7 +620,7 @@ class Import_Facebook_Events_Common {
 		}
 		?>
 		<td>
-			<input type="text" name="<?php echo esc_attr( $name ); ?>" required="required" value="<?php echo esc_attr( $event_source ); ?>" style="width: 100%;">
+			<input type="text" name="<?php echo esc_attr( $name ); ?>" required="required" value="<?php echo esc_attr( $event_source ); ?>" >
 			<span><?php echo esc_attr( $event_origins ); ?></span>
 		</td>
 		<?php
