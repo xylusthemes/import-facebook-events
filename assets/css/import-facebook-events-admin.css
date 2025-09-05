@@ -1611,3 +1611,9 @@ a.ife-intro-section-link-tag.button.button-hero {
   box-shadow: 0 3px 10px -6px rgb(0 0 0 / 12%);
 }
 /* dashboard css end*/
+
+.ife_source_import input[type="text"], 
+.ife_source_import select{
+  width: 45%;
+  max-width: 100%;
+}

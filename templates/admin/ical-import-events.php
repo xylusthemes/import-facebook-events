@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 global $ife_events;
 ?>
 <div class="ife-card" style="margin-top:20px;" >			
-	<div class="ife-content"  aria-expanded="true" style=" ">
+	<div class="ife-content ife_source_import"  aria-expanded="true" style=" ">
 		<div class="ife-inner-main-section"  >
 			<div class="ife-inner-section-1" >
 				<span class="ife-title-text" ><?php esc_attr_e( 'Import by', 'import-facebook-events' ); ?></span>
@@ -47,8 +47,8 @@ global $ife_events;
 				<span class="ife-title-text" ><?php esc_attr_e( 'Events date range', 'import-facebook-events' ); ?></span>
 			</div>
 			<div class="ife-inner-section-2">
-				<input type="text" name="start_date" class="ife_datepicker start_date" placeholder="<?php esc_html_e('Select start date', 'import-facebook-events' ); ?>"> - 
-				<input type="text" name="end_date" class="ife_datepicker end_date" placeholder="<?php esc_html_e('Select end date', 'import-facebook-events' ); ?>">
+				<input type="text" name="start_date" class="ife_datepicker start_date" style="width: 22%;" placeholder="<?php esc_html_e('Select start date', 'import-facebook-events' ); ?>"> - 
+				<input type="text" name="end_date" class="ife_datepicker end_date" style="width: 22%;" placeholder="<?php esc_html_e('Select end date', 'import-facebook-events' ); ?>">
 				<span class="ife_small">
 					<?php esc_attr_e( 'Select date range from which you want to import events. Default startdate is Today', 'import-facebook-events' ); ?>
 				</span>

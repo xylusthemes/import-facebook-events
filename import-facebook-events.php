@@ -34,7 +34,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @var object Instance of Import_Facebook_Events
 		 */
 		private static $instance;
-		public $common, $cpt, $facebook, $admin, $manage_import, $ife, $tec, $em, $eventon, $event_organizer, $aioec, $my_calendar, $ee4, $ical_parser, $ical, $fb_authorize, $common_pro, $facebook_pro, $cron, $ical_parser_aioec;
+		public $common, $cpt, $facebook, $admin, $manage_import, $ife, $tec, $em, $eventon, $event_organizer, $aioec, $my_calendar, $ee4, $ical_parser, $ical, $fb_authorize, $common_pro, $facebook_pro, $cron, $ical_parser_aioec, $eventprime;
 
 		/**
 		 * Main Import Facebook Events Instance.
@@ -83,6 +83,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				self::$instance->aioec           = new Import_Facebook_Events_Aioec();
 				self::$instance->my_calendar     = new Import_Facebook_Events_My_Calendar();
 				self::$instance->ee4             = new Import_Facebook_Events_EE4();
+				self::$instance->eventprime      = new Import_Facebook_Events_EventPrime();
 			}
 			return self::$instance;
 		}
@@ -196,6 +197,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-my-calendar.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ee4.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-ife-plugin-deactivation.php';
+			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-eventprime.php';
 			// Gutenberg Block.
 			require_once IFE_PLUGIN_DIR . 'blocks/facebook-events/index.php';
 		}

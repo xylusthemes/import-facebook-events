@@ -97,7 +97,7 @@ class Import_Facebook_Events_Common {
 				?>
 				<input type="hidden" id="ife_taxo_cats" value="<?php echo esc_attr( $taxo_cats ); ?>">
 				<input type="hidden" id="ife_taxo_tags" value="<?php echo esc_attr( $taxo_tags ); ?>">
-				<div class="event_taxo_terms_wraper" style="display: flex;gap: 20px;" ></div>
+				<div class="event_taxo_terms_wraper" ></div>
 			</div>
 		</div>
 		<?php
@@ -125,12 +125,12 @@ class Import_Facebook_Events_Common {
 		// Check nonce.
 		check_ajax_referer( 'ife_admin_js_nonce', 'security' );
 		global $ife_events;
+		$event_taxonomy     = '';
+		$event_tag_taxonomy = '';
 		$event_plugin = isset( $_POST['event_plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['event_plugin'] ) ) : 'ife'; // input var okay.
 		$taxo_cats    = isset( $_POST['taxo_cats'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_POST ['taxo_cats'] ) ) ) : array(); // input var okay.
 		$taxo_tags    = isset( $_POST['taxo_tags'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_POST['taxo_tags'] ) ) ) : array(); // input var okay.
 
-		$event_taxonomy     = '';
-		$event_tag_taxonomy = '';
 		if ( ! empty( $event_plugin ) ) {
 			$event_taxonomy = $ife_events->$event_plugin->get_taxonomy();
 		}
@@ -152,9 +152,9 @@ class Import_Facebook_Events_Common {
 		}
 		if ( ! empty( $terms ) ) {
 			?>
-			<?php if ( in_array( $event_plugin, $tag_supported_plugins, true ) && ife_is_pro() ) { ?>
-				<div style="width: 20%;">
-					<strong style="display: block;margin: 5px 0px;">
+			<?php if ( ife_is_pro() ) { ?>
+				<div style="width: 45%;">
+					<strong style="display: block;margin-bottom: 5px;">
 						<?php esc_attr_e( 'Event Categories:', 'import-facebook-events' ); ?>
 					</strong>
 					<?php
@@ -183,7 +183,7 @@ class Import_Facebook_Events_Common {
 			?>
 			<?php 
 			if ( in_array( $event_plugin, $tag_supported_plugins, true ) ) { ?>
-				<div style="width: 20%;" >
+				<div style="width: 45%;" >
 					<strong style="display: block;margin: 5px 0px;">
 						<?php esc_attr_e( 'Event Tags:', 'import-facebook-events' ); ?>
 					</strong>
@@ -221,6 +221,11 @@ class Import_Facebook_Events_Common {
 		// check Events Manager.
 		if ( defined( 'EM_VERSION' ) ) {
 			$supported_plugins['em'] = __( 'Events Manager', 'import-facebook-events' );
+		}
+
+		// check EventPrime.
+		if ( class_exists( 'Eventprime_Event_Calendar_Management_Admin' ) ) {
+			$supported_plugins['eventprime'] = __( 'EventPrime', 'import-facebook-events' );
 		}
 
 		// Check event_organizer.
@@ -376,6 +381,7 @@ class Import_Facebook_Events_Common {
 				),
 			);
 
+			$id  = 0;
 			$i_ids = get_posts( $i_args ); // @codingStandardsIgnoreLine.
 			if ( $i_ids ) {
 				$i_id = current( $i_ids );
@@ -614,7 +620,7 @@ class Import_Facebook_Events_Common {
 		}
 		?>
 		<td>
-			<input type="text" name="<?php echo esc_attr( $name ); ?>" required="required" value="<?php echo esc_attr( $event_source ); ?>" style="width: 100%;">
+			<input type="text" name="<?php echo esc_attr( $name ); ?>" required="required" value="<?php echo esc_attr( $event_source ); ?>" >
 			<span><?php echo esc_attr( $event_origins ); ?></span>
 		</td>
 		<?php

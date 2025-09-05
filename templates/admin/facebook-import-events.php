@@ -18,7 +18,7 @@ if ( ! ife_is_pro() ) {
 }
 ?>
 <div class="ife-card" style="margin-top:20px;" >			
-	<div class="ife-content"  aria-expanded="true" style=" ">
+	<div class="ife-content ife_source_import"  aria-expanded="true" style=" ">
 		<div class="ife-inner-main-section">
 			<div class="ife-inner-section-1" >
 				<span class="ife-title-text" >
@@ -69,7 +69,7 @@ if ( ! ife_is_pro() ) {
 				<span class="ife-title-text" ><?php esc_attr_e( 'Facebook Event IDs', 'import-facebook-events' ); ?></span>
 			</div>
 			<div class="ife-inner-section-2">
-				<textarea name="facebook_event_ids" class="facebook_event_ids" placeholder="<?php esc_attr_e( 'One event ID per line, ( Eg. Event ID for https://www.facebook.com/events/123456789/ is "123456789" ).', 'import-facebook-events' ); ?>" rows="5" cols="50"></textarea>
+				<textarea name="facebook_event_ids" class="facebook_event_ids" placeholder="<?php esc_attr_e( 'One event ID per line, ( Eg. Event ID for https://www.facebook.com/events/123456789/ is "123456789" ).', 'import-facebook-events' ); ?>" rows="5" cols="52"></textarea>
 			</div>
 		</div>
 
@@ -108,7 +108,7 @@ if ( ! ife_is_pro() ) {
 			</div>
 		</div>
 
-		<div class="ife-inner-main-section"  >
+		<div class="ife-inner-main-section import_type_wrapper"  >
 			<div class="ife-inner-section-1" >
 				<span class="ife-title-text" ><?php esc_attr_e( 'Import type', 'import-facebook-events' ); ?></span>
 			</div>
