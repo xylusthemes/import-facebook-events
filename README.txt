@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 6.8
-Stable tag: 1.8.6
+Stable tag: 1.8.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,7 @@ Using This plugin you can import facebook event into below listed leading Event 
 * [Events manager](https://wordpress.org/plugins/events-manager/)
 * [Event Organiser](https://wordpress.org/plugins/event-organiser/)
 * [EventON](https://codecanyon.net/item/eventon-wordpress-event-calendar-plugin/1211017)
+* [EventPrime](https://wordpress.org/plugins/eventprime-event-calendar-management/)
 * [My Calendar](https://wordpress.org/plugins/my-calendar/)
 * [Event Espresso](https://wordpress.org/plugins/event-espresso-decaf/)
 * In-built Events
@@ -114,6 +115,11 @@ You can use `[facebook_events]` for display in-built facebook events list.
 16. Events page using '[facebook_events layout="style4"]' shortcode
 
 == Changelog ==
+
+= 1.8.7 =
+* ADDED: Integrated support for the EventPrime plugin.
+* ADDED: Active/Pause button in schedule import. ( Pro )
+* IMPROVEMENTS: Improved event fetching using the Facebook Page API.
 
 = 1.8.6 =
 * IMPROVEMENTS: Improved security and compatibility with WordPress coding standards.
