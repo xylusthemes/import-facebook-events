@@ -308,6 +308,8 @@ class Import_Facebook_Events_Common {
 			$source = '<a href="https://facebook.com/' . $source_data['page_username'] . '" target="_blank" >' . $source_title . '</a>';
 		}elseif( $source_data['import_by'] == 'facebook_group' ){
 			$source = '<a href="https://facebook.com/groups/' . $source_data['facebook_group_id'] . '" target="_blank" >' . $source_title . '</a>';
+		}elseif( $source_data['import_by'] == 'outlook_calendar' ){
+			$source = 'Microsoft Outlook '. $source_title;
 		}else{
 			$source = '<a href="#">No Data Found</a>';
 		}

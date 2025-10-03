@@ -19,9 +19,9 @@ $facebook_url = 'https://www.facebook.com/xylusinfo/';
 $twitter_url  = 'https://twitter.com/XylusThemes/';
 
 ?>
-<div class="wpea_container">
-	<div class="wpea_row">
-		<div class="wpea-column support_well">
+<div class="ife_container">
+	<div class="ife_row">
+		<div class="ife-column support_well">
 			<h3 class="setting_bar"><?php esc_attr_e( 'Getting Support', 'import-facebook-events' ); ?></h3>
             <div class="ife-support-features">
 				<div class="ife-support-features-card">
