@@ -1149,3 +1149,20 @@
 .ife-mb-5{
   margin-bottom: 5px;
 }
+
+.ife-loading {
+    opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+}
+.ife-loading::after {
+    content: "Loading...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255,255,255,0.8);
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
