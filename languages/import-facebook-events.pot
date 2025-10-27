@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-09-05T06:44:29+00:00\n"
+"POT-Creation-Date: 2025-10-27T10:55:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: import-facebook-events\n"
@@ -39,24 +39,24 @@ msgstr ""
 msgid "http://xylusthemes.com"
 msgstr ""
 
-#: import-facebook-events.php:109
-#: import-facebook-events.php:117
+#: import-facebook-events.php:110
+#: import-facebook-events.php:118
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: import-facebook-events.php:234
+#: import-facebook-events.php:236
 #: includes/class-import-facebook-events-admin.php:74
 #: templates/admin/admin-sidebar.php:18
 #: templates/admin/admin-sidebar.php:21
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: import-facebook-events.php:242
+#: import-facebook-events.php:244
 #: includes/class-import-facebook-events-admin.php:196
 msgid "Setting"
 msgstr ""
 
-#: import-facebook-events.php:247
+#: import-facebook-events.php:249
 #: includes/class-import-facebook-events-common.php:1219
 msgid "Docs"
 msgstr ""
@@ -834,7 +834,7 @@ msgstr ""
 msgid "Event Date"
 msgstr ""
 
-#: includes/class-import-facebook-events-cpt.php:916
+#: includes/class-import-facebook-events-cpt.php:941
 msgid "No Events are found."
 msgstr ""
 
