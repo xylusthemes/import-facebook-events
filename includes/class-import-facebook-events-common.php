@@ -386,7 +386,7 @@ class Import_Facebook_Events_Common {
 			if ( $i_ids ) {
 				$i_id = current( $i_ids );
 			}
-			if ( $i_id && $i_id > 0 ) {
+			if ( isset( $i_id ) && $i_id && $i_id > 0 ) {
 				set_post_thumbnail( $event_id, $i_id );
 				return $i_id;
 			}
