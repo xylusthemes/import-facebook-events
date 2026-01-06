@@ -1617,3 +1617,102 @@ a.ife-intro-section-link-tag.button.button-hero {
   width: 45%;
   max-width: 100%;
 }
+
+/* start new calendar section css */
+.ife-xylus-promo-wrapper {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+.ife-xylus-main-inner-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.ife-xylus-promo-header h2 {
+    font-size: 20px !important;
+    color: #23282d;
+    text-align: center;
+}
+
+.ife-xylus-promo-header p {
+    color: #666;
+    text-align: center;
+}
+
+.ife-xylus-screenshot-slider {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 6px;
+    width: 50%;
+}
+
+.ife-screenshot-slide {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.ife-screenshot-slide.active {
+    display: block;
+    animation: fadein 1s ease-in-out;
+}
+
+.ife-screenshot-slide img {
+    width: 100%;
+
+    object-fit: contain;
+
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.ife-xylus-feature-list {
+    list-style: disc;
+    padding-left: 20px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.ife-xylus-feature-list li {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+.ife-xylus-plugin-box {
+    background: #f8fff5;
+    border: 1px solid #b4e2b0;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.ife-xylus-plugin-box h3 {
+    margin-top: 0;
+    color: #21759b;
+    font-size: 18px;
+}
+
+
+.ife-xylus-plugin-box .ife_short_code {
+    display: inline-block;
+    background: #fff;
+    border: 1px dashed #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    margin-right: 10px;
+}
+/* end new calendar section css */

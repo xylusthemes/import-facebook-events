@@ -367,4 +367,15 @@ jQuery(document).ready(function($){
 		$('#ife-choose-from-library-button').text('Choose Event Thumbnail');
 	});
 
+	jQuery(document).ready(function($) {
+		var $slides = $('.ife-screenshot-slide');
+		var index = 0;
+
+		setInterval(function() {
+			$slides.removeClass('active');
+			index = (index + 1) % $slides.length;
+			$slides.eq(index).addClass('active');
+		}, 3000);
+	});
+
 });
