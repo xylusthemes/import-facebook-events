@@ -50,6 +50,7 @@ class Import_Facebook_Events_Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_action_ife_view_import_history', array( $this, 'ife_view_import_history_handler' ) );
+		add_action( 'admin_init', array( $this, 'ife_wp_cron_check' ) );
 	}
 
 	/**
@@ -104,6 +105,32 @@ class Import_Facebook_Events_Admin {
 			wp_enqueue_script( 'ife-wizard-js' );
 		}
 	}
+	
+	/**
+	 * Check if WP-Cron is enabled
+	 *
+	 * Checks if WP-Cron is enabled and if the current page is the scheduled imports page.
+	 * If WP-Cron is disabled, it will display an error message.
+	 *
+	 * @since 1.0
+	 * @return void
+	 */
+	public function ife_wp_cron_check() {
+		global $ife_errors;
+		
+		if ( ! is_admin() || empty($_GET['page']) || empty($_GET['tab']) || $_GET['page'] !== 'facebook_import' || $_GET['tab']  !== 'scheduled' ) {
+			return;
+		}
+
+		if ( defined('DISABLE_WP_CRON') && DISABLE_WP_CRON ) {
+			$ife_errors[] = __(
+				'<strong>Scheduled imports are paused.</strong> WP-Cron is currently disabled on your site, so Facebook scheduled imports will not run automatically. Please enable WP-Cron or set up a server cron job to keep imports running smoothly.',
+				'import-facebook-events'
+			);
+
+		}
+	}
+
 
 	/**
 	 * Load Admin Styles.
@@ -281,7 +308,7 @@ class Import_Facebook_Events_Admin {
 		if ( ! empty( $ife_errors ) ) {
 			foreach ( $ife_errors as $error ) :
 				?>
-				<div class="notice notice-error is-dismissible">
+				<div class="notice notice-error ife_notice is-dismissible">
 					<p><?php echo wp_kses_post( $error ); ?></p>
 				</div>
 				<?php
@@ -291,7 +318,7 @@ class Import_Facebook_Events_Admin {
 		if ( ! empty( $ife_success_msg ) ) {
 			foreach ( $ife_success_msg as $success ) :
 				?>
-				<div class="notice notice-success is-dismissible">
+				<div class="notice notice-success ife_notice is-dismissible">
 					<p><?php echo wp_kses_post( $success ); ?></p>
 				</div>
 				<?php
@@ -301,7 +328,7 @@ class Import_Facebook_Events_Admin {
 		if ( ! empty( $ife_warnings ) ) {
 			foreach ( $ife_warnings as $warning ) :
 				?>
-				<div class="notice notice-warning is-dismissible">
+				<div class="notice notice-warning ife_notice is-dismissible">
 					<p><?php echo wp_kses_post( $warning ); ?></p>
 				</div>
 				<?php
@@ -311,7 +338,7 @@ class Import_Facebook_Events_Admin {
 		if ( ! empty( $ife_info_msg ) ) {
 			foreach ( $ife_info_msg as $info ) :
 				?>
-				<div class="notice notice-info is-dismissible">
+				<div class="notice notice-info ife_notice is-dismissible">
 					<p><?php echo wp_kses_post( $info ); ?></p>
 				</div>
 				<?php

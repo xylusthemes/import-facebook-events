@@ -197,3 +197,9 @@ button.ife-wizard-back-button:hover, button.ife-wizard-back-button:hover svg pat
 .ife-wizard-wrap .ife-wizard-starter-video a:hover svg path, button.ife-wizard-import-box:hover svg path, button.ife-wizard-open-popup:hover svg path{
     fill: #0049b3;
 }
+.notice {
+    display: none;
+}
+.ife_notice {
+    display: block;
+}
