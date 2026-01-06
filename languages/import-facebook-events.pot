@@ -995,8 +995,8 @@ msgstr ""
 msgid "Import histories are deleted successfully."
 msgstr ""
 
-#: includes/class-import-facebook-events-tec.php:275
-#: includes/class-import-facebook-events-tec.php:374
+#: includes/class-import-facebook-events-tec.php:283
+#: includes/class-import-facebook-events-tec.php:390
 msgid "Something went wrong, please try again."
 msgstr ""
 

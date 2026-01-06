@@ -226,6 +226,21 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 
 								<div class="ife-inner-main-section"  >
 									<div class="ife-inner-section-1" >
+										<span class="ife-title-text" ><?php esc_attr_e( "Import Facebook's Event Category", 'import-facebook-events' ); ?></span>
+									</div>
+									<div class="ife-inner-section-2">
+										<?php
+										$import_fb_event_cats = isset( $facebook_options['import_fb_event_cats'] ) ? $facebook_options['import_fb_event_cats'] : 'no';
+										?>
+										<input type="checkbox" id="import_fb_event_cats" name="facebook[import_fb_event_cats]" value="yes" <?php echo( ( 'yes' === $import_fb_event_cats ) ? 'checked="checked"' : '' ); ?> />
+										<span class="ife_small">
+											<?php esc_attr_e( 'Check to import the Facebook event category and assign it to events.', 'import-facebook-events' ); ?>
+										</span>
+									</div>
+								</div>
+
+								<div class="ife-inner-main-section"  >
+									<div class="ife-inner-section-1" >
 										<span class="ife-title-text" ><?php esc_attr_e( 'Move past events in trash', 'import-facebook-events' ); ?></span>
 									</div>
 									<div class="ife-inner-section-2">
