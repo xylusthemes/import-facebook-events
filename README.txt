@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 6.9
-Stable tag: 1.8.7
+Stable tag: 1.8.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -115,6 +115,13 @@ You can use `[facebook_events]` for display in-built facebook events list.
 16. Events page using '[facebook_events layout="style4"]' shortcode
 
 == Changelog ==
+
+= 1.8.8 =
+* ADDED: AJAX Pagination in shortcode
+* ADDED: Support for Outlook Calendar event import using Outlook API. ( Pro )
+* ADDED: Facebook Event Categories import  
+* FIXED: Issue of images not importing in some cases.
+* IMPROVEMENTS: Updated Facebook API version to v24.0
 
 = 1.8.7 =
 * ADDED: Integrated support for the EventPrime plugin.
