@@ -76,6 +76,9 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 									<span class="dashicons dashicons-admin-page ife-btn-copy-shortcode ife_link_cp" data-value='<?php echo esc_url( admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' ) ); ?>' ></span>
 								</div>
 
+								<!-- Microsoft Authorization Section -->
+                    			<?php do_action( 'ife_microsoft_authorize' ); ?>
+
 								<?php
 								if ( ! empty( $facebook_app_id ) && ! empty( $facebook_app_secret ) ) {
 									?>
@@ -218,6 +221,21 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 											<?php esc_attr_e( 'Check to import past events this option will import events from the last 2 years and upcoming events..', 'import-facebook-events' ); ?>
 										</span>
 										<?php do_action('ife_render_pro_notice'); ?>
+									</div>
+								</div>
+
+								<div class="ife-inner-main-section"  >
+									<div class="ife-inner-section-1" >
+										<span class="ife-title-text" ><?php esc_attr_e( "Import Facebook's Event Category", 'import-facebook-events' ); ?></span>
+									</div>
+									<div class="ife-inner-section-2">
+										<?php
+										$import_fb_event_cats = isset( $facebook_options['import_fb_event_cats'] ) ? $facebook_options['import_fb_event_cats'] : 'no';
+										?>
+										<input type="checkbox" id="import_fb_event_cats" name="facebook[import_fb_event_cats]" value="yes" <?php echo( ( 'yes' === $import_fb_event_cats ) ? 'checked="checked"' : '' ); ?> />
+										<span class="ife_small">
+											<?php esc_attr_e( 'Check to import the Facebook event category and assign it to events.', 'import-facebook-events' ); ?>
+										</span>
 									</div>
 								</div>
 
