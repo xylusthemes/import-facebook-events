@@ -321,6 +321,7 @@ class Import_Facebook_Events_Facebook {
 			'timezone',
 			'place',
 			'is_online',
+			'category'
 		);
 		$include_owner = apply_filters( 'ife_import_owner', false );
 		if ( $include_owner ) {
@@ -392,6 +393,7 @@ class Import_Facebook_Events_Facebook {
 		$timezone      = $ife_events->common->get_utc_offset( $facebook_event->start_time );
 		$timezone_name = isset( $facebook_event->timezone ) ? $facebook_event->timezone : $timezone;
 		$cover_image   = isset( $facebook_event->cover->source ) ? $ife_events->common->clean_url( esc_url( $facebook_event->cover->source ) ) : '';
+		$category      = isset( $facebook_event->category ) ? $facebook_event->category : '';
 
 		$event_times_obj = isset( $facebook_event->event_times ) ? $facebook_event->event_times : array();
 		$event_times     = array();
@@ -435,6 +437,13 @@ class Import_Facebook_Events_Facebook {
 			'image_url'       => $cover_image,
 			'is_online'       => $is_online
 		);
+
+		$ife_options          = get_option( IFE_OPTIONS );
+		$import_fb_event_cats = isset( $ife_options['import_fb_event_cats'] ) ? $ife_options['import_fb_event_cats'] : 'no';
+
+		if ( $import_fb_event_cats == 'yes' ) {
+			$xt_event['category'] = $category;
+		}
 
 		if ( isset( $facebook_event->owner ) ) {
 			$xt_event['organizer'] = $this->get_organizer( $facebook_event );
