@@ -142,6 +142,14 @@ class Import_Facebook_Events_My_Calendar {
 
 			// Asign event category.
 			$ife_cats = isset( $event_args['event_cats'] ) ? $event_args['event_cats'] : array();
+			$category = isset( $centralize_array['category'] ) ? $centralize_array['category'] : '';
+			if ( ! empty( $category ) ) {
+				$cat_id = $ife_events->common->ife_check_category_exists( $category, $this->taxonomy );
+
+				if ( $cat_id ) {
+					$ife_cats[] = (int) $cat_id;
+				}
+			}
 			if ( ! empty( $ife_cats ) ) {
 				foreach ( $ife_cats as $ife_catk => $ife_catv ) {
 					$ife_cats[ $ife_catk ] = (int) $ife_catv;

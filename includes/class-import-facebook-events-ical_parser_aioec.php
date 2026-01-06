@@ -330,6 +330,10 @@ class Import_Facebook_Events_Ical_Parser_AIOEC {
 			$start_time    = strtotime( $cwt_start['date_format'] );
 			$timezone_name = $cwt_end['timezone_name'];
 			$end_time      = strtotime( $cwt_end['date_format'] );
+
+			if ( isset( $ife_events->common_pro ) && is_object($ife_events->common_pro) && method_exists( $ife_events->common_pro, 'ife_get_facebook_event_url' ) ) {
+				$event_image = $ife_events->common_pro->ife_get_facebook_event_url( $uid );
+			}
 		}
 
 		$post_description = $ife_events->common->ife_remove_facebook_link_in_event_description( $post_description, $uid );
