@@ -13,6 +13,7 @@ global $ife_events;
 				<select name="ical_import_by" id="ical_import_by">
 					<option value="ics_file"><?php esc_attr_e( '.ics File','import-facebook-events' ); ?></option>
 					<option value="ical_url" <?php if( ife_is_pro() ){ echo 'selected="selected"'; } ?> ><?php esc_attr_e( 'iCal URL','import-facebook-events' ); ?></option>
+					<option value="outlook_calendar" <?php if( ife_is_pro() ){ echo 'selected="selected"'; } ?> ><?php esc_attr_e( 'Outlook Calendar','import-facebook-events' ); ?></option>
 				</select>
 			</div>
 		</div>
@@ -39,6 +40,26 @@ global $ife_events;
 			</div>
 			<div class="ife-inner-section-2">
 				<input class="ife_text ics_file_class" name="ics_file" type="file" accept=".ics" />
+			</div>
+		</div>
+
+		<div class="ife-inner-main-section outlook_calendar_wrapper" >
+			<div class="ife-inner-section-1" >
+				<span class="ife-title-text" ><?php esc_attr_e( 'Outlook Calendar','import-facebook-events' ); ?></span>
+			</div>
+			<div class="ife-inner-section-2">
+				<?php 
+					if ( function_exists('ife_is_pro') && ife_is_pro() ) {
+						do_action(  'ife_render_outlookcalendar_dropdown' );
+					} else {
+						?>
+						<select name="" id="" disabled="disabled">
+							<option value=""><?php esc_html_e('Select Calendar', 'import-facebook-events'); ?></option>
+						</select>
+						<?php
+						do_action( 'ife_render_pro_notice' );
+					}
+				?>
 			</div>
 		</div>
 
