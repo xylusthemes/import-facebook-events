@@ -1273,7 +1273,9 @@ class Import_Facebook_Events_Common {
 		}
 		$timezone       = isset( $centralize_array['timezone_name'] ) ? $centralize_array['timezone_name'] : 'Africa/Abidjan';
 		$duration       = 0;
-		$hash           = sha1( $event_post_id . $duration . $start_time . $end_time . $start_date_utc . $end_date_utc . $timezone );
+		$vars           = array( $event_post_id, $duration, $start_time, $end_time, $start_date_utc, $end_date_utc, $timezone );
+		$vars           = array_map( function( $v ){ return is_wp_error( $v ) ? '' : $v; }, $vars );
+		$hash           = sha1( implode( '', $vars ) );
 
 		$tec_events_table      = $wpdb->prefix . 'tec_events';
 		$tec_occurrences_table = $wpdb->prefix . 'tec_occurrences';
