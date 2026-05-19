@@ -153,6 +153,7 @@ class Import_Facebook_Events_Cpt {
 			'label'               => __( 'Events', 'import-facebook-events' ),
 			'description'         => __( 'Post type for Events', 'import-facebook-events' ),
 			'labels'              => $event_labels,
+			'show_in_rest'        => true,
 			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
 			'taxonomies'          => array( $this->event_category, $this->event_tag ),
 			'hierarchical'        => false,
