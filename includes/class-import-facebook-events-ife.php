@@ -127,6 +127,7 @@ class Import_Facebook_Events_IFE {
 		$start_time       = $centralize_array['starttime_local'];
 		$end_time         = $centralize_array['endtime_local'];
 		$ticket_uri       = $centralize_array['url'];
+		$post_description = $ife_events->htmltblock->convert( $post_description );
 
 		$emeventdata = array(
 			'post_title'   => $post_title,

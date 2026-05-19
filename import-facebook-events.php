@@ -34,7 +34,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 * @var object Instance of Import_Facebook_Events
 		 */
 		private static $instance;
-		public $common, $cpt, $facebook, $admin, $manage_import, $ife, $tec, $em, $eventon, $event_organizer, $aioec, $my_calendar, $ee4, $ical_parser, $ical, $fb_authorize, $common_pro, $facebook_pro, $cron, $ical_parser_aioec, $eventprime, $ajax;
+		public $common, $cpt, $facebook, $admin, $manage_import, $ife, $tec, $em, $eventon, $event_organizer, $aioec, $my_calendar, $ee4, $ical_parser, $ical, $fb_authorize, $common_pro, $facebook_pro, $cron, $ical_parser_aioec, $eventprime, $ajax, $htmltblock;
 
 		/**
 		 * Main Import Facebook Events Instance.
@@ -67,6 +67,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 				self::$instance->cpt      = new Import_Facebook_Events_Cpt();
 				self::$instance->facebook = new Import_Facebook_Events_Facebook();
 				self::$instance->admin    = new Import_Facebook_Events_Admin();
+				self::$instance->htmltblock = new Import_Facebook_Events_Html_To_Blocks();
 				
 				self::$instance->ical_parser 	   = new Import_Facebook_Events_Ical_Parser();
 				self::$instance->ical_parser_aioec = new Import_Facebook_Events_Ical_Parser_AIOEC();
@@ -176,6 +177,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-ajax.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-list-table.php';
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-admin.php';
+			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-html-to-blocks.php';
 			if ( ife_is_pro() ) {
 				require_once IFEPRO_PLUGIN_DIR . 'includes/class-import-facebook-events-manage-import.php';
 			} else {
