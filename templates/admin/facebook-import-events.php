@@ -102,7 +102,7 @@ if ( ! ife_is_pro() ) {
 					</select>
 				<?php } ?>
 				<span class="ife_small">
-					<?php esc_attr__( 'Select Page for import events from it.', 'import-facebook-events' ); ?>
+					<?php esc_attr_e( 'Select Page for import events from it.', 'import-facebook-events' ); ?>
 				</span>
 				<?php do_action( 'ife_render_pro_notice' ); ?>
 			</div>
