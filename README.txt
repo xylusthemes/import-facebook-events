@@ -4,8 +4,8 @@ Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event
 Requires at least: 4.0
 Requires PHP: 5.3
-Tested up to: 6.9
-Stable tag: 1.8.8
+Tested up to: 7.0
+Stable tag: 1.8.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -115,6 +115,13 @@ You can use `[facebook_events]` for display in-built facebook events list.
 16. Events page using '[facebook_events layout="style4"]' shortcode
 
 == Changelog ==
+
+= 1.8.9 =
+* ADDED: Optimized Image API Calls
+* IMPROVEMENT: Added support for PHP 8.5
+* IMPROVEMENT: Added support for WordPress 7.0
+* IMPROVEMENT: Strengthened plugin security for safer usage
+* IMPROVEMENT: Enabled Gutenberg Block Editor support for Custom Post Types
 
 = 1.8.8 =
 * ADDED: AJAX Pagination in shortcode
