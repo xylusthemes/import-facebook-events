@@ -259,9 +259,24 @@ class Import_Facebook_Events_TEC {
 				wp_set_object_terms( $new_event_id, $ife_tags, $this->tag_taxonomy );
 			}
 
-			$event_featured_image = $centralize_array['image_url'];
-			if ( ! empty( $event_featured_image ) ) {
-				$ife_events->common->setup_featured_image_to_event( $new_event_id, $event_featured_image );
+			$origin_event_id    = $centralize_array['ID'];
+			$event_image = $centralize_array['image_url'] ?? '';
+			$url         = $centralize_array['url'] ?? '';
+			$match       = 'https://www.facebook.com/events/';
+
+			if (
+				empty( $event_image ) &&
+				strpos( $url, $match ) !== false &&
+				( $event_args['import_origin'] ?? '' ) === 'ical' &&
+				isset( $ife_events->common_pro ) &&
+				is_object( $ife_events->common_pro ) &&
+				method_exists( $ife_events->common_pro, 'ife_get_facebook_event_url' )
+			) {
+				$event_image = $ife_events->common_pro->ife_get_facebook_event_url( $origin_event_id );
+			}
+
+			if ( ! empty( $event_image ) ) {
+				$ife_events->common->setup_featured_image_to_event( $new_event_id, $event_image );
 			}else{
 				$options        = ife_get_import_options( $centralize_array['origin'] );
 				$default_thumb  = isset( $options['ife_event_default_thumbnail'] ) ? $options['ife_event_default_thumbnail'] : '';
@@ -365,9 +380,24 @@ class Import_Facebook_Events_TEC {
 				}
 			}
 
-			$event_featured_image = $centralize_array['image_url'];
-			if ( ! empty( $event_featured_image ) ) {
-				$ife_events->common->setup_featured_image_to_event( $update_event_id, $event_featured_image );
+			$origin_event_id    = $centralize_array['ID'];
+			$event_image = $centralize_array['image_url'] ?? '';
+			$url         = $centralize_array['url'] ?? '';
+			$match       = 'https://www.facebook.com/events/';
+
+			if (
+				empty( $event_image ) &&
+				strpos( $url, $match ) !== false &&
+				( $event_args['import_origin'] ?? '' ) === 'ical' &&
+				isset( $ife_events->common_pro ) &&
+				is_object( $ife_events->common_pro ) &&
+				method_exists( $ife_events->common_pro, 'ife_get_facebook_event_url' )
+			) {
+				$event_image = $ife_events->common_pro->ife_get_facebook_event_url( $origin_event_id );
+			}
+
+			if ( ! empty( $event_image ) ) {
+				$ife_events->common->setup_featured_image_to_event( $update_event_id, $event_image );
 			}else{
 				$options        = ife_get_import_options( $centralize_array['origin'] );
 				$default_thumb  = isset( $options['ife_event_default_thumbnail'] ) ? $options['ife_event_default_thumbnail'] : '';

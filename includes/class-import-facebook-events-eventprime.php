@@ -150,7 +150,21 @@ class Import_Facebook_Events_EventPrime {
 			}
 
 			// Assign Featured images
-			$event_image = $centralize_array['image_url'];
+			$event_image = $centralize_array['image_url'] ?? '';
+			$url         = $centralize_array['url'] ?? '';
+			$match       = 'https://www.facebook.com/events/';
+
+			if (
+				empty( $event_image ) &&
+				strpos( $url, $match ) !== false &&
+				( $event_args['import_origin'] ?? '' ) === 'ical' &&
+				isset( $ife_events->common_pro ) &&
+				is_object( $ife_events->common_pro ) &&
+				method_exists( $ife_events->common_pro, 'ife_get_facebook_event_url' )
+			) {
+				$event_image = $ife_events->common_pro->ife_get_facebook_event_url( $origin_event_id );
+			}
+			
 			if ( $event_image != '' ) {
 				$ife_events->common->setup_featured_image_to_event( $inserted_event_id, $event_image );
 			}
