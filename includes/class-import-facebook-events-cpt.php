@@ -686,6 +686,43 @@ class Import_Facebook_Events_Cpt {
 	public function facebook_events_archive( $atts = array() ) {
 		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 		// [facebook_events layout="style2" col='2' posts_per_page='12' category="cat1,cat2" past_events="yes" order="desc" orderby="" start_date="" end_date="" ]
+
+		$atts = (array) $atts;
+		/* integers */
+		$atts['paged']          = isset($atts['paged']) ? absint($atts['paged']) : 1;
+		$atts['posts_per_page'] = isset($atts['posts_per_page']) ? absint($atts['posts_per_page']) : '';
+		$atts['col']            = isset($atts['col']) ? absint($atts['col']) : '2';
+
+		/* yes/no flags */
+		$atts['ajaxpagi']    = (isset($atts['ajaxpagi']) && $atts['ajaxpagi'] === 'yes') ? 'yes' : 'no';
+		$atts['past_events'] = (isset($atts['past_events']) && ($atts['past_events'] === 'yes' || $atts['past_events'] === true)) ? 'yes' : '';
+
+		/* layout whitelist */
+		$allowed_layouts = array( 'style1', 'style2', 'style3', 'style4' );
+		$atts['layout'] = (isset($atts['layout']) && in_array($atts['layout'], $allowed_layouts, true)) ? $atts['layout'] : 'style1';
+
+		/* order */
+		$atts['order'] = (isset($atts['order']) && strtoupper($atts['order']) === 'DESC') ? 'DESC' : 'ASC';
+
+		/* orderby whitelist */
+		$allowed_orderby = array( 'post_title', 'meta_value', 'event_start_date' );
+		$atts['orderby'] = (isset($atts['orderby']) && in_array($atts['orderby'], $allowed_orderby, true)) ? $atts['orderby'] : '';
+
+		/* category */
+		$category_str = isset( $atts['category'] ) ? urldecode( $atts['category'] ) : '';
+		if (!empty($category_str)) {
+			$cats = array_map( 'trim', explode( ',', $category_str ) );
+			$clean = array();
+			foreach ($cats as $c) {
+				$clean[] = is_numeric($c) ? absint($c) : sanitize_title($c);
+			}
+			$atts['category'] = implode(',', $clean);
+		}
+
+		/* dates */
+		$atts['start_date'] = isset( $atts['start_date'] ) ? sanitize_text_field( $atts['start_date'] ) : '';
+		$atts['end_date']   = isset( $atts['end_date'] ) ? sanitize_text_field( $atts['end_date'] ) : '';
+
 		$current_date = current_time( 'timestamp' );
 		$ajaxpagi     = isset( $atts['ajaxpagi'] ) ? $atts['ajaxpagi'] : '';
 		if ( $ajaxpagi != 'yes' ) {
