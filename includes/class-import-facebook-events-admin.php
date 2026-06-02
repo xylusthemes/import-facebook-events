@@ -47,10 +47,186 @@ class Import_Facebook_Events_Admin {
 		add_action( 'ife_delete_past_events_cron', array( $this, 'ife_delete_past_events' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
 		add_filter( 'submenu_file', array( $this, 'get_selected_tab_submenu_ife' ) );
+		add_filter( 'parent_file', array( $this, 'get_selected_tab_parent_ife' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_action_ife_view_import_history', array( $this, 'ife_view_import_history_handler' ) );
 		add_action( 'admin_init', array( $this, 'ife_wp_cron_check' ) );
+		add_action( 'admin_menu', array( $this, 'ife_widget_free_page' ) ); 
+	}
+
+	function ife_widget_free_page() {
+		if ( ! post_type_exists( 'ifepro_live_feed' ) && ! defined( 'IFEPRO_VERSION' ) ) {
+			add_submenu_page(
+				null,
+				__( 'Facebook Widget', 'import-facebook-events' ),
+				__( 'Facebook Widget', 'import-facebook-events' ),
+				'manage_options',
+				'ife_facebook_feed_upgrade',
+				array( $this, 'ife_render_feed_upgrade_page' )
+			);
+		}
+	}
+
+	function ife_render_feed_upgrade_page() {
+		$pro_url = 'https://xylusthemes.com/plugins/import-facebook-events';
+		?>
+		<style>
+			.ife-upgrade-wrap { max-width: 900px; margin: 40px auto; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+			.ife-upgrade-hero { background: linear-gradient(135deg, #f06342 0%, #e84f2a 50%, #3d64f4 100%); border-radius: 12px; padding: 48px 40px; color: #fff; text-align: center; position: relative; overflow: hidden; margin-bottom: 32px; }
+			.ife-upgrade-hero::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; background:rgba(255,255,255,0.07); border-radius:50%; }
+			.ife-upgrade-hero::after { content:''; position:absolute; bottom:-40px; left:-40px; width:160px; height:160px; background:rgba(255,255,255,0.05); border-radius:50%; }
+			.ife-upgrade-hero h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px; position:relative; z-index:1; }
+			.ife-upgrade-hero p { font-size: 16px; opacity: 0.92; margin: 0 0 28px; position:relative; z-index:1; max-width: 560px; margin-left:auto; margin-right:auto; margin-bottom:28px;}
+			.ife-upgrade-hero-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #f06342; font-size: 15px; font-weight: 700; padding: 14px 32px; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,0.2); position:relative; z-index:1; transition: transform 0.2s; }
+			.ife-upgrade-hero-btn:hover { transform: translateY(-2px); color: #e8411a; }
+			.ife-pro-badge-large { display:inline-block; background:#4CAF50; color:#fff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; letter-spacing:1px; text-transform:uppercase; margin-bottom:16px; }
+
+			.ife-features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
+			.ife-feature-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 24px 20px; text-align: center; transition: box-shadow 0.2s; }
+			.ife-feature-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+			.ife-feature-icon { font-size: 32px; margin-bottom: 12px; display:block; }
+			.ife-feature-card h3 { font-size: 14px; font-weight: 700; color: #1d2327; margin: 0 0 8px; }
+			.ife-feature-card p { font-size: 12px; color: #666; margin: 0; line-height: 1.6; }
+
+			.ife-compare-table { background:#fff; border:1px solid #e8e8e8; border-radius:10px; overflow:hidden; margin-bottom:32px; }
+			.ife-compare-table table { width:100%; border-collapse:collapse; }
+			.ife-compare-table th { padding:14px 20px; font-size:13px; font-weight:700; text-align:center; }
+			.ife-compare-table th:first-child { text-align:left; background:#f8f9fa; }
+			.ife-compare-table th.free-col { background:#f8f9fa; color:#888; }
+			.ife-compare-table th.pro-col { background: linear-gradient(135deg, #f06342, #3d64f4); color:#fff; }
+			.ife-compare-table td { padding:11px 20px; font-size:13px; border-top:1px solid #f0f0f0; text-align:center; }
+			.ife-compare-table td:first-child { text-align:left; color:#444; font-weight:500; }
+			.ife-compare-table tr:hover td { background:#fafafa; }
+			.ife-check { color:#4CAF50; font-size:16px; font-weight:700; }
+			.ife-cross { color:#ccc; font-size:16px; }
+
+			.ife-bottom-cta { background:#f8f9fa; border:1px solid #e8e8e8; border-radius:10px; padding:32px; text-align:center; }
+			.ife-bottom-cta h3 { font-size:20px; font-weight:700; color:#1d2327; margin:0 0 8px; }
+			.ife-bottom-cta p { font-size:13px; color:#666; margin:0 0 20px; }
+
+			@media (max-width: 782px) { .ife-features-grid { grid-template-columns: 1fr 1fr; } }
+		</style>
+
+		<div class="ife-upgrade-wrap">
+
+			<div class="ife-upgrade-hero">
+				<span class="ife-pro-badge-large"><?php esc_html_e( 'PRO Feature', 'import-facebook-events' ); ?></span>
+				<h1 style="color:#fff;"><?php esc_html_e( 'Facebook Widget', 'import-facebook-events' ); ?></h1>
+				<p style="color:#ddd;"><?php esc_html_e( 'Display Facebook events directly on your website. No manual importing, no authorization, no API token needed. Just paste a shortcode and go live!', 'import-facebook-events' ); ?></p>
+				<a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" class="ife-upgrade-hero-btn">
+					✦ <?php esc_html_e( 'Upgrade to PRO', 'import-facebook-events' ); ?>
+				</a>
+			</div>
+
+			<div class="ife-features-grid">
+				<div class="ife-feature-card">
+					<span class="ife-feature-icon">🚀</span>
+					<h3><?php esc_html_e( 'Instant Live Feed', 'import-facebook-events' ); ?></h3>
+					<p><?php esc_html_e( 'Show live events directly from any Facebook Page or specific Event IDs without manual synchronization.', 'import-facebook-events' ); ?></p>
+				</div>
+				<div class="ife-feature-card">
+					<span class="ife-feature-icon">📸</span>
+					<h3><?php esc_html_e( 'High-Quality Images', 'import-facebook-events' ); ?></h3>
+					<p><?php esc_html_e( 'Automatically fetches and caches HD images from Facebook using background Action Scheduler.', 'import-facebook-events' ); ?></p>
+				</div>
+				<div class="ife-feature-card">
+					<span class="ife-feature-icon">🔄</span>
+					<h3><?php esc_html_e( 'AJAX Pagination', 'import-facebook-events' ); ?></h3>
+					<p><?php esc_html_e( 'Smooth, instant page loading with Numbered, Load More, or Infinite Scroll pagination options.', 'import-facebook-events' ); ?></p>
+				</div>
+				<div class="ife-feature-card">
+					<span class="ife-feature-icon">🎨</span>
+					<h3><?php esc_html_e( '6 Layout Styles', 'import-facebook-events' ); ?></h3>
+					<p><?php esc_html_e( 'Card Grid, List, Compact List, Timeline, Minimal Grid, and Masonry layouts.', 'import-facebook-events' ); ?></p>
+				</div>
+				<div class="ife-feature-card">
+					<span class="ife-feature-icon">⚡</span>
+					<h3><?php esc_html_e( 'Background Processing', 'import-facebook-events' ); ?></h3>
+					<p><?php esc_html_e( 'Smart DB caching and delayed background fetching ensures your front-end stays lightning fast.', 'import-facebook-events' ); ?></p>
+				</div>
+				<div class="ife-feature-card">
+					<span class="ife-feature-icon">🛠️</span>
+					<h3><?php esc_html_e( 'Shortcode Builder', 'import-facebook-events' ); ?></h3>
+					<p><?php esc_html_e( 'Live preview visual builder generates your feed shortcode instantly with customizable columns.', 'import-facebook-events' ); ?></p>
+				</div>
+			</div>
+
+			<div class="ife-compare-table">
+				<table>
+					<thead>
+						<tr>
+							<th><?php esc_html_e( 'Feature', 'import-facebook-events' ); ?></th>
+							<th class="free-col"><?php esc_html_e( 'Free', 'import-facebook-events' ); ?></th>
+							<th class="pro-col"><?php esc_html_e( 'PRO', 'import-facebook-events' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><?php esc_html_e( 'Display events via Live Widget (no manual import)', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Feed by Facebook Page ID or Username', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Feed by specific Facebook Event IDs', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'High-Quality Background Image Scraping', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Interactive Pagination (AJAX, Load More, Scroll)', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( '6 Display Layouts (Grid, List, Timeline & more)', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Filter by Date & Time (Past, Upcoming, Custom)', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Hide Online-Only / Virtual Events', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Smart Cache + Action Scheduler Auto Refresh', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Live Preview Shortcode Builder', 'import-facebook-events' ); ?></td>
+							<td><span class="ife-cross">✕</span></td>
+							<td><span class="ife-check">✔</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="ife-bottom-cta">
+				<h3><?php esc_html_e( 'Ready to go live with Facebook Widget?', 'import-facebook-events' ); ?></h3>
+				<p><?php esc_html_e( 'Upgrade to PRO and start displaying events on your website in minutes — no technical setup needed.', 'import-facebook-events' ); ?></p>
+				<a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" 
+				style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#f06342,#3d64f4); color:#fff; font-size:14px; font-weight:700; padding:13px 30px; border-radius:8px; text-decoration:none; box-shadow:0 4px 16px rgba(240,99,66,0.35);">
+					✦ <?php esc_html_e( 'Get PRO Now', 'import-facebook-events' ); ?>
+				</a>
+			</div>
+
+		</div>
+		<?php
 	}
 
 	/**
@@ -64,6 +240,25 @@ class Import_Facebook_Events_Admin {
 
 		add_menu_page( __( 'Import Facebook Events', 'import-facebook-events' ), __( 'Facebook Import', 'import-facebook-events' ), 'manage_options', 'facebook_import', array( $this, 'admin_page' ), 'dashicons-calendar-alt', '30' );
 		$submenu['facebook_import'][] = array( __( 'Dashboard', 'import-facebook-events' ), 'manage_options',  admin_url( 'admin.php?page=facebook_import&tab=dashboard' )  );
+		if ( post_type_exists( 'ifepro_live_feed' ) || defined( 'IFEPRO_VERSION' ) ) {
+			$submenu['facebook_import'][] = array(
+				'<span style="display:flex; justify-content:space-between; align-items:center; width:100%;">' 
+					. __( 'Facebook Widget', 'import-facebook-events' ) 
+					. '<span style="background:#4CAF50; margin-left:6px; flex-shrink:0;height: 22px;border-radius: 3px;color: #FFF;font-size: 12px;line-height: 18px;font-weight: 600;display: inline-flex;padding: 0 4px;align-items: center;">NEW</span>'
+				. '</span>',
+				'manage_options',
+				'edit.php?post_type=ifepro_live_feed'
+			);
+		} else {
+			$submenu['facebook_import'][] = array(
+				'<span style="display:flex; justify-content:space-between; align-items:center; width:100%;">' 
+					. __( 'Facebook Widget', 'import-facebook-events' ) 
+					. '<span style="background:#4CAF50; margin-left:6px; flex-shrink:0;height:22px;border-radius:3px;color:#FFF;font-size:12px;line-height:18px;font-weight:600;display:inline-flex;padding:0 4px;align-items:center;">NEW</span>'
+				. '</span>',
+				'manage_options',
+				'admin.php?page=ife_facebook_feed_upgrade'
+			);
+		}
 		$submenu['facebook_import'][] = array( __( 'Facebook Import', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=facebook' ) );
 		$submenu['facebook_import'][] = array( __( 'Facebook .ics Import', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=ics' ) );
 		$submenu['facebook_import'][] = array( __( 'Schedule Import', 'import-facebook-events' ), 'manage_options', admin_url( 'admin.php?page=facebook_import&tab=scheduled' ) );
@@ -508,7 +703,29 @@ class Import_Facebook_Events_Admin {
 				$submenu_file = admin_url( 'admin.php?page=facebook_import&tab='.$tab );
 			}
 		}
+		global $post_type;
+		if ( 'ifepro_live_feed' === $post_type ) {
+			$submenu_file = 'edit.php?post_type=ifepro_live_feed';
+		}
 		return $submenu_file;
+	}
+
+	/**
+	 * Set parent file for CPTs to keep menu open.
+	 *
+	 * @since 1.8.0
+	 */
+	public function get_selected_tab_parent_ife( $parent_file ){
+
+		if ( ! empty( $_GET['page'] ) && 'ife_facebook_feed_upgrade' === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return 'facebook_event';
+		}
+
+		global $post_type;
+		if ( 'ifepro_live_feed' === $post_type ) {
+			$parent_file = 'facebook_event';
+		}
+		return $parent_file;
 	}
 
 	/**
