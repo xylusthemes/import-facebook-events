@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-19T13:28:05+00:00\n"
+"POT-Creation-Date: 2026-07-22T10:45:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: import-facebook-events\n"
@@ -39,24 +39,788 @@ msgstr ""
 msgid "http://xylusthemes.com"
 msgstr ""
 
-#: import-facebook-events.php:111
-#: import-facebook-events.php:119
-msgid "Cheatin&#8217; huh?"
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:49
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:72
+msgid "Your Shortcode"
 msgstr ""
 
-#: import-facebook-events.php:238
-#: includes/class-import-facebook-events-admin.php:75
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:55
+msgid "Feed Settings"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:63
+msgid "Save the feed first to get your shortcode."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:69
+msgid "Paste this shortcode into any page or post:"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:79
+msgid "Copy"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:83
+msgid "Override options inline:"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:100
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:87
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:181
+msgid "Source"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:101
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:88
+msgid "Display"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:102
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:89
+msgid "Buttons"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:103
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:90
+msgid "Filters"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:104
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:91
+#: includes/class-import-facebook-events-admin.php:81
+#: templates/admin/ife-dashboard.php:41
+#: templates/admin/ife-setup-wizard.php:23
+msgid "Settings"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:111
+msgid "Source Type"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:115
+msgid "Facebook Page ID/Slug"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:116
+msgid "Facebook Group URL/ID"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:117
+msgid "Specific Event IDs"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:118
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:205
+#: templates/admin/ical-import-events.php:15
+#: templates/admin/ical-import-events.php:23
+msgid "iCal URL"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:126
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:237
+msgid "PRO"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:144
+msgid "Facebook Page ID / Slug"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:149
+msgid "Enter Facebook Page IDs or slugs, separated by commas or newlines."
+msgstr ""
+
+#. translators: %s: link to pro version
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:154
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:173
+#, php-format
+msgid "Available in %s version."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:163
+msgid "Facebook Group URL / ID"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:168
+msgid "Enter URLs or numeric IDs of public Facebook Groups, separated by commas or newlines."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:182
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:204
+msgid "Event IDs"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:186
+msgid "Enter Facebook Event IDs, separated by commas or newlines."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:191
+msgid "Facebook iCal URL"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:197
+msgid "Enter Facebook iCal export URL."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:197
+#: import-facebook-events.php:243
+#: includes/class-import-facebook-events-admin.php:85
 #: templates/admin/admin-sidebar.php:18
 #: templates/admin/admin-sidebar.php:21
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: import-facebook-events.php:246
-#: includes/class-import-facebook-events-admin.php:223
-msgid "Setting"
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:197
+msgid "to import from multiple iCal URLs."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:199
+msgid "Enter Facebook iCal export URLs, separated by commas or newlines."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:211
+msgid "Layout"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:216
+msgid "Card Grid"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:217
+msgid "List"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:218
+msgid "Masonry"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:219
+msgid "Minimal Grid"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:220
+msgid "Compact List"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:221
+msgid "Timeline"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:222
+msgid "Ticket"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:245
+msgid "Columns"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:248
+msgid "Number of columns on desktop. Mobile is always 1 column."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:252
+msgid "Show Fields"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:256
+msgid "Event Cover Image"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:257
+msgid "Date & Time"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:258
+msgid "Venue / Location"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:259
+#: includes/class-import-facebook-events-cpt.php:407
+msgid "Organizer Name"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:260
+msgid "\"View Event\" Button"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:286
+msgid "Button Type"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:288
+msgid "Buttons link directly to the Facebook event page."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:292
+msgid "Button Label"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:307
+msgid "Time Filter"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:310
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:341
+msgid "Today"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:311
+msgid "Upcoming Week"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:312
+msgid "Upcoming 15 Days"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:313
+msgid "Upcoming Month"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:314
+msgid "All Upcoming / Current"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:315
+msgid "Custom Date Range"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:316
+msgid "All (No Filter)"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:321
+msgid "Start Date"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:329
+msgid "End Date"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:337
+msgid "Events Per Page"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:343
+msgid "Pagination Type"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:346
+msgid "Numbered Pagination (AJAX)"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:347
+msgid "Load More Button"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:348
+msgid "Infinite Scroll"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:349
+msgid "No Pagination (Show All)"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:369
+msgid "Cache Duration"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:372
+msgid "1 Hour"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:372
+msgid "6 Hours"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:372
+#: templates/admin/import-facebook-events-settings.php:392
+msgid "12 Hours"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:372
+#: templates/admin/import-facebook-events-settings.php:393
+msgid "24 Hours"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:390
+msgid "Custom"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:396
+msgid "hours"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:398
+msgid "Events are fetched from Facebook once per this interval."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:402
+msgid "Auto-Refresh Cache"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:409
+msgid "Automatically refresh cache in background"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:410
+msgid "(uses Action Scheduler)"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:414
+msgid "Action Scheduler is not available. Please install it to use this feature."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:420
+msgid "Manual Cache Clear"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:427
+msgid "Clear Cache Now"
+msgstr ""
+
+#. translators: %d: minutes
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:440
+#, php-format
+msgid "Cache active — expires in %d minutes."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:442
+msgid "Cache expired — will refresh on next page load."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:446
+msgid "No cache — will fetch on first page load."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:450
+msgid "Save the feed first to manage cache."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:455
+msgid "Hard Cache (HQ Images)"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:463
+msgid "🗑 Clear Hard Cache (Images)"
+msgstr ""
+
+#. translators: %d: image count
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:472
+#, php-format
+msgid "%d HQ images cached. Auto-cleans weekly."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:476
+msgid "No HQ images cached yet."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:481
+msgid "Clears all HQ event images. They will be re-fetched automatically on next page load."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:484
+msgid "Save the feed first."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:489
+msgid "Custom CSS"
+msgstr ""
+
+#. translators: %d: Post ID
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:497
+#, php-format
+msgid "Scoped to #ifeprofeed-feed-%d. Will not affect other feeds."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:511
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:176
+msgid "Live Preview"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:512
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:177
+msgid "Updating..."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:517
+msgid "Select a source and display options to see a live preview."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:635
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:44
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:66
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:243
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:326
+msgid "Permission denied."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-admin.php:638
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:50
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:72
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:249
+msgid "Security check failed."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:53
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:75
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:279
+msgid "Invalid feed ID."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:57
+msgid "Cache cleared! Next page load will fetch fresh data from Facebook."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:95
+msgid "Hard cache cleared! Fetching fresh HQ images in background — they will appear automatically."
+msgstr ""
+
+#. translators: %d: number of events
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:261
+#, php-format
+msgid "%d events fetched successfully."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:284
+msgid "Feed not found."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:292
+msgid "No events found."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:337
+#: ifepro-feed/includes/class-ifeprofeed-api.php:1610
+#: includes/class-import-facebook-events-cpt.php:131
+msgid "View Event"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:368
+#: ifepro-feed/includes/class-ifeprofeed-api.php:1651
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:311
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:318
+msgid "Free"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:369
+#: ifepro-feed/includes/class-ifeprofeed-api.php:1652
+msgid "Paid"
+msgstr ""
+
+#. translators: %s: error message
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:399
+#, php-format
+msgid "Could not load preview: %s. Please check your Source settings."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:405
+msgid "No events found. Please verify your Source Data."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:421
+msgid "Note: Blurry/low-quality images may appear in Live Preview for new events to keep the editor fast. High-quality HD images load automatically on the front-end after saving."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-api.php:720
+msgid "Facebook Page ID source is only available in the Pro version."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-api.php:723
+msgid "Facebook Group source is only available in the Pro version."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-api.php:732
+msgid "Invalid feed source type."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-api.php:756
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:77
+msgid "At least one Event ID is required."
+msgstr ""
+
+#. translators: %s: event ID
+#: ifepro-feed/includes/class-ifeprofeed-api.php:782
+#, php-format
+msgid "Event ID %s did not return any data."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-api.php:816
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:78
+msgid "iCal URL is required."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-api.php:956
+#, php-format
+msgid "cURL error: %s"
+msgstr ""
+
+#. translators: %d: HTTP status code
+#: ifepro-feed/includes/class-ifeprofeed-api.php:964
+#, php-format
+msgid "HTTP error code: %d"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:64
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:114
+msgid "Back to Facebook Widgets"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:65
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:220
+msgid "Save Widget"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:66
+msgid "Saving…"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:67
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:215
+msgid "Continue"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:68
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:200
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:190
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:195
+msgid "Previous"
+msgstr ""
+
+#. translators: 1: step number, 2: total steps
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:70
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:206
+#, php-format
+msgid "Step %1$s of %2$s"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:71
+msgid "Enter widget name…"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:73
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:281
+msgid "Copied!"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:74
+msgid "Widget name is required."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:75
+msgid "Facebook Page ID or Slug is required."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:76
+msgid "Facebook Group URL or ID is required."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:87
+msgid "Choose where to pull Facebook events from"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:88
+msgid "Customize layout and visible fields"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:89
+msgid "Configure event links and button labels"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:90
+msgid "Narrow down which events to show"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:91
+msgid "Cache settings and custom CSS"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:105
+msgid "Warning:"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:121
+msgid "Shortcode:"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:124
+msgid "Copy shortcode"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:181
+msgid "Full Preview"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:187
+msgid "Interactive preview shows up here"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:27
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:28
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:37
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:80
+#: includes/class-import-facebook-events-admin.php:70
+msgid "Facebook Widget"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:29
+msgid "Add New Widget"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:30
+msgid "Add New Facebook Widget"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:31
+msgid "Edit Facebook Widget"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:32
+msgid "New Facebook Widget"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:33
+msgid "View Facebook Widget"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:34
+msgid "Search Facebook Widgets"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:35
+msgid "No widgets found."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:36
+msgid "No widgets found in Trash."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:180
+#: includes/class-import-facebook-events-list-table.php:371
+msgid "Shortcode"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:182
+msgid "Cache Status"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:183
+msgid "Last Fetched"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:194
+msgid "Click to copy"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:202
+msgid "Page ID/Slug"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:203
+msgid "Group URL/ID"
+msgstr ""
+
+#. translators: %s: time remaining
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:219
+#, php-format
+msgid "Cached (%s left)"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:221
+msgid "Expired"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:224
+msgid "Not cached"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:242
+msgid "Clear Cache"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:260
+msgid "Feed cache cleared."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:282
+msgid "Cache cleared!"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:283
+msgid "Failed. Try again."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:284
+msgid "Clearing..."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-cpt.php:285
+msgid "Hard cache cleared! Re-fetching HQ images will start."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:48
+msgid "[ifepro_live_feed] Missing required attribute: id"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:53
+msgid "[ifepro_live_feed] Feed not found or not published."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:165
+msgid "Load More"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:177
+msgid "Loading..."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:185
+msgid "Events pagination"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:224
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:229
+msgid "Next"
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:288
+msgid "No upcoming events found."
+msgstr ""
+
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:346
+msgid "Tomorrow"
+msgstr ""
+
+#. translators: %d: number of days left
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:352
+#, php-format
+msgid "%d Day Left"
+msgid_plural "%d Days Left"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of days ago
+#: ifepro-feed/includes/class-ifeprofeed-shortcode.php:359
+#, php-format
+msgid "%d Day Ago"
+msgid_plural "%d Days Ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ifepro-feed/templates/card-grid.php:39
+#: ifepro-feed/templates/list.php:27
+msgid "Online Event"
+msgstr ""
+
+#: import-facebook-events.php:111
+#: import-facebook-events.php:119
+msgid "Cheatin&#8217; huh?"
 msgstr ""
 
 #: import-facebook-events.php:251
+#: includes/class-import-facebook-events-admin.php:233
+msgid "Setting"
+msgstr ""
+
+#: import-facebook-events.php:256
 #: includes/class-import-facebook-events-common.php:1221
 msgid "Docs"
 msgstr ""
@@ -139,7 +903,7 @@ msgid "Import Facebook Events"
 msgstr ""
 
 #: includes/class-import-facebook-events-admin.php:65
-#: includes/class-import-facebook-events-admin.php:67
+#: includes/class-import-facebook-events-admin.php:77
 msgid "Facebook Import"
 msgstr ""
 
@@ -148,228 +912,222 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:68
+#: includes/class-import-facebook-events-admin.php:78
 msgid "Facebook .ics Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:69
-#: includes/class-import-facebook-events-admin.php:217
+#: includes/class-import-facebook-events-admin.php:79
+#: includes/class-import-facebook-events-admin.php:227
 msgid "Schedule Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:70
-#: includes/class-import-facebook-events-admin.php:419
+#: includes/class-import-facebook-events-admin.php:80
+#: includes/class-import-facebook-events-admin.php:429
 msgid "Import History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:71
-#: templates/admin/ife-dashboard.php:41
-#: templates/admin/ife-setup-wizard.php:23
-msgid "Settings"
-msgstr ""
-
-#: includes/class-import-facebook-events-admin.php:72
-#: includes/class-import-facebook-events-admin.php:226
+#: includes/class-import-facebook-events-admin.php:82
+#: includes/class-import-facebook-events-admin.php:236
 msgid "Shortcodes"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:73
+#: includes/class-import-facebook-events-admin.php:83
 msgid "Wizard"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:126
+#: includes/class-import-facebook-events-admin.php:136
 msgid "<strong>Scheduled imports are paused.</strong> WP-Cron is currently disabled on your site, so Facebook scheduled imports will not run automatically. Please enable WP-Cron or set up a server cron job to keep imports running smoothly."
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:211
+#: includes/class-import-facebook-events-admin.php:221
 #: includes/class-import-facebook-events-list-table.php:207
 msgid "Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:214
+#: includes/class-import-facebook-events-admin.php:224
 msgid "ICS Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:220
+#: includes/class-import-facebook-events-admin.php:230
 msgid "History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:229
+#: includes/class-import-facebook-events-admin.php:239
 msgid "Support & Help"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:248
-#: includes/class-import-facebook-events-admin.php:262
+#: includes/class-import-facebook-events-admin.php:258
+#: includes/class-import-facebook-events-admin.php:272
 msgid "Import Event"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:357
+#: includes/class-import-facebook-events-admin.php:367
 msgctxt "post type general name"
 msgid "Scheduled Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:358
+#: includes/class-import-facebook-events-admin.php:368
 msgctxt "post type singular name"
 msgid "Scheduled Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:359
+#: includes/class-import-facebook-events-admin.php:369
 msgctxt "admin menu"
 msgid "Scheduled Imports"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:360
+#: includes/class-import-facebook-events-admin.php:370
 msgctxt "add new on admin bar"
 msgid "Scheduled Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:361
-#: includes/class-import-facebook-events-admin.php:405
+#: includes/class-import-facebook-events-admin.php:371
+#: includes/class-import-facebook-events-admin.php:415
 msgctxt "book"
 msgid "Add New"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:362
+#: includes/class-import-facebook-events-admin.php:372
 msgid "Add New Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:363
+#: includes/class-import-facebook-events-admin.php:373
 msgid "New Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:364
+#: includes/class-import-facebook-events-admin.php:374
 msgid "Edit Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:365
+#: includes/class-import-facebook-events-admin.php:375
 msgid "View Import"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:366
+#: includes/class-import-facebook-events-admin.php:376
 msgid "All Scheduled Imports"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:367
+#: includes/class-import-facebook-events-admin.php:377
 msgid "Search Scheduled Imports"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:368
+#: includes/class-import-facebook-events-admin.php:378
 msgid "Parent Imports:"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:369
+#: includes/class-import-facebook-events-admin.php:379
 msgid "No Imports found."
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:370
+#: includes/class-import-facebook-events-admin.php:380
 msgid "No Imports found in Trash."
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:375
+#: includes/class-import-facebook-events-admin.php:385
 msgid "Scheduled Imports."
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:401
+#: includes/class-import-facebook-events-admin.php:411
 msgctxt "post type general name"
 msgid "Import History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:402
+#: includes/class-import-facebook-events-admin.php:412
 msgctxt "post type singular name"
 msgid "Import History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:403
+#: includes/class-import-facebook-events-admin.php:413
 msgctxt "admin menu"
 msgid "Import History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:404
+#: includes/class-import-facebook-events-admin.php:414
 msgctxt "add new on admin bar"
 msgid "Import History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:406
+#: includes/class-import-facebook-events-admin.php:416
 #: includes/class-import-facebook-events-cpt.php:127
 msgid "Add New"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:407
+#: includes/class-import-facebook-events-admin.php:417
 msgid "New History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:408
+#: includes/class-import-facebook-events-admin.php:418
 msgid "Edit History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:409
+#: includes/class-import-facebook-events-admin.php:419
 msgid "View History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:410
+#: includes/class-import-facebook-events-admin.php:420
 msgid "All Import History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:411
+#: includes/class-import-facebook-events-admin.php:421
 msgid "Search History"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:412
+#: includes/class-import-facebook-events-admin.php:422
 msgid "Parent History:"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:413
+#: includes/class-import-facebook-events-admin.php:423
 msgid "No History found."
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:414
+#: includes/class-import-facebook-events-admin.php:424
 msgid "No History found in Trash."
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:446
+#: includes/class-import-facebook-events-admin.php:456
 msgid "WP Event Aggregator"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:447
+#: includes/class-import-facebook-events-admin.php:457
 msgid "Import Eventbrite Events"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:448
+#: includes/class-import-facebook-events-admin.php:458
 msgid "Import Meetup Events"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:449
+#: includes/class-import-facebook-events-admin.php:459
 msgid "WP Bulk Delete"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:450
+#: includes/class-import-facebook-events-admin.php:460
 msgid "Event Schema / Structured Data"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:451
+#: includes/class-import-facebook-events-admin.php:461
 msgid "WP Smart Import : Import any XML File to WordPress"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:530
+#: includes/class-import-facebook-events-admin.php:546
 msgid "Event"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:531
+#: includes/class-import-facebook-events-admin.php:547
 msgid "Created/Updated"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:532
+#: includes/class-import-facebook-events-admin.php:548
 #: includes/class-import-facebook-events-list-table.php:211
 #: includes/class-import-facebook-events-list-table.php:372
 msgid "Action"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:557
+#: includes/class-import-facebook-events-admin.php:573
 msgid "Edit"
 msgstr ""
 
-#: includes/class-import-facebook-events-admin.php:571
-#: includes/class-import-facebook-events-admin.php:578
+#: includes/class-import-facebook-events-admin.php:587
+#: includes/class-import-facebook-events-admin.php:594
 msgid "No data found"
 msgstr ""
 
@@ -584,10 +1342,6 @@ msgstr ""
 
 #: includes/class-import-facebook-events-cpt.php:130
 msgid "Update Event"
-msgstr ""
-
-#: includes/class-import-facebook-events-cpt.php:131
-msgid "View Event"
 msgstr ""
 
 #: includes/class-import-facebook-events-cpt.php:132
@@ -812,10 +1566,6 @@ msgstr ""
 msgid "Organizer Details"
 msgstr ""
 
-#: includes/class-import-facebook-events-cpt.php:407
-msgid "Organizer Name"
-msgstr ""
-
 #: includes/class-import-facebook-events-cpt.php:413
 #: templates/ife-event-meta.php:123
 msgid "Email"
@@ -877,16 +1627,18 @@ msgstr ""
 msgid "You have not access to doing this operations."
 msgstr ""
 
-#: includes/class-import-facebook-events-ical.php:44
+#: includes/class-import-facebook-events-ical.php:45
 msgid "Please provide iCal URL."
 msgstr ""
 
-#: includes/class-import-facebook-events-ical.php:125
-msgid "Unable to retrieve content from the provided URL."
+#: includes/class-import-facebook-events-ical.php:143
+#, php-format
+msgid "cURL Error: %s"
 msgstr ""
 
-#: includes/class-import-facebook-events-ical.php:132
-msgid "The provided URL does not contain iCal format data."
+#: includes/class-import-facebook-events-ical.php:152
+#, php-format
+msgid "Unable to retrieve content from URL (HTTP %d)."
 msgstr ""
 
 #: includes/class-import-facebook-events-ical_parser.php:79
@@ -943,10 +1695,6 @@ msgstr ""
 
 #: includes/class-import-facebook-events-list-table.php:370
 msgid "Title"
-msgstr ""
-
-#: includes/class-import-facebook-events-list-table.php:371
-msgid "Shortcode"
 msgstr ""
 
 #: includes/class-import-facebook-events-manage-import.php:57
@@ -1104,11 +1852,6 @@ msgstr ""
 #: templates/admin/ical-import-events.php:14
 #: templates/admin/ical-import-events.php:39
 msgid ".ics File"
-msgstr ""
-
-#: templates/admin/ical-import-events.php:15
-#: templates/admin/ical-import-events.php:23
-msgid "iCal URL"
 msgstr ""
 
 #: templates/admin/ical-import-events.php:16
@@ -1381,14 +2124,6 @@ msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:385
 msgid "Event Display Time Format"
-msgstr ""
-
-#: templates/admin/import-facebook-events-settings.php:392
-msgid "12 Hours"
-msgstr ""
-
-#: templates/admin/import-facebook-events-settings.php:393
-msgid "24 Hours"
 msgstr ""
 
 #: templates/admin/import-facebook-events-settings.php:394

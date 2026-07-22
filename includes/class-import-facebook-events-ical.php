@@ -40,23 +40,33 @@ class Import_Facebook_Events_Ical {
 			return;
 		}
 
-		if( $event_data['ical_url'] == '' ){
+		$raw_urls = trim( $event_data['ical_url'] ?? '' );
+		if( empty( $raw_urls ) ){
 			$ife_errors[] = esc_html__( 'Please provide iCal URL.', 'import-facebook-events');
 			return;
 		}
 
-		$ical_url = str_replace( 'webcal://', 'http://', $event_data['ical_url'] );
-		$ics_content =  $this->get_remote_content( $ical_url );
+		// Parse multiple iCal URLs.
+		$urls = preg_split( '/[\r\n,]+/', $raw_urls );
+		$urls = array_values( array_unique( array_filter( array_map( 'trim', $urls ) ) ) );
 
-		if( false == $ics_content ){
-			return false;
+		if ( ! ife_is_pro() && count( $urls ) > 1 ) {
+			$urls = array_slice( $urls, 0, 1 );
 		}
 
-		if( $ics_content != "" ){
+		foreach ( $urls as $ical_url ) {
+			// Convert webcal/webcals protocols to http/https
+			$ical_url    = str_replace( array( 'webcal://', 'webcals://' ), array( 'http://', 'https://' ), $ical_url );
+			$ics_content = $this->get_remote_content( $ical_url );
 
-			$imported_events = $this->import_events_from_ics_content( $event_data, $ics_content );
-
+			if( false !== $ics_content && ! empty( $ics_content ) ){
+				$events = $this->import_events_from_ics_content( $event_data, $ics_content );
+				if( ! empty( $events ) && is_array( $events ) ){
+					$imported_events = array_merge( $imported_events, $events );
+				}
+			}
 		}
+
 		return $imported_events;
 	}
 
@@ -102,38 +112,47 @@ class Import_Facebook_Events_Ical {
 	 * @since    1.5
 	 */
 	protected function get_remote_content( $ical_url ) {
+		global $ife_errors;
 
-		global $wp_version, $ife_errors;
-		$ical_url = str_replace( 'webcal://', 'http://', $ical_url );
-		$timeout_in_seconds = 10;
-		$response = null;
+		$ical_url = html_entity_decode( str_replace( array( 'webcal://', 'webcals://' ), array( 'http://', 'https://' ), trim( $ical_url ) ) );
 
-		$request_args = array(
-			'timeout'     => $timeout_in_seconds,
-			'sslverify'   => false,
-			'method'      => 'GET',
-			'user-agent'  => 'WordPress/' . $wp_version . '; ' . home_url(),
-		);
+		$ch = curl_init();
+		curl_setopt_array( $ch, array(
+			CURLOPT_URL            => $ical_url,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_TIMEOUT        => 30,
+			CURLOPT_CONNECTTIMEOUT => 15,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_MAXREDIRS      => 10,
+			CURLOPT_ENCODING       => '',
+			CURLOPT_HTTPHEADER     => array(
+				'Accept: text/calendar,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+				'Accept-Language: en-US,en;q=0.9',
+				'Sec-Fetch-Dest: document',
+				'Sec-Fetch-Mode: navigate',
+				'Sec-Fetch-Site: none',
+				'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+			),
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_SSL_VERIFYHOST => false,
+		) );
 
-		$response = wp_remote_get( $ical_url, $request_args );
-		if ( is_wp_error( $response ) ) {
-			$request_args['sslverify'] = true;
-			$response = wp_remote_head( $ical_url, $request_args );
-		}
+		$response = curl_exec( $ch );
 
-		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) != 200 ) {
-			$ife_errors[] = esc_html__( 'Unable to retrieve content from the provided URL.', 'import-facebook-events');
+		if ( curl_errno( $ch ) ) {
+			$ife_errors[] = sprintf( esc_html__( 'cURL Error: %s', 'import-facebook-events' ), curl_error( $ch ) );
+			if ( PHP_VERSION_ID < 80000 ) { @curl_close( $ch ); } // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_close
 			return false;
 		}
 
-		$content_type = wp_remote_retrieve_header( $response, 'content-type' );
-		if ( $content_type !== false ) {
-			if ( strpos( $content_type, 'text/calendar' ) === false && strpos( $content_type, 'application/calendar+xml' ) === false ) {
-				$ife_errors[] = esc_html__( 'The provided URL does not contain iCal format data.', 'import-facebook-events' );
-				return false;
-			}
-		}
-		return $response['body'];
-	}
+		$http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+		if ( PHP_VERSION_ID < 80000 ) { @curl_close( $ch ); } // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_close
 
+		if ( $http_code !== 200 ) {
+			$ife_errors[] = sprintf( esc_html__( 'Unable to retrieve content from URL (HTTP %d).', 'import-facebook-events' ), $http_code );
+			return false;
+		}
+
+		return $response;
+	}
 }
