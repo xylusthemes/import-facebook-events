@@ -1,0 +1,923 @@
+/**
+ * IME Pro Live Feed – Builder UI Styles
+ * Scoped to body.ifepro-builder-active only
+ */
+
+/* ============================================================
+   1. HIDE WP CHROME — distraction-free
+   ============================================================ */
+body.ifepro-builder-active #wpadminbar,
+body.ifepro-builder-active #adminmenumain,
+body.ifepro-builder-active #adminmenuback,
+body.ifepro-builder-active #adminmenuwrap,
+body.ifepro-builder-active #wpfooter,
+body.ifepro-builder-active #screen-meta,
+body.ifepro-builder-active #screen-meta-links,
+body.ifepro-builder-active .update-nag,
+body.ifepro-builder-active .notice:not(.ifepro-builder-notice) {
+  display: none !important;
+}
+
+body.ifepro-builder-active #wpcontent,
+body.ifepro-builder-active #wpbody {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+body.ifepro-builder-active #wpbody-content {
+  padding-bottom: 0;
+}
+
+body.ifepro-builder-active {
+  background: #f8fafc;
+}
+
+body.ifepro-builder-active #titlediv,
+body.ifepro-builder-active #postbox-container-1,
+body.ifepro-builder-active #post-body-content>*:not(#ifepro-builder):not(.ifepro-builder),
+body.ifepro-builder-active #submitdiv,
+body.ifepro-builder-active .postbox-header,
+body.ifepro-builder-active #minor-publishing,
+body.ifepro-builder-active #major-publishing-actions,
+body.ifepro-builder-active .postarea,
+body.ifepro-builder-active #post-status-info {
+  display: none !important;
+}
+
+body.ifepro-builder-active .wrap {
+  margin: 0 !important;
+}
+
+body.ifepro-builder-active #normal-sortables,
+body.ifepro-builder-active #advanced-sortables,
+body.ifepro-builder-active #side-sortables {
+  position: absolute !important;
+  left: -9999px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.ifepro-builder-active .postbox {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+body.ifepro-builder-active html {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+body.ifepro-builder-active .wrap>h1,
+body.ifepro-builder-active .wrap>.page-title-action {
+  display: none !important;
+}
+
+/* Fix centering: override WP's #post-body 300px margin */
+body.ifepro-builder-active #poststuff #post-body.columns-2 {
+  margin-right: 0 !important;
+}
+
+body.ifepro-builder-active #post-body {
+  margin-right: 0 !important;
+}
+
+/* Cache custom input inline style */
+.ifeprofeed-cache-custom-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
+  margin: 10px 0;
+}
+
+.ifeprofeed-cache-custom-wrap input[type="number"] {
+  width: 80px !important;
+  min-width: 80px !important;
+}
+
+/* ============================================================
+   2. BUILDER WRAPPER — centered
+   ============================================================ */
+.ifepro-builder {
+  max-width: 1500px;
+  margin: 0 auto;
+  /* padding: 0 20px 72px; */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 72px);
+}
+
+/* ============================================================
+   3. TOP BAR — compact
+   ============================================================ */
+.ifepro-builder__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ifepro-builder__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #50575e;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: all .2s ease;
+}
+
+.ifepro-builder__back:hover {
+  color: #2271b1;
+  background: rgba(34, 113, 177, .06);
+}
+
+.ifepro-builder__back .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Shortcode bar */
+.ifepro-builder__shortcode-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 6px 10px 6px 14px;
+  font-size: 13px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.ifepro-builder__shortcode-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #475569;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ifepro-builder__shortcode-label .dashicons,
+.ifepro-builder__shortcode-label svg {
+  color: #3b82f6;
+}
+
+.ifepro-builder__shortcode-code {
+  font-family: "SF Mono", Monaco, Consolas, monospace;
+  font-size: 12px;
+  color: #1e293b;
+  background: #f8fafc;
+  padding: 3px 8px;
+  border-radius: 6px;
+  user-select: all;
+  border: 1px solid #e2e8f0;
+}
+
+.ifepro-builder__shortcode-copy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #64748b;
+  padding: 5px;
+  border-radius: 6px;
+  transition: all .2s ease;
+}
+
+.ifepro-builder__shortcode-copy:hover {
+  color: #3b82f6;
+  background: #eff6ff;
+}
+
+.ifepro-builder__shortcode-copy svg {
+  width: 15px;
+  height: 15px;
+}
+
+.ifepro-builder__shortcode-copy.is-copied {
+  color: #10b981;
+  background: #ecfdf5;
+}
+
+/* ============================================================
+   4. TITLE AREA — compact
+   ============================================================ */
+
+
+.ifepro-builder__title-slot input[type="text"] {
+  width: 100%;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  padding: 14px 20px !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #1e293b !important;
+  outline: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  transition: all .3s ease;
+  height: auto !important;
+  line-height: 1.4 !important;
+}
+
+.ifepro-builder__title-slot input[type="text"]:focus {
+  border-color: #2271b1 !important;
+  box-shadow: 0 0 0 1px #2271b1 !important;
+}
+
+.ifepro-builder__title-slot input[type="text"]::placeholder {
+  color: #a7aaad;
+  font-weight: 400;
+}
+
+/* ============================================================
+   5. PROGRESS STEPPER — compact pill style, no scroll needed
+   ============================================================ */
+.ifepro-builder__stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 6px 8px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.ifepro-builder__step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 7px;
+  transition: all .2s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.ifepro-builder__step-indicator:hover {
+  background: #f6f7f7;
+}
+
+.ifepro-builder__step-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f1;
+  border: 1.5px solid #ccd0d4;
+  transition: all .25s ease;
+  flex-shrink: 0;
+}
+
+.ifepro-builder__step-number {
+  font-size: 11px;
+  font-weight: 700;
+  color: #757575;
+  transition: all .25s ease;
+  line-height: 1;
+}
+
+.ifepro-builder__step-check {
+  display: none;
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  color: #fff;
+  line-height: 1;
+}
+
+.ifepro-builder__step-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #757575;
+  transition: color .25s ease;
+}
+
+/* Hide connecting line — not needed in pill layout */
+.ifepro-builder__step-line {
+  display: none;
+}
+
+/* Active state */
+.ifepro-builder__step-indicator.is-active {
+  background: rgba(34, 113, 177, .07);
+}
+
+.ifepro-builder__step-indicator.is-active .ifepro-builder__step-circle {
+  background: #2271b1;
+  border-color: #2271b1;
+}
+
+.ifepro-builder__step-indicator.is-active .ifepro-builder__step-number {
+  color: #fff;
+}
+
+.ifepro-builder__step-indicator.is-active .ifepro-builder__step-label {
+  color: #2271b1;
+}
+
+/* Completed state */
+.ifepro-builder__step-indicator.is-completed .ifepro-builder__step-circle {
+  background: #00a32a;
+  border-color: #00a32a;
+}
+
+.ifepro-builder__step-indicator.is-completed .ifepro-builder__step-number {
+  display: none;
+}
+
+.ifepro-builder__step-indicator.is-completed .ifepro-builder__step-check {
+  display: block;
+}
+
+.ifepro-builder__step-indicator.is-completed .ifepro-builder__step-label {
+  color: #1d2327;
+}
+
+/* ============================================================
+   6. STEP PANELS (Card) — fills remaining space
+   ============================================================ */
+.ifepro-builder__panels {
+  position: relative;
+  flex: 1;
+}
+
+.ifepro-builder__panel {
+  display: none;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0,0,0,0.04);
+  padding: 24px 32px 32px;
+  animation: ifepro-fadeIn .3s ease;
+}
+
+.ifepro-builder__panel.is-active {
+  display: block;
+}
+
+@keyframes ifepro-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Panel header — compact */
+.ifepro-builder__panel-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f0f0f1;
+}
+
+.ifepro-builder__panel-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #2271b1;
+}
+
+.ifepro-builder__panel-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1d2327;
+  margin: 0;
+  padding: 0;
+  line-height: 1.3;
+}
+
+.ifepro-builder__panel-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #a7aaad;
+  cursor: help;
+  transition: color .2s ease;
+  position: relative;
+  top: 1px;
+}
+
+.ifepro-builder__panel-hint:hover {
+  color: #2271b1;
+}
+
+.ifepro-builder__panel-hint .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================================
+   7. FORM FIELD OVERRIDES
+   ============================================================ */
+.ifepro-builder__title-slot {
+  margin-bottom: 20px;
+}
+
+.ifepro-builder__panel-body .form-table {
+  margin-top: 0;
+}
+
+.ifepro-builder__panel-body .form-table th {
+  padding: 10px 10px 10px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d2327;
+  width: 190px;
+  vertical-align: top;
+}
+
+.ifepro-builder__panel-body .form-table td {
+  padding: 8px 0;
+  vertical-align: top;
+}
+
+.ifepro-builder__panel-body .form-table tr {
+  border-bottom: 1px solid #f6f7f7;
+}
+
+.ifepro-builder__panel-body .form-table tr:last-child {
+  border-bottom: none;
+}
+
+.ifepro-builder__panel-body select,
+.ifepro-builder__panel-body input[type="text"],
+.ifepro-builder__panel-body input[type="number"],
+.ifepro-builder__panel-body textarea {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 8px !important;
+  padding: 8px 14px !important;
+  font-size: 14px !important;
+  color: #334155 !important;
+  transition: all .2s ease;
+  background: #f8fafc !important;
+}
+
+.ifepro-builder__panel-body select:focus,
+.ifepro-builder__panel-body input[type="text"]:focus,
+.ifepro-builder__panel-body input[type="number"]:focus,
+.ifepro-builder__panel-body textarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+  background: #fff !important;
+  outline: none !important;
+}
+
+/* Validation Errors */
+.ifepro-builder__title-slot input.ifepro-error-field,
+.ifepro-builder__panel-body input.ifepro-error-field {
+  border-color: #d63638 !important;
+  box-shadow: 0 0 0 1px #d63638 !important;
+  animation: ifepro-shake 0.4s ease-in-out;
+}
+
+.ifepro-error-msg {
+  color: #d63638;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+@keyframes ifepro-shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.ifepro-builder__panel-body .description {
+  color: #757575;
+  font-size: 11.5px;
+  margin-top: 4px;
+}
+
+.ifepro-builder__panel-body label {
+  cursor: pointer;
+}
+
+.ifepro-builder__panel-body input[type="radio"],
+.ifepro-builder__panel-body input[type="checkbox"] {
+  accent-color: #2271b1;
+}
+
+/* Layout picker override */
+.ifepro-builder__panel-body .ifeprofeed-layout-option {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  transition: all .2s ease;
+}
+
+.ifepro-builder__panel-body .ifeprofeed-layout-option:hover {
+  border-color: #3b82f6;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+}
+
+.ifepro-builder__panel-body .ifeprofeed-layout-option.active,
+.ifepro-builder__panel-body .ifeprofeed-layout-option:has(input:checked) {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12);
+}
+
+.ifepro-builder__panel-body .ifeprofeed-layout-option .ife-pro-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  margin: 0;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 10px;
+  line-height: 18px;
+  background: #005AE0;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Textarea (custom CSS) */
+.ifepro-builder__panel-body textarea.code {
+  font-family: "SF Mono", Monaco, Consolas, monospace !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  min-height: 120px;
+}
+
+.ifepro-builder__panel-body .button {
+  border-radius: 6px;
+}
+
+/* ============================================================
+   8. FOOTER / NAVIGATION — compact sticky
+   ============================================================ */
+.ifepro-builder__footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  padding: 10px 20px;
+  z-index: 9999;
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, .05);
+}
+
+.ifepro-builder__footer-inner {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ifepro-builder__step-counter {
+  font-size: 12.5px;
+  color: #757575;
+}
+
+.ifepro-builder__step-counter strong {
+  color: #1d2327;
+}
+
+.ifepro-builder__footer-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Buttons */
+.ifepro-builder__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.ifepro-builder__btn .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Previous */
+.ifepro-builder__btn--prev {
+  background: transparent;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.ifepro-builder__btn--prev:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+/* Next */
+.ifepro-builder__btn--next {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.ifepro-builder__btn--next:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Save */
+.ifepro-builder__btn--save {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.ifepro-builder__btn--save:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+  transform: translateY(-1px);
+}
+
+.ifepro-builder__btn--save:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ============================================================
+   9. SPIN ANIMATION
+   ============================================================ */
+@keyframes ifepro-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ifepro-spin {
+  animation: ifepro-spin .8s linear infinite;
+}
+
+/* ============================================================
+   10. RESPONSIVE
+   ============================================================ */
+@media (max-width: 782px) {
+  .ifepro-builder {
+    padding: 0 10px 72px;
+  }
+
+  .ifepro-builder__topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ifepro-builder__stepper {
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 2px;
+    padding: 4px 4px;
+  }
+
+  .ifepro-builder__step-indicator {
+    padding: 5px 8px;
+  }
+
+  .ifepro-builder__step-label {
+    font-size: 11px;
+  }
+
+  .ifepro-builder__panel {
+    padding: 16px 14px;
+  }
+
+  .ifepro-builder__panel-body .form-table th {
+    display: block;
+    width: 100%;
+    padding-bottom: 2px;
+  }
+
+  .ifepro-builder__panel-body .form-table td {
+    display: block;
+    padding-top: 0;
+  }
+
+  .ifepro-builder__footer-inner {
+    flex-wrap: wrap;
+  }
+
+  .ifepro-builder__step-counter {
+    order: 3;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ============================================================
+   Builder Workspace & Preview Sidebar (Modern Grid)
+   ============================================================ */
+#ifepro-builder.is-full-preview {
+  max-width: 100% !important;
+  width: calc(100% - 40px) !important;
+  padding: 0 20px !important;
+}
+
+.ifepro-builder__workspace {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex: 1;
+  margin-bottom: 80px;
+  /* footer offset */
+  transition: all 0.3s ease;
+}
+
+.ifepro-builder__panels {
+  width: calc(70% - 12px);
+  flex-shrink: 0;
+}
+
+.ifepro-builder__preview-sidebar {
+  width: calc(30% - 12px);
+  min-width: 340px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 14px;
+  flex-shrink: 0;
+  z-index: 99;
+}
+
+.ifepro-builder__workspace.is-full-preview .ifepro-builder__panels {
+  display: none !important;
+}
+
+.ifepro-builder__workspace.is-full-preview .ifepro-builder__preview-sidebar {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 1 100% !important;
+}
+
+.ifepro-builder__workspace.is-full-preview .ifepro-builder__preview-card-body {
+  max-height: calc(100vh - 160px) !important;
+}
+
+.ifepro-builder__preview-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0,0,0,0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ifepro-builder__preview-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f0f0f1;
+}
+
+.ifepro-builder__preview-card-header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1d2327;
+}
+
+.ifepro-builder__preview-loading {
+  font-size: 11px;
+  color: #1877F2;
+  font-weight: 600;
+  animation: ifepro-loading-fade 1s infinite alternate;
+}
+
+@keyframes ifepro-loading-fade {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+.ifepro-builder__preview-card-body {
+  padding: 16px;
+  background: #f0f0f1;
+  max-height: calc(100vh - 240px);
+  overflow-y: auto;
+}
+
+.ifepro-builder__preview-placeholder {
+  text-align: center;
+  padding: 40px 20px;
+  color: #757575;
+}
+
+.ifepro-builder__preview-placeholder p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Sidebar Event List Specific styling */
+#ifepro-builder-preview-container .ifeprofeed-feed-wrap {
+  padding: 0;
+  background: transparent;
+}
+
+/* Force 1 column for grid/masonry in narrow sidebar mode */
+.ifepro-builder__workspace:not(.is-full-preview) #ifepro-builder-preview-container .ifeprofeed-layout-card-grid .ifeprofeed-events-grid,
+.ifepro-builder__workspace:not(.is-full-preview) #ifepro-builder-preview-container .ifeprofeed-layout-minimal-grid .ifeprofeed-events-grid {
+  grid-template-columns: 1fr !important;
+}
+
+.ifepro-builder__workspace:not(.is-full-preview) #ifepro-builder-preview-container .ifeprofeed-layout-masonry .ifeprofeed-event-card {
+  width: 100% !important;
+}
+
+/* Zoom out lists/timeline/tickets in narrow sidebar mode to fit content better */
+.ifepro-builder__workspace:not(.is-full-preview) #ifepro-builder-preview-container .ifeprofeed-layout-list,
+.ifepro-builder__workspace:not(.is-full-preview) #ifepro-builder-preview-container .ifeprofeed-layout-compact-list,
+.ifepro-builder__workspace:not(.is-full-preview) #ifepro-builder-preview-container .ifeprofeed-layout-timeline,
+.ifepro-builder__workspace:not(.is-full-preview) #ifepro-builder-preview-container .ifeprofeed-layout-ticket-list {
+  zoom: 0.6;
+}
+
+/* Admin preview: layout sample only — pagination is frontend-only */
+#ifepro-builder-preview-container .ifeprofeed-pagination,
+#ifepro-builder-preview-container .ifeprofeed-pagination-nav,
+#ifepro-builder-preview-container .ifeprofeed-load-more-wrap,
+#ifepro-builder-preview-container .ifeprofeed-infinite-sentinel {
+  display: none !important;
+}
+
+@media (max-width: 980px) {
+  .ifepro-builder__workspace {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ifepro-builder__panels {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ifepro-builder__preview-sidebar {
+    width: 100%;
+    position: static;
+  }
+}
+
+/* Disable event links and ticket buttons in preview */
+#ifepro-builder-preview-container .ifeprofeed-event-card a,
+#ifepro-builder-preview-container .ifeprofeed-ticket-btn {
+  pointer-events: none !important;
+  cursor: default !important;
+}

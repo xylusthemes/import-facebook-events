@@ -61,7 +61,7 @@
     right: 0;
     top: -30px;
   }
-} 
+}
 
 /* Support page CSS */
 .ife-support-features-card {
@@ -81,26 +81,26 @@
 
 @media (min-width: 661px) {
   .ife-support-features-card {
-      margin-bottom: 1%
+    margin-bottom: 1%
   }
 }
 
 @media (max-width: 660px) {
   .ife-support-features-card {
-      max-width: 100%;
-      margin-bottom: .5rem
+    max-width: 100%;
+    margin-bottom: .5rem
   }
 }
 
 @media (min-width: 481px) {
   .ife-support-features-card {
-      padding: 2rem
+    padding: 2rem
   }
 }
 
 @media (max-width: 480px) {
   .ife-support-features-card {
-      padding: 1rem
+    padding: 1rem
   }
 }
 
@@ -117,8 +117,8 @@
 
 @media (min-width: 961px) {
   .ife-support-features-img {
-      width: 6.5rem;
-      margin-right: 1.125rem
+    width: 6.5rem;
+    margin-right: 1.125rem
   }
 }
 
@@ -130,8 +130,8 @@
 
 @media (min-width: 481px) {
   .ife-support-features-icon {
-      max-width: 80%;
-      margin-left: 0px;
+    max-width: 80%;
+    margin-left: 0px;
   }
 }
 
@@ -156,7 +156,7 @@
 
 @media (max-width: 660px) {
   .ife-support-features {
-      display: block
+    display: block
   }
 }
 
@@ -532,8 +532,8 @@ a.var-tab.var--box.var-tab--inactive:focus {
 
 @keyframes ife-ripple {
   to {
-      transform: scale(3);
-      opacity: 0
+    transform: scale(3);
+    opacity: 0
   }
 }
 
@@ -675,7 +675,7 @@ a.var-tab.var--box.var-tab--inactive:focus {
 
 @media screen and (max-width: 782px) {
   .ife-app .ife-mobile-tabs .tab-links {
-      max-width: 100%
+    max-width: 100%
   }
 }
 
@@ -756,8 +756,8 @@ a.var-tab.var--box.var-tab--inactive:focus {
 
 @media screen and (max-width: 782px) {
   .ife-app .ife-upgrade-bar {
-      padding: 0 10px;
-      height: 60px
+    padding: 0 10px;
+    height: 60px
   }
 }
 
@@ -925,15 +925,15 @@ html:not([data-scroll="0"]) .ife-header {
   50%,
   75%,
   to {
-      transform: translate(-50%)
+    transform: translate(-50%)
   }
 
   40% {
-      transform: translate(-50%, -8px)
+    transform: translate(-50%, -8px)
   }
 
   60% {
-      transform: translate(-50%, -4px)
+    transform: translate(-50%, -4px)
   }
 }
 
@@ -1203,12 +1203,12 @@ html:not([data-scroll="0"]) .ife-header {
 
   .ife-col.col-sm-12>.ife-card:last-child,
   .ife-col.col-xs-12>.ife-card:last-child {
-      margin-bottom: 0
+    margin-bottom: 0
   }
 
   .ife-col.col-sm-12+.ife-col>.ife-card:first-child,
   .ife-col.col-xs-12+.ife-col>.ife-card:first-child {
-      margin-top: 0
+    margin-top: 0
   }
 }
 
@@ -1404,32 +1404,32 @@ html:not([data-scroll="0"]) .ife-header {
 
 @media (min-width: 661px) {
   .ife-support-features-card, .ife-support-features-card2 {
-      margin-bottom: 1%
+    margin-bottom: 1%
   }
 }
 
 @media (max-width: 660px) {
   .ife-support-features-card, .ife-support-features-card2 {
-      max-width: 100%;
-      margin-bottom: .5rem
+    max-width: 100%;
+    margin-bottom: .5rem
   }
 }
 
 @media (min-width: 481px) {
   .ife-support-features-card {
-      padding: 2rem
+    padding: 2rem
   }
 }
 
 @media (max-width: 480px) {
   .ife-support-features-card {
-      padding: 1rem;
+    padding: 1rem;
   }
   .ife-support-features-card2{
-      padding: 0;
+    padding: 0;
   }
   .ife-about-us-plugins .ife-plugin{
-      width: 100%;
+    width: 100%;
   }
 }
 
@@ -1446,8 +1446,8 @@ html:not([data-scroll="0"]) .ife-header {
 
 @media (min-width: 961px) {
   .ife-support-features-img {
-      width: 6.5rem;
-      margin-right: 1.125rem
+    width: 6.5rem;
+    margin-right: 1.125rem
   }
 }
 
@@ -1459,8 +1459,8 @@ html:not([data-scroll="0"]) .ife-header {
 
 @media (min-width: 481px) {
   .ife-support-features-icon {
-      max-width: 80%;
-      margin-left: 0px;
+    max-width: 80%;
+    margin-left: 0px;
   }
 }
 
@@ -1485,7 +1485,7 @@ html:not([data-scroll="0"]) .ife-header {
 
 @media (max-width: 660px) {
   .ife-support-features, .ife-support-features2  {
-      display: block
+    display: block
   }
 }
 /*end new support page*/
@@ -1530,8 +1530,7 @@ html:not([data-scroll="0"]) .ife-header {
 }
 
 form#ife_setting_form {
-  display: flex
-;
+  display: flex;
   flex-direction: column;
   gap: 20px;
 }
@@ -1612,7 +1611,7 @@ a.ife-intro-section-link-tag.button.button-hero {
 }
 /* dashboard css end*/
 
-.ife_source_import input[type="text"], 
+.ife_source_import input[type="text"],
 .ife_source_import select{
   width: 45%;
   max-width: 100%;
@@ -1620,99 +1619,108 @@ a.ife-intro-section-link-tag.button.button-hero {
 
 /* start new calendar section css */
 .ife-xylus-promo-wrapper {
-    background: #fff;
-    border: 1px solid #ccd0d4;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
-    margin-top: 20px;
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
 }
 .ife-xylus-main-inner-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .ife-xylus-promo-header h2 {
-    font-size: 20px !important;
-    color: #23282d;
-    text-align: center;
+  font-size: 20px !important;
+  color: #23282d;
+  text-align: center;
 }
 
 .ife-xylus-promo-header p {
-    color: #666;
-    text-align: center;
+  color: #666;
+  text-align: center;
 }
 
 .ife-xylus-screenshot-slider {
-    position: relative;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 6px;
-    width: 50%;
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 6px;
+  width: 50%;
 }
 
 .ife-screenshot-slide {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .ife-screenshot-slide.active {
-    display: block;
-    animation: fadein 1s ease-in-out;
+  display: block;
+  animation: fadein 1s ease-in-out;
 }
 
 .ife-screenshot-slide img {
-    width: 100%;
+  width: 100%;
 
-    object-fit: contain;
+  object-fit: contain;
 
 }
 
 @keyframes fadein {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .ife-xylus-feature-list {
-    list-style: disc;
-    padding-left: 20px;
-    color: #333;
-    margin-bottom: 20px;
+  list-style: disc;
+  padding-left: 20px;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .ife-xylus-feature-list li {
-    margin-bottom: 8px;
-    font-size: 15px;
+  margin-bottom: 8px;
+  font-size: 15px;
 }
 .ife-xylus-plugin-box {
-    background: #f8fff5;
-    border: 1px solid #b4e2b0;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 15px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  background: #f8fff5;
+  border: 1px solid #b4e2b0;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .ife-xylus-plugin-box h3 {
-    margin-top: 0;
-    color: #21759b;
-    font-size: 18px;
+  margin-top: 0;
+  color: #21759b;
+  font-size: 18px;
 }
 
 
 .ife-xylus-plugin-box .ife_short_code {
-    display: inline-block;
-    background: #fff;
-    border: 1px dashed #ccc;
-    padding: 8px;
-    border-radius: 4px;
-    font-family: monospace;
-    margin-right: 10px;
+  display: inline-block;
+  background: #fff;
+  border: 1px dashed #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  margin-right: 10px;
 }
 /* end new calendar section css */
+
+#wpfooter {
+  position: relative;
+  clear: both;
+}
+
+#wpbody-content {
+  padding-bottom: 0;
+}

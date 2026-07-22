@@ -293,17 +293,30 @@ class Import_Facebook_Events_Ical_Parser {
 		$event_image     = '';
 		$event_venue     = null;
 		$ical_attachment = $event->getAttach( true, true );
-		if( isset($ical_attachment['params']) && isset($ical_attachment['params']['FMTTYPE']) ) {
+		if ( isset( $ical_attachment['params'] ) && isset( $ical_attachment['params']['FMTTYPE'] ) ) {
 			$attachment_type = $ical_attachment['params']['FMTTYPE'];
-			$image_types = array('image/jpeg', 'image/gif', 'image/png', 'image/jpg');
-			if( in_array($attachment_type, $image_types ) && !empty($ical_attachment['value']) ){
-				$event_image =  $ical_attachment['value'];
+			$image_types     = array( 'image/jpeg', 'image/gif', 'image/png', 'image/jpg', 'image/webp' );
+			if ( in_array( $attachment_type, $image_types, true ) && ! empty( $ical_attachment['value'] ) ) {
+				$event_image = $ical_attachment['value'];
 			}
+		}
+		if ( empty( $event_image ) && ! empty( $ical_attachment['value'] ) && preg_match( '/\.(?:png|jpg|jpeg|gif|webp|svg)/i', $ical_attachment['value'] ) ) {
+			$event_image = $ical_attachment['value'];
 		}
 
 		$ical_wp_images = $event->getXprop('X-WP-IMAGES-URL');
-		if( !empty( $ical_wp_images ) && !empty( $ical_wp_images[1]) ){
-			$event_image =  $ical_wp_images[1];
+		if ( empty( $event_image ) && ! empty( $ical_wp_images ) && ! empty( $ical_wp_images[1] ) ) {
+			$event_image = $ical_wp_images[1];
+		}
+
+		$ical_x_image = $event->getXprop('X-IMAGE');
+		if ( empty( $event_image ) && ! empty( $ical_x_image ) && ! empty( $ical_x_image[1] ) ) {
+			$event_image = $ical_x_image[1];
+		}
+
+		$ical_image = $event->getXprop('IMAGE');
+		if ( empty( $event_image ) && ! empty( $ical_image ) && ! empty( $ical_image[1] ) ) {
+			$event_image = $ical_image[1];
 		}
 		$timezone_name = !empty( $timezone ) ? $timezone : $calendar_timezone;
 

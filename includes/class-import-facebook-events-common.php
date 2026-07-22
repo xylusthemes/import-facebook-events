@@ -907,7 +907,7 @@ class Import_Facebook_Events_Common {
 		if ( ! ife_is_pro() ) {
 			?>
 			<div class="ife-blur-filter-cta" >
-				<span style="color: red"><?php echo esc_html_e( 'Available in Pro version.', 'import-facebook-events' ); ?> </span><a href="<?php echo esc_url(IFE_PLUGIN_BUY_NOW_URL); ?>"><?php echo esc_html_e( 'Upgrade to PRO', 'import-facebook-events' ); ?></a>
+				<span style="color: #005AE0; font-weight: 600;"><?php echo esc_html_e( 'Available in Pro version.', 'import-facebook-events' ); ?> </span><a href="<?php echo esc_url(IFE_PLUGIN_BUY_NOW_URL); ?>" style="color: #005AE0; font-weight: bold; text-decoration: underline;"><?php echo esc_html_e( 'Upgrade to PRO', 'import-facebook-events' ); ?></a>
 			</div>
 			<?php
 		}

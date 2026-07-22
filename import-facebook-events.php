@@ -204,6 +204,11 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 			require_once IFE_PLUGIN_DIR . 'includes/class-import-facebook-events-eventprime.php';
 			// Gutenberg Block.
 			require_once IFE_PLUGIN_DIR . 'blocks/facebook-events/index.php';
+
+			// Feed Widget Builder
+			if ( file_exists( IFE_PLUGIN_DIR . 'ifepro-feed/feed-init.php' ) ) {
+				require_once IFE_PLUGIN_DIR . 'ifepro-feed/feed-init.php';
+			}
 		}
 
 		/**
