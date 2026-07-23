@@ -1,6 +1,6 @@
 # Import Social Events
 
-> Import Facebook events into your WordPress website and/or Event Calendar. Nice Display with shortcode & Event widget.
+> Display Facebook events on your WordPress site with beautiful, auto-updating event feeds using the Live Feed Builder or our events importer. No API key required.
 
 [![Release Version](https://img.shields.io/github/v/release/xylusthemes/import-facebook-events.svg)](https://github.com/xylusthemes/import-facebook-events/releases/latest)
 ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.8%20tested-success.svg)
@@ -16,6 +16,43 @@
 >* Facebook app ([Here](http://docs.xylusthemes.com/docs/import-facebook-events/creating-facebook-application/) is how to create FB app)
 >* Your site need to HTTPS (SSL certificate)
 >* You need to mark events as interested or going on facebook to get imported
+
+### 🎯 Live Feed Builder
+
+Create and manage multiple event feeds with our intuitive visual builder:
+
+* **Event IDs Source** — Paste specific Facebook Event IDs to display selected events (supports multiple Event IDs separated by commas or newlines).
+* **iCal URL Source** — Import events from Facebook iCal/ICS export links (supports multiple iCal URLs in [Pro](https://xylusthemes.com/plugins/import-facebook-events/)).
+* **Facebook Page Source** — Fetch all events from public Facebook Pages automatically (supports multiple Page IDs/slugs in [Pro](https://xylusthemes.com/plugins/import-facebook-events/)).
+* **Facebook Group Source** — Fetch all events from public Facebook Groups automatically (supports multiple Group IDs/URLs in [Pro](https://xylusthemes.com/plugins/import-facebook-events/)).
+
+### 🎨 Beautiful Layouts
+
+Choose from a variety of stunning, responsive layouts:
+
+* **Card Grid** — Modern, responsive grid cards with event images, dates, and venue info.
+* **List View** — Clean, classic list layout for a traditional event listing.
+* **Timeline** — Vertical chronological timeline with elegant date markers [(Pro)](https://xylusthemes.com/plugins/import-facebook-events/).
+* **Compact List** — Maximum event details packed into a space-saving design [(Pro)](https://xylusthemes.com/plugins/import-facebook-events/).
+* **Minimal Grid** — Sleek, minimalistic grid with subtle hover effects [(Pro)](https://xylusthemes.com/plugins/import-facebook-events/).
+* **Ticket List** — Specialized layout highlighting ticket info and event dates [(Pro)](https://xylusthemes.com/plugins/import-facebook-events/).
+* **Masonry** — Dynamic, Pinterest-style staggered grid layout [(Pro)](https://xylusthemes.com/plugins/import-facebook-events/).
+
+### ⚙️ Powerful Feed Features
+
+* **Gutenberg Block** — Embed event feeds directly from the WordPress Block Editor.
+* **Advanced Date Filters** — Show today's, this week's, this month's, upcoming, or custom date range events.
+* **Hide Online Events** — Filter out virtual/online events from your feed.
+* **Configurable Pagination** — AJAX load-more, numbered pagination, or infinite scroll with customizable events per page.
+* **Smart Caching** — Set your own cache duration (minutes) to balance freshness vs. performance.
+* **Auto Background Sync** — Events and HQ images are fetched in the background without slowing down your page.
+* **High-Quality Images** — Automatically fetches full-resolution cover photos for every event.
+* **Location & Venue Data** — Displays venue name, address, and coordinates scraped from Facebook.
+* **Organizer Details** — Shows event creator/organizer name with link.
+* **Custom CSS** — Add your own CSS per feed for full design control.
+* **Shortcode Support** — Use `[ifepro_live_feed id="FEED_ID"]` anywhere on your site.
+* **Legacy Widget Support** — Classic WordPress widget for sidebars and footers.
+* **Legacy Shortcode** — `[facebook_events]` still supported for displaying imported database events.
 
 ### Import Facebook Events into WordPress :
 
@@ -44,6 +81,8 @@ You can use `[facebook_events]` for display in-built facebook events list.
 **Additional [PRO Add-on](https://xylusthemes.com/plugins/import-facebook-events/?utm_source=githubrepo&utm_campaign=FacebookEvents&utm_medium=readme&utm_content=githubrepo-readme) Features**
 
 * Scheduled import events.
+* Upcoming Events Widget On Elementor Editor
+* Upcoming Events New Grid View Style
 * Import events from the facebook page 
 * Import events from the facebook group
 * Import events from Facebook Event
@@ -53,6 +92,12 @@ You can use `[facebook_events]` for display in-built facebook events list.
 * Show events from facebook page into WordPress
 * Upcoming Events widget
 * Works with WPBackery Page Builder. Support for more page builders is on the way :)
+* Multiple Facebook Page Sources — Scrape events automatically from multiple public Facebook Pages
+* Multiple Facebook Group Sources — Scrape events automatically from multiple public Facebook Groups
+* Multiple iCal URL Sources — Scrape events automatically from multiple iCal URLs
+* 5 Additional Layouts — Timeline, Compact List, Minimal Grid, Ticket List, and Masonry layouts
+* Activity Logs — Track all API calls, image fetches, and errors in a detailed log viewer
+* Background Pagination — Silently fetches all event pages in the background for large event lists
 
 >***New All in one Event Import Tool!***
 >We’ve developed bulk event imports tool. This add-on service for The Events Calendar allows you import events from your favorite sources like Facebook, Meetup, Eventbrite, iCalendar, and ICS.

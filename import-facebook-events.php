@@ -220,6 +220,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 		 */
 		public function load_textdomain() {
 
+			// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound
 			load_plugin_textdomain(
 				'import-facebook-events',
 				false,
@@ -307,6 +308,7 @@ if ( ! class_exists( 'Import_Facebook_Events' ) ) :
 			wp_enqueue_script( 'ife-ajax-pagi', $js_dir . 'ife-ajax-pagi.js', array( 'jquery' ), IFE_VERSION, true );
 			wp_localize_script( 'ife-ajax-pagi', 'ife_ajax', array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'ife_ajax_pagi_nonce_action' ),
 			));
 		}
 

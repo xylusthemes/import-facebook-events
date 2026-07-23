@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div class="ife-wizard-wrap" >
     <h3><?php esc_attr_e( 'Import Facebook Event', 'import-facebook-events' ); ?></h3>
     <div class="ife-wizard-starter-video" >

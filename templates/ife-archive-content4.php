@@ -1,4 +1,7 @@
-<?php 
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 $start_date_str = get_post_meta( get_the_ID(), 'start_ts', true );
 $event_address  = get_post_meta( get_the_ID(), 'venue_name', true );
 $venue_address  = get_post_meta( get_the_ID(), 'venue_address', true );

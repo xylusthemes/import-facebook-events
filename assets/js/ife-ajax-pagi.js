@@ -17,7 +17,8 @@ jQuery(document).ready(function($){
             data: {
                 action: 'ife_load_paged_events',
                 atts: JSON.stringify(atts),
-                page: nextPage
+                page: nextPage,
+                nonce: ife_ajax.nonce
             },
             success: function(response){
                 if(response.success){
