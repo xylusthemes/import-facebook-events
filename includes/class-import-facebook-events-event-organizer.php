@@ -254,7 +254,7 @@ class Import_Facebook_Events_Event_Organizer {
 				'FinishTime'       => gmdate( 'H:i:s', $end_time ),
 				'event_occurrence' => 0,
 			);
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
 			$event_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $this->event_db_table WHERE `post_id` = %d", absint( $inserted_event_id ) ) ); // db call ok; no-cache ok.
 			if ( $event_count > 0 && is_numeric( $event_count ) ) {
 				$where = array( 'post_id' => absint( $inserted_event_id ) );

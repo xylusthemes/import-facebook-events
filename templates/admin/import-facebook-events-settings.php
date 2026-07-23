@@ -339,7 +339,7 @@ $ife_google_geolocation_api_key = get_option( 'ife_google_geolocation_api_key', 
 										<?php
 										wp_enqueue_media();
 										
-										$ife_cfulb     = ' upload-button button-add-media button-add-site-icon ';
+										$ife_cfulb     = ' upload-button button-add-media button-add-site-icon button ';
 										$ife_cfub      = ' button ';
 										$ife_cfw       = '';
 									

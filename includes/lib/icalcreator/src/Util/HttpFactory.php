@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile
 /**
   * iCalcreator, the PHP class package managing iCal (rfc2445/rfc5445) calendar information.
  *
@@ -104,7 +105,7 @@ class HttpFactory
         }
         $output   = $calendar->createCalendar();
         if( $utf8Encode ) {
-            $output = utf8_encode( $output );
+            $output = utf8_encode( $output ); // phpcs:ignore wp_function_not_compatible_with_requires_wp
         }
         $fsize = null;
         if( $gzip ) {

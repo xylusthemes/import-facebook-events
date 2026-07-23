@@ -128,6 +128,7 @@ class Import_Facebook_Events_Admin {
 	public function ife_wp_cron_check() {
 		global $ife_errors;
 		
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( ! is_admin() || empty($_GET['page']) || empty($_GET['tab']) || $_GET['page'] !== 'facebook_import' || $_GET['tab']  !== 'scheduled' ) {
 			return;
 		}
@@ -533,6 +534,7 @@ class Import_Facebook_Events_Admin {
 	 * @return void
 	 */
 	public function ife_view_import_history_handler() {
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 		define( 'IFRAME_REQUEST', true );
 		iframe_header();
 		$history_id = isset( $_GET['history'] ) ? absint( $_GET['history'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended

@@ -29,6 +29,10 @@
  */
 namespace Kigkonsult\Icalcreator;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use InvalidArgumentException;
 use Kigkonsult\Icalcreator\Util\ParameterFactory;
 use Kigkonsult\Icalcreator\Util\Util;
