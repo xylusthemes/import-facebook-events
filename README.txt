@@ -167,6 +167,9 @@ You can use `[facebook_events]` for display in-built facebook events list.
 
 == Changelog ==
 
+= 1.9.0 =
+* ADDED: Advance Facebook Feed (Widget).
+
 = 1.8.9 =
 * ADDED: Optimized Image API Calls
 * IMPROVEMENT: Added support for PHP 8.5
