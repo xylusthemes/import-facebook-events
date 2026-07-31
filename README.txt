@@ -5,12 +5,11 @@ Tags: facebook, events, import, calendar, facebook event
 Requires at least: 6.0
 Requires PHP: 5.3
 Tested up to: 7.0
-Stable tag: 1.8.9
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Display Facebook events on your WordPress site with beautiful, auto-updating event feeds using the Live Feed Builder or our events importer. No API key required.
-
+Display Facebook events on your WordPress site with auto-updating feeds using Live Feed Builder or Events Importer. No API key needed.
 
 == Description ==
 
@@ -139,27 +138,32 @@ You can use `[facebook_events]` for display in-built facebook events list.
 
 == Screenshots ==
 
-1. Events page using '[facebook_events posts_per_page="12"]' shortcode
-2. Single Event page (Twenty Sixteen Theme).
-3. Facebook Events Gutenberg Block
-4. Import Facebook events by Event IDs.
-5. Import Facebook events by Organization/Page ID (Pro).
-6. Import Facebook events by .ics File.
-7. Scheduled Facebook Imports (Pro).
-8. Import History
-9. Settings
-10. Upcoming Facebook Events widget in the backend (Pro)
-11. Upcoming Facebook Events widget in front-end with Event image(Pro)
-12. Upcoming Facebook Events widget in front-end without Event image(Pro)
-13. Plugin's Shortcode.
-14. Events page using '[facebook_events layout="style2"]' shortcode
-15. Events page using '[facebook_events layout="style3"]' shortcode
-16. Events page using '[facebook_events layout="style4"]' shortcode
-17. Feed Dashboard – Manage all your live event feeds from one central list.
-18. Live Feed Sources – Fetch events seamlessly from Facebook Pages, Groups, Event IDs, or iCal links (supports multiple sources).
-19. Multiple Layouts – Choose from a variety of stunning layouts.
-20. Feed Settings – Customize pagination, event limits, cache duration, and more.
-21. Gutenberg Block Ready – Create and configure Facebook event feeds directly inside the WordPress Block Editor.
+1. **Front-end: Grid View** – Display events in a modern, responsive grid layout.
+2. **Front-end: List View** – A clean, classic list view for displaying upcoming events.
+3. **Front-end: Masonry View (Pro)** – Create a dynamic, Pinterest-style masonry layout.
+4. **Front-end: Minimal List (Pro)** – A sleek, space-saving minimal list design.
+5. **Front-end: Compact List (Pro)** – Display maximum event details in a compact format.
+6. **Front-end: Timeline View (Pro)** – Showcase events beautifully in a vertical chronological timeline.
+7. **Front-end: Ticket View (Pro)** – A specialized view highlighting event tickets and dates.
+8. **Feed Dashboard** – Manage all your live event feeds from one central list.
+9. **Multiple Sources (Pro)** – Fetch events seamlessly from Facebook Pages, Groups, Event IDs, or iCal links.
+10. **Multiple Layouts** – Choose from a variety of stunning layouts with real-time hover previews.
+11. **Advanced Filters** – Filter your events by past, upcoming, or specific date ranges.
+12. **Feed Settings** – Customize pagination, event limits, cache duration, and more.
+13. **Events Shortcode – Default Layout** – Display upcoming Facebook events on any page using the `[facebook_events]` shortcode.
+14. **Events Shortcode – Style 2 Layout** – Display events using the alternate `layout="style2"` design.
+15. **Events Shortcode – Style 3 & 4 Layout** – Display events using the alternate `layout="style3"` design.
+16. **Single Event Page** – A dedicated page layout showing full details of an individual event.
+17. **Upcoming Events Widget – Backend (Pro)** – Manage the upcoming events widget from the admin dashboard.
+18. **Upcoming Events Widget – Front-end (Pro)** – Display upcoming events in the sidebar, with or without event images.
+19. **Import Events by Event ID** – Import specific Facebook events using their Event IDs.  
+20. **Import Events by Organization/Page ID (Pro)** – Bulk import all events from a Facebook Page or Organization.
+21. **Import Events via .ics File (Pro)** – Import events directly from an .ics calendar file.
+22. **Scheduled Imports (Pro)** – Automatically sync and import new events on a set schedule.
+23. **Import History** – Track and review all past event import activity.
+24. **Plugin Settings** – Configure general plugin behavior and options.
+25. **Facebook Events Gutenberg Block** – Add and configure Facebook events directly inside the Block Editor.
+26. **Plugin Shortcode Options** – Overview of available shortcode parameters and usage.
 
 == Changelog ==
 
