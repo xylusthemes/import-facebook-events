@@ -4,8 +4,8 @@ Donate link: http://xylusthemes.com/
 Tags: facebook, events, import, calendar, facebook event
 Requires at least: 6.0
 Requires PHP: 5.3
-Tested up to: 7.0
-Stable tag: 1.9.0
+Tested up to: 7.1
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -166,6 +166,11 @@ You can use `[facebook_events]` for display in-built facebook events list.
 26. **Plugin Shortcode Options** – Overview of available shortcode parameters and usage.
 
 == Changelog ==
+
+= 1.9.1 =
+* FIXED: PHP 8.0 WP-Cron compatibility issues.
+* FIXED: iCal event organizer parsing bugs.
+* IMPROVEMENT: Added support for WordPress 7.1
 
 = 1.9.0 =
 * ADDED: Advance Facebook Feed (Widget).
