@@ -106,6 +106,9 @@ class Import_Facebook_Events_Ical_Parser {
 		}
 
 		$all_events = $calendar->selectComponents( $start_year, $start_month, $start_day, $end_year, $end_month, $end_day, 'vevent' );
+		if ( ! is_array( $all_events ) ) {
+			$all_events = array();
+		}
 		$centralize_events = array();
 
        	// Events per Year
@@ -361,36 +364,36 @@ class Import_Facebook_Events_Ical_Parser {
 
 
 		$organizer = $event->getOrganizer( true );
-		$organizer_params = isset($organizer['params']) ? $organizer['params'] : array();
-		$organizer = isset($organizer['value']) ? $organizer['value'] : '';
-		if ( !empty( $organizer ) ) {
-			$params = wp_parse_args( str_replace( ';', '&', $organizer ) );
-			foreach ( $params as $k => $param ) {
-				if ( $k == 'CN' ) {
-					$oraganizer = explode( ':MAILTO:', $param);
-					$oraganizer_data['ID'] = strtolower( str_replace( ' ','_', trim( preg_replace( '/^"(.*)"$/', '\1', $oraganizer[0] ) ) ) );
-					$oraganizer_data['name'] = preg_replace( '/^"(.*)"$/', '\1', $oraganizer[0] );
-					$oraganizer_data['email'] = preg_replace( '/^"(.*)"$/', '\1', trim( $oraganizer[1]) );
-				} else {
-					if ( ! empty( $param ) ) {
-						$oraganizer_data[ $k ] = $param;
-					} else {
-						// Check if only email is there.
-						$oraganizer = explode( 'MAILTO:', $k);
-						if(isset($oraganizer[1]) && !empty($oraganizer[1])){
-							$oraganizer_data['ID'] = strtolower( str_replace( ' ','_', trim( preg_replace( '/^"(.*)"$/', '\1', $oraganizer[1] ) ) ) );
-							$oraganizer_data['name'] = preg_replace( '/^"(.*)"$/', '\1', $oraganizer[1] );
-							$oraganizer_data['email'] = preg_replace( '/^"(.*)"$/', '\1', trim( $oraganizer[1]) );
-							if(!empty($organizer_params['CN'])){
-								$oraganizer_data['name'] = $organizer_params['CN'];
-							}
-						}
-					}
+		$organizer_params = isset( $organizer['params'] ) ? $organizer['params'] : array();
+		$organizer = isset( $organizer['value'] ) ? $organizer['value'] : '';
+
+		$oraganizer_data = array();
+
+		if ( ! empty( $organizer ) ) {
+			$email = '';
+			if ( stripos( $organizer, 'mailto:' ) === 0 ) {
+				$email = trim( substr( $organizer, 7 ) );
+			} else {
+				$email = trim( $organizer );
+			}
+
+			if ( ! empty( $email ) ) {
+				$oraganizer_data['email'] = preg_replace( '/^"(.*)"$/', '\1', $email );
+				$oraganizer_data['ID']    = strtolower( str_replace( ' ', '_', $oraganizer_data['email'] ) );
+				$oraganizer_data['name']  = $oraganizer_data['email'];
+
+				if ( ! empty( $organizer_params['CN'] ) ) {
+					$oraganizer_data['name'] = preg_replace( '/^"(.*)"$/', '\1', $organizer_params['CN'] );
 				}
 			}
 		}
-		if( $oraganizer_data['email'] == 'noreply@facebookmail_com' ){
+
+		// If Facebook no-reply email, clear email and use organizer name as ID.
+		if ( ! empty( $oraganizer_data['email'] ) && $oraganizer_data['email'] === 'noreply@facebookmail.com' ) {
 			$oraganizer_data['email'] = '';
+			if ( ! empty( $oraganizer_data['name'] ) ) {
+				$oraganizer_data['ID'] = strtolower( str_replace( ' ', '_', trim( preg_replace( '/^"(.*)"$/', '\1', $oraganizer_data['name'] ) ) ) );
+			}
 		}
 		
 		$xt_event['organizer'] = $oraganizer_data;

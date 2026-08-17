@@ -1630,7 +1630,13 @@ function ife_get_next_run_times(){
 	foreach($crons as $time => $cron){
 		foreach($cron as $cron_name){
 			foreach($cron_name as $cron_post_id){
-				$next_runs[$cron_post_id['args']['post_id']] = $time;
+				$args = isset( $cron_post_id['args'] ) ? $cron_post_id['args'] : array();
+
+				$post_id = isset( $args['post_id'] ) ? $args['post_id'] : ( isset( $args[0] ) ? $args[0] : 0 );
+
+				if ( $post_id ) {
+					$next_runs[ $post_id ] = $time;
+				}
 			}
 		}
 	}

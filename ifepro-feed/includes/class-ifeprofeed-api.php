@@ -1568,7 +1568,7 @@ class IFEPRO_Feed_API {
 	}
 
 	private function schedule_background_sync( $feed_id, $cursor, $delay = 5 ) {
-		$args = array( 'feed_id' => $feed_id, 'cursor' => $cursor );
+		$args = array( (int) $feed_id, (string) $cursor );
 		if ( function_exists( 'as_enqueue_async_action' ) ) {
 			as_enqueue_async_action( 'ifeprofeed_background_sync', $args, 'ifeprofeed', false, time() + $delay );
 		} else {
