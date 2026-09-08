@@ -149,9 +149,8 @@ class IFEPRO_Feed_AJAX {
 		$cursor     = $response['cursor'] ?? '';
 		$has_more   = ! empty( $response['has_more'] ) && $cursor;
 		$scrape_page = 2;
-		$max_pages   = 20;
 
-		while ( $has_more && $scrape_page <= $max_pages ) {
+		while ( $has_more ) {
 			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
 			$response = apply_filters( $fetch_filter, new WP_Error( 'ifeprofeed_pro_only', '' ), $meta, $cursor, $api );
 

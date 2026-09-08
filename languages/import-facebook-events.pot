@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-17T11:49:44+00:00\n"
+"POT-Creation-Date: 2026-09-08T11:19:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: import-facebook-events\n"
@@ -448,21 +448,21 @@ msgstr ""
 #: ifepro-feed/includes/class-ifeprofeed-admin.php:635
 #: ifepro-feed/includes/class-ifeprofeed-ajax.php:44
 #: ifepro-feed/includes/class-ifeprofeed-ajax.php:66
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:243
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:326
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:242
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:325
 msgid "Permission denied."
 msgstr ""
 
 #: ifepro-feed/includes/class-ifeprofeed-admin.php:638
 #: ifepro-feed/includes/class-ifeprofeed-ajax.php:50
 #: ifepro-feed/includes/class-ifeprofeed-ajax.php:72
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:249
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:248
 msgid "Security check failed."
 msgstr ""
 
 #: ifepro-feed/includes/class-ifeprofeed-ajax.php:53
 #: ifepro-feed/includes/class-ifeprofeed-ajax.php:75
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:279
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:278
 msgid "Invalid feed ID."
 msgstr ""
 
@@ -475,86 +475,86 @@ msgid "Hard cache cleared! Fetching fresh HQ images in background — they will 
 msgstr ""
 
 #. translators: %d: number of events
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:261
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:260
 #, php-format
 msgid "%d events fetched successfully."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:284
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:283
 msgid "Feed not found."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:292
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:291
 msgid "No events found."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:337
-#: ifepro-feed/includes/class-ifeprofeed-api.php:1610
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:336
+#: ifepro-feed/includes/class-ifeprofeed-api.php:1642
 #: includes/class-import-facebook-events-cpt.php:131
 msgid "View Event"
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:368
-#: ifepro-feed/includes/class-ifeprofeed-api.php:1651
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:367
+#: ifepro-feed/includes/class-ifeprofeed-api.php:1683
 #: ifepro-feed/includes/class-ifeprofeed-shortcode.php:311
 #: ifepro-feed/includes/class-ifeprofeed-shortcode.php:318
 msgid "Free"
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:369
-#: ifepro-feed/includes/class-ifeprofeed-api.php:1652
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:368
+#: ifepro-feed/includes/class-ifeprofeed-api.php:1684
 msgid "Paid"
 msgstr ""
 
 #. translators: %s: error message
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:399
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:398
 #, php-format
 msgid "Could not load preview: %s. Please check your Source settings."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:405
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:404
 msgid "No events found. Please verify your Source Data."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-ajax.php:421
+#: ifepro-feed/includes/class-ifeprofeed-ajax.php:420
 msgid "Note: Blurry/low-quality images may appear in Live Preview for new events to keep the editor fast. High-quality HD images load automatically on the front-end after saving."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-api.php:720
+#: ifepro-feed/includes/class-ifeprofeed-api.php:723
 msgid "Facebook Page ID source is only available in the Pro version."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-api.php:723
+#: ifepro-feed/includes/class-ifeprofeed-api.php:726
 msgid "Facebook Group source is only available in the Pro version."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-api.php:732
+#: ifepro-feed/includes/class-ifeprofeed-api.php:735
 msgid "Invalid feed source type."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-api.php:756
+#: ifepro-feed/includes/class-ifeprofeed-api.php:759
 #: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:77
 msgid "At least one Event ID is required."
 msgstr ""
 
 #. translators: %s: event ID
-#: ifepro-feed/includes/class-ifeprofeed-api.php:782
+#: ifepro-feed/includes/class-ifeprofeed-api.php:785
 #, php-format
 msgid "Event ID %s did not return any data."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-api.php:816
+#: ifepro-feed/includes/class-ifeprofeed-api.php:819
 #: ifepro-feed/includes/class-ifeprofeed-builder-ui.php:78
 msgid "iCal URL is required."
 msgstr ""
 
-#: ifepro-feed/includes/class-ifeprofeed-api.php:956
+#: ifepro-feed/includes/class-ifeprofeed-api.php:959
 #, php-format
 msgid "cURL error: %s"
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: ifepro-feed/includes/class-ifeprofeed-api.php:964
+#: ifepro-feed/includes/class-ifeprofeed-api.php:967
 #, php-format
 msgid "HTTP error code: %d"
 msgstr ""
