@@ -47,6 +47,10 @@ class Import_Facebook_Events_FB_Authorize {
 	 * @return void
 	 */
 	public function ife_facebook_authorize_user() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to perform this action.', 'import-facebook-events' ) );
+		}
+
 		if ( ! empty( $_POST ) && isset( $_POST['ife_facebook_authorize_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ife_facebook_authorize_nonce'] ) ), 'ife_facebook_authorize_action' ) ) { // input var okay.
 
 			$ife_options       = get_option( IFE_OPTIONS, array() );
@@ -54,21 +58,22 @@ class Import_Facebook_Events_FB_Authorize {
 			$app_secret        = isset( $ife_options['facebook_app_secret'] ) ? $ife_options['facebook_app_secret'] : '';
 			$redirect_url      = admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' );
 			$param_url         = rawurlencode( $redirect_url );
-			$ife_session_state = md5( uniqid( rand(), true ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand
-			setcookie( 'ife_session_state', $ife_session_state, '0', '/' );
+			$ife_session_state = wp_generate_password( 32, false );
+			set_transient( 'ife_oauth_state_' . get_current_user_id(), $ife_session_state, 15 * MINUTE_IN_SECONDS );
 
 			if ( ! empty( $app_id ) && ! empty( $app_secret ) ) {
 
 				$dialog_url = 'https://www.facebook.com/' . $this->api_version . '/dialog/oauth?client_id='
 						. $app_id . '&redirect_uri=' . $param_url . '&state='
 						. $ife_session_state . '&scope=pages_show_list,pages_manage_metadata,pages_read_engagement,pages_read_user_content,page_events';
-				header( 'Location: ' . $dialog_url );
+				wp_redirect( $dialog_url );
+				exit();
 
 			} else {
-				die( esc_attr__( 'Please insert Facebook App ID and Secret.', 'import-facebook-events' ) );
+				wp_die( esc_html__( 'Please insert Facebook App ID and Secret.', 'import-facebook-events' ) );
 			}
 		} else {
-			die( esc_attr__( 'You have not access to doing this operations.', 'import-facebook-events' ) );
+			wp_die( esc_html__( 'You do not have access to doing this operation.', 'import-facebook-events' ) );
 		}
 	}
 
@@ -79,15 +84,26 @@ class Import_Facebook_Events_FB_Authorize {
 	 */
 	public function ife_facebook_authorize_user_callback() {
 		global $ife_success_msg;
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to perform this action.', 'import-facebook-events' ) );
+		}
+
+		$user_id        = get_current_user_id();
+		$stored_state   = get_transient( 'ife_oauth_state_' . $user_id );
+		$returned_state = isset( $_REQUEST['state'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['state'] ) ) : '';
+
 		// phpcs:ignore WordPress.Security.NonceVerification
-		if ( isset( $_COOKIE['ife_session_state'] ) && isset( $_REQUEST['state'] ) && ( sanitize_text_field( wp_unslash( $_REQUEST['state'] ) ) === $_COOKIE['ife_session_state'] ) ) { // input var okay.
-				// phpcs:ignore WordPress.Security.NonceVerification
-				$code         = isset( $_GET['code'] ) ? sanitize_text_field( wp_unslash( $_GET['code'] ) ) : ''; // input var okay.
-				$ife_options  = get_option( IFE_OPTIONS, array() );
-				$app_id       = isset( $ife_options['facebook_app_id'] ) ? $ife_options['facebook_app_id'] : '';
-				$app_secret   = isset( $ife_options['facebook_app_secret'] ) ? $ife_options['facebook_app_secret'] : '';
-				$redirect_url = admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' );
-				$param_url    = rawurlencode( $redirect_url );
+		if ( ! empty( $stored_state ) && ! empty( $returned_state ) && hash_equals( $stored_state, $returned_state ) ) {
+			delete_transient( 'ife_oauth_state_' . $user_id );
+
+			// phpcs:ignore WordPress.Security.NonceVerification
+			$code         = isset( $_GET['code'] ) ? sanitize_text_field( wp_unslash( $_GET['code'] ) ) : ''; // input var okay.
+			$ife_options  = get_option( IFE_OPTIONS, array() );
+			$app_id       = isset( $ife_options['facebook_app_id'] ) ? $ife_options['facebook_app_id'] : '';
+			$app_secret   = isset( $ife_options['facebook_app_secret'] ) ? $ife_options['facebook_app_secret'] : '';
+			$redirect_url = admin_url( 'admin-post.php?action=ife_facebook_authorize_callback' );
+			$param_url    = rawurlencode( $redirect_url );
 
 			if ( ! empty( $app_id ) && ! empty( $app_secret ) ) {
 
@@ -153,7 +169,7 @@ class Import_Facebook_Events_FB_Authorize {
 				exit();
 			}
 		} else {
-			die( esc_attr__( 'You have not access to doing this operations.', 'import-facebook-events' ) );
+			wp_die( esc_html__( 'Invalid or expired state parameter. Please try authorizing again.', 'import-facebook-events' ) );
 		}
 	}
 }

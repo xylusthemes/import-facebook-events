@@ -37,6 +37,26 @@ class Import_Facebook_Events_Common {
 	}
 
 	/**
+	 * Convert description conditionally.
+	 *
+	 * @param string $post_description The post description.
+	 * @return string
+	 */
+	public function convert_description( $post_description ) {
+		global $ife_events;
+
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		if ( is_plugin_active( 'classic-editor/classic-editor.php' ) ) {
+			return $post_description;
+		}
+
+		return $ife_events->htmltblock->convert( $post_description );
+	}
+
+	/**
 	 * Format events arguments as per TEC
 	 *
 	 * @since    1.0.0
