@@ -5,7 +5,7 @@ Tags: facebook, events, import, calendar, facebook event
 Requires at least: 6.0
 Requires PHP: 5.3
 Tested up to: 7.1
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -166,6 +166,11 @@ You can use `[facebook_events]` for display in-built facebook events list.
 26. **Plugin Shortcode Options** – Overview of available shortcode parameters and usage.
 
 == Changelog ==
+
+= 1.9.2 =
+* FIXED: Classic Editor support and bug fix for event description formatting.
+* IMPROVEMENT: Enhanced security and permission checks in Facebook OAuth authorization flow.
+* IMPROVEMENT: Added pagination in feed to fetch all events synchronously with profile/people URL support.( Pro )
 
 = 1.9.1 =
 * FIXED: PHP 8.0 WP-Cron compatibility issues.
