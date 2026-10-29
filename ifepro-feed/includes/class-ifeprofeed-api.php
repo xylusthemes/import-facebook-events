@@ -86,13 +86,16 @@ class IFEPRO_Feed_API {
 
 		$events = $response['events'] ?? array();
 
-		if ( ($meta['source_type'] ?? '') === 'group_id' && ! empty( $response['has_more'] ) && ! empty( $response['cursor'] ) ) {
+		// Fetch ALL remaining pages synchronously so the front-end
+		// always gets the complete set of events on the very first load.
+		while ( ! empty( $response['has_more'] ) && ! empty( $response['cursor'] ) ) {
 			$r2 = $this->fetch_page( $meta, $response['cursor'] );
-			if ( ! is_wp_error( $r2 ) ) {
-				$events = array_merge( $events, $r2['events'] ?? array() );
-				$response['has_more'] = ! empty( $r2['has_more'] );
-				$response['cursor']   = $r2['cursor'] ?? '';
+			if ( is_wp_error( $r2 ) ) {
+				break;
 			}
+			$events = array_merge( $events, $r2['events'] ?? array() );
+			$response['has_more'] = ! empty( $r2['has_more'] );
+			$response['cursor']   = $r2['cursor'] ?? '';
 		}
 
 		$events = $this->dedup( $events );
@@ -101,8 +104,9 @@ class IFEPRO_Feed_API {
 		$this->save_page_cache( $feed_id, 1, $events, $duration );
 		update_post_meta( $feed_id, '_ifeprofeed_last_fetched', time() );
 
-		if ( ! empty( $response['has_more'] ) && ! empty( $response['cursor'] ) && in_array( $meta['source_type'] ?? 'page_id', array( 'page_id', 'group_id' ), true ) ) {
-			$this->trigger_bg_page_fetch( $feed_id, 2, $response['cursor'], $duration );
+		// Trigger HQ image batch fetch (non-blocking) for all events
+		if ( ! empty( $events ) ) {
+			$this->trigger_bg_image_batch( $feed_id, $events );
 		}
 
 		return $events;
@@ -217,9 +221,8 @@ class IFEPRO_Feed_API {
 
 		$meta     = $this->get_feed_meta( $feed_id );
 		$lock_key = self::LOCK_PREFIX . 'running_' . $feed_id;
-		$max_pages = 20;
 
-		while ( $scrape_page <= $max_pages && $cursor ) {
+		while ( $cursor ) {
 			// Check if we already fetched this page by checking postmeta cursor
 			$saved_next_cursor = get_post_meta( $feed_id, '_ifeprofeed_next_cursor', true );
 			$saved_next_page   = get_post_meta( $feed_id, '_ifeprofeed_next_page', true );
@@ -1522,13 +1525,16 @@ class IFEPRO_Feed_API {
 
 			$name  = $event['name']        ?? '';
 			$start = $event['start_local'] ?? '';
+			// We no longer dedup by name + time, so that parent and child events (which have unique IDs but same name/time) are all imported.
+			/*
 			if ( $name !== '' && $start !== '' ) {
-				$day       = substr( $start, 0, 10 );
+				$time      = substr( $start, 0, 16 );
 				$norm_name = preg_replace( '/[^\p{L}\p{N}]/u', '', mb_strtolower( $name, 'UTF-8' ) );
-				$key       = 'name_date:' . $norm_name . '_' . $day;
+				$key       = 'name_time:' . $norm_name . '_' . $time;
 				if ( isset( $seen[ $key ] ) ) continue;
 				$seen[ $key ] = true;
 			}
+			*/
 
 			if ( $id === '' && ( $name === '' || $start === '' ) ) {
 				// phpcs:disable
@@ -1584,10 +1590,36 @@ class IFEPRO_Feed_API {
 			$parsed = wp_parse_url( $page_url );
 			// phpcs:enable
 			$path   = trim( $parsed['path'] ?? '', '/' );
+
+			// Handle profile.php?id=XXXX (new Facebook page URL format).
+			if ( 'profile.php' === $path && ! empty( $parsed['query'] ) ) {
+				parse_str( $parsed['query'], $query_params );
+				if ( ! empty( $query_params['id'] ) ) {
+					return sanitize_text_field( $query_params['id'] );
+				}
+			}
+
 			$parts  = explode( '/', $path );
 			if ( 'pages' === $parts[0] && isset( $parts[2] ) ) {
 				return sanitize_text_field( $parts[2] );
 			}
+			
+			// Handle /people/Name/ID, /people/ID, /profile/ID, /groups/ID, /events/ID
+			if ( in_array( $parts[0], array( 'people', 'profile', 'groups', 'events' ), true ) ) {
+				if ( isset( $parts[2] ) && ctype_digit( $parts[2] ) ) {
+					return sanitize_text_field( $parts[2] );
+				}
+				if ( isset( $parts[1] ) && ctype_digit( $parts[1] ) ) {
+					return sanitize_text_field( $parts[1] );
+				}
+				if ( isset( $parts[2] ) && ! empty( $parts[2] ) ) {
+					return sanitize_text_field( $parts[2] );
+				}
+				if ( isset( $parts[1] ) && ! empty( $parts[1] ) ) {
+					return sanitize_text_field( $parts[1] );
+				}
+			}
+			
 			return sanitize_text_field( $parts[0] );
 		}
 		return sanitize_text_field( $page_url );
